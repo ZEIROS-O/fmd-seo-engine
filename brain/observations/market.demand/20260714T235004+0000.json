@@ -1,0 +1,12 @@
+{
+  "check_id": "market.demand",
+  "fulfillment": "engine_api",
+  "note": "",
+  "observed_at": "2026-07-14T23:50:04+00:00",
+  "records": {
+    "clusters_checked": 3,
+    "near_me_volume": 165000,
+    "trend_direction": "0.36,0.44,0.54,0.54,0.54,0.36,0.54,0.36,0.36,0.36,0.16,0.44"
+  },
+  "source": "semrush:phrase_this"
+}

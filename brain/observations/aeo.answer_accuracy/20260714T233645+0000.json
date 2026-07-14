@@ -1,0 +1,12 @@
+{
+  "check_id": "aeo.answer_accuracy",
+  "fulfillment": "agent",
+  "note": "",
+  "observed_at": "2026-07-14T23:36:45+00:00",
+  "records": {
+    "queries_citing_fmd": 3,
+    "queries_run": 5,
+    "wrong_facts": 0
+  },
+  "source": "evidence/entity-audit-2026-07-14.md"
+}

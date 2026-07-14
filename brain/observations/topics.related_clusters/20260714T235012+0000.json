@@ -1,0 +1,11 @@
+{
+  "check_id": "topics.related_clusters",
+  "fulfillment": "engine_api",
+  "note": "",
+  "observed_at": "2026-07-14T23:50:12+00:00",
+  "records": {
+    "candidates_found": 150,
+    "candidates_with_volume": 150
+  },
+  "source": "semrush:phrase_related"
+}

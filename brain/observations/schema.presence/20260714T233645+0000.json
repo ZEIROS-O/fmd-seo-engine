@@ -1,0 +1,15 @@
+{
+  "check_id": "schema.presence",
+  "fulfillment": "console",
+  "note": "2 independent sources: Semrush audit + live-HTML md5 ad2858...058",
+  "observed_at": "2026-07-14T23:36:45+00:00",
+  "records": {
+    "has_aggregaterating": false,
+    "has_localbusiness": false,
+    "has_service": false,
+    "ld_json_count": 0,
+    "pages_checked": 22,
+    "pages_with_ld_json": 0
+  },
+  "source": "evidence/site-audit-2026-07-14.md"
+}

@@ -75,6 +75,21 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--port", type=int, default=4173)
     p.add_argument("--skip-build", action="store_true")
 
+    # ── Autonomous-loop surface: the engine as decision brain ──
+    sub.add_parser("beat", help="what checks are due now, ordered, with fulfillment paths")
+    sub.add_parser("assess", help="evaluate thresholds against latest observations; report gate drift")
+    sub.add_parser("brief", help="full operator briefing: gates + due + standing findings + priority")
+    sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
+
+    p = sub.add_parser("observe", help="record one measured check observation")
+    p.add_argument("check_id")
+    p.add_argument("--records", required=True, help="JSON object of the check's declared fields")
+    p.add_argument("--fulfillment", required=True,
+                   choices=["engine_api", "mcp", "agent", "console", "engine"],
+                   help="how the data was obtained")
+    p.add_argument("--source", required=True, help="evidence file, API endpoint, or console name")
+    p.add_argument("--note", default="", help="optional provenance note")
+
     args = parser.parse_args(argv)
     config = paths.load_config(args.config)
     receipts_dir = paths.RECEIPTS_DIR
@@ -82,6 +97,30 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "preflight":
         # Preflight reports the kill switch as a blocker instead of refusing to run.
         return _emit(run_preflight(config, online=args.online), receipts_dir)
+
+    # Loop-surface commands are read-mostly and must work even under the kill
+    # switch (a caller needs to see WHY it is disabled). They do not take the run
+    # lock — they never spend or mutate the site.
+    if args.command in ("beat", "assess", "brief", "observe", "sync"):
+        from . import loop_cli
+        try:
+            if args.command == "beat":
+                payload, code = loop_cli.cmd_beat(config)
+            elif args.command == "assess":
+                payload, code = loop_cli.cmd_assess(config)
+            elif args.command == "brief":
+                payload, code = loop_cli.cmd_brief(config)
+            elif args.command == "sync":
+                payload, code = loop_cli.cmd_sync(config)
+            else:
+                payload, code = loop_cli.cmd_observe(
+                    config, args.check_id, args.records,
+                    fulfillment=args.fulfillment, source=args.source, note=args.note)
+        except Exception as err:  # noqa: BLE001 - surface any brain-load error as BLOCK
+            print(json.dumps({"command": args.command, "error": str(err)}, indent=2))
+            return EXIT["BLOCK"]
+        print(json.dumps(payload, indent=2))
+        return code
 
     try:
         killswitch.assert_not_engaged()

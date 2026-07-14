@@ -1,0 +1,13 @@
+{
+  "check_id": "seo.site_health",
+  "fulfillment": "console",
+  "note": "",
+  "observed_at": "2026-07-14T23:36:45+00:00",
+  "records": {
+    "errors": 0,
+    "health_score": 95,
+    "pages_crawled": 22,
+    "warnings": 47
+  },
+  "source": "evidence/site-audit-2026-07-14.md"
+}

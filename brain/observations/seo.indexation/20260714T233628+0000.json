@@ -1,0 +1,13 @@
+{
+  "check_id": "seo.indexation",
+  "fulfillment": "console",
+  "note": "",
+  "observed_at": "2026-07-14T23:36:28+00:00",
+  "records": {
+    "crawled_not_indexed": 2,
+    "discovered_not_indexed": 14,
+    "indexed": 4,
+    "not_indexed": 18
+  },
+  "source": "evidence/baseline-2026-07-14.md"
+}

@@ -1,0 +1,403 @@
+schema_version: 1
+
+# The check registry — the engine's standing answer to "what should I be checking?"
+#
+# `fmd-seo beat` reads this, compares each check's cadence against the last
+# recorded observation, and emits the due ones with their run instructions.
+# `fmd-seo observe` records a result. `fmd-seo assess` evaluates thresholds.
+#
+# method.kind:
+#   http    — free. Fetch the live site. No credentials, no quota, no human.
+#   mcp     — Semrush MCP. Callable ONLY from inside a Claude Code session.
+#   console — GSC / GA4 / GBP. No MCP exists. See brain/README.md "Human residue".
+#   engine  — pure local computation over the repo/corpus.
+#   agent   — model judgment + web search. No paid API.
+#
+# thresholds[].expr is evaluated against the observation's `records` by a
+# restricted evaluator (comparisons/boolean ops only — no calls, no attributes).
+# Severity: critical > high > medium > low | info.
+
+checks:
+
+  # ─────────────────────────── SCHEMA ───────────────────────────
+  - id: schema.presence
+    domain: schema
+    title: Structured data present in live initial HTML
+    cadence: daily
+    cost: free
+    method:
+      kind: http
+      run: |
+        Fetch https://freshmobiledetail.com/ and each URL in the sitemap with
+        JavaScript disabled (plain curl; no headless browser). Count occurrences of
+        `application/ld+json`, `schema.org`, `@type`, and `itemtype` in the raw
+        response body. Record per-page and site-wide totals.
+        Do NOT count Open Graph or Twitter Card meta — they are not schema.
+    records:
+      - {name: pages_checked, type: int}
+      - {name: pages_with_ld_json, type: int}
+      - {name: ld_json_count, type: int}
+      - {name: has_localbusiness, type: bool}
+      - {name: has_service, type: bool}
+      - {name: has_aggregaterating, type: bool}
+    thresholds:
+      - expr: ld_json_count == 0
+        severity: critical
+        finding: "Zero structured data site-wide — the T2 finding is still live."
+        action: "Work priority 1: emit LocalBusiness/AutoDetailing + Service + AggregateRating on the money pages. This is the highest-leverage open item in the repo."
+      - expr: ld_json_count > 0 and has_localbusiness == false
+        severity: high
+        finding: "Schema exists but no LocalBusiness — entity resolution still unserved."
+        action: "Add LocalBusiness/AutoDetailing to the homepage and each money page."
+      - expr: has_localbusiness == true and has_aggregaterating == false
+        severity: medium
+        finding: "LocalBusiness present without AggregateRating — review corroboration not machine-readable."
+        action: "Add AggregateRating bound to the verified Google review count (GATE-3: bind to business-facts.yaml, never invent)."
+    why: |
+      T2. Two independent sources confirmed zero schema.org site-wide against a
+      95/100, zero-error site. Schema is the direct machine-readable lever on the
+      entity-trust bottleneck (T1). Free to fix, no authority required.
+
+  - id: schema.validate
+    domain: schema
+    title: Emitted schema is valid and fact-bound
+    cadence: weekly
+    cost: free
+    method:
+      kind: http
+      run: |
+        For every ld+json block found live, parse it as JSON. Verify: required
+        @context/@type, no syntax errors, and that every price / phone / address /
+        service name / review count matches the current business-facts.yaml
+        snapshot. Report each mismatch as a distinct fact_mismatch entry.
+    records:
+      - {name: blocks_found, type: int}
+      - {name: parse_errors, type: int}
+      - {name: fact_mismatches, type: int}
+    thresholds:
+      - expr: parse_errors > 0
+        severity: critical
+        finding: "Invalid JSON-LD is worse than none — malformed schema can poison entity resolution."
+        action: "Fix or remove the malformed block immediately."
+      - expr: fact_mismatches > 0
+        severity: critical
+        finding: "Live schema contradicts business-facts.yaml — GATE-3 breach."
+        action: "BLOCK. Reconcile against business-facts.yaml (facts win) before any other schema work. T6 means answer engines will repeat the wrong fact."
+    why: "GATE-3 + T6. Wrong structured data propagates directly into AI answers."
+
+  # ─────────────────────────── SEO ───────────────────────────
+  - id: seo.indexation
+    domain: seo
+    title: GSC index coverage — the GATE-1 input
+    cadence: weekly
+    cost: console
+    method:
+      kind: console
+      run: |
+        Google Search Console → Indexing → Pages. Record the Indexed count, the
+        Not-indexed count, and the breakdown (esp. "Discovered – currently not
+        indexed" and "Crawled – currently not indexed").
+        NO MCP EXISTS FOR GSC. This is the loop's one true human dependency until
+        the GSC API is wired — see brain/README.md "Human residue".
+    records:
+      - {name: indexed, type: int}
+      - {name: not_indexed, type: int}
+      - {name: discovered_not_indexed, type: int}
+      - {name: crawled_not_indexed, type: int}
+    thresholds:
+      - expr: not_indexed >= 8
+        severity: critical
+        finding: "Indexation failing — GATE-1 (publish gate) stays CLOSED."
+        action: "No new pages or posts. Route capacity to schema / entity / linking / copy (thesis priority order)."
+      - expr: not_indexed < 8 and indexed >= 10
+        severity: info
+        finding: "Indexation recovering — GATE-1 may open after a second consecutive clean weekly reading."
+        action: "Re-read next week. Two consecutive clean readings required before authoring resumes."
+      - expr: discovered_not_indexed > 10
+        severity: high
+        finding: "Google is discovering pages and declining to crawl them — a low-authority signal, not a content signal."
+        action: "Do not rewrite the pages. Raise corroboration: schema, citations, internal links, reviews."
+    why: |
+      T1. This is the single measurement that opens or closes GATE-1. Baseline
+      2026-07-14: indexed 4, not indexed 18, discovered-not-indexed 14.
+
+  - id: seo.organic_footprint
+    domain: seo
+    title: Ranked keywords and non-branded visibility
+    cadence: weekly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__organic_research for domain freshmobiledetail.com,
+        database "us". Record total ranked keywords, how many are non-branded
+        (exclude anything containing "fresh"), and how many sit in positions 1-10.
+        Then get_report_schema → execute_report if a fuller pull is needed.
+    records:
+      - {name: total_keywords, type: int}
+      - {name: nonbranded_keywords, type: int}
+      - {name: page1_keywords, type: int}
+    thresholds:
+      - expr: nonbranded_keywords == 0
+        severity: high
+        finding: "Every ranked keyword is branded — zero organic discovery by strangers."
+        action: "Confirms T4/T7. Fix page copy language before expecting non-branded rankings."
+      - expr: page1_keywords == 0
+        severity: high
+        finding: "No page-1 keywords at all."
+        action: "Authority work, not content work. See thesis priority order."
+    why: "T7 baseline 2026-07-14: 4 keywords, all branded, none on page 1, 9 clicks/28d."
+
+  - id: seo.positions
+    domain: seo
+    title: Position tracking against the 467-keyword master list
+    cadence: weekly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__position_tracking for the configured project. If it is still
+        not readable over API (it was not on 2026-07-14 — see
+        evidence/site-audit-2026-07-14.md §6), record blocked=true with the exact
+        error and DO NOT substitute estimates (GATE-4).
+        Keyword list: evidence/keywords/position-tracking-keywords.txt
+    records:
+      - {name: blocked, type: bool}
+      - {name: keywords_tracked, type: int}
+      - {name: top10_count, type: int}
+      - {name: top3_count, type: int}
+    thresholds:
+      - expr: blocked == true
+        severity: medium
+        finding: "Position tracking unreadable over API — known limitation, not a regression."
+        action: "Record honestly. Do not estimate. Re-attempt next cycle; if still blocked after 3 cycles, drop the check rather than fake it."
+    why: "Trend detection for the master list. Honest-blocked beats invented numbers (GATE-4)."
+
+  - id: seo.site_health
+    domain: seo
+    title: Semrush Site Audit health and errors
+    cadence: weekly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__site_audit for project 30426612. Record health score, errors,
+        warnings, notices, pages crawled, broken pages. Compare to the prior
+        observation and flag any *new* error class.
+    records:
+      - {name: health_score, type: int}
+      - {name: errors, type: int}
+      - {name: warnings, type: int}
+      - {name: pages_crawled, type: int}
+    thresholds:
+      - expr: errors > 0
+        severity: high
+        finding: "Site audit errors appeared — the site was 0-error at baseline."
+        action: "Triage before any content work; a regression here is cheap to fix and expensive to ignore."
+      - expr: health_score < 90
+        severity: medium
+        finding: "Site health dropped below the 95 baseline."
+        action: "Diff against the prior snapshot to isolate the regression."
+    why: "T2 baseline: health 95/100, 0 errors, 47 warnings, 22 pages crawled."
+
+  - id: seo.internal_links
+    domain: seo
+    title: Internal link paths to the unindexed pages
+    cadence: weekly
+    cost: free
+    method:
+      kind: http
+      run: |
+        Crawl the live sitemap. For each URL, count inbound internal links from
+        other pages. Flag any URL reachable only from the sitemap (orphan) — e.g.
+        /chat was orphaned at baseline. Crawl priority follows internal links, and
+        the 14 unindexed pages are link-starved.
+    records:
+      - {name: urls_in_sitemap, type: int}
+      - {name: orphan_count, type: int}
+      - {name: min_inbound_links, type: int}
+    thresholds:
+      - expr: orphan_count > 0
+        severity: high
+        finding: "Orphaned URLs in the sitemap — submitted for indexing with no internal link equity."
+        action: "Link them from a crawlable nav or hub page, or remove them from the sitemap. Thesis priority 4."
+    why: "T1. Internal links are a free crawl-priority lever on the 14 unindexed pages."
+
+  # ─────────────────────────── AEO ───────────────────────────
+  - id: aeo.answer_accuracy
+    domain: aeo
+    title: Do AI answers cite FMD, and are the cited facts correct?
+    cadence: weekly
+    cost: free
+    method:
+      kind: agent
+      run: |
+        Run the standing AEO query set (brain/state.yaml → aeo_query_set) through
+        live web search and capture AI answer summaries. For each: does it mention
+        FMD, and are the cited facts (prices, guarantee, process, service area)
+        correct against business-facts.yaml?
+        Record a wrong_facts entry for each incorrect cited fact, with the query
+        and the exact wrong value. Label everything with retrieval time (GATE-4).
+    records:
+      - {name: queries_run, type: int}
+      - {name: queries_citing_fmd, type: int}
+      - {name: wrong_facts, type: int}
+    thresholds:
+      - expr: wrong_facts > 0
+        severity: critical
+        finding: "An AI answer is citing an incorrect FMD fact — answer-engine drift."
+        action: "Trace the wrong value to its published source and correct it there. This is why T6 makes AEO a defend job."
+      - expr: queries_citing_fmd == 0
+        severity: high
+        finding: "FMD dropped out of AI answers entirely — regression against the T6 baseline."
+        action: "Check entity consistency and schema first; citation loss usually follows entity confusion."
+    why: |
+      T6. AI answers already cite FMD accurately (pricing, Door-Open Guarantee,
+      47-point reset, text-3-photos flow). The job is defend-and-extend; the live
+      risk is drift, not absence.
+
+  - id: aeo.entity_consistency
+    domain: aeo
+    title: NAP consistency and 'Drive Fresh' contamination sweep
+    cadence: monthly
+    cost: free
+    method:
+      kind: agent
+      run: |
+        Search the business name, phone, and legacy 'Drive Fresh' / drivefreshdetail.com
+        across social profiles and directory listings. Record each surface where the
+        name/phone/address disagrees with business-facts.yaml, and each surface still
+        carrying 'Drive Fresh'.
+    records:
+      - {name: surfaces_checked, type: int}
+      - {name: nap_mismatches, type: int}
+      - {name: drivefresh_contaminated, type: int}
+    thresholds:
+      - expr: drivefresh_contaminated > 0
+        severity: high
+        finding: "'Drive Fresh' naming still present — split identity suppresses entity resolution."
+        action: "Collapse to 'Fresh Mobile Detailing'. Thesis priority 2. Free fix, direct T1 lever."
+      - expr: nap_mismatches > 0
+        severity: high
+        finding: "NAP disagreement across citations — the exact signal that keeps a young entity unresolved."
+        action: "Correct each surface to match business-facts.yaml."
+    why: "T8. drivefreshdetail.com is Lou's own legacy domain; contamination is self-inflicted and free to fix."
+
+  # ─────────────────────── COMPETITOR ───────────────────────
+  - id: competitor.authority_gap
+    domain: competitor
+    title: Authority Score gap vs the local set
+    cadence: weekly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__backlinks_research for freshmobiledetail.com and each domain
+        in brain/state.yaml → competitor_set. Record AS, backlinks, referring
+        domains for each. Compute our AS and the set median.
+    records:
+      - {name: our_authority_score, type: int}
+      - {name: competitor_median_as, type: int}
+      - {name: our_referring_domains, type: int}
+    thresholds:
+      - expr: our_authority_score <= 3
+        severity: high
+        finding: "Authority Score still at/near the AS-2 baseline — the binding constraint per T7."
+        action: "Local corroboration (reviews, citations, schema), NOT link volume. We already out-link Refresh (211/106 vs 31/21) and still trail their AS 7."
+      - expr: our_authority_score > competitor_median_as
+        severity: info
+        finding: "Authority parity with the local set reached — a genuine regime change."
+        action: "Re-evaluate GATE-1 and the whole thesis priority order; the T1/T7 constraint may no longer bind."
+    why: "T7. AS 2 vs 7-16. Raw link counts already exceed some competitors — quality/corroboration is the gap, not volume."
+
+  - id: competitor.serp_movement
+    domain: competitor
+    title: Who holds the city-level SERP
+    cadence: weekly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__organic_research / competitors_research for the city-level head
+        terms in brain/state.yaml → head_terms. Record which competitors hold page 1
+        and any new entrant. Note aggregator (Yelp/national) share of page 1.
+    records:
+      - {name: head_terms_checked, type: int}
+      - {name: fmd_page1_count, type: int}
+      - {name: new_entrants, type: int}
+    thresholds:
+      - expr: fmd_page1_count > 0
+        severity: info
+        finding: "FMD broke onto a city-level page 1 — first movement against T5."
+        action: "Identify which term and why; that is the replicable pattern."
+    why: "T5. City-level page one is currently ATF, It's A Wash, Zayas, Detail Dash, Panda Hub, Yelp, aggregators — FMD absent."
+
+  # ──────────────────────── MARKET ────────────────────────
+  - id: market.demand
+    domain: market
+    title: Demand cluster volumes and seasonality
+    cadence: monthly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__keyword_research over the demand clusters in
+        brain/state.yaml → demand_clusters. Record volume per cluster and the
+        trend direction. Detailing is seasonal — record the monthly trend array,
+        do not average it away.
+    records:
+      - {name: near_me_volume, type: int}
+      - {name: clusters_checked, type: int}
+      - {name: trend_direction, type: str}
+    thresholds:
+      - expr: near_me_volume < 1500
+        severity: medium
+        finding: "The 'near me' cluster fell well below its 2,350/mo baseline."
+        action: "Check for seasonality before treating it as decay — verify against the monthly trend array, not a single reading."
+    why: "T3. 'near me' cluster = 2,350/mo and is where the demand actually lives."
+
+  # ───────────────────── BLOG / TOPICS ─────────────────────
+  - id: topics.related_clusters
+    domain: topics
+    title: Related-topic and question discovery
+    cadence: monthly
+    cost: mcp
+    method:
+      kind: mcp
+      run: |
+        mcp__semrush__keyword_research for related keywords and questions around the
+        service head terms. Record candidate topics with real measured volume only.
+        NEVER invent or estimate a volume figure (GATE-4).
+        While GATE-1 is CLOSED this check still runs — it builds the queue; it does
+        not authorize writing.
+    records:
+      - {name: candidates_found, type: int}
+      - {name: candidates_with_volume, type: int}
+    thresholds:
+      - expr: candidates_with_volume == 0
+        severity: low
+        finding: "No related topics with measured volume — topic exhaustion signal."
+        action: "Switch to refresh/consolidation mode on existing pages rather than forcing thin new variations."
+    why: "Feeds the topic queue for when GATE-1 opens. Discovery is safe while publishing is gated."
+
+  - id: blog.cannibalization
+    domain: blog
+    title: Corpus duplication and cannibalization
+    cadence: per_draft
+    cost: free
+    method:
+      kind: engine
+      run: |
+        Compare the candidate draft against the existing corpus for exact
+        duplicates, near-duplicates, and target-query overlap with an already
+        published URL.
+    records:
+      - {name: exact_duplicates, type: int}
+      - {name: near_duplicates, type: int}
+      - {name: query_overlaps, type: int}
+    thresholds:
+      - expr: exact_duplicates > 0 or query_overlaps > 0
+        severity: critical
+        finding: "Draft cannibalizes an existing URL."
+        action: "BLOCK. Update or consolidate the existing page instead of publishing a competitor to it."
+    why: "Prevents the classic content-engine failure: two pages fighting for one query."

@@ -1,0 +1,12 @@
+{
+  "check_id": "seo.organic_footprint",
+  "fulfillment": "console",
+  "note": "",
+  "observed_at": "2026-07-14T23:36:45+00:00",
+  "records": {
+    "nonbranded_keywords": 0,
+    "page1_keywords": 0,
+    "total_keywords": 4
+  },
+  "source": "evidence/semrush-research-2026-07-14.md"
+}

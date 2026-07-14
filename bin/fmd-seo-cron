@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Daily headless SEO-brain tick. Schedule this; it needs no session and no Lou.
+#
+# It runs the two things a cron CAN do safely:
+#   sync   — fetch API-backed due checks via the Semrush REST API (needs SEMRUSH_API_KEY)
+#   assess — evaluate thresholds; exit 4 if any critical finding or gate drift
+#
+# It NEVER publishes, deploys, sends, or touches the live site. The session-only
+# checks (aeo.*, live-HTML schema) and the human check (GSC indexation) are left
+# for the fmd-seo-loop skill / Lou. A non-zero assess exit is the signal that a
+# session run is worth doing.
+set -euo pipefail
+
+# A Task-Scheduler-launched shell is non-interactive and inherits a bare PATH;
+# set it up so python3 (and any user-local bins) resolve. Matches the ingest
+# wrapper's PATH setup.
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+# CDPATH= neutralizes a caller's CDPATH, which otherwise makes `cd` echo the
+# target dir and doubles the command substitution.
+ENGINE_ROOT="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ENGINE_ROOT"
+export PYTHONPATH="$ENGINE_ROOT/src"
+
+if [[ -f "$ENGINE_ROOT/DISABLED" ]]; then
+  echo "fmd-seo-cron: kill switch engaged (DISABLED present) — skipping." >&2
+  exit 0
+fi
+
+log_dir="$ENGINE_ROOT/.run/cron"
+mkdir -p "$log_dir"
+stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+
+echo "== sync ($stamp) ==" | tee "$log_dir/$stamp.log"
+python3 -m fmd_seo sync 2>&1 | tee -a "$log_dir/$stamp.log" || true
+
+echo "== assess ($stamp) ==" | tee -a "$log_dir/$stamp.log"
+# assess exit 4 = critical finding or gate drift; surface it as this script's exit
+# without aborting the log write.
+set +e
+python3 -m fmd_seo assess 2>&1 | tee -a "$log_dir/$stamp.log"
+assess_code=${PIPESTATUS[0]}
+set -e
+
+echo "fmd-seo-cron: done (assess exit=$assess_code)" | tee -a "$log_dir/$stamp.log"
+exit "$assess_code"

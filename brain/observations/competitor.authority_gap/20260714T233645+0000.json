@@ -1,0 +1,12 @@
+{
+  "check_id": "competitor.authority_gap",
+  "fulfillment": "console",
+  "note": "",
+  "observed_at": "2026-07-14T23:36:45+00:00",
+  "records": {
+    "competitor_median_as": 9,
+    "our_authority_score": 2,
+    "our_referring_domains": 106
+  },
+  "source": "evidence/semrush-research-2026-07-14.md"
+}

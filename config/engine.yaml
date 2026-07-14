@@ -27,6 +27,14 @@ paths:
 
 creds_env: "/home/lucascoh/.dataforseo.env"
 
+# Semrush REST API (the headless/cron fetch path — parallel to the MCP session
+# path). Add `SEMRUSH_API_KEY=...` to creds_env to enable it; without the key
+# the engine degrades to the session path and never fakes data. Semrush bills in
+# API units, not USD — units_cap bounds a single `sync` run.
+semrush:
+  database: "us"
+  units_cap: 500
+
 limits:
   attempts_per_milestone: 2
   worker_minutes: 45
