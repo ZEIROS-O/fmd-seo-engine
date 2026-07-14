@@ -71,6 +71,10 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("reverify", help="re-run verification over existing packages")
 
+    p = sub.add_parser("spike", help="Phase 2 rendering spike against the site worktree")
+    p.add_argument("--port", type=int, default=4173)
+    p.add_argument("--skip-build", action="store_true")
+
     args = parser.parse_args(argv)
     config = paths.load_config(args.config)
     receipts_dir = paths.RECEIPTS_DIR
@@ -97,6 +101,12 @@ def main(argv: list[str] | None = None) -> int:
         return _emit(rb.finish("BLOCK"), receipts_dir)
 
     with lock:
+        if args.command == "spike":
+            from .spike import run_spike, write_memo
+            worktree = Path(config["paths"]["site_worktree"])
+            receipt = run_spike(worktree, port=args.port, skip_build=args.skip_build)
+            write_memo(receipt, paths.EVIDENCE_DIR / "m1-rendering-decision.md")
+            return _emit(receipt, receipts_dir)
         detail = {
             "intelligence": "Phase 4 delivers DataForSEO fetchers",
             "page": "Phase 3 delivers the vertical-slice builder",
