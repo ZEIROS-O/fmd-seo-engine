@@ -1,5 +1,18 @@
 # FMD Entity & Citation Audit — 2026-07-14
 
+> **⚠ PARTIALLY SUPERSEDED by `baseline-2026-07-14.md`.** Two conclusions here are WRONG once
+> Lou's own console data is in evidence:
+> - §6 "build one interior-detailing page per suburb" — **those nine pages already exist**, and
+>   Google is refusing to index 14 of the site's 20 URLs. Do not add pages.
+> - The "#1 for east-side queries" reading — FMD is #1 for *"east side"* only because **no one
+>   else uses that phrase and no one searches it** (GSC: real queries are "…near me" and
+>   "car detailing mayfield"). It is a zero-volume #1.
+>
+> Review count corrected: **13 Google reviews** (not ~11, and it's Google, not Yelp).
+> `drivefreshdetail.com` confirmed as **Lou's own legacy domain**. GBP **is** claimed & verified.
+> The sections below on the review gap, name collisions, listicle targets, and paid-PR competitors
+> remain valid.
+
 **Method:** free web-search/fetch evidence + the committed DataForSEO GBP snapshot
 (`evidence/slice-v1/ev-gbp_snapshot-*.json`). No paid API calls were spent on this audit.
 **Provenance labels:** `[SERP]` = observed in live web search, `[GBP]` = DataForSEO business
