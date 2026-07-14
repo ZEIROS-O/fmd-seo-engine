@@ -88,6 +88,26 @@ financialcontent, and newswire mirrors). `[SERP]` This corroborates the ZEIROS n
 Competitors already on the Bucket List include Nathan's Mobile Car Detailing, Rhino Mobile
 Detailing, and Detail Delivery — i.e. inclusion is achievable for a business of FMD's size.
 
+## 6. SERP page-type evidence (money-page selection — determined free)
+
+The plan requires building *the page type the SERP already rewards*. For suburb queries the
+answer is unambiguous — competitors rank **dedicated service+suburb pages**: `[SERP]`
+
+- `nathansdetailing.com/solon-car-detail/`
+- `ceramicprocle.com/car-detailing/solon/`
+- `galaxyautospa.co/solon`
+- `esotericdetail.com/car-detail-near-me-beachwood-ohio/`
+- `infinitiofbeachwood.com/precision-detailing-beachwood`
+
+**Verified money-page type: one interior-detailing page per suburb.** FMD currently ranks #1 for
+east-side queries on the strength of the homepage alone — with no suburb pages at all. That is
+the clearest content gap on the board, and it needed **no paid API call** to establish.
+
+Candidate suburb pages, ordered by the primary cluster in `business-facts.yaml`
+(`Solon, Beachwood, Orange, Pepper Pike`) — one page each, non-cannibalizing by geography,
+and each must carry genuinely distinct local content (not a geo-token swap, which the corpus
+checker blocks).
+
 ---
 
 ## Recommended action order (revised by this evidence)
