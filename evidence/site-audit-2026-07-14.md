@@ -1,12 +1,21 @@
 # Semrush Site Audit + Live HTML Verification — 2026-07-14
 
 **Sources:** Semrush Site Audit (project 30426612, snapshot `6a56ad279ccf5fa799f3db94`,
-22 pages crawled, 6,090 checks) + direct `curl` verification against live HTML.
+22 pages crawled, 6,090 checks) + `curl` (raw HTML) + **headless-Chromium render (post-JS DOM)**.
 Position Tracking is configured but **not yet readable over API** — see §6.
+
+> ## ⚠️ CORRECTION (2026-07-14, same day)
+> **The original §1 headline of this file — "ZERO structured data" — was WRONG. The site has
+> comprehensive, well-formed schema on every page.** Both sources that "agreed" shared the same
+> blind spot: they read *pre-JavaScript* HTML. This is a TanStack/React SPA that injects
+> `application/ld+json` **client-side**, so `curl` and the Semrush crawler's markup detector both
+> missed it. A real browser render (headless Chromium, `waitUntil: networkidle`) is the only
+> valid test, and it shows the schema is present and strong. See the corrected §1 below.
+> Lesson recorded in memory as `js-rendered-site-schema-verification`.
 
 ---
 
-## 1. The headline: the site is technically clean — and has ZERO structured data
+## 1. Structured data: PRESENT and strong (corrected) — site is also technically clean
 
 | Metric | Value |
 |---|---|
@@ -18,45 +27,55 @@ Position Tracking is configured but **not yet readable over API** — see §6.
 | Blocked from crawling | 0 |
 | Pages crawled | 22 |
 
-Semrush markup detection across the 18 content pages:
+**Rendered-DOM schema audit (headless Chromium, post-JS):**
 
-| Markup type | Pages |
+| Page | ld+json blocks | Types |
+|---|---|---|
+| `/` (home) | 2 | `LocalBusiness` + `FAQPage` |
+| `/areas/beachwood` | 2 | `LocalBusiness` (with `areaServed: Beachwood`) + `FAQPage` |
+| `/interior-detailing` | 2 | `Service` (with `provider: LocalBusiness`) + `FAQPage` |
+
+The homepage `LocalBusiness` node is **more complete than what I would have recommended adding**:
+NAP (name/`+1-216-359-1034`/Beachwood 44122), `priceRange`, `openingHoursSpecification`,
+`serviceArea` `GeoCircle` (lat 41.4639 / lng −81.5089, 30-mi/48,280 m radius), **`areaServed`
+listing 21 cities**, **`aggregateRating` 5.0**, and **`sameAs`** → GBP (share.google), Instagram,
+Facebook, Nextdoor, Yelp, MapQuest. Plus a 14-question `FAQPage` (pricing, photo-quote flow,
+Door-Open Guarantee, pet hair/salt, Fresh Club).
+
+> **So schema is NOT the lever it looked like.** The entity-corroboration layer already exists and
+> is good. The indexing bottleneck (14 pages "Discovered – not indexed", AScore 2) therefore is
+> **not** an on-page markup gap — it points back at *off-site* authority/citations and the GBP,
+> exactly where `baseline-2026-07-14.md` and the citation sweep already pointed. This correction
+> removes a distraction rather than adding a task.
+
+### Two small, real schema nits (worth fixing, low effort)
+
+1. **`aggregateRating.reviewCount` = 11, but GBP shows 13 reviews** (baseline §3). Keep the
+   number in sync with GBP, or Google may distrust the rating markup.
+2. Homepage `image` is a **relative** path (`/assets/og-card-NBbqGlM2.jpg`). Schema `image` should
+   be an absolute URL.
+
+### What Semrush *did* report on markup (for the record)
+
+| Markup type (Semrush, raw-HTML) | Pages |
 |---|---|
 | Open Graph | 18 |
 | Twitter Card | 18 |
-| **Schema.org** | **0** |
-| Microformats | 0 |
+| Schema.org | 0 ⟵ **false negative — JS-injected, see correction above** |
+| Microformats | 0 (genuinely none; the site uses JSON-LD, not microdata — correct & preferred) |
 
-**Verified independently against live HTML** (9 fetches, byte-identical, md5
-`ad2858bec362020193076fbe44157058`, tested as curl-default / Googlebot / Chrome UAs):
+<!-- superseded / archived — original claim was a false negative -->
+> ~~Two independent sources agree: there is no structured data anywhere on the site. It is not
+> "write more pages." It is marking up pages that already exist.~~ — **RETRACTED, see §1 correction.**
 
-```
-LocalBusiness  -> 0      schema.org -> 0      ld+json -> 0
-itemtype       -> 0      @context   -> 0      @type   -> 0
-```
+### The schema already does the entity-anchoring job
 
-Two independent sources agree: **there is no structured data anywhere on the site.**
-Someone configured social sharing meta (OG + Twitter on every page) and stopped short of
-the one markup type that search engines actually use to resolve *entities*.
-
-> **This is the highest-leverage finding available right now, and it fits the standing thesis
-> exactly.** The bottleneck is entity trust: Google has "discovered" 14 pages and declines to
-> index them because nothing corroborates that this business is real and is what it claims.
-> `LocalBusiness`/`AutoDetailing` + `Service` + `AggregateRating` schema is the *machine-readable*
-> version of that corroboration — it ties the site to the GBP NAP, the 13 five-star reviews, the
-> service area, and the categories.
->
-> **It is not "write more pages."** It is marking up pages that already exist — fully consistent
-> with `baseline-2026-07-14.md`'s "writing more pages right now would be actively
-> counterproductive."
-
-### Why this matters more than the usual "add schema" advice
-
-The citation sweep found **"Drive Fresh" NAP contamination** across directories. Schema is how you
-assert the canonical entity *from the property you control*: one `LocalBusiness` node with the
-exact GBP name/address/phone, `sameAs` pointing at the real GBP + social profiles, and
-`areaServed` listing the suburbs. It's the anchor the off-site citation cleanup gets measured
-against.
+The citation sweep found **"Drive Fresh" NAP contamination** across directories. The canonical
+assertion *from the property we control* — one `LocalBusiness` node with exact GBP NAP, `sameAs` →
+real GBP + socials, `areaServed` → the suburbs — **already exists on the live site** (§1). So the
+on-page anchor for the off-site citation cleanup is in place; the remaining work is the off-site
+half (fixing the contaminated citations to match), not adding markup. Keep `reviewCount` synced to
+GBP (nit #1) so the anchor stays trustworthy.
 
 ## 2. No errors ⇒ the indexing problem is not technical
 
@@ -125,13 +144,14 @@ detailing has real local volume in the Planner export ("mobile rv detailing near
 detailing" — 50/mo local each). Worth deciding deliberately whether RV/boat is a service line or
 noise, rather than leaving it as an accident of category configuration.
 
-## 5. Recommended order (unchanged thesis, one addition)
+## 5. Recommended order (schema step removed — already done on-site)
 
-1. **NAP cleanup** — kill "Drive Fresh" contamination (citation sweep).
+1. **NAP cleanup** — kill "Drive Fresh" contamination (citation sweep). The on-site `sameAs`
+   anchor is already in place (§1); this is the off-site half.
 2. **GBP** — Service Area Business, drop bleeding categories, reviews.
-3. **NEW: `LocalBusiness` schema** on homepage + `Service` schema on the money pages, `sameAs` →
-   GBP/socials, `areaServed` → the suburbs, `aggregateRating` → the 13 reviews. Cheap, entirely
-   within our control, directly targets the measured constraint.
+3. **Schema nits only** (§1): sync `aggregateRating.reviewCount` 11 → 13 to match GBP; make the
+   homepage `image` an absolute URL. The schema itself is already comprehensive — no build-out
+   needed.
 4. **Remove `/chat` from the sitemap; internally link the blog post.**
 5. Tier 1/2 citations + the two listicles (theclevelandbucketlist.com, esotericdetail.com).
 6. *Then* the seat-stain content cluster — after indexing unblocks.
