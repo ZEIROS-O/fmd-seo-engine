@@ -17,7 +17,8 @@ from typing import Any
 SCHEMA_VERSION = 1
 
 QUERY_EVIDENCE_KINDS = frozenset(
-    {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline", "stable_core_candidate"}
+    {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline",
+     "stable_core_candidate", "gbp_snapshot"}
 )
 RECEIPT_STATUSES = frozenset({"DONE", "NO_OP", "PARTIAL", "BLOCK"})
 PACKAGE_TIERS = frozenset({"money-page", "supporting-post"})
