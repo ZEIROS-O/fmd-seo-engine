@@ -1,0 +1,26 @@
+schema_version: 1
+
+budget:
+  total_usd: 10.0
+  endpoint_caps_usd:
+    probe: 0.05
+    keywords: 2.00
+    serp: 3.00
+    llm_responses: 3.00
+    llm_mentions: 1.00
+    business_data: 1.00
+
+paths:
+  facts_file: "/mnt/c/Users/lucas/OneDrive/Documents/Cowork Detailing Folder/business-facts.yaml"
+  fresh_repo: "/home/lucascoh/fresh-mobile-detailing"
+  operator_repo: "/home/lucascoh/operator-agent"
+  zeiros_repo: "/home/lucascoh/ZEIROS"
+  site_worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fresh-site"
+
+creds_env: "/home/lucascoh/.dataforseo.env"
+
+limits:
+  attempts_per_milestone: 2
+  worker_minutes: 45
+  wall_minutes: 480
+  systemic_failures_to_kill: 2
