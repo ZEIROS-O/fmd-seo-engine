@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-07-14T14:27:45+00:00",
+  "repos": {
+    "fresh_repo": {
+      "path": "/home/lucascoh/fresh-mobile-detailing",
+      "head_sha": "11c7dd8ba947998b0d91e28622d59aade4b69ff3",
+      "status_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "operator_repo": {
+      "path": "/home/lucascoh/operator-agent",
+      "head_sha": "f40828bbcdc25c47c53b15f21e263e15c5007d76",
+      "status_hash": "b1f27e7616925c91c76b400f8a4a77b37dbf46d595fb00669062c76c60609749"
+    },
+    "zeiros_repo": {
+      "path": "/home/lucascoh/ZEIROS",
+      "head_sha": "b935707f4c1bca3c88566030e20bbf0a2ea12c84",
+      "status_hash": "878cdc48671944ac179ef0f511f9532797eef17e82addd7cf058b815fca1f7a0"
+    }
+  }
+}
