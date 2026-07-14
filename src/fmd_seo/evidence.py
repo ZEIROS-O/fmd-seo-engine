@@ -20,7 +20,11 @@ ESTIMATES = {
     "llm_responses": 0.05,
     "llm_mentions": 0.15,
     "business_data": 0.03,
+    "keywords": 0.10,
 }
+
+# Google Ads charges the same for 1 or 1000 keywords — never send a short list.
+KEYWORDS_MAX_PER_REQUEST = 1000
 
 
 def _evidence_id(kind: str, endpoint: str, payload: list) -> str:
@@ -164,6 +168,41 @@ def fetch_gbp(client: DataForSeoClient, business_name: str, raw_dir: Path,
         payload=[{"title": business_name, "location_coordinate": location_coordinate,
                   "limit": 10}],
         query=f"gbp:{business_name}", normalize=normalize, raw_dir=raw_dir,
+    )
+
+
+def fetch_keyword_volumes(client: DataForSeoClient, keywords: list[str], raw_dir: Path,
+                          location_name: str = "Cleveland,Ohio,United States") -> QueryEvidence:
+    """Real Google Ads search volume. Same price for 1 or 1000 keywords, so the
+    caller should always batch to the limit."""
+    if len(keywords) > KEYWORDS_MAX_PER_REQUEST:
+        raise ValueError(f"{len(keywords)} keywords exceeds the {KEYWORDS_MAX_PER_REQUEST} limit")
+
+    def normalize(result: list) -> dict:
+        rows = []
+        for item in result or []:
+            rows.append({
+                "keyword": item.get("keyword"),
+                "search_volume": item.get("search_volume"),
+                "competition": item.get("competition"),
+                "cpc": item.get("cpc"),
+                "low_top_of_page_bid": item.get("low_top_of_page_bid"),
+            })
+        rows.sort(key=lambda r: (r["search_volume"] or 0), reverse=True)
+        return {
+            "location": location_name,
+            "requested": len(keywords),
+            "returned": len(rows),
+            "with_volume": sum(1 for r in rows if (r["search_volume"] or 0) > 0),
+            "keywords": rows,
+        }
+
+    return _fetch(
+        client, kind="keyword_volume", budget_key="keywords",
+        endpoint="/v3/keywords_data/google_ads/search_volume/live",
+        payload=[{"keywords": keywords, "location_name": location_name,
+                  "language_code": "en"}],
+        query=f"keyword_volume:{len(keywords)}", normalize=normalize, raw_dir=raw_dir,
     )
 
 

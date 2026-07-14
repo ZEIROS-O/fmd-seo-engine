@@ -18,7 +18,7 @@ SCHEMA_VERSION = 1
 
 QUERY_EVIDENCE_KINDS = frozenset(
     {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline",
-     "stable_core_candidate", "gbp_snapshot"}
+     "stable_core_candidate", "gbp_snapshot", "keyword_volume"}
 )
 RECEIPT_STATUSES = frozenset({"DONE", "NO_OP", "PARTIAL", "BLOCK"})
 PACKAGE_TIERS = frozenset({"money-page", "supporting-post"})

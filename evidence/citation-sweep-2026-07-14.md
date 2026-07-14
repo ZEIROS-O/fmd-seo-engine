@@ -56,18 +56,77 @@ These two are the loudest third-party signals about who Fresh *is*. They should 
 
 ---
 
-## Name collisions — now **four** competing "Fresh" entities
+## Name collisions — ranked by actual threat
 
-| # | Entity | Surface |
-|---|---|---|
-| 1 | **All Things Fresh Mobile Car Detailing** (ATF) | `allthingsfreshcardetailing.com`, 195 reviews, 2 GBP listings, markets as "#1 in Cleveland" |
-| 2 | **Refresh Mobile Detailing** | `refreshmobiledetailingcle.com`, FB `/RefreshDetailingLLC`, `refresh-mobile-detailing.wheree.com` — **also Mayfield Heights** |
-| 3 | **Fresh Start Mobile Detailing LLC** | Square booking page |
-| 4 | **Drive Fresh** *(Fresh's own ghost)* | `drivefreshdetail.com`, `@drivefreshdetail` on IG + FB |
+| # | Entity | Threat | Detail |
+|---|---|---|---|
+| 1 | **Refresh Mobile Detailing** | **HIGH** | 1190 E Miner Rd, Mayfield Heights, OH **44124** — *the same city and ZIP as Fresh*. Owner Brayden. Phones (440) 589-8609 / (216) 331-8534. Present on **Nextdoor** (12 faves), Yelp (`refresh-detailing-mayfield-heights`), Facebook `/RefreshDetailingLLC`, `wheree.com`, own site. **Near-identical name, identical ZIP, and broader citation coverage than Fresh.** This is the real disambiguation problem. |
+| 2 | **All Things Fresh** (ATF) | MED | `allthingsfreshcardetailing.com`, 195 reviews, 2 GBP listings, markets as "#1 in Cleveland". Owns the city-level brand-adjacent SERP. |
+| 3 | **Drive Fresh** *(Fresh's own ghost)* | **HIGH — self-inflicted** | `drivefreshdetail.com`, `@drivefreshdetail` on IG + FB. The only one fully within Lou's control, and the one **actively teaching AI answers the wrong website**. |
+| ~~4~~ | ~~Fresh Start Mobile Detailing~~ | **NONE — dismissed** | Columbus/London OH, 3.0★ with **2 reviews**. Not a competitor. Disregard. |
 
-Fresh's brand-name SERP is shared with three competitors **and its own dead identity**. Cleaning up
-#4 is the only one fully within Lou's control — and it is the one actively confusing the answer
-engines today.
+---
+
+## ⚠ CORRECTION — the "citation void" claim was WRONG
+
+I previously wrote that Fresh was absent from Nextdoor, BBB, Yelp and Bing. **That was a bad
+inference: I concluded absence from a failed web search.** Gated/logged-in platforms like Nextdoor
+are not fully visible to public search, so a null result there proves nothing. Lou confirms — and
+his Nextdoor profile shows — the opposite.
+
+### Nextdoor is in fact one of Fresh's strongest assets
+
+- **19 faves**, **2024 Neighborhood Fave award** ("annual award recognizing businesses loved by
+  locals"), **4 recommendations & 9 mentions**.
+- Website field is **correct** (`freshmobiledetail.com`) — no Drive Fresh contamination here.
+- Email `info@freshmobiledetail.com`; phone `(216) 359-1034` ✓ matches canonical.
+- Categories: *Auto detailer*, *Carpet cleaner*. Address **hidden** (correct for a mobile business).
+
+**The 2024 Neighborhood Fave award is a third-party trust signal that appears nowhere on the
+website, GBP, or any other surface.** That is a wasted asset — it is exactly the kind of
+corroborating, human-voted proof both Google and answer engines weight. Surface it.
+
+### 🔴 NEW NAP conflict found on Nextdoor
+
+| Surface | Street address |
+|---|---|
+| Google Business Profile | **6605 Kingswood Dr**, Mayfield Heights, OH 44124 |
+| **Nextdoor** | **24815 Tunbridge Ln** |
+| MapQuest | *(Beachwood, OH 44122 — wrong city/ZIP)* |
+
+**Three surfaces, three different addresses.** Even hidden, the address is part of the entity
+record. Pick the canonical one and make every surface match.
+
+Nextdoor's bio also still reads *"Cleveland's east side"* — include it in the copy rewrite.
+
+## Actual presence map (corrected, per Lou)
+
+| Surface | State |
+|---|---|
+| **Nextdoor** | ✅ Present — 19 faves, 2024 award. *Fix: address + "east side" copy.* |
+| **Yelp** | ✅ Present (stale, Oct 2025) |
+| **BBB** | ✅ Present |
+| **Bing Places** | ✅ Present |
+| **Google Business Profile** | ✅ Claimed + verified |
+| Chamber of Commerce / Yahoo Local | ✅ Present (verify NAP + website field) |
+| MapQuest | ⚠️ Present but **wrong city, ZIP, and services** |
+| Trustindex | ⚠️ Indexed under the **dead domain** |
+| **Apple Maps (Business Connect)** | ❌ Missing — free, feeds Siri. **Highest-value gap.** |
+| **Foursquare** | ❌ Missing — free, feeds many downstream apps |
+| Alignable / Manta / Cylex / Hotfrog / Brownbook | ❌ Missing — low value each, cheap in bulk |
+| ~~Angi~~ | 🚫 N/A — does not list auto detailers |
+| ~~Thumbtack~~ | 🚫 Paid only — skip |
+
+So the real picture is **not a void**: Fresh has a decent core (GBP, Nextdoor+award, Yelp, BBB,
+Bing). The problems are **(a) inconsistency across the ones that exist** — three addresses, a dead
+domain, wrong services — and **(b) a handful of free gaps** (Apple Maps, Foursquare).
+
+**Consistency beats quantity.** Fixing the contradictions in the six that exist is worth more than
+adding ten new ones, because contradicting traces actively *subtract* entity confidence.
+
+Canonical NAP to enforce everywhere:
+`Fresh Mobile Detailing · <ONE canonical address> · Mayfield Heights, OH 44124 ·
+(216) 359-1034 · freshmobiledetail.com · info@freshmobiledetail.com`
 
 ---
 

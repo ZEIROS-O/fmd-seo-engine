@@ -9,6 +9,8 @@ budget:
   total_usd: 0.95
   endpoint_caps_usd:
     probe: 0.05
+    keywords: 0.20      # Google Ads search volume: SAME price for 1 or 1000 keywords
+                        # (~$0.075/request) — always batch to the 1000 limit.
     serp: 0.15          # ~75 SERP pulls (10 queries x desktop/mobile + listicles)
     llm_responses: 0.40 # ~63 AI answers (stable-core sampling + per-query citation SOV)
     business_data: 0.10 # ~7 local-listing pulls (GBP + competitors)
