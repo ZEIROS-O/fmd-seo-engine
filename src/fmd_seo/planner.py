@@ -63,11 +63,11 @@ class Plan:
 # The gate-respecting work order while GATE-1 is CLOSED (thesis priority list).
 # Kept here as the machine copy so a caller never re-derives it from prose.
 GATE1_CLOSED_PRIORITY = [
-    "Schema (T2) — LocalBusiness/AutoDetailing + Service + AggregateRating on money pages",
-    "Entity decontamination (T8) — collapse 'Drive Fresh' -> 'Fresh Mobile Detailing'",
+    "Entity decontamination (T8) — collapse 'Drive Fresh' -> 'Fresh Mobile Detailing' (top lever; schema now largely done)",
     "Copy language (T4) — introduce car/auto/'near me' into existing copy, no new URLs",
-    "Internal linking (T1) — link the 14 unindexed pages; crawl priority follows links",
+    "Internal linking (T1) — link the unindexed pages; crawl priority follows links",
     "Review velocity (T7) — local corroboration is what AS 2 lacks",
+    "Schema finish + validate (T2) — 4 unschema'd pages + BlogPosting; confirm AggregateRating is fact-bound",
     "Only then reassess GATE-1",
 ]
 
@@ -78,15 +78,18 @@ GATE1_OPEN_PRIORITY = [
 ]
 
 
-def _fulfillment_for(check: Check, has_semrush_key: bool,
+def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
                      api_backed: dict[str, list[str]]) -> tuple[str, list[str]]:
     reports = api_backed.get(check.id, [])
     if check.method_kind == "mcp" and reports and has_semrush_key:
         return "engine_api", reports
+    # GSC URL Inspection API turns the one console check headless.
+    if check.id == "seo.indexation" and has_gsc:
+        return "engine_api", ["gsc:urlInspection"]
     return KIND_FULFILLMENT.get(check.method_kind, "session"), []
 
 
-def build_plan(brain: Brain, *, has_semrush_key: bool,
+def build_plan(brain: Brain, *, has_semrush_key: bool, has_gsc: bool = False,
                observations_dir: Path | None = None,
                now: datetime | None = None) -> Plan:
     last_seen = last_seen_map(brain, observations_dir)
@@ -95,7 +98,7 @@ def build_plan(brain: Brain, *, has_semrush_key: bool,
 
     planned: list[PlannedCheck] = []
     for check, reason in due:
-        fulfillment, reports = _fulfillment_for(check, has_semrush_key, api_backed)
+        fulfillment, reports = _fulfillment_for(check, has_semrush_key, has_gsc, api_backed)
         planned.append(PlannedCheck(
             check_id=check.id,
             domain=check.domain,

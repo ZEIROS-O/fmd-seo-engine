@@ -24,11 +24,20 @@ def _has_semrush_key(config: dict) -> bool:
         return False
 
 
+def _has_gsc(config: dict) -> bool:
+    """GSC is 'available' when a service-account key file exists. Import-ability of
+    the google libs is checked at fetch time; presence of the key is what flips the
+    planner label off 'human'."""
+    gsc_cfg = config.get("gsc") or {}
+    key_path = gsc_cfg.get("key_path")
+    return bool(key_path and Path(key_path).exists())
+
+
 def cmd_beat(config: dict) -> tuple[dict, int]:
     """What is due right now, ordered, with fulfillment paths."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key)
+    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
     payload = {
         "command": "beat",
         "generated_at": plan.generated_at,
@@ -134,12 +143,64 @@ def cmd_sync(config: dict) -> tuple[dict, int]:
     return payload, (4 if result.errors else 0)
 
 
+def _sitemap_urls(sitemap_url: str) -> list[str]:
+    """Fetch and parse a sitemap's <loc> URLs. Uses a Googlebot UA — the live
+    site bot-protects the default urllib UA (403)."""
+    import re
+    import urllib.request
+    req = urllib.request.Request(
+        sitemap_url,
+        headers={"User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; "
+                               "+http://www.google.com/bot.html)"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        xml = resp.read().decode(errors="ignore")
+    return re.findall(r"<loc>([^<]+)</loc>", xml)
+
+
+def cmd_gsc_sync(config: dict) -> tuple[dict, int]:
+    """Headless index-coverage fetch via the GSC URL Inspection API, recorded as
+    the seo.indexation observation. No key/libs -> honest no-op (stays manual)."""
+    from .gsc import GscConfig, GscUnavailable, fetch_indexation
+    brain = load_brain()
+    gsc_cfg = config.get("gsc") or {}
+    key_path = Path(gsc_cfg.get("key_path", ""))
+    if not gsc_cfg or not key_path or not key_path.exists():
+        return {
+            "command": "gsc-sync",
+            "fetched": False,
+            "note": ("no GSC service-account key present — seo.indexation stays a "
+                     "manual console reading (the last human-bound check)"),
+        }, 0
+    try:
+        urls = _sitemap_urls(gsc_cfg["sitemap_url"])
+        records = fetch_indexation(
+            GscConfig(key_path=key_path, site_url=gsc_cfg["site_url"]), urls)
+    except GscUnavailable as err:
+        return {"command": "gsc-sync", "fetched": False, "error": str(err)}, 4
+    except Exception as err:  # noqa: BLE001
+        return {"command": "gsc-sync", "fetched": False, "error": str(err)}, 4
+    path = record_observation(
+        brain, "seo.indexation", records, fulfillment="engine_api",
+        source=f"GSC URL Inspection API ({len(urls)} URLs)",
+        note="headless index-coverage tally")
+    from .assess import assess_check
+    _, findings = assess_check(brain, "seo.indexation")
+    return {
+        "command": "gsc-sync",
+        "fetched": True,
+        "urls_inspected": len(urls),
+        "records": records,
+        "recorded": str(path.relative_to(paths.ENGINE_ROOT)),
+        "findings": [{"severity": f.severity, "finding": f.finding} for f in findings],
+    }, 0
+
+
 def cmd_brief(config: dict) -> tuple[dict, int]:
     """The full operator briefing: gates, what's due, standing findings,
     priority order. One call answers 'what do I do now and why'."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key)
+    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
     findings = assess_all(brain)
     gates = assess_gates(brain)
     payload = {

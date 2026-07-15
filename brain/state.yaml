@@ -27,19 +27,28 @@ baseline:
     method: Google Search Console → Indexing → Pages
 
   schema:
-    ld_json_count: 0
-    pages_with_ld_json: 0
-    has_localbusiness: false
-    has_service: false
-    has_aggregaterating: false
-    open_graph_pages: 18
-    twitter_card_pages: 18
-    source: evidence/site-audit-2026-07-14.md
-    method: >-
-      Semrush Site Audit (snapshot 6a56ad279ccf5fa799f3db94, 22 pages, 6,090
-      checks) AND independent live-HTML verification (9 fetches, byte-identical,
-      md5 ad2858bec362020193076fbe44157058, curl-default/Googlebot/Chrome UAs).
-      Two independent sources agree.
+    # CORRECTED 2026-07-14 (live re-fetch): schema was ADDED to the site after the
+    # same-day site audit that reported zero. The "zero schema" finding below is
+    # superseded — kept only as the prior reading for trend. Current live state:
+    ld_json_count: 32
+    pages_with_ld_json: 16
+    has_localbusiness: true
+    has_service: true
+    has_aggregaterating: true
+    pages_without_schema: [/chat, /fresh-pro, /areas, /blog]
+    blog_posts_missing_blogposting: true   # blog posts carry FAQPage, not BlogPosting
+    source: live sitemap fetch (20 URLs, Googlebot UA), 2026-07-14
+    prior_reading:
+      ld_json_count: 0
+      source: evidence/site-audit-2026-07-14.md
+      note: >-
+        Semrush Site Audit (snapshot 6a56ad279ccf5fa799f3db94) + live-HTML md5
+        ad2858...058 both showed zero — accurate at audit time, now stale.
+    caveat: >-
+      AggregateRating appears on all suburb pages; if those reuse the same reviews
+      across suburbs (known_issues: reused-suburb-reviews) the schema propagates a
+      trust problem. schema.validate (weekly) must confirm the ratings are
+      fact-bound and not duplicated.
 
   site_health:
     health_score: 95

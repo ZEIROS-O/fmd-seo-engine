@@ -44,16 +44,32 @@ fakes data to paper over a missing key (GATE-4).
 
 ## Human residue — what still needs Lou
 
-The goal is zero, but three things are genuinely human-bound today:
+Down to two, and only one is a real capability gap:
 
-1. **`seo.indexation`** — Google Search Console has no Semrush equivalent and no
-   wired API here yet. It is also the **GATE-1 input**, so it's the highest-value
-   thing to automate next. Wiring the GSC API (service-account OAuth) would drop
-   the human residue to near-zero.
-2. **`aeo.*`** — model judgment over live AI answers. A session does this well;
-   a cron can't judge answer *correctness* without a model in the loop.
-3. **Any publish / deploy / external send** — deliberately human, per CONTRACT.md.
-   This is a safety boundary, not a missing feature.
+1. **`aeo.*`** — model judgment over live AI answers. A session does this well; a
+   cron can't judge answer *correctness* without a model in the loop.
+2. **Any publish / deploy / external send** — deliberately human, per CONTRACT.md.
+   A safety boundary, not a missing feature.
+
+**`seo.indexation` is now headless** (`fmd-seo gsc-sync`) via the GSC URL Inspection
+API — the former "one true human dependency" and GATE-1 input. Index coverage has
+no bulk API, so the engine inspects each sitemap URL and tallies the coverageState
+(~20 URLs/day, far inside quota). Setup (one-time, Lou-side):
+
+1. Google Cloud project → enable the **Search Console API**.
+2. Create a **service account**, download its JSON key to `gsc.key_path`.
+3. In Search Console → the property → Settings → Users → add the service account's
+   email as a **Full** user.
+4. `pip install -e .[gsc]` (google-auth + google-api-python-client).
+
+Without the key it degrades to the manual console reading — never a guess (GATE-4).
+
+## Three fulfillment paths for data now
+
+- **Semrush REST** (`SEMRUSH_API_KEY`) → `sync`, headless.
+- **GSC URL Inspection** (service-account key) → `gsc-sync`, headless.
+- **Semrush MCP** / **live HTTP** / **model judgment** → session, via the
+  `fmd-seo-loop` skill.
 
 ## Gates (enforced, not advisory)
 

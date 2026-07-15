@@ -23,22 +23,30 @@ signal for a young entity — not a content-quality gap.
 **Therefore: writing more pages right now is actively counterproductive.** It adds
 to a pile of 14 pages Google already refuses to index. This is why `GATE-1` exists.
 
-## T2. The site has zero structured data. This is the highest-leverage fix available.
+## T2. Structured data is now LIVE (was zero at the 07-14 audit). Remaining gap is narrow.
 
-**Measured basis (2026-07-14), two independent sources agreeing:**
+**Superseded reading (accurate at audit time, 2026-07-14):** Semrush Site Audit +
+live-HTML md5 both showed Schema.org on **0** pages — social meta present, schema
+absent.
 
-- Semrush Site Audit (project 30426612, 22 pages, 6,090 checks): Open Graph on 18
-  pages, Twitter Card on 18 pages, **Schema.org on 0**.
-- Direct live-HTML verification (9 fetches, byte-identical, md5
-  `ad2858bec362020193076fbe44157058`, tested as curl-default / Googlebot / Chrome):
-  `LocalBusiness -> 0`, `ld+json -> 0`, `@type -> 0`.
+**Corrected reading (live re-fetch, 2026-07-14, same day, after the audit):** schema
+was **added**. Now: **32 ld+json blocks across 16/20 pages**, with `LocalBusiness`,
+`Service`, and `AggregateRating` all present. The homepage, money pages, and every
+suburb page carry it.
 
-Someone configured social-sharing meta on every page and stopped short of the one
-markup type search engines actually use to **resolve entities**. Site Health is
-95/100 with 0 errors — the site is technically clean and semantically mute.
+**What this means:** the single highest-leverage fix identified at baseline **has
+largely been executed.** T2 is no longer the open bottleneck. The residual schema
+work is narrow, not foundational:
 
-Schema is machine-readable corroboration that this business is real and is what it
-claims. It is the direct lever on T1.
+1. **4 pages still have no schema:** `/chat`, `/fresh-pro`, `/areas` (hub), `/blog`
+   (hub). The two hubs and `/fresh-pro` are worth `LocalBusiness`/`Service`.
+2. **Blog posts carry `FAQPage` but not `BlogPosting`** — add `BlogPosting` when
+   GATE-1 opens and posts matter for indexation.
+3. **`schema.validate` must confirm the `AggregateRating` is fact-bound** and not a
+   reused-review artifact across suburbs (see T-caveat / known_issues).
+
+Schema remains the direct machine-readable lever on T1 — but as a *maintain-and-
+validate* job now, not a *build* job.
 
 ## T3. Eight of nine suburb pages target zero search volume.
 
@@ -153,13 +161,15 @@ labeled as such, with source and retrieval time.
 
 The loop works this list top-down. Each item is free or near-free and none adds a URL.
 
-1. **Schema** (T2) — `LocalBusiness`/`AutoDetailing` + `Service` + `AggregateRating`
-   on the money pages. Highest leverage; currently zero.
-2. **Entity decontamination** (T8) — collapse 'Drive Fresh' → 'Fresh Mobile
-   Detailing' across social + directories; consistent NAP.
-3. **Copy language** (T4) — introduce "car detailing" / "auto detailing" /
+1. **Entity decontamination** (T8) — collapse 'Drive Fresh' → 'Fresh Mobile
+   Detailing' across social + directories; consistent NAP. Now the top lever:
+   schema (the former #1) is largely done.
+2. **Copy language** (T4) — introduce "car detailing" / "auto detailing" /
    "near me" into existing page copy. No new URLs.
-4. **Internal linking** (T1) — the 14 unindexed pages are link-starved; crawl
+3. **Internal linking** (T1) — the unindexed pages are link-starved; crawl
    priority follows internal links.
-5. **Review velocity** (T7) — local corroboration is what AS 2 actually lacks.
+4. **Review velocity** (T7) — local corroboration is what AS 2 actually lacks.
+5. **Schema finish + validate** (T2) — the 4 unschema'd pages + `BlogPosting` on
+   posts, and confirm `AggregateRating` is fact-bound (not reused across suburbs).
+   Maintenance now, not the bottleneck.
 6. **Only then** reassess GATE-1.

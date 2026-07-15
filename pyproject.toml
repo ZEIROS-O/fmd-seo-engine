@@ -9,6 +9,12 @@ description = "Standalone SEO intelligence and content-package engine for Fresh 
 requires-python = ">=3.10"
 dependencies = ["PyYAML>=6.0"]
 
+# GSC is opt-in: the core engine stays PyYAML-only. Install with
+# `pip install -e .[gsc]` (or `pip install --user google-auth google-api-python-client`)
+# to enable the headless index-coverage check via the URL Inspection API.
+[project.optional-dependencies]
+gsc = ["google-auth>=2.0", "google-api-python-client>=2.0"]
+
 [project.scripts]
 fmd-seo = "fmd_seo.cli:main"
 

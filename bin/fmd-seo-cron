@@ -34,6 +34,9 @@ stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 echo "== sync ($stamp) ==" | tee "$log_dir/$stamp.log"
 python3 -m fmd_seo sync 2>&1 | tee -a "$log_dir/$stamp.log" || true
 
+echo "== gsc-sync ($stamp) ==" | tee -a "$log_dir/$stamp.log"
+python3 -m fmd_seo gsc-sync 2>&1 | tee -a "$log_dir/$stamp.log" || true
+
 echo "== assess ($stamp) ==" | tee -a "$log_dir/$stamp.log"
 # assess exit 4 = critical finding or gate drift; surface it as this script's exit
 # without aborting the log write.

@@ -80,6 +80,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("assess", help="evaluate thresholds against latest observations; report gate drift")
     sub.add_parser("brief", help="full operator briefing: gates + due + standing findings + priority")
     sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
+    sub.add_parser("gsc-sync", help="headless index-coverage fetch via the GSC URL Inspection API")
 
     p = sub.add_parser("observe", help="record one measured check observation")
     p.add_argument("check_id")
@@ -101,7 +102,7 @@ def main(argv: list[str] | None = None) -> int:
     # Loop-surface commands are read-mostly and must work even under the kill
     # switch (a caller needs to see WHY it is disabled). They do not take the run
     # lock — they never spend or mutate the site.
-    if args.command in ("beat", "assess", "brief", "observe", "sync"):
+    if args.command in ("beat", "assess", "brief", "observe", "sync", "gsc-sync"):
         from . import loop_cli
         try:
             if args.command == "beat":
@@ -112,6 +113,8 @@ def main(argv: list[str] | None = None) -> int:
                 payload, code = loop_cli.cmd_brief(config)
             elif args.command == "sync":
                 payload, code = loop_cli.cmd_sync(config)
+            elif args.command == "gsc-sync":
+                payload, code = loop_cli.cmd_gsc_sync(config)
             else:
                 payload, code = loop_cli.cmd_observe(
                     config, args.check_id, args.records,

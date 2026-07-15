@@ -1,0 +1,15 @@
+{
+  "check_id": "schema.presence",
+  "fulfillment": "agent",
+  "note": "supersedes the same-day zero-schema audit; 4 pages lack schema (/chat /fresh-pro /areas /blog); blog posts carry FAQPage but not BlogPosting",
+  "observed_at": "2026-07-15T00:10:19+00:00",
+  "records": {
+    "has_aggregaterating": true,
+    "has_localbusiness": true,
+    "has_service": true,
+    "ld_json_count": 32,
+    "pages_checked": 20,
+    "pages_with_ld_json": 16
+  },
+  "source": "live sitemap fetch (20 URLs, Googlebot UA), 2026-07-14"
+}

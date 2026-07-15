@@ -113,9 +113,17 @@ PYTHONPATH=src python3 -m fmd_seo sync    # fetched: [...] instead of skipped_no
 The cron wrapper is `bin/fmd-seo-cron` — schedule it daily; it runs `sync` then
 `assess` and writes a receipt. It never publishes.
 
+## GSC index coverage is headless now
+
+`fmd-seo gsc-sync` inspects every sitemap URL via the GSC URL Inspection API and
+records `seo.indexation` (the GATE-1 input) automatically — no console opening.
+Needs a service-account key (`config gsc.key_path`) + `pip install -e .[gsc]`;
+setup in `brain/README.md`. Without the key it degrades to the manual reading.
+
 ## What stays Lou's, always
 
-- Opening GSC/GA4/GBP (until their APIs are wired) — the `human` checks.
+- Opening GA4/GBP for the checks with no API yet (`aeo.*` still needs a session's
+  model judgment).
 - Any live publish / deploy / external send.
 - Promoting a gate open, or overriding the thesis — those are judgment calls the
   engine surfaces but does not make.

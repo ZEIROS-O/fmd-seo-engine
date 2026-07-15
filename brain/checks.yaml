@@ -94,11 +94,13 @@ checks:
     method:
       kind: console
       run: |
-        Google Search Console → Indexing → Pages. Record the Indexed count, the
-        Not-indexed count, and the breakdown (esp. "Discovered – currently not
-        indexed" and "Crawled – currently not indexed").
-        NO MCP EXISTS FOR GSC. This is the loop's one true human dependency until
-        the GSC API is wired — see brain/README.md "Human residue".
+        HEADLESS PATH (preferred): `fmd-seo gsc-sync` inspects every sitemap URL
+        via the GSC URL Inspection API and records this observation automatically.
+        Needs a service-account key (config gsc.key_path) added as a user on the
+        property. Index coverage has no bulk API — per-URL inspection IS the method.
+        MANUAL FALLBACK (no key): Google Search Console → Indexing → Pages. Record
+        Indexed, Not-indexed, and the breakdown ("Discovered – currently not
+        indexed", "Crawled – currently not indexed"). See brain/README.md.
     records:
       - {name: indexed, type: int}
       - {name: not_indexed, type: int}

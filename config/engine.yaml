@@ -35,6 +35,16 @@ semrush:
   database: "us"
   units_cap: 500
 
+# Google Search Console (the headless index-coverage path — removes the last
+# human-bound check, seo.indexation, which is the GATE-1 input). Needs a Google
+# service-account JSON key at key_path, added as a user on the GSC property, and
+# the URL Inspection API enabled. Without the key/libs the engine degrades to the
+# manual console reading and never guesses (GATE-4). See brain/README.md.
+gsc:
+  key_path: "/home/lucascoh/.gsc-service-account.json"
+  site_url: "sc-domain:freshmobiledetail.com"
+  sitemap_url: "https://freshmobiledetail.com/sitemap.xml"
+
 limits:
   attempts_per_milestone: 2
   worker_minutes: 45

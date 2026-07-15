@@ -36,8 +36,11 @@ def test_plan_mcp_check_becomes_engine_api_with_key(empty_obs):
 def test_plan_priority_reflects_closed_gate1(empty_obs):
     brain = load_brain()
     plan = build_plan(brain, has_semrush_key=False, observations_dir=empty_obs)
-    # GATE-1 ships CLOSED -> schema must be the first priority line
-    assert "Schema" in plan.priority_order[0]
+    # GATE-1 ships CLOSED -> the priority list is the gate-respecting work order,
+    # none of which adds a URL. Entity decontamination leads (schema now largely done).
+    assert plan.priority_order
+    assert "Entity decontamination" in plan.priority_order[0]
+    assert any("reassess GATE-1" in line for line in plan.priority_order)
 
 
 def test_plan_human_checks_sort_first(empty_obs):
