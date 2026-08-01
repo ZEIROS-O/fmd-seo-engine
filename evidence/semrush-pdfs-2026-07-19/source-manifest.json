@@ -1,0 +1,29 @@
+{
+  "generated_date": "2026-07-19",
+  "visual_inspection": {
+    "method": "Every PDF page was rendered to PNG with Ghostscript and inspected with the image viewing tool.",
+    "pages_inspected": 101
+  },
+  "sources": [
+    {
+      "file_name": "Semrush-Competitor_Research__Overview-freshmobiledetail_com-19th_Jul_2026.pdf",
+      "pages": 20,
+      "sha256": "e834da08b3c85b9b269e710888bb9f7eda28d0ac124714c2863089863ead09bf"
+    },
+    {
+      "file_name": "Semrush-Map_Rank_Tracker__Heatmap-Fresh_Mobile_Detailing-19th_Jul_2026.pdf",
+      "pages": 7,
+      "sha256": "b6dc0a9d4ba1d4b0188d8a72d645e24715ec5d8bf879f08c83e5ee8e76fd118c"
+    },
+    {
+      "file_name": "Semrush-Position_Tracking__Overview_(organic)-freshmobiledetail_com-19th_Jul_2026.pdf",
+      "pages": 31,
+      "sha256": "e43bcfd2e482ee8b4f5474ec5f44909a8bcc15077e2d3aaf707fa18fba5fd046"
+    },
+    {
+      "file_name": "Semrush-Brand_Performance-freshmobiledetail_com_(EN__Cleveland__Ohio__United-19th_Jul_2026.pdf",
+      "pages": 43,
+      "sha256": "66cf487f13d376f6d26f31ad459b85ef9380fe53a6ee7c0afdc154d2cc8616df"
+    }
+  ]
+}

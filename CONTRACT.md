@@ -15,9 +15,16 @@ File-backed contract for all work in this repo. Source plan:
    records start/end Git SHA + status and fails if either changes.
 4. ZEIROS is read-only strategic evidence, not a runtime dependency. The
    engine writes no ZEIROS artifacts.
-5. Hermes integration is deferred until supervised runs prove reliability.
+5. Hermes is authorized for one thing only: a one-line, outbound run
+   notification to Lou's own Telegram (`bin/notify-run`, via `hermes send`).
+   Read-only, no LLM, no agent loop, no inbound command path. Agentic Hermes
+   integration stays deferred until supervised runs prove reliability.
+   (Authorized 2026-07-15, superseding the blanket deferral.)
 6. Local checkpoint commits are authorized on isolated branches only.
-   No push, no deployment, no external contact, no account mutation.
+   No push, no deployment, no account mutation, and no external contact —
+   where external contact means the business's audience, customers, or
+   accounts. Telling the operator his own job finished is telemetry, not
+   contact, and is bounded by clause 5.
 7. No publish command in V1. Posting is `human_only` per business-facts;
    deploy intents are emitted disabled.
 

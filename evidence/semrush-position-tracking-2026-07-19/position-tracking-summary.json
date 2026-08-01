@@ -1,0 +1,211 @@
+{
+  "campaign_not_in_requested": [
+    "auto detailer near me",
+    "car cleaning cleveland",
+    "fresh detailing",
+    "interior detailer",
+    "interior mobile detailing",
+    "interior mobile detailing cleveland",
+    "interior mobile detailing near me",
+    "mobile detailer beachwood",
+    "mobile detailer cleveland",
+    "mobile detailer near me",
+    "mobile detailer solon",
+    "mobile interior detailing"
+  ],
+  "campaign_rows": 479,
+  "cuts": {
+    "branded": {
+      "fmd_ranked": 4,
+      "keywords": 6
+    },
+    "cleveland": {
+      "fmd_ranked": 5,
+      "keywords": 38
+    },
+    "informational": {
+      "fmd_ranked": 0,
+      "keywords": 40
+    },
+    "near_me": {
+      "fmd_ranked": 0,
+      "keywords": 123
+    },
+    "non_branded": {
+      "fmd_ranked": 13,
+      "keywords": 473
+    },
+    "service": {
+      "fmd_ranked": 17,
+      "keywords": 443
+    },
+    "suburb": {
+      "fmd_ranked": 12,
+      "keywords": 172
+    }
+  },
+  "data_quality": {
+    "change_sign_available_in_extracted_text": false,
+    "diamond_finish_row_positions_available": false,
+    "landing_pages_available_in_pdf": false,
+    "placement_type_available_in_extracted_text": false,
+    "validated_against_pdf_top_counts": true
+  },
+  "fmd_ranked_keywords": [
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 15,
+      "keyword": "fresh mobile detail",
+      "position": 18
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 73,
+      "keyword": "mobile detailing shaker heights",
+      "position": 19
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 5,
+      "keyword": "interior car detailing moreland hills",
+      "position": 43
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 3,
+      "keyword": "car interior cleaning moreland hills",
+      "position": 47
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 5,
+      "keyword": "mobile car detailing shaker heights",
+      "position": 51
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 15,
+      "keyword": "interior detailing cleveland heights",
+      "position": 64
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 10,
+      "keyword": "interior car detailing cleveland heights",
+      "position": 68
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 65,
+      "keyword": "fresh mobile detailing",
+      "position": 68
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 10,
+      "keyword": "fresh detailing",
+      "position": 72
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 14,
+      "keyword": "car interior cleaning cleveland heights",
+      "position": 72
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 8,
+      "keyword": "mobile detailing cleveland ohio",
+      "position": 72
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 20,
+      "keyword": "mobile car detailing cleveland heights",
+      "position": 73
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 10,
+      "keyword": "interior car detailing shaker heights",
+      "position": 73
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 15,
+      "keyword": "mobile car detailing mayfield heights",
+      "position": 73
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 14,
+      "keyword": "fresh car detailing",
+      "position": 74
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 6,
+      "keyword": "interior car detailing mayfield heights",
+      "position": 75
+    },
+    {
+      "change_direction": "sign_not_preserved_by_text_extraction",
+      "change_magnitude": 2,
+      "keyword": "ceramic coating pepper pike",
+      "position": 94
+    }
+  ],
+  "rank_counts": {
+    "atf": {
+      "top_10": 4,
+      "top_100": 88,
+      "top_20": 14,
+      "top_3": 1,
+      "unranked": 391
+    },
+    "fmd": {
+      "top_10": 0,
+      "top_100": 17,
+      "top_20": 2,
+      "top_3": 0,
+      "unranked": 462
+    },
+    "nathans": {
+      "top_10": 139,
+      "top_100": 169,
+      "top_20": 152,
+      "top_3": 72,
+      "unranked": 310
+    },
+    "refresh": {
+      "top_10": 11,
+      "top_100": 27,
+      "top_20": 13,
+      "top_3": 4,
+      "unranked": 452
+    },
+    "rhino": {
+      "top_10": 66,
+      "top_100": 88,
+      "top_20": 74,
+      "top_3": 23,
+      "unranked": 391
+    }
+  },
+  "requested_keyword_rows": 467,
+  "requested_matches": 467,
+  "requested_missing": [],
+  "source": {
+    "device": "desktop",
+    "file_name": "Semrush-Position_Tracking__Overview_(organic)-freshmobiledetail_com-19th_Jul_2026.pdf",
+    "generated_date": "2026-07-19",
+    "local_pack_enabled": true,
+    "location": "United States",
+    "period": "2026-07-14 through 2026-07-19",
+    "report_type": "Organic",
+    "sha256": "e43bcfd2e482ee8b4f5474ec5f44909a8bcc15077e2d3aaf707fa18fba5fd046",
+    "tracking_target": "freshmobiledetail.com",
+    "volume_type": "National"
+  },
+  "unique_campaign_keywords": 479
+}

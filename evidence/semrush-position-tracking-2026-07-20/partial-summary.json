@@ -1,0 +1,60 @@
+{
+  "status": "BLOCKED_INCOMPLETE",
+  "source": "Semrush Position Tracking Projects API",
+  "project_id": 30426612,
+  "campaign_id": "30426612_5133685",
+  "campaign_target": "freshmobiledetail.com",
+  "target_type": "rootdomain",
+  "search_engine": "google",
+  "device": "desktop",
+  "location": {
+    "id": 2840,
+    "name": "United States",
+    "type": "country",
+    "code": "us",
+    "language": "English"
+  },
+  "business_name_query": "Fresh Mobile Detailing",
+  "business_name_note": "Used as the report parameter for GBP/local-pack inclusion. The campaign-list response does not expose a stored business name.",
+  "is_gathering": false,
+  "configured_keyword_rows": 479,
+  "requested_keyword_count": 467,
+  "harvested_dates": ["20260714", "20260715", "20260716", "20260717", "20260718", "20260719", "20260720"],
+  "latest_available_date": "20260720",
+  "metrics": {
+    "visibility_percent": 0.45889,
+    "estimated_traffic": 0.63373,
+    "average_position": 98.29019,
+    "top_3": 2,
+    "top_10": 2,
+    "top_20": 5,
+    "top_100": 18,
+    "unranked": 461
+  },
+  "data_quality_findings": [
+    {
+      "severity": "high",
+      "finding": "Campaign target is United States/desktop, not Mayfield Heights or 44124/mobile.",
+      "impact": "The daily Semrush campaign is not a like-for-like local comparison with the coordinate-anchored mobile SERPs."
+    },
+    {
+      "severity": "high",
+      "finding": "Campaign reports 479 configured keyword rows, while the requested completed corpus was 467 keywords.",
+      "impact": "The 467 count cannot be confirmed as unique keywords until the full position rows are exported and duplicate phrases are reconciled."
+    },
+    {
+      "severity": "high",
+      "finding": "Bulk Position Tracking reads are blocked by Semrush with 'unable to charge units' / HTTP 403.",
+      "impact": "All keyword rows, landing pages, placement splits, competitor positions, cuts, and opportunity lists could not be preserved in this run."
+    },
+    {
+      "severity": "medium",
+      "finding": "The latest provider date is 20260720 even though extraction occurred on 2026-07-19 America/New_York.",
+      "impact": "Treat 20260720 as the latest API-available campaign date, but verify the campaign timezone/Last Update label before labeling it a completed July 20 local-day harvest."
+    }
+  ],
+  "blocker": {
+    "error": "unable to charge units",
+    "required_to_complete": "Replenish Semrush API units or provide the Position Tracking CSV/XLSX export for the latest date."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": "DataForSEO Google Organic Live Advanced",
+  "captured_at_utc": "2026-07-19T21:03:17+00:00",
+  "location_coordinate": "41.4645,-81.5087,200",
+  "device": "mobile",
+  "cost_usd": 0.004,
+  "queries": [
+    {
+      "keyword": "car detailing mayfield heights",
+      "fmd_appears": true,
+      "fmd_order": 3,
+      "local_pack": [
+        {"order": 1, "business_name": "Refresh Mobile Detailing", "cid": "8407923223412398282", "rating": 5.0, "reviews": 65, "phone": "+14405898609", "domain": "refreshmobiledetailingcle.com"},
+        {"order": 2, "business_name": "Geauga Detailing", "cid": "7639999091160775815", "rating": 4.9, "reviews": 28, "phone": "+12166447148", "domain": "www.google.com"},
+        {"order": 3, "business_name": "Fresh Mobile Detailing", "cid": "4120975476179388330", "rating": 5.0, "reviews": 13, "phone": "+12163591034", "domain": "www.google.com"}
+      ],
+      "notable_organic_results": [
+        {"rank_absolute": 4, "domain": "nathansdetailing.com", "url": "https://nathansdetailing.com/mayfield-heights-car-detail/"},
+        {"rank_absolute": 7, "domain": "refreshmobiledetailingcle.com", "url": "https://refreshmobiledetailingcle.com/"}
+      ]
+    },
+    {
+      "keyword": "car detailing beachwood",
+      "fmd_appears": false,
+      "fmd_order": null,
+      "local_pack": [
+        {"order": 1, "business_name": "Mavics Mobile Auto Detailing", "cid": "18104881366861185355", "rating": 4.8, "reviews": 72, "phone": "+12169259958", "domain": "www.google.com"},
+        {"order": 2, "business_name": "Rehab Detailing", "cid": "9780177209807899515", "rating": 4.6, "reviews": 45, "phone": "+12163425281", "domain": "www.rehabdetailing.com"},
+        {"order": 3, "business_name": "Wick & Wax Detailing", "cid": "15637332332774169279", "rating": 4.9, "reviews": 8, "phone": "+12162238868", "domain": "www.google.com"}
+      ],
+      "notable_organic_results": [
+        {"rank_absolute": 7, "domain": "nathansdetailing.com", "url": "https://nathansdetailing.com/beachwood-car-detail/"},
+        {"rank_absolute": 9, "domain": "rehabdetailing.com", "url": "http://rehabdetailing.com/"}
+      ]
+    }
+  ]
+}

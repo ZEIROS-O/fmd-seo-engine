@@ -1,0 +1,124 @@
+{
+  "brand_performance": {
+    "scope": "ChatGPT, English, Cleveland, Ohio, United States",
+    "fresh_mobile_detail": {
+      "share_of_voice_percent": 1.9,
+      "mentions": 8,
+      "mention_coverage_percent": 4.6,
+      "average_position_when_mentioned": 1.75,
+      "favorable_sentiment_percent": 63,
+      "general_sentiment_percent": 38
+    },
+    "selected_peer_share_of_voice_percent": {
+      "CLE Detailing": 16.8,
+      "Detail Dash": 12.4,
+      "Garrett's Detailing": 11.3,
+      "Gould Standard Mobile Detailing": 10.4
+    },
+    "query_intent_distribution_percent": {
+      "research": 45.4,
+      "comparison": 23.5,
+      "finding": 12.2,
+      "support": 11.2,
+      "finding_and_comparing_detailers": 4.1,
+      "purchase": 3.6
+    },
+    "topic_distribution_percent": {
+      "convenience_scheduling_customer_experience": 30.5,
+      "service_quality_results_special_messes": 29.5,
+      "finding_and_comparing_detailers": 12.5,
+      "pricing_value_packages": 10.5,
+      "health_safety_product_concerns": 8.5,
+      "brand_specific_perception": 8.5
+    },
+    "visual_findings": [
+      "Semrush frames FMD's strongest narrative as interior-first work for family vehicles, especially kids, pets, salt, odors, sickness, and biohazard messes.",
+      "The report repeatedly highlights transparent process, before-and-after proof, low upsell pressure, and east-side specialization as differentiators.",
+      "The report identifies reach rather than answer quality as the main AI-discovery problem: strong average placement when mentioned, but a small mention footprint."
+    ]
+  },
+  "competitor_research": {
+    "scope": "All AI platforms, United States",
+    "ai_visibility": {
+      "freshmobiledetail.com": 0,
+      "nathansdetailing.com": 30,
+      "allthingsfreshcardetailing.com": 14,
+      "rhinomobiledetailing.com": 18,
+      "refreshmobiledetailingcle.com": 0
+    },
+    "mentions": {
+      "freshmobiledetail.com": 0,
+      "nathansdetailing.com": 49,
+      "allthingsfreshcardetailing.com": 4,
+      "rhinomobiledetailing.com": 7,
+      "refreshmobiledetailingcle.com": 0
+    },
+    "audience": {
+      "freshmobiledetail.com": 0,
+      "nathansdetailing.com": 440890,
+      "allthingsfreshcardetailing.com": 109270,
+      "rhinomobiledetailing.com": 662,
+      "refreshmobiledetailingcle.com": 0
+    },
+    "topics": 30,
+    "sources": 183,
+    "quality_note": "This broad US/all-platform query universe is not comparable to the Cleveland/ChatGPT Brand Performance universe. The zero FMD value does not contradict the eight Cleveland/ChatGPT mentions."
+  },
+  "map_rank_tracker": {
+    "campaign": "Fresh Mobile Detailing",
+    "captured_at": "2026-07-19T17:38:00-04:00",
+    "heatmap_keywords": [
+      "car detailing",
+      "auto detailing",
+      "mobile detailing",
+      "detailing near me",
+      "interior detailing",
+      "mobile car detailing",
+      "car detailing near me",
+      "car detailing service",
+      "auto detailing service",
+      "auto detailing near me",
+      "interior car detailing",
+      "car detailing cleveland",
+      "interior auto detailing",
+      "mobile detailing near me",
+      "mobile detailing service",
+      "auto detailing cleveland",
+      "interior mobile detailing",
+      "interior detailing service",
+      "interior detailing near me",
+      "mobile car detailing near me",
+      "interior car detailng near me",
+      "mobile car detailing cleveland",
+      "mobile detailing cleveland ohio"
+    ],
+    "visual_findings": [
+      "The strongest green grid points cluster around mobile car detailing, mobile detailing near me, mobile detailing service, and mobile car detailing near me, with best visible ranks of about 3 near the center/east-side operating area.",
+      "Broad car detailing and auto detailing are mostly yellow or red near the operating area and become 20+ outside the core.",
+      "Interior detailing, interior car detailing, and interior auto detailing are unusually sparse despite the brand report positioning FMD as interior-first.",
+      "The grid is a separate Semrush Map Rank Tracker measurement and should not be substituted for either the national desktop Position Tracking panel or the point-coordinate DataForSEO SERP pull."
+    ]
+  },
+  "position_tracking": {
+    "scope": "Google organic, desktop, United States, national volume, July 14-19, 2026",
+    "campaign_keywords": 479,
+    "requested_keywords_matched": 467,
+    "extra_campaign_keywords": 12,
+    "fresh_mobile_detail": {
+      "visibility_percent": 0.04,
+      "visibility_change_percentage_points": -0.09,
+      "top_3": 0,
+      "top_10": 0,
+      "top_20": 2,
+      "top_100": 17,
+      "unranked": 462
+    },
+    "competitor_distribution": {
+      "nathansdetailing.com": {"top_3": 72, "top_10": 139, "top_20": 152, "top_100": 169},
+      "allthingsfreshcardetailing.com": {"top_3": 1, "top_10": 4, "top_20": 14, "top_100": 88},
+      "refreshmobiledetailingcle.com": {"top_3": 4, "top_10": 11, "top_20": 13, "top_100": 27},
+      "diamondfinishdetailing.com": {"top_3": 12, "top_10": 23, "top_20": 38, "top_100": 73}
+    },
+    "quality_note": "The PDF exposes row-level positions for FMD, Nathan's, Refresh, ATF, and Rhino. Diamond Finish appears in distribution summaries but not as a row-level table column. Landing pages and a machine-readable organic-versus-local placement flag are not included in the PDF."
+  }
+}

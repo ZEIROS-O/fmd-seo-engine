@@ -26,6 +26,11 @@ ESTIMATES = {
 # Google Ads charges the same for 1 or 1000 keywords — never send a short list.
 KEYWORDS_MAX_PER_REQUEST = 1000
 
+# Tightest supported radius for a coordinate-anchored Google organic SERP.
+# DataForSEO expects latitude,longitude,radius for this endpoint and currently
+# requires the radius value to be at least 199.9.
+FMD_OPERATING_COORDINATE = "41.4645,-81.5087,200"
+
 
 def _evidence_id(kind: str, endpoint: str, payload: list) -> str:
     return f"ev-{kind}-{sha256_text(canonical_json([endpoint, payload]))[:12]}"
@@ -59,27 +64,66 @@ def _fetch(client: DataForSeoClient, *, kind: str, budget_key: str, endpoint: st
 
 def fetch_serp(client: DataForSeoClient, query: str, raw_dir: Path,
                location_name: str = "Cleveland,Ohio,United States",
-               device: str = "desktop") -> QueryEvidence:
+               device: str = "desktop",
+               location_coordinate: str | None = None) -> QueryEvidence:
+    """Fetch a Google SERP and preserve both organic and local-pack results.
+
+    ``location_coordinate`` takes precedence over ``location_name``. This keeps
+    the established city-level call compatible while allowing a live pull to be
+    anchored to the searcher's operating coordinate.
+    """
+    if device not in {"desktop", "mobile"}:
+        raise ValueError(f"unsupported SERP device: {device}")
+
     def normalize(result: list) -> dict:
-        items = (result[0].get("items") or []) if result else []
+        result_item = result[0] if result else {}
+        items = result_item.get("items") or []
         organic = [
             {"rank": it.get("rank_absolute"), "domain": it.get("domain"),
              "title": it.get("title"), "url": it.get("url")}
             for it in items if it.get("type") == "organic"
         ][:10]
+        local_pack = [
+            {
+                "order": it.get("rank_group"),
+                "rank_absolute": it.get("rank_absolute"),
+                "business_name": it.get("title"),
+                "cid": it.get("cid"),
+                "domain": it.get("domain"),
+                "phone": it.get("phone"),
+                "url": it.get("url"),
+                "booking_url": it.get("booking_url"),
+                "rating": (it.get("rating") or {}).get("value"),
+                "reviews": (it.get("rating") or {}).get("votes_count"),
+                "description": it.get("description") or it.get("snippet"),
+                "is_paid": it.get("is_paid"),
+            }
+            for it in items if it.get("type") == "local_pack"
+        ]
         return {
-            "location": location_name,
+            "location": location_coordinate or location_name,
+            "location_name": None if location_coordinate else location_name,
+            "location_coordinate": location_coordinate,
             "device": device,
-            "se_results_count": result[0].get("se_results_count") if result else None,
+            "provider_datetime": result_item.get("datetime"),
+            "check_url": result_item.get("check_url"),
+            "se_results_count": result_item.get("se_results_count"),
             "serp_feature_types": sorted({it.get("type") for it in items if it.get("type")}),
             "organic_top10": organic,
+            "local_pack": local_pack,
         }
+
+    location = (
+        {"location_coordinate": location_coordinate}
+        if location_coordinate
+        else {"location_name": location_name}
+    )
 
     return _fetch(
         client, kind="serp_snapshot", budget_key="serp",
         endpoint="/v3/serp/google/organic/live/advanced",
-        payload=[{"keyword": query, "location_name": location_name,
-                  "language_code": "en", "device": device}],
+        payload=[{"keyword": query, "language_code": "en", "device": device,
+                  **location}],
         query=query, normalize=normalize, raw_dir=raw_dir,
     )
 

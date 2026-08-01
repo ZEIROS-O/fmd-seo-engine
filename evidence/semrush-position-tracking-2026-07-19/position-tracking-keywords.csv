@@ -1,0 +1,480 @@
+campaign_row,keyword,kd_percent,cpc_usd,volume,fmd_position,fmd_change_magnitude,fmd_change_direction,nathans_position,nathans_change_magnitude,nathans_change_direction,refresh_position,refresh_change_magnitude,refresh_change_direction,atf_position,atf_change_magnitude,atf_change_direction,rhino_position,rhino_change_magnitude,rhino_change_direction,branded,non_branded,near_me,cleveland,suburb,service,informational,in_requested_467
+1,fresh mobile detail,5,,20,18,15,sign_not_preserved_by_text_extraction,,,,,,,26,13,sign_not_preserved_by_text_extraction,,,,True,False,False,False,False,True,False,True
+2,mobile detailing shaker heights,27,,,19,73,sign_not_preserved_by_text_extraction,5,0,unchanged,,,,39,0,unchanged,4,0,unchanged,False,True,False,False,True,True,False,True
+3,interior car detailing moreland hills,5,,,43,5,sign_not_preserved_by_text_extraction,15,9,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+4,car interior cleaning moreland hills,10,,,47,3,sign_not_preserved_by_text_extraction,1,1,sign_not_preserved_by_text_extraction,,,,,99,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+5,mobile car detailing shaker heights,18,,,51,5,sign_not_preserved_by_text_extraction,3,2,sign_not_preserved_by_text_extraction,,,,20,80,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+6,interior detailing cleveland heights,9,,,64,15,sign_not_preserved_by_text_extraction,1,0,unchanged,47,1,sign_not_preserved_by_text_extraction,,,,46,0,unchanged,False,True,False,True,True,True,False,True
+7,interior car detailing cleveland heights,9,,,68,10,sign_not_preserved_by_text_extraction,1,0,unchanged,,,,,,,,,,False,True,False,True,True,True,False,True
+8,fresh mobile detailing,23,1.47,30,68,65,sign_not_preserved_by_text_extraction,,,,,,,24,10,sign_not_preserved_by_text_extraction,,,,True,False,False,False,False,True,False,True
+9,fresh detailing,33,3.63,50,72,10,sign_not_preserved_by_text_extraction,,,,,,,27,13,sign_not_preserved_by_text_extraction,,,,True,False,False,False,False,True,False,False
+10,car interior cleaning cleveland heights,7,,,72,14,sign_not_preserved_by_text_extraction,1,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,True,True,True,False,True
+11,mobile detailing cleveland ohio,25,1.64,170,72,8,sign_not_preserved_by_text_extraction,4,1,sign_not_preserved_by_text_extraction,,,,15,1,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+12,mobile car detailing cleveland heights,21,,,73,20,sign_not_preserved_by_text_extraction,3,1,sign_not_preserved_by_text_extraction,33,2,sign_not_preserved_by_text_extraction,23,11,sign_not_preserved_by_text_extraction,36,2,sign_not_preserved_by_text_extraction,False,True,False,True,True,True,False,True
+13,interior car detailing shaker heights,5,,,73,10,sign_not_preserved_by_text_extraction,2,1,sign_not_preserved_by_text_extraction,,,,,,,6,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+14,mobile car detailing mayfield heights,7,,,73,15,sign_not_preserved_by_text_extraction,1,0,unchanged,10,6,sign_not_preserved_by_text_extraction,,,,2,0,unchanged,False,True,False,False,True,True,False,True
+15,fresh car detailing,33,1.57,70,74,14,sign_not_preserved_by_text_extraction,,,,,,,7,4,sign_not_preserved_by_text_extraction,,,,True,False,False,False,False,True,False,True
+16,interior car detailing mayfield heights,7,,,75,6,sign_not_preserved_by_text_extraction,2,1,sign_not_preserved_by_text_extraction,1,0,unchanged,,,,7,93,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+17,ceramic coating pepper pike,4,,,94,2,sign_not_preserved_by_text_extraction,1,0,unchanged,,,,,,,5,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+18,ceramic coating cost for car,9,2.89,140,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+19,rv mobile detailing near me,11,1.8,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+20,car wash and detail,27,1.44,1600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+21,full service car wash inside and out,11,1.25,50,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+22,car detailers in my area,36,1.65,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+23,interior auto detailing near me,22,1.77,1300,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+24,detail shops near me,32,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+25,car detailing cost near me,11,1.22,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+26,car carpet cleaning,27,1.25,1300,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+27,detailing auto,57,1.85,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+28,mobile car detailing prices,,1.19,260,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+29,auto detailing mobile,50,2.38,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+30,car inside cleaning near me,31,1.73,210,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+31,detailing services,46,1.79,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+32,exterior car detailing near me,30,1.85,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+33,mobile car wash service,27,1.98,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+34,car deep cleaning,48,1.57,1000,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+35,detail car wash near me,20,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+36,auto car detailing near me,10,,600,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+37,car detailing services,30,,600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+38,professional detailing,61,1.78,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+39,car mobile detailing,18,,600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+40,auto detailing prices,22,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+41,deep clean car interior near me,26,1.56,210,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+42,mobile car detailing near me prices,,1.42,170,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+43,full detail car wash,33,1.32,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+44,vehicle interior detailing near me,10,1.72,110,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+45,car detailing,41,,500,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+46,car interior cleaning services near me,3,1.44,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+47,interior and exterior car wash,21,1.25,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+48,car cleaning and detailing near me,35,1.48,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+49,car wash inside and out near me,46,1.17,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+50,car interior cleaning,54,1.47,8100,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+51,detailed car cleaning services,15,1.74,90,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+52,mobile detail car wash,48,1.91,390,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+53,full service car detailing near me,29,1.83,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+54,best shop vac for car detailing,30,0.38,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+55,at home car detailing near me,30,2.44,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+56,best ceramic car wax,15,0.38,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+57,engine detailing near me,25,1.59,720,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+58,car deep cleaning near me,27,1.64,1300,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+59,car auto detailing,48,1.85,480,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+60,car detailing packages,11,1.11,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+61,best professional ceramic coating for cars,24,1.91,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+62,best car buffer,29,0.36,590,,,,,,,,,,,,,,,,False,True,False,False,False,False,True,True
+63,full car detail,31,1.6,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+64,interior car wash near me,25,,600,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+65,auto mobile detailing,14,2.38,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+66,traveling car detailing near me,7,1.82,110,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+67,car interior deep cleaning,41,1.38,140,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+68,detail car cleaning,51,1.73,1900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+69,car buffing near me,23,1.81,880,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+70,car detailing places near me,24,1.72,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+71,deep clean car wash near me,8,1.19,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+72,auto spa near me,30,0.95,1600,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+73,steam clean car seats,15,0.62,480,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+74,car shampoo interior,22,1.34,480,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+75,home car detailing near me,29,2.05,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+76,detailing prices,16,1.14,390,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+77,detailing automobile,46,1.85,70,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+78,mobile car wash and detailing,22,1.91,480,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+79,car detailing mobile service,17,2.2,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+80,car wash inside,52,1.51,320,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+81,mobile detailing service,37,2.31,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+82,auto interior detailing,49,1.74,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+83,car detailing services near me,25,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+84,rv detailing,5,1.74,1600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+85,car shampoo near me,41,1.64,1000,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+86,groupon car detailing,18,0.95,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+87,auto detailers in my area,47,1.65,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+88,mobile interior car detailing,47,1.74,110,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+89,car wash with interior cleaning,30,1.17,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+90,deep clean car wash,26,1.09,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+91,at home car detailing,45,2.45,480,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+92,car cleaning near me interior,23,1.61,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+93,come to you car detailing,19,2.51,40,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+94,home car detailing service,23,2.42,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+95,auto detail,57,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+96,mobile car wash,41,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+97,auto ceramic coating near me,22,4.08,1900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+98,car wash interior and exterior near me,25,1.29,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+99,car wash with interior cleaning near me,24,1.34,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+100,car buffing,20,0.52,1600,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+101,best mobile detailing near me,27,2.06,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+102,inside car cleaning near me,44,1.41,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+103,detailing near me,29,,500,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+104,automotive detail shops near me,36,1.72,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+105,detailing companies near me,31,2.02,720,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+106,local car detailing near me,11,1.74,260,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+107,professional detailing near me,17,1.62,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+108,vehicle detailing,40,1.73,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+109,professional car detailing near me,30,1.61,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+110,best car ceramic coating,21,1.2,320,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+111,car wash hand wash near me,3,1.2,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+112,auto detailing services,43,2.06,1600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+113,best pressure washer for car detailing,22,0.92,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+114,auto detail shop,68,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+115,car wash that cleans inside,42,1.22,390,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+116,full service car wash inside and out near me,24,1.55,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+117,detailing shop,78,1.93,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+118,detailing services near me,8,,600,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+119,pressure washer for car detailing,24,0.72,1900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+120,vehicle interior cleaning,47,1.47,390,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+121,cost of ceramic coating on car,6,2.59,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+122,ceramic coating car price,13,3.1,50,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+123,steam clean car interior,22,0.69,880,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+124,car shampoo service,23,1.6,1000,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+125,professional car detailing,48,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+126,car seat detailing near me,,1.6,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+127,auto interior cleaning,28,1.47,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+128,detailing places near me,41,1.86,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+129,paint detailing near me,9,2.28,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+130,car paint detailing near me,21,1.81,170,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+131,car detailing interior,22,1.74,1600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+132,car detailing shop,37,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+133,car wash inside and out,52,1.19,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+134,adams detailing,39,1.52,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+135,car detailing company,25,1.29,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+136,van detailing near me,30,1.86,90,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+137,toyota detailing,5,1.66,210,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+138,car detailing near me interior,32,1.94,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+139,car ceramic coating near me,5,4.08,1900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+140,interior detailing,28,,600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+141,automobile detailing near me,17,1.72,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+142,vehicle ceramic coating near me,15,3.87,170,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+143,auto upholstery cleaning near me,15,1.99,320,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+144,exterior car detailing,3,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+145,best car detailing,40,1.83,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+146,exterior detailing near me,16,1.85,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+147,detail my car,38,2.01,210,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+148,mobile carwash,38,1.73,720,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+149,detailing pressure washer,24,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+150,car care detailing,35,1.74,70,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+151,mobile motorcycle detailing near me,,1.82,170,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+152,cheap detailing near me,35,1.39,390,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+153,complete car detailing near me,35,1.63,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+154,auto detail shops near me,4,1.72,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+155,car detail shops near me,28,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+156,car seat detailing,18,1.32,210,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+157,mobile truck detailing near me,9,2.31,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+158,car upholstery cleaning,31,1.22,590,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+159,cost to ceramic coat car,,2.83,320,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+160,car paint correction near me,1,2.09,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+161,interior car detailing near me prices,15,1.34,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+162,pro detailing,56,1.41,480,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+163,detailing,58,,800,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+164,deep car detailing near me,5,1.6,90,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+165,cheap car detailing,42,1.23,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+166,detail cleaning near me,27,1.99,260,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+167,car seat shampoo,21,0.99,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+168,autodetailing,70,1.92,880,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+169,car interior detailing,48,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+170,car wash and interior cleaning near me,18,1.34,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+171,engine bay detailing,32,0.81,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+172,shampoo car seats near me,14,1.66,590,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+173,truck detailing,2,1.82,1300,,,,90,5,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,False,True,False,True
+174,car detail cleaning near me,37,1.85,320,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+175,interior car wash,23,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+176,ceramic finish for cars,28,1.49,110,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+177,car detailing around me,16,1.8,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+178,toyota car detailing,6,1.66,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+179,best mobile car detailing near me,9,2.06,590,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+180,car detailing cost,32,,600,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+181,mobile rv detailing near me,45,2.22,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+182,best auto detailing near me,35,,900,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+183,auto detailing,42,,200,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+184,car detailing business,21,1.98,1600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+185,car seat shampoo service,13,1.47,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+186,full auto detail near me,21,1.96,170,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+187,detail cleaning,56,2.58,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+188,auto car detailing,76,1.92,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+189,inside car detailing near me,28,1.76,480,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+190,auto detailing near me prices,,1.22,880,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+191,car pro detailing,23,0.5,210,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+192,full car detail price,17,1.2,110,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+193,car detailing places,36,1.89,210,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+194,car deep clean near me,41,1.82,110,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+195,car paint detailing,20,1.42,260,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+196,mobile vehicle detailing near me,1,2.11,260,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+197,car paint correction,11,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+198,detailing packages,17,1.11,320,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+199,professional auto detailing,11,1.63,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+200,inside car detailing,45,1.45,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+201,ceramic coating price for car,9,3.12,70,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+202,honda detailing,4,1.66,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+203,engine detailing,28,1.04,590,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+204,car detailing come to you,47,2.33,110,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+205,auto spa,40,,900,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+206,car detailing price list,15,1.11,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+207,auto paint correction near me,1,2.09,880,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+208,best detailing near me,9,1.72,720,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+209,car ceramic coating cost,13,2.8,110,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+210,inside car cleaning,50,1.47,720,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+211,auto ceramic coating,40,,600,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+212,car seat cleaning,6,1.36,1600,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+213,vehicle detailing near me,20,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+214,professional car interior cleaning,47,1.45,260,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+215,interior car detailing chagrin falls,1,,,,,,2,1,sign_not_preserved_by_text_extraction,,,,,,,6,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+216,mobile detailing pepper pike,16,,,,,,5,4,sign_not_preserved_by_text_extraction,,,,,,,4,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+217,car upholstery cleaning near me,4,1.97,590,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+218,car detailing service lyndhurst,,,,,,,65,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+219,mobile auto detailing chagrin falls,1,,,,,,1,4,sign_not_preserved_by_text_extraction,,,,33,31,sign_not_preserved_by_text_extraction,5,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+220,auto detailing solon,,,,,,,4,0,unchanged,,,,,49,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+221,mobile car detailing cleveland,19,1.82,110,,,,1,0,unchanged,52,1,sign_not_preserved_by_text_extraction,25,13,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+222,motorcycle detailing near me,2,1.51,1900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+223,interior detailing south euclid,19,,,,,,3,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+224,interior car detailing richmond heights,28,,,,,,,72,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+225,auto detailing highland heights,10,,,,,,5,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+226,auto detailing university heights,2,,,,,,,96,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+227,mobile auto detailing,19,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+228,car interior shampooing,33,1.34,880,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+229,leather seat cleaning near me,15,1.74,20,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+230,car detailing service beachwood,9,,,,,,3,1,sign_not_preserved_by_text_extraction,,,,,,,24,76,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+231,mobile auto detailing richmond heights,,,,,,,,72,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+232,mobile auto detailing cleveland ohio,30,,20,,,,1,4,sign_not_preserved_by_text_extraction,49,1,sign_not_preserved_by_text_extraction,11,1,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+233,mobile car detailing solon,4,,,,,,4,0,unchanged,,,,40,11,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+234,interior car detailing university heights,2,,,,,,4,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,True
+235,mobile car detailing gates mills,24,,,,,,17,10,sign_not_preserved_by_text_extraction,,,,53,6,sign_not_preserved_by_text_extraction,7,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+236,mobile car detailing highland heights,,,,,,,,97,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+237,full car detail near me,41,1.7,720,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+238,ceramic coating richmond heights,7,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+239,mobile car wash near me,12,,0,,,,,,,,,,,,,,1,improved,False,True,True,False,False,True,False,True
+240,car interior shampoo near me,7,0.7,210,,,,,,,,,,,,,,1,improved,False,True,True,False,False,False,False,True
+241,car detail near me,50,,0,,,,,,,,,,,,,,2,improved,False,True,True,False,False,True,False,True
+242,headliner cleaning near me,,0.29,30,,,,,,,,,,,,,,2,improved,False,True,True,False,False,False,False,True
+243,car interior cleaning beachwood,8,,,,,,3,0,unchanged,,,,35,1,sign_not_preserved_by_text_extraction,24,4,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+244,mobile auto detailing cleveland,22,0.82,110,,,,4,1,sign_not_preserved_by_text_extraction,67,3,sign_not_preserved_by_text_extraction,14,2,sign_not_preserved_by_text_extraction,,1,improved,False,True,False,True,False,True,False,True
+245,interior mobile detailing cleveland,34,,,,,,2,1,sign_not_preserved_by_text_extraction,62,2,sign_not_preserved_by_text_extraction,14,86,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,False
+246,remove stains from seat in car,14,,600,,,,,,,,,,,,,,1,improved,False,True,False,False,False,True,False,True
+247,car interior cleaning university heights,3,,,,,,,95,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+248,mobile detailing gates mills,31,,,,,,19,4,sign_not_preserved_by_text_extraction,,,,,,,1,6,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+249,mobile detailing chagrin falls,4,,,,,,5,0,unchanged,,,,49,6,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+250,car detailing lyndhurst,,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+251,car detailing gift certificate cleveland,3,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,32,24,sign_not_preserved_by_text_extraction,63,37,sign_not_preserved_by_text_extraction,False,True,False,True,False,True,False,True
+252,how much does car detailing cost,31,,0,,,,,,,,,,,,,,1,improved,False,True,False,False,False,True,True,True
+253,smoke smell removal car near me,7,,,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+254,car interior cleaning cleveland,22,,,,,,1,0,unchanged,,,,22,2,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+255,mobile car detailing beachwood,8,,,,,,4,1,sign_not_preserved_by_text_extraction,,,,61,7,sign_not_preserved_by_text_extraction,9,0,unchanged,False,True,False,False,True,True,False,True
+256,vomit cleanup car near me,7,,,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+257,ceramic coating mentor ohio,15,,,,,,11,43,sign_not_preserved_by_text_extraction,,,,,,,5,0,unchanged,False,True,False,False,True,True,False,True
+258,car detailing service near me,35,1.86,1900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+259,car interior cleaning south euclid,23,,,,,,4,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,True
+260,mobile auto detailing orange village,11,,,,,,,60,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+261,interior detailer,12,1.67,1300,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,False
+262,mobile detailer near me,39,2.07,390,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,False
+263,how long does car detailing take,11,1.81,480,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+264,interior detailing chagrin falls,2,,,,,,1,1,sign_not_preserved_by_text_extraction,,,,41,5,sign_not_preserved_by_text_extraction,7,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+265,auto detailing cleveland heights,10,1.75,20,,,,1,0,unchanged,,,,,,,,,,False,True,False,True,True,True,False,True
+266,auto detailers near me,38,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+267,mobile auto detailing solon,4,,,,,,4,0,unchanged,,,,35,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+268,interior detailing mentor ohio,14,,,,,,10,3,sign_not_preserved_by_text_extraction,,,,52,4,sign_not_preserved_by_text_extraction,1,0,unchanged,False,True,False,False,True,True,False,True
+269,interior detailing shaker heights,8,,,,,,1,1,sign_not_preserved_by_text_extraction,,,,,,,1,0,unchanged,False,True,False,False,True,True,False,True
+270,mobile car detailing near me,49,,8100,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+271,car detailing mentor ohio,27,1.15,90,,,,11,1,sign_not_preserved_by_text_extraction,,,,50,2,sign_not_preserved_by_text_extraction,1,0,unchanged,False,True,False,False,True,True,False,True
+272,mobile detailing lake county ohio,2,,,,,,13,4,sign_not_preserved_by_text_extraction,12,88,sign_not_preserved_by_text_extraction,23,4,sign_not_preserved_by_text_extraction,2,0,unchanged,False,True,False,False,False,True,False,True
+273,mobile detailing eastern suburbs cleveland,33,,,,,,7,1,sign_not_preserved_by_text_extraction,15,19,sign_not_preserved_by_text_extraction,35,6,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+274,car detailing prices,13,,900,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+275,ceramic coating orange village,17,,,,,,,62,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+276,car interior cleaning solon,,,,,,,4,0,unchanged,,,,41,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+277,interior car detailing south euclid,28,,,,,,4,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,True
+278,car detailing willoughby,,1.29,20,,,,9,0,unchanged,,,,63,1,sign_not_preserved_by_text_extraction,4,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+279,ceramic coating cleveland ohio,6,,20,,,,3,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,True,False,True,False,True
+280,interior detailing beachwood,14,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,,,,14,6,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+281,ceramic coating lyndhurst,4,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+282,car detailing service willoughby,5,,,,,,7,2,sign_not_preserved_by_text_extraction,63,4,sign_not_preserved_by_text_extraction,46,1,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+283,mobile auto detailing near me,34,,2100,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+284,car detailing highland heights,,,,,,,8,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,True
+285,tesla detailing near me,1,1.95,260,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+286,suv detailing near me,6,1.46,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+287,car detailing service moreland hills,19,,,,,,22,0,unchanged,,,,28,13,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+288,car detailing service pepper pike,24,,,,,,4,0,unchanged,,,,,,,2,0,unchanged,False,True,False,False,True,True,False,True
+289,car wash and detail near me,45,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+290,ceramic coating solon,9,,,,,,5,2,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+291,interior car detailing solon,4,,,,,,4,0,unchanged,,,,36,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+292,car detailing richmond heights,13,,,,,,11,5,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+293,mobile car detailing,41,,2100,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+294,mobile detailer beachwood,19,,,,,,5,0,unchanged,,,,54,3,sign_not_preserved_by_text_extraction,7,0,unchanged,False,True,False,False,True,True,False,False
+295,dog hair removal from car near me,,,,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+296,ceramic coating moreland hills,1,,,,,,4,96,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+297,interior detailing university heights,5,,,,,,4,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,True
+298,mobile auto detailing gates mills,13,,,,,,17,2,sign_not_preserved_by_text_extraction,,,,45,5,sign_not_preserved_by_text_extraction,1,6,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+299,all things fresh car detailing,33,1.56,70,,,,,,,,,,1,0,unchanged,,,,False,True,False,False,False,True,False,True
+300,how to get stains out of car seats,20,0.3,1000,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+301,full detail car wash near me,4,1.33,880,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+302,mobile car detailing university heights,1,,,,,,,91,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+303,mobile detailing solon,5,,,,,,4,0,unchanged,,,,30,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+304,mobile detailing beachwood,18,,,,,,5,1,sign_not_preserved_by_text_extraction,,,,54,5,sign_not_preserved_by_text_extraction,7,0,unchanged,False,True,False,False,True,True,False,True
+305,car detailing cleveland heights,28,2.26,20,,,,1,0,unchanged,,,,,,,,,,False,True,False,True,True,True,False,True
+306,car interior cleaning chagrin falls,12,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,,,,4,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+307,mobile auto detailing willoughby,13,,,,,,6,0,unchanged,,,,37,2,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+308,mobile auto detailing pepper pike,9,,,,,,1,0,unchanged,,,,,,,1,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+309,mobile car detailing willoughby,6,,,,,,6,1,sign_not_preserved_by_text_extraction,,,,39,0,unchanged,1,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+310,car seat stain removal,23,1.03,90,,,,21,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,False,True,False,True
+311,car detailing moreland hills,34,,,,,,16,7,sign_not_preserved_by_text_extraction,,,,74,8,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+312,car detailing cuyahoga county,3,,,,,,1,0,unchanged,21,79,sign_not_preserved_by_text_extraction,63,9,sign_not_preserved_by_text_extraction,,,,False,True,False,False,False,True,False,True
+313,detailer that comes to your house,9,,,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+314,car interior cleaning highland heights,22,,,,,,,95,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+315,interior car detailing lyndhurst,16,,,,,,,73,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+316,mobile auto detailing cleveland heights,30,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,13,3,sign_not_preserved_by_text_extraction,,,,False,True,False,True,True,True,False,True
+317,mobile detailing richmond heights,26,,,,,,,74,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+318,ceramic coating shaker heights,9,,30,,,,1,0,unchanged,,,,,,,20,80,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+319,interior detailing willoughby,5,,,,,,4,0,unchanged,,,,,,,7,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+320,car interior cleaning richmond heights,17,,,,,,,65,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+321,car interior cleaning cleveland ohio,26,,,,,,1,0,unchanged,,,,23,4,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+322,mobile auto detailing lyndhurst,3,,,,,,53,5,sign_not_preserved_by_text_extraction,,,,72,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+323,auto detailing willoughby,6,,,,,,9,1,sign_not_preserved_by_text_extraction,,,,56,3,sign_not_preserved_by_text_extraction,4,4,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+324,auto detailing beachwood,12,,,,,,9,0,unchanged,,,,,,,23,11,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+325,auto detailing cleveland ohio,16,1.64,90,,,,1,0,unchanged,,,,19,0,unchanged,,,,False,True,False,True,False,True,False,True
+326,car detailing mayfield heights,13,,,,,,4,3,sign_not_preserved_by_text_extraction,1,2,sign_not_preserved_by_text_extraction,51,2,sign_not_preserved_by_text_extraction,5,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+327,car cleaning near me,47,,800,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+328,car detailing service south euclid,26,,,,,,1,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+329,drive fresh detail,27,,,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+330,monthly car detailing service,2,2.31,20,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+331,what does car detailing include,19,0.53,390,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+332,interior detailing richmond heights,3,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+333,auto detailing moreland hills,34,,,,,,21,3,sign_not_preserved_by_text_extraction,,,,46,1,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+334,interior car detailing near me,12,1.72,8100,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+335,mobile detailing prices,,1.2,320,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+336,car detailing at home near me,19,2.05,210,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+337,how to get car seat stains out,25,0.3,1600,,,,62,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,False,True,True,True
+338,car detailing service mentor ohio,,,,,,,6,6,sign_not_preserved_by_text_extraction,,,,44,0,unchanged,2,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+339,auto detailing richmond heights,6,,,,,,19,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+340,auto detailing shaker heights,,,,,,,1,1,sign_not_preserved_by_text_extraction,,,,,,,7,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+341,mobile auto detailing shaker heights,39,,,,,,4,1,sign_not_preserved_by_text_extraction,,,,26,3,sign_not_preserved_by_text_extraction,5,4,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+342,car biohazard cleaning near me,12,,,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+343,car interior cleaning willoughby,5,,,,,,6,1,sign_not_preserved_by_text_extraction,,,,48,2,sign_not_preserved_by_text_extraction,5,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+344,car detailing cleveland,29,1.64,390,,,,1,0,unchanged,,,,22,3,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+345,how to remove dog hair from car,11,0.24,590,,,,,,,,,,,,,,,,False,True,False,False,False,False,True,True
+346,mobile car detailing cleveland ohio,23,1.82,110,,,,4,0,unchanged,54,1,sign_not_preserved_by_text_extraction,10,0,unchanged,,,,False,True,False,True,False,True,False,True
+347,interior detailing pepper pike,20,,,,,,,99,sign_not_preserved_by_text_extraction,,,,,,,6,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+348,mobile auto detailing beachwood,29,,,,,,5,0,unchanged,,,,,,,8,0,unchanged,False,True,False,False,True,True,False,True
+349,detail car wash,17,,400,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+350,car detailing service richmond heights,10,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+351,car detailing service highland heights,2,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+352,mobile auto detailing highland heights,2,,,,,,6,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+353,mobile detailing highland heights,6,,,,,,83,78,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+354,nathans detailing,34,1.3,110,,,,1,0,unchanged,,,,,,,,,,False,True,False,False,False,True,False,True
+355,interior car detailing gates mills,13,,,,,,34,15,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+356,auto detailing cleveland,26,1.64,260,,,,1,0,unchanged,54,1,sign_not_preserved_by_text_extraction,,,,,,,False,True,False,True,False,True,False,True
+357,car detailing chagrin falls,15,1.7,20,,,,4,1,sign_not_preserved_by_text_extraction,,,,,,,5,0,unchanged,False,True,False,False,True,True,False,True
+358,auto detailer near me,27,1.72,1000,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,False
+359,interior mobile detailing,34,1.74,140,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,False
+360,car interior cleaning lyndhurst,29,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+361,interior detailing cleveland,14,,,,,,1,0,unchanged,,,,,,,,,,False,True,False,True,False,True,False,True
+362,diamond finish detailing cleveland,31,,,,,,37,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,True,False,True,False,True
+363,how to clean car seats,26,,500,,,,,,,,,,,,,,,,False,True,False,False,False,False,True,True
+364,interior detailing orange village,25,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+365,interior detailing gates mills,20,,,,,,48,7,sign_not_preserved_by_text_extraction,,,,,,,20,11,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+366,car interior cleaning shaker heights,8,,,,,,5,2,sign_not_preserved_by_text_extraction,,,,,,,9,0,unchanged,False,True,False,False,True,True,False,True
+367,interior car detailing cleveland,23,2.21,20,,,,2,1,sign_not_preserved_by_text_extraction,,,,22,78,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+368,auto detailing south euclid,19,,,,,,1,3,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+369,truck detailing near me,19,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+370,car detailing service university heights,2,,,,,,4,0,unchanged,,,,55,1,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+371,car detailing orange village,31,,,,,,92,73,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+372,car detailing pepper pike,23,,,,,,,99,sign_not_preserved_by_text_extraction,,,,,,,4,0,unchanged,False,True,False,False,True,True,False,True
+373,is car detailing worth it,9,0.55,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+374,ceramic coating beachwood,9,,20,,,,4,1,sign_not_preserved_by_text_extraction,,,,,,,7,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+375,car detailing service cleveland ohio,32,,,,,,1,0,unchanged,68,2,sign_not_preserved_by_text_extraction,21,3,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+376,interior detailing lyndhurst,16,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+377,interior car detailing highland heights,2,,,,,,5,95,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+378,car detailing beachwood,3,,20,,,,9,0,unchanged,,,,,,,12,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+379,mobile car detailing orange village,4,,,,,,8,92,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+380,mobile car detailing chagrin falls,3,,,,,,2,3,sign_not_preserved_by_text_extraction,,,,29,27,sign_not_preserved_by_text_extraction,5,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+381,mobile car detailing pepper pike,22,,,,,,1,0,unchanged,,,,,,,2,0,unchanged,False,True,False,False,True,True,False,True
+382,car detailing near me,51,,0,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+383,car detailing service cleveland,35,,,,,,1,0,unchanged,,,,20,80,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+384,mobile auto detailing university heights,3,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+385,auto detailing pepper pike,11,,,,,,6,5,sign_not_preserved_by_text_extraction,,,,,,,7,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+386,ceramic coating cleveland,26,3.67,30,,,,2,0,unchanged,,,,,,,,,,False,True,False,True,False,True,False,True
+387,car odor removal near me,,1.79,140,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+388,car detailing service solon,4,,,,,,4,0,unchanged,,,,38,1,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+389,car detailing solon,,,,,,,4,1,sign_not_preserved_by_text_extraction,,,,37,6,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+390,boat detailing near me,10,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+391,mold removal car interior,13,1.15,50,,,,,,,,,,,,,,,,False,True,False,False,False,False,False,True
+392,mobile auto detailing south euclid,15,,,,,,1,3,sign_not_preserved_by_text_extraction,42,3,sign_not_preserved_by_text_extraction,79,8,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+393,mobile interior detailing,18,2.81,90,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,False
+394,mobile detailer cleveland,32,,,,,,1,0,unchanged,,,,7,0,unchanged,,,,False,True,False,True,False,True,False,False
+395,hand car wash near me,38,,500,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+396,mobile car detailing south euclid,3,,,,,,1,0,unchanged,51,17,sign_not_preserved_by_text_extraction,39,19,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+397,mobile car detailing lyndhurst,17,,,,,,,68,sign_not_preserved_by_text_extraction,,,,55,0,unchanged,,,,False,True,False,False,True,True,False,True
+398,car detailing shaker heights,8,,30,,,,1,0,unchanged,,,,17,2,sign_not_preserved_by_text_extraction,5,0,unchanged,False,True,False,False,True,True,False,True
+399,interior detailing moreland hills,26,,,,,,1,11,sign_not_preserved_by_text_extraction,,,,44,4,sign_not_preserved_by_text_extraction,56,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+400,mobile car detailing moreland hills,2,,,,,,8,0,unchanged,,,,46,3,sign_not_preserved_by_text_extraction,23,13,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+401,mobile detailing moreland hills,29,,,,,,89,76,sign_not_preserved_by_text_extraction,,,,31,1,sign_not_preserved_by_text_extraction,23,12,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+402,auto detailing orange village,18,,,,,,,39,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+403,auto detailing chagrin falls,15,,,,,,5,3,sign_not_preserved_by_text_extraction,,,,,,,4,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+404,mobile detailing near me,51,,7100,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+405,mobile car detailing mentor ohio,28,,,,,,5,4,sign_not_preserved_by_text_extraction,,,,38,3,sign_not_preserved_by_text_extraction,1,0,unchanged,False,True,False,False,True,True,False,True
+406,car detailing service chagrin falls,,,,,,,3,2,sign_not_preserved_by_text_extraction,,,,41,2,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+407,interior car detailing pepper pike,,,,,,,6,1,sign_not_preserved_by_text_extraction,,,,,,,7,0,unchanged,False,True,False,False,True,True,False,True
+408,interior car detailing cleveland ohio,36,,,,,,1,0,unchanged,,,,,,,,,,False,True,False,True,False,True,False,True
+409,mobile detailing university heights,5,,,,,,6,94,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+410,auto detailing gates mills,,,,,,,22,18,sign_not_preserved_by_text_extraction,,,,,,,13,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+411,auto detailing near me,46,,100,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+412,ceramic coating highland heights,9,,,,,,,51,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+413,car interior cleaning gates mills,9,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+414,interior car detailing willoughby,5,,,,,,4,0,unchanged,,,,69,2,sign_not_preserved_by_text_extraction,3,6,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+415,mobile detailing mentor ohio,18,,,,,,4,0,unchanged,,,,45,1,sign_not_preserved_by_text_extraction,1,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+416,auto detailing lyndhurst,12,,,,,,,55,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+417,auto detailing mayfield heights,21,,,,,,1,0,unchanged,10,4,sign_not_preserved_by_text_extraction,,,,3,0,unchanged,False,True,False,False,True,True,False,True
+418,car detailing university heights,5,,,,,,,95,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+419,best car detailing near me,24,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+420,mobile auto detailing moreland hills,12,,,,,,17,14,sign_not_preserved_by_text_extraction,,,,33,4,sign_not_preserved_by_text_extraction,14,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+421,car detailing cleveland ohio,9,1.64,260,,,,2,1,sign_not_preserved_by_text_extraction,,,,23,4,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+422,car interior cleaning mayfield heights,21,,,,,,4,1,sign_not_preserved_by_text_extraction,1,1,sign_not_preserved_by_text_extraction,53,4,sign_not_preserved_by_text_extraction,14,38,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+423,mobile detailing lyndhurst,31,,,,,,,71,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+424,auto detailing mentor ohio,27,1.15,90,,,,10,1,sign_not_preserved_by_text_extraction,,,,50,0,unchanged,1,0,unchanged,False,True,False,False,True,True,False,True
+425,car interior cleaning orange village,,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+426,mobile car detailing richmond heights,3,,,,,,,83,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+427,interior mobile detailing near me,18,2.14,20,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,False
+428,cheap car detailing near me,28,1.32,1300,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+429,mobile auto detailing mentor ohio,17,,,,,,5,4,sign_not_preserved_by_text_extraction,,,,38,2,sign_not_preserved_by_text_extraction,1,0,unchanged,False,True,False,False,True,True,False,True
+430,mobile detailing orange village,4,,,,,,17,5,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+431,mobile detailing mayfield heights,26,,,,,,2,2,sign_not_preserved_by_text_extraction,10,8,sign_not_preserved_by_text_extraction,56,4,sign_not_preserved_by_text_extraction,1,4,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+432,mobile detailing,29,,2100,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+433,car detailing that comes to you,31,2.33,140,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+434,ceramic coating mayfield heights,16,,,,,,9,0,unchanged,,,,,,,5,0,unchanged,False,True,False,False,True,True,False,True
+435,interior detailing mayfield heights,25,,,,,,1,0,unchanged,10,0,unchanged,,,,5,1,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+436,car interior cleaning mentor ohio,2,,,,,,9,51,sign_not_preserved_by_text_extraction,,,,40,2,sign_not_preserved_by_text_extraction,3,0,unchanged,False,True,False,False,True,True,False,True
+437,mobile detailing willoughby,7,,,,,,5,0,unchanged,,,,63,1,sign_not_preserved_by_text_extraction,4,0,unchanged,False,True,False,False,True,True,False,True
+438,pet hair removal car detailing,25,0.97,40,,,,,,,,,,,,,,,,False,True,False,False,False,True,False,True
+439,ceramic coating willoughby,10,,,,,,,73,sign_not_preserved_by_text_extraction,,,,,,,28,20,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+440,car detailing service cleveland heights,5,,,,,,2,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,True,True,True,False,True
+441,interior detailing solon,5,,,,,,4,0,unchanged,,,,49,2,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+442,car interior cleaning pepper pike,34,,,,,,3,0,unchanged,,,,,,,22,18,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+443,how often should you detail your car,,,170,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+444,interior detailing highland heights,11,,,,,,,,,,,,,,,,,,False,True,False,False,True,True,False,True
+445,ceramic coating university heights,7,,,,,,12,2,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+446,mobile detailing cleveland heights,13,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,16,1,sign_not_preserved_by_text_extraction,28,7,sign_not_preserved_by_text_extraction,False,True,False,True,True,True,False,True
+447,car cleaning cleveland,27,0.92,140,,,,21,19,sign_not_preserved_by_text_extraction,,,,32,4,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,False
+448,mobile detailer solon,5,,,,,,4,0,unchanged,,,,,,,,,,False,True,False,False,True,True,False,False
+449,what is included in a full detail,15,,,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+450,ceramic coating chagrin falls,,,,,,,2,0,unchanged,,,,,,,3,4,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+451,luxury car detailing cleveland,13,,,,,,1,0,unchanged,,,,,,,,,,False,True,False,True,False,True,False,True
+452,mobile detailing vs car wash,,,,,,,,,,,,,,,,,,,False,True,False,False,False,True,True,True
+453,car detailing near me prices,12,1.22,1900,,,,,,,,,,,,,,,,False,True,True,False,False,True,True,True
+454,interior detailing cleveland ohio,13,,,,,,1,0,unchanged,,,,24,76,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+455,car seat cleaning near me,6,1.73,1300,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+456,car detailing service shaker heights,5,,,,,,1,0,unchanged,,,,54,0,unchanged,5,0,unchanged,False,True,False,False,True,True,False,True
+457,car detailing south euclid,19,,,,,,1,2,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+458,car carpet cleaning near me,22,1.7,880,,,,,,,,,,,,,,,,False,True,True,False,False,False,False,True
+459,car detailing service mayfield heights,24,,,,,,2,0,unchanged,10,9,sign_not_preserved_by_text_extraction,,,,4,2,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+460,interior car detailing orange village,,,,,,,,74,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+461,interior car detailing beachwood,5,,,,,,6,4,sign_not_preserved_by_text_extraction,,,,,,,13,0,unchanged,False,True,False,False,True,True,False,True
+462,mobile detailing south euclid,3,,,,,,1,0,unchanged,1,22,sign_not_preserved_by_text_extraction,34,3,sign_not_preserved_by_text_extraction,,,,False,True,False,False,True,True,False,True
+463,car interior cleaning near me,24,,900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+464,mobile detailing cleveland,34,1.64,,,,,1,0,unchanged,,,,23,16,sign_not_preserved_by_text_extraction,,,,False,True,False,True,False,True,False,True
+465,same day car detailing near me,36,3.02,260,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+466,car detailing east side cleveland,7,,,,,,2,0,unchanged,56,2,sign_not_preserved_by_text_extraction,37,0,unchanged,,,,False,True,False,True,False,True,False,True
+467,refresh mobile detailing,,1.13,90,,,,,,,10,2,sign_not_preserved_by_text_extraction,,,,,,,True,False,False,False,False,True,False,True
+468,ceramic coating south euclid,17,,,,,,4,1,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+469,mobile auto detailing mayfield heights,20,,,,,,1,3,sign_not_preserved_by_text_extraction,10,8,sign_not_preserved_by_text_extraction,,,,2,3,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+470,car detailing gates mills,8,,20,,,,33,17,sign_not_preserved_by_text_extraction,,,,,,,30,19,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+471,rv detailing near me,6,,400,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+472,ceramic coating cleveland heights,6,,,,,,2,0,unchanged,,,,,,,,,,False,True,False,True,True,True,False,True
+473,ceramic coating gates mills,10,,30,,,,22,1,sign_not_preserved_by_text_extraction,,,,,,,43,9,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+474,car detailing service orange village,47,,,,,,,11,sign_not_preserved_by_text_extraction,,,,,,,,,,False,True,False,False,True,True,False,True
+475,car detailing service gates mills,7,,,,,,1,30,sign_not_preserved_by_text_extraction,,,,,,,5,11,sign_not_preserved_by_text_extraction,False,True,False,False,True,True,False,True
+476,interior detailing near me,38,,900,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+477,interior car detailing mentor ohio,8,,,,,,9,0,unchanged,,,,44,2,sign_not_preserved_by_text_extraction,1,0,unchanged,False,True,False,False,True,True,False,True
+478,ceramic coating near me,33,,200,,,,,,,,,,,,,,,,False,True,True,False,False,True,False,True
+479,fresh detail,15,3.63,90,,,,,,,,,,,,,,,,True,False,False,False,False,True,False,True

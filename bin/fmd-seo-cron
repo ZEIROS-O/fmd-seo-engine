@@ -5,7 +5,9 @@
 #   sync   — fetch API-backed due checks via the Semrush REST API (needs SEMRUSH_API_KEY)
 #   assess — evaluate thresholds; exit 4 if any critical finding or gate drift
 #
-# It NEVER publishes, deploys, sends, or touches the live site. The session-only
+# It NEVER publishes, deploys, or touches the live site. The one thing it does
+# send is a one-line run ping to Lou's Telegram (CONTRACT clause 5) — operator
+# telemetry, not outreach. The session-only
 # checks (aeo.*, live-HTML schema) and the human check (GSC indexation) are left
 # for the fmd-seo-loop skill / Lou. A non-zero assess exit is the signal that a
 # session run is worth doing.
@@ -31,6 +33,15 @@ log_dir="$ENGINE_ROOT/.run/cron"
 mkdir -p "$log_dir"
 stamp="$(date -u +%Y%m%dT%H%M%SZ)"
 
+# An abort before the normal notify path (bad PATH, missing python, dead venv)
+# is exactly the silent failure the ping exists to catch, so trap it too. The
+# normal path ends in `exit`, which does not fire ERR — no double-send.
+notify_abort() {
+  local code=$?
+  bash "$ENGINE_ROOT/bin/notify-run" "FMD-SEO" "$code" "aborted early — see $stamp.log" || true
+}
+trap notify_abort ERR
+
 echo "== sync ($stamp) ==" | tee "$log_dir/$stamp.log"
 python3 -m fmd_seo sync 2>&1 | tee -a "$log_dir/$stamp.log" || true
 
@@ -39,11 +50,35 @@ python3 -m fmd_seo gsc-sync 2>&1 | tee -a "$log_dir/$stamp.log" || true
 
 echo "== assess ($stamp) ==" | tee -a "$log_dir/$stamp.log"
 # assess exit 4 = critical finding or gate drift; surface it as this script's exit
-# without aborting the log write.
+# without aborting the log write. Captured rather than streamed so the notify
+# line can read the summary back without re-parsing the log.
 set +e
-python3 -m fmd_seo assess 2>&1 | tee -a "$log_dir/$stamp.log"
-assess_code=${PIPESTATUS[0]}
+assess_out="$(python3 -m fmd_seo assess 2>&1)"
+assess_code=$?
 set -e
+printf '%s\n' "$assess_out" | tee -a "$log_dir/$stamp.log"
 
 echo "fmd-seo-cron: done (assess exit=$assess_code)" | tee -a "$log_dir/$stamp.log"
+
+# One-line Telegram ping. OK_CODES "0 4" because exit 4 is a healthy run that
+# found something — the counts belong in the detail, not in the pass/fail state.
+detail="$(printf '%s' "$assess_out" | python3 -c '
+import json, sys
+try:
+    s = json.load(sys.stdin).get("summary", {})
+except Exception:
+    print("assess output unreadable")
+    sys.exit(0)
+bits = []
+if s.get("critical"): bits.append(str(s["critical"]) + " crit")
+if s.get("high"): bits.append(str(s["high"]) + " high")
+if s.get("gate_drift"): bits.append("gate drift")
+print(", ".join(bits) + " -> session due" if bits else "all clear")
+' 2>/dev/null)" || detail=""
+
+# Invoked via `bash` rather than directly: the ping must not depend on an exec
+# bit surviving a clone/checkout.
+NOTIFY_OK_CODES="0 4" bash "$ENGINE_ROOT/bin/notify-run" \
+  "FMD-SEO" "$assess_code" "$detail" || true
+
 exit "$assess_code"

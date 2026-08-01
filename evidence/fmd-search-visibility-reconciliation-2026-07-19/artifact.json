@@ -1,0 +1,1598 @@
+{
+  "manifest": {
+    "blocks": [
+      {
+        "body": "# Fresh Mobile Detailing Search Visibility Reconciliation",
+        "id": "title",
+        "type": "markdown"
+      },
+      {
+        "body": "## Executive Summary\n\n- **The Semrush export is now complete for the requested corpus.** The PDF contains 479 unique campaign rows, and all 467 requested keywords match exactly. FMD ranks in the top 100 for **16 of the requested 467**; one additional ranked branded phrase belongs to the 12-row campaign-only set.\n- **The national campaign shows a large competitive coverage gap.** On July 19, FMD has 17 top-100 rankings across all 479 rows, versus 169 for Nathan's, 88 for All Things Fresh, 73 for Diamond Finish, and 27 for Refresh.\n- **The live operating-coordinate pull answers a different question.** It checks mobile results at 41.4645,-81.5087 for all 467 phrases and preserves organic landing pages, local-pack identities, and named-competitor gaps. It cost **$0.5604**, within the approved $0.60 cap.\n- **Local-pack membership is visibly volatile.** FMD was third for the Mayfield Heights focus query at 21:03 UTC, then absent from the pack in a same-coordinate queued snapshot at 22:04 UTC. Beachwood omitted FMD in both snapshots.\n- **FMD's AI answer quality is stronger than its reach.** The Cleveland/ChatGPT Brand Performance report shows 1.9% share of voice, eight mentions, and a strong 1.75 average position when mentioned.\n",
+        "id": "executive-summary",
+        "type": "markdown"
+      },
+      {
+        "body": "<style>html,body,#root{max-width:100%;overflow-x:hidden}.table-card{max-width:100%}</style><div role=\"note\" style=\"padding:10px 14px;border:1px solid #dbe4ef;border-radius:10px;background:#f8fafc;color:#334155;font:13px/1.45 system-ui,sans-serif\">Measurement rule: compare sources at their own grain; do not average national desktop, local-grid, coordinate-mobile, and AI visibility ranks.</div>",
+        "id": "layout-guard",
+        "type": "html"
+      },
+      {
+        "body": "## Three measurements answer three different questions\n\n**Semrush Position Tracking** is the repeatable national desktop panel. **Semrush Map Rank Tracker** is a multi-point local grid. **DataForSEO** is the live mobile view anchored to FMD's operating coordinate. Their ranks should be compared as complementary evidence, never averaged into one score.\n\nThe visible July 19 PDF is the completed local-day authority. The provider API also exposes a July 20 snapshot with 0.45889% visibility, 0.63373 estimated traffic, and 98.29019 average position; because that date was ahead of the local extraction date, it remains provisional rather than replacing the PDF.",
+        "id": "measurement-roles",
+        "type": "markdown"
+      },
+      {
+        "cardIds": [
+          "card-semrush-ranked",
+          "card-geo-organic",
+          "card-geo-pack",
+          "card-ai-sov"
+        ],
+        "id": "headline-strip",
+        "type": "metric-strip"
+      },
+      {
+        "body": "## FMD has breadth in only 16 of the requested 467 phrases\n\nThe campaign table contains 479 unique rows. Every requested phrase is present, while 12 additional campaign phrases are preserved separately. Within the requested corpus, FMD has 0 top-three, 0 top-ten, 2 top-twenty, and 16 top-100 rankings. The full campaign adds one ranked phrase, **fresh detailing**, at position 72.",
+        "id": "semrush-section",
+        "sourceId": "semrush_position_pdf",
+        "type": "markdown"
+      },
+      {
+        "chartId": "chart-semrush-top100",
+        "id": "semrush-chart",
+        "type": "chart"
+      },
+      {
+        "body": "Nathan's coverage is the dominant competitive fact: its 169 top-100 keywords are almost ten times FMD's 17. ATF and Diamond Finish also carry much broader national visibility, while Refresh has fewer top-100 keywords but still exceeds FMD.",
+        "id": "semrush-chart-note",
+        "sourceId": "semrush_position_pdf",
+        "type": "markdown"
+      },
+      {
+        "id": "semrush-table",
+        "tableId": "table-fmd-ranked",
+        "type": "table"
+      },
+      {
+        "body": "## The coordinate pull turns broad rankings into local actions\n\nAll 467 searches used mobile Google results at 41.4645,-81.5087,200. This source owns landing pages, local-pack businesses, named competitor placement, pack wins, near-wins, and competitor-only gaps. Those fields are live observations, not backfilled Semrush history.",
+        "id": "geo-section",
+        "sourceId": "dataforseo_geo",
+        "type": "markdown"
+      },
+      {
+        "chartId": "chart-geo-coverage",
+        "id": "geo-chart",
+        "type": "chart"
+      },
+      {
+        "body": "The chart compares how often each named business appears organically in the first 20 results. Local-pack appearances remain available in the chart source and the detail tables because pack presence is a different placement type, not another organic rank.",
+        "id": "geo-chart-note",
+        "type": "markdown"
+      },
+      {
+        "body": "## The focus-query re-pull confirms Beachwood weakness and Mayfield volatility\n\nAt 21:03 UTC, the live Mayfield Heights pack was Refresh, Geauga, then FMD. At 22:04 UTC, the queued observation was Refresh, Geauga, then Zoom Express; FMD was absent. Beachwood omitted FMD in both observations, while its third listing also changed. This is not a reconciliation failure: it is direct evidence that local packs can rotate even when coordinate, device, and query are held constant.",
+        "id": "focus-pack-section",
+        "sourceId": "reconciliation_analysis",
+        "type": "markdown"
+      },
+      {
+        "id": "focus-pack-table",
+        "tableId": "table-focus-pack",
+        "type": "table"
+      },
+      {
+        "id": "local-table",
+        "tableId": "table-local-opportunities",
+        "type": "table"
+      },
+      {
+        "id": "opportunity-table",
+        "tableId": "table-opportunities",
+        "type": "table"
+      },
+      {
+        "body": "## The heatmap confirms a tight mobile-service core, not broad dominance\n\nVisual inspection of all 23 Map Rank Tracker grids shows the strongest green points around **mobile car detailing**, **mobile detailing near me**, **mobile detailing service**, and **mobile car detailing near me**, with best visible ranks around 3 near the center/east-side operating area. Broad car-detailing terms are mostly yellow or red, while interior-detailing grids are unexpectedly sparse despite FMD's interior-first positioning.\n\nThat mismatch is actionable: FMD's strongest real-world proposition is not yet producing broad local-grid ownership for the corresponding interior-intent phrases.",
+        "id": "map-section",
+        "sourceId": "semrush_pdf_findings",
+        "type": "markdown"
+      },
+      {
+        "body": "## AI visibility is a reach problem more than an answer-quality problem\n\nThe Cleveland/ChatGPT Brand Performance report gives FMD 1.9% share of voice, eight mentions, 4.6% mention coverage, and a 1.75 average position when mentioned. The report's recurring strengths are family-interior specialization, documented process, before-and-after proof, low upsell pressure, and east-side trust. Those signals are strong but appear in too few answers.",
+        "id": "ai-section",
+        "sourceId": "semrush_pdf_findings",
+        "type": "markdown"
+      },
+      {
+        "chartId": "chart-brand-sov",
+        "id": "brand-chart",
+        "type": "chart"
+      },
+      {
+        "body": "FMD's 1.9% share is far below the selected peers even though its average position is strong when it appears. The practical priority is expanding the number of relevant contexts that mention FMD without diluting its family-interior and east-side positioning.",
+        "id": "brand-chart-note",
+        "sourceId": "semrush_pdf_findings",
+        "type": "markdown"
+      },
+      {
+        "body": "## Recommended next steps\n\n1. **Make the local mobile panel the operating scorecard.** Repeat the same 467-keyword coordinate/device pull on a fixed cadence and compare like with like.\n2. **Prioritize competitor-only gaps with local intent.** Start with near-me and named east-side suburb phrases where a named competitor appears and FMD does not.\n3. **Strengthen the interior-intent grid.** Build or improve pages and GBP/service language for interior detailing, interior car detailing, pet hair, odor, salt, and family-mess use cases.\n4. **Standardize the trust narrative.** Use consistent names for the checklist, photo quote, before-and-after proof, arrival communication, and low-upsell promise across the site, GBP, reviews, and third-party mentions.\n5. **Correct the Semrush campaign target before using it as a local KPI.** A Mayfield Heights/44124 mobile campaign would create a stable daily panel that is comparable to the live local search context.",
+        "id": "recommendations",
+        "type": "markdown"
+      },
+      {
+        "body": "## Further questions\n\n- Which competitor-only gaps have enough search volume and commercial intent to justify a dedicated page rather than an FAQ or GBP update?\n- Do the live landing pages align with the intended service/suburb page, or is ranking equity landing on a generic page?\n- After correcting the Semrush target, how much of the national/desktop gap persists in a Mayfield Heights mobile panel?",
+        "id": "further-questions",
+        "type": "markdown"
+      },
+      {
+        "body": "## Caveats and assumptions\n\nThe sources are trustworthy for their own grain but not interchangeable. The PDF table supplies exact July 19 national desktop positions. DataForSEO supplies live mobile top-20 and pack observations at one coordinate. Map Rank Tracker supplies multi-point grid evidence. Brand Performance and Competitor Research use different AI platforms, geographies, and query universes, so their visibility values cannot be directly reconciled.",
+        "id": "quality-section",
+        "type": "markdown"
+      },
+      {
+        "id": "quality-table",
+        "tableId": "table-data-quality",
+        "type": "table"
+      }
+    ],
+    "cards": [
+      {
+        "dataset": "headline",
+        "description": "Requested keyword phrases with an FMD position from 1 through 100 on July 19.",
+        "id": "card-semrush-ranked",
+        "metrics": [
+          {
+            "field": "semrush_requested_ranked",
+            "format": "number",
+            "label": "Semrush ranked"
+          },
+          {
+            "field": "semrush_requested_total",
+            "format": "number",
+            "label": "Requested corpus"
+          }
+        ],
+        "sourceId": "semrush_position_pdf"
+      },
+      {
+        "dataset": "headline",
+        "description": "Keywords where FMD appears organically in the first 20 mobile results at the operating coordinate.",
+        "id": "card-geo-organic",
+        "metrics": [
+          {
+            "field": "geo_fmd_organic_top20",
+            "format": "number",
+            "label": "Live organic top 20"
+          }
+        ],
+        "sourceId": "dataforseo_geo"
+      },
+      {
+        "dataset": "headline",
+        "description": "Keywords where FMD appears in the returned three-business local pack.",
+        "id": "card-geo-pack",
+        "metrics": [
+          {
+            "field": "geo_fmd_local_pack",
+            "format": "number",
+            "label": "Live local-pack wins"
+          }
+        ],
+        "sourceId": "dataforseo_geo"
+      },
+      {
+        "dataset": "headline",
+        "description": "Fresh Mobile Detail share of voice in the Cleveland/ChatGPT Brand Performance query set.",
+        "id": "card-ai-sov",
+        "metrics": [
+          {
+            "field": "brand_share_of_voice",
+            "format": "percent",
+            "label": "AI share of voice"
+          }
+        ],
+        "sourceId": "semrush_pdf_findings"
+      }
+    ],
+    "charts": [
+      {
+        "dataset": "semrush_coverage",
+        "encodings": {
+          "tooltip": [
+            {
+              "field": "top_3",
+              "label": "Top 3",
+              "type": "quantitative"
+            },
+            {
+              "field": "top_10",
+              "label": "Top 10",
+              "type": "quantitative"
+            },
+            {
+              "field": "top_20",
+              "label": "Top 20",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "business",
+            "label": "Business",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "top_100",
+            "label": "Keywords in top 100",
+            "type": "quantitative"
+          }
+        },
+        "id": "chart-semrush-top100",
+        "layout": "full",
+        "sourceId": "semrush_position_pdf",
+        "subtitle": "All 479 national desktop campaign rows on July 19, 2026",
+        "title": "Semrush top-100 keyword coverage",
+        "type": "bar"
+      },
+      {
+        "dataset": "geo_target_coverage",
+        "encodings": {
+          "tooltip": [
+            {
+              "field": "local_pack",
+              "label": "Local-pack appearances",
+              "type": "quantitative"
+            },
+            {
+              "field": "keywords_checked",
+              "label": "Keywords checked",
+              "type": "quantitative"
+            }
+          ],
+          "x": {
+            "field": "business",
+            "label": "Business",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "organic_top_20",
+            "label": "Keywords with an organic top-20 result",
+            "type": "quantitative"
+          }
+        },
+        "id": "chart-geo-coverage",
+        "layout": "full",
+        "sourceId": "dataforseo_geo",
+        "subtitle": "467 mobile searches at 41.4645,-81.5087; local-pack counts retained in the source data",
+        "title": "Live organic top-20 coverage",
+        "type": "bar"
+      },
+      {
+        "dataset": "brand_sov",
+        "encodings": {
+          "tooltip": [
+            {
+              "field": "scope",
+              "label": "Scope",
+              "type": "text"
+            }
+          ],
+          "x": {
+            "field": "business",
+            "label": "Business",
+            "type": "nominal"
+          },
+          "y": {
+            "field": "share_of_voice_percent",
+            "label": "Share of voice",
+            "type": "quantitative",
+            "unit": "%"
+          }
+        },
+        "id": "chart-brand-sov",
+        "layout": "full",
+        "sourceId": "semrush_pdf_findings",
+        "subtitle": "Brand Performance query set, July 19, 2026",
+        "title": "Cleveland ChatGPT share of voice",
+        "type": "bar",
+        "unit": "%",
+        "valueFormat": "number"
+      }
+    ],
+    "description": "Reconciles Semrush campaign PDFs, Semrush API aggregates, Map Rank Tracker, Brand Performance, and coordinate-level mobile SERPs.",
+    "generatedAt": "2026-07-19T22:30:31.844333+00:00",
+    "sources": [
+      {
+        "href": "evidence/semrush-position-tracking-2026-07-19/position-tracking-keywords.csv",
+        "id": "semrush_position_pdf",
+        "label": "Semrush Position Tracking Overview PDF - July 19, 2026",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      },
+      {
+        "href": "evidence/semrush-pdfs-2026-07-19/pdf-findings.json",
+        "id": "semrush_pdf_findings",
+        "label": "Semrush PDF visual inspection findings - July 19, 2026",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      },
+      {
+        "href": "evidence/semrush-position-tracking-2026-07-20/partial-summary.json",
+        "id": "semrush_api_summary",
+        "label": "Semrush Position Tracking API partial summary - provider date July 20, 2026",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      },
+      {
+        "href": "evidence/geo-top20-2026-07-19/geo-top20-keywords.csv",
+        "id": "dataforseo_geo",
+        "label": "DataForSEO mobile top-20 SERPs at the FMD operating coordinate",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      },
+      {
+        "href": "evidence/geo-map-pack-2026-07-19/summary.json",
+        "id": "dataforseo_focus_map",
+        "label": "DataForSEO two-query live mobile map-pack pull at the FMD operating coordinate",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      },
+      {
+        "href": "evidence/fmd-search-visibility-reconciliation-2026-07-19/source-notes.md",
+        "id": "reconciliation_analysis",
+        "label": "Reconciliation definitions and data-quality notes",
+        "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+      }
+    ],
+    "surface": "report",
+    "tables": [
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "label": "Keyword",
+            "type": "text"
+          },
+          {
+            "field": "position",
+            "format": "number",
+            "label": "FMD position"
+          },
+          {
+            "field": "requested_467",
+            "label": "In requested 467",
+            "type": "text"
+          },
+          {
+            "field": "segment",
+            "label": "Cuts",
+            "type": "text"
+          },
+          {
+            "field": "nathans_position",
+            "format": "number",
+            "label": "Nathan's"
+          },
+          {
+            "field": "refresh_position",
+            "format": "number",
+            "label": "Refresh"
+          },
+          {
+            "field": "atf_position",
+            "format": "number",
+            "label": "ATF"
+          }
+        ],
+        "dataset": "ranked_table",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "position"
+        },
+        "density": "spacious",
+        "id": "table-fmd-ranked",
+        "layout": "full",
+        "sourceId": "semrush_position_pdf",
+        "subtitle": "Exact July 19 positions; the campaign-only Fresh Detailing row is retained and flagged",
+        "title": "FMD-ranked Semrush keywords"
+      },
+      {
+        "columns": [
+          {
+            "field": "snapshot",
+            "label": "Snapshot",
+            "type": "text"
+          },
+          {
+            "field": "keyword",
+            "label": "Keyword",
+            "type": "text"
+          },
+          {
+            "field": "order",
+            "format": "number",
+            "label": "Pack order"
+          },
+          {
+            "field": "business_name",
+            "label": "Business / GBP identity",
+            "type": "text"
+          },
+          {
+            "field": "rating",
+            "format": "number",
+            "label": "Rating"
+          },
+          {
+            "field": "reviews",
+            "format": "number",
+            "label": "Reviews"
+          },
+          {
+            "field": "cid",
+            "label": "Google CID",
+            "type": "text"
+          },
+          {
+            "field": "fmd_appears",
+            "label": "FMD in pack",
+            "type": "text"
+          }
+        ],
+        "dataset": "focus_pack_rows",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "keyword"
+        },
+        "density": "spacious",
+        "id": "table-focus-pack",
+        "layout": "full",
+        "sourceId": "reconciliation_analysis",
+        "subtitle": "Same coordinate and mobile device; the Mayfield pack changed within about one hour",
+        "title": "Focus-query local-pack identities across two snapshots"
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "label": "Keyword",
+            "type": "text"
+          },
+          {
+            "field": "status",
+            "label": "Status",
+            "type": "text"
+          },
+          {
+            "field": "fmd_pack_position",
+            "format": "number",
+            "label": "Pack position"
+          },
+          {
+            "field": "fmd_organic_position",
+            "format": "number",
+            "label": "Organic position"
+          },
+          {
+            "field": "fmd_landing_page",
+            "label": "FMD landing page",
+            "type": "text"
+          }
+        ],
+        "dataset": "local_opportunities",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "status"
+        },
+        "density": "spacious",
+        "id": "table-local-opportunities",
+        "layout": "full",
+        "sourceId": "dataforseo_geo",
+        "subtitle": "Near-win means FMD is organic top 10 when a local pack is present but FMD is absent from that pack",
+        "title": "Local-pack wins and near-wins"
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "label": "Keyword",
+            "type": "text"
+          },
+          {
+            "field": "competitors_present",
+            "format": "number",
+            "label": "Competitors present"
+          },
+          {
+            "field": "best_competitor_position",
+            "format": "number",
+            "label": "Best competitor position"
+          },
+          {
+            "field": "competitor_names",
+            "label": "Competitors",
+            "type": "text"
+          },
+          {
+            "field": "local_pack_present",
+            "label": "Local pack",
+            "type": "text"
+          }
+        ],
+        "dataset": "opportunity_rows",
+        "defaultSort": {
+          "direction": "desc",
+          "field": "competitors_present"
+        },
+        "density": "dense",
+        "id": "table-opportunities",
+        "layout": "full",
+        "sourceId": "dataforseo_geo",
+        "subtitle": "Near-me and Cleveland/suburb phrases first; full detail remains in the 467-row CSV",
+        "title": "Highest-priority competitor-only gaps"
+      },
+      {
+        "columns": [
+          {
+            "field": "severity",
+            "label": "Severity",
+            "type": "text"
+          },
+          {
+            "field": "finding",
+            "label": "Finding",
+            "type": "text"
+          },
+          {
+            "field": "impact",
+            "label": "How to use it",
+            "type": "text"
+          }
+        ],
+        "dataset": "data_quality",
+        "defaultSort": {
+          "direction": "asc",
+          "field": "severity"
+        },
+        "density": "spacious",
+        "id": "table-data-quality",
+        "layout": "full",
+        "sourceId": "reconciliation_analysis",
+        "subtitle": "Issues that materially change how the evidence should be used",
+        "title": "Source and comparability checks"
+      }
+    ],
+    "title": "Fresh Mobile Detailing Search Visibility Reconciliation",
+    "version": 1
+  },
+  "snapshot": {
+    "datasets": {
+      "brand_sov": [
+        {
+          "business": "CLE Detailing",
+          "scope": "Cleveland / ChatGPT",
+          "share_of_voice_percent": 16.8
+        },
+        {
+          "business": "Detail Dash",
+          "scope": "Cleveland / ChatGPT",
+          "share_of_voice_percent": 12.4
+        },
+        {
+          "business": "Garrett's",
+          "scope": "Cleveland / ChatGPT",
+          "share_of_voice_percent": 11.3
+        },
+        {
+          "business": "Gould Standard",
+          "scope": "Cleveland / ChatGPT",
+          "share_of_voice_percent": 10.4
+        },
+        {
+          "business": "FMD",
+          "scope": "Cleveland / ChatGPT",
+          "share_of_voice_percent": 1.9
+        }
+      ],
+      "data_quality": [
+        {
+          "finding": "The daily Position Tracking panel is United States / desktop, not Mayfield Heights / mobile.",
+          "impact": "Use it for stable panel trend and competitor breadth, not as a proxy for what a nearby mobile searcher sees.",
+          "severity": "High"
+        },
+        {
+          "finding": "The PDF campaign has 479 rows; the requested corpus has 467.",
+          "impact": "All 467 requested phrases are present. Twelve extra campaign phrases are preserved separately rather than silently discarded.",
+          "severity": "High"
+        },
+        {
+          "finding": "The Position Tracking PDF omits landing pages and a machine-readable organic-versus-pack ownership field.",
+          "impact": "Landing pages and placement type come from the separate live DataForSEO measurement and must not be relabeled as historical Semrush fields.",
+          "severity": "Medium"
+        },
+        {
+          "finding": "Semrush API exposes July 20 while the local date and PDFs are July 19.",
+          "impact": "July 19 is the latest user-verifiable completed PDF. July 20 API metrics are retained as a provider-dated provisional snapshot.",
+          "severity": "Medium"
+        },
+        {
+          "finding": "The Mayfield Heights pack changed between two same-coordinate mobile snapshots about one hour apart.",
+          "impact": "FMD was third at 21:03 UTC but absent at 22:04 UTC. Treat individual pack ranks as volatile observations and trend repeated identical pulls.",
+          "severity": "High"
+        }
+      ],
+      "focus_pack_rows": [
+        {
+          "business_name": "Refresh Mobile Detailing",
+          "cid": "8407923223412398282",
+          "fmd_appears": true,
+          "keyword": "car detailing mayfield heights",
+          "order": 1,
+          "rating": 5.0,
+          "reviews": 65,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Geauga Detailing",
+          "cid": "7639999091160775815",
+          "fmd_appears": true,
+          "keyword": "car detailing mayfield heights",
+          "order": 2,
+          "rating": 4.9,
+          "reviews": 28,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Fresh Mobile Detailing",
+          "cid": "4120975476179388330",
+          "fmd_appears": true,
+          "keyword": "car detailing mayfield heights",
+          "order": 3,
+          "rating": 5.0,
+          "reviews": 13,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Mavics Mobile Auto Detailing",
+          "cid": "18104881366861185355",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 1,
+          "rating": 4.8,
+          "reviews": 72,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Rehab Detailing",
+          "cid": "9780177209807899515",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 2,
+          "rating": 4.6,
+          "reviews": 45,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Wick & Wax Detailing",
+          "cid": "15637332332774169279",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 3,
+          "rating": 4.9,
+          "reviews": 8,
+          "snapshot": "Live 21:03 UTC"
+        },
+        {
+          "business_name": "Refresh Mobile Detailing",
+          "cid": "8407923223412398282",
+          "fmd_appears": false,
+          "keyword": "car detailing mayfield heights",
+          "order": 1,
+          "rating": 5,
+          "reviews": 65,
+          "snapshot": "Queued 22:04 UTC"
+        },
+        {
+          "business_name": "Geauga Detailing",
+          "cid": "7639999091160775815",
+          "fmd_appears": false,
+          "keyword": "car detailing mayfield heights",
+          "order": 2,
+          "rating": 4.9,
+          "reviews": 28,
+          "snapshot": "Queued 22:04 UTC"
+        },
+        {
+          "business_name": "Zoom Express Car Wash",
+          "cid": "17367747749559290614",
+          "fmd_appears": false,
+          "keyword": "car detailing mayfield heights",
+          "order": 3,
+          "rating": 4.3,
+          "reviews": 388,
+          "snapshot": "Queued 22:04 UTC"
+        },
+        {
+          "business_name": "Mavics Mobile Auto Detailing",
+          "cid": "18104881366861185355",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 1,
+          "rating": 4.8,
+          "reviews": 72,
+          "snapshot": "Queued 22:04 UTC"
+        },
+        {
+          "business_name": "Rehab Detailing",
+          "cid": "9780177209807899515",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 2,
+          "rating": 4.6,
+          "reviews": 45,
+          "snapshot": "Queued 22:04 UTC"
+        },
+        {
+          "business_name": "Professional Vehicle Detailing",
+          "cid": "1561957430422886067",
+          "fmd_appears": false,
+          "keyword": "car detailing beachwood",
+          "order": 3,
+          "rating": 4.9,
+          "reviews": 206,
+          "snapshot": "Queued 22:04 UTC"
+        }
+      ],
+      "geo_target_coverage": [
+        {
+          "business": "Nathan's",
+          "keywords_checked": 467,
+          "local_pack": 179,
+          "organic_top_20": 297,
+          "target": "nathans"
+        },
+        {
+          "business": "Diamond Finish",
+          "keywords_checked": 467,
+          "local_pack": 0,
+          "organic_top_20": 188,
+          "target": "diamond_finish"
+        },
+        {
+          "business": "ATF",
+          "keywords_checked": 467,
+          "local_pack": 7,
+          "organic_top_20": 47,
+          "target": "atf"
+        },
+        {
+          "business": "FMD",
+          "keywords_checked": 467,
+          "local_pack": 1,
+          "organic_top_20": 41,
+          "target": "fmd"
+        },
+        {
+          "business": "Refresh",
+          "keywords_checked": 467,
+          "local_pack": 26,
+          "organic_top_20": 21,
+          "target": "refresh"
+        }
+      ],
+      "headline": [
+        {
+          "brand_share_of_voice": 0.019,
+          "geo_fmd_local_pack": 1,
+          "geo_fmd_organic_top20": 41,
+          "semrush_requested_ranked": 16,
+          "semrush_requested_total": 467
+        }
+      ],
+      "local_opportunities": [
+        {
+          "fmd_landing_page": "https://m.yelp.com/biz/fresh-mobile-detailing-cleveland-2",
+          "fmd_organic_position": 3,
+          "fmd_pack_position": 2,
+          "keyword": "drive fresh detail",
+          "status": "pack win"
+        },
+        {
+          "fmd_landing_page": "https://m.yelp.com/biz/fresh-mobile-detailing-cleveland-2",
+          "fmd_organic_position": 8,
+          "fmd_pack_position": null,
+          "keyword": "car interior cleaning beachwood",
+          "status": "near win"
+        },
+        {
+          "fmd_landing_page": "https://m.yelp.com/biz/fresh-mobile-detailing-cleveland-2",
+          "fmd_organic_position": 10,
+          "fmd_pack_position": null,
+          "keyword": "mobile car wash near me",
+          "status": "near win"
+        },
+        {
+          "fmd_landing_page": "https://m.yelp.com/biz/fresh-mobile-detailing-cleveland-2",
+          "fmd_organic_position": 10,
+          "fmd_pack_position": null,
+          "keyword": "mobile carwash",
+          "status": "near win"
+        }
+      ],
+      "opportunity_rows": [
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, ATF, Diamond Finish",
+          "competitors_present": 3,
+          "keyword": "at home car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Refresh, Diamond Finish",
+          "competitors_present": 3,
+          "keyword": "mobile car detailing near me prices",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, ATF, Diamond Finish",
+          "competitors_present": 3,
+          "keyword": "same day car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "auto car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "best auto detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "best car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "best mobile detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car buffing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car cleaning and detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detail cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detail near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detailers in my area",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detailing at home near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detailing services near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car inside cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "cheap detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "deep car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "full car detail near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "full service car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "home car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "interior auto detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "interior car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "interior car detailing near me prices",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "professional car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "suv detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "auto ceramic coating near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "auto detail shops near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car carpet cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car ceramic coating near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detail shops near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detailing places near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car interior cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car paint detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car seat detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car upholstery cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "detailing places near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "shampoo car seats near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 2,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "vehicle ceramic coating near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "auto detailing near me prices",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "automotive detail shops near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car detailing near me prices",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "ceramic coating near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "leather seat cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 3,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "paint detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 4,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "mobile detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 7,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "detail car wash near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 9,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "auto detailers in my area",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 10,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car interior shampoo near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 11,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car wash and detail near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 11,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "inside car cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 12,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car cleaning near me interior",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 16,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "car cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 16,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's, Diamond Finish",
+          "competitors_present": 2,
+          "keyword": "headliner cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "auto detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "automobile detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "best mobile car detailing near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "car deep clean near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "car deep cleaning near me",
+          "local_pack_present": true,
+          "near_me": true
+        },
+        {
+          "best_competitor_position": 1,
+          "cleveland_or_suburb": false,
+          "competitor_names": "Nathan's",
+          "competitors_present": 1,
+          "keyword": "car detailing near me interior",
+          "local_pack_present": true,
+          "near_me": true
+        }
+      ],
+      "ranked_table": [
+        {
+          "atf_position": 26,
+          "keyword": "fresh mobile detail",
+          "nathans_position": null,
+          "position": 18,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "branded, service"
+        },
+        {
+          "atf_position": 39,
+          "keyword": "mobile detailing shaker heights",
+          "nathans_position": 5,
+          "position": 19,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "interior car detailing moreland hills",
+          "nathans_position": 15,
+          "position": 43,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "car interior cleaning moreland hills",
+          "nathans_position": 1,
+          "position": 47,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": 20,
+          "keyword": "mobile car detailing shaker heights",
+          "nathans_position": 3,
+          "position": 51,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "interior detailing cleveland heights",
+          "nathans_position": 1,
+          "position": 64,
+          "refresh_position": 47,
+          "requested_467": true,
+          "segment": "cleveland, suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "interior car detailing cleveland heights",
+          "nathans_position": 1,
+          "position": 68,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "cleveland, suburb, service"
+        },
+        {
+          "atf_position": 24,
+          "keyword": "fresh mobile detailing",
+          "nathans_position": null,
+          "position": 68,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "branded, service"
+        },
+        {
+          "atf_position": 27,
+          "keyword": "fresh detailing",
+          "nathans_position": null,
+          "position": 72,
+          "refresh_position": null,
+          "requested_467": false,
+          "segment": "branded, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "car interior cleaning cleveland heights",
+          "nathans_position": 1,
+          "position": 72,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "cleveland, suburb, service"
+        },
+        {
+          "atf_position": 15,
+          "keyword": "mobile detailing cleveland ohio",
+          "nathans_position": 4,
+          "position": 72,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "cleveland, service"
+        },
+        {
+          "atf_position": 23,
+          "keyword": "mobile car detailing cleveland heights",
+          "nathans_position": 3,
+          "position": 73,
+          "refresh_position": 33,
+          "requested_467": true,
+          "segment": "cleveland, suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "interior car detailing shaker heights",
+          "nathans_position": 2,
+          "position": 73,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "mobile car detailing mayfield heights",
+          "nathans_position": 1,
+          "position": 73,
+          "refresh_position": 10,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": 7,
+          "keyword": "fresh car detailing",
+          "nathans_position": null,
+          "position": 74,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "branded, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "interior car detailing mayfield heights",
+          "nathans_position": 2,
+          "position": 75,
+          "refresh_position": 1,
+          "requested_467": true,
+          "segment": "suburb, service"
+        },
+        {
+          "atf_position": null,
+          "keyword": "ceramic coating pepper pike",
+          "nathans_position": 1,
+          "position": 94,
+          "refresh_position": null,
+          "requested_467": true,
+          "segment": "suburb, service"
+        }
+      ],
+      "semrush_coverage": [
+        {
+          "business": "Nathan's",
+          "domain": "nathansdetailing.com",
+          "top_10": 139,
+          "top_100": 169,
+          "top_20": 152,
+          "top_3": 72
+        },
+        {
+          "business": "ATF",
+          "domain": "allthingsfreshcardetailing.com",
+          "top_10": 4,
+          "top_100": 88,
+          "top_20": 14,
+          "top_3": 1
+        },
+        {
+          "business": "Diamond Finish",
+          "domain": "diamondfinishdetailing.com",
+          "top_10": 23,
+          "top_100": 73,
+          "top_20": 38,
+          "top_3": 12
+        },
+        {
+          "business": "Refresh",
+          "domain": "refreshmobiledetailingcle.com",
+          "top_10": 11,
+          "top_100": 27,
+          "top_20": 13,
+          "top_3": 4
+        },
+        {
+          "business": "FMD",
+          "domain": "freshmobiledetail.com",
+          "top_10": 0,
+          "top_100": 17,
+          "top_20": 2,
+          "top_3": 0
+        }
+      ]
+    },
+    "generatedAt": "2026-07-19T22:30:31.844333+00:00",
+    "status": "ready",
+    "version": 1
+  },
+  "sources": [
+    {
+      "href": "evidence/semrush-position-tracking-2026-07-19/position-tracking-keywords.csv",
+      "id": "semrush_position_pdf",
+      "label": "Semrush Position Tracking Overview PDF - July 19, 2026",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    },
+    {
+      "href": "evidence/semrush-pdfs-2026-07-19/pdf-findings.json",
+      "id": "semrush_pdf_findings",
+      "label": "Semrush PDF visual inspection findings - July 19, 2026",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    },
+    {
+      "href": "evidence/semrush-position-tracking-2026-07-20/partial-summary.json",
+      "id": "semrush_api_summary",
+      "label": "Semrush Position Tracking API partial summary - provider date July 20, 2026",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    },
+    {
+      "href": "evidence/geo-top20-2026-07-19/geo-top20-keywords.csv",
+      "id": "dataforseo_geo",
+      "label": "DataForSEO mobile top-20 SERPs at the FMD operating coordinate",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    },
+    {
+      "href": "evidence/geo-map-pack-2026-07-19/summary.json",
+      "id": "dataforseo_focus_map",
+      "label": "DataForSEO two-query live mobile map-pack pull at the FMD operating coordinate",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    },
+    {
+      "href": "evidence/fmd-search-visibility-reconciliation-2026-07-19/source-notes.md",
+      "id": "reconciliation_analysis",
+      "label": "Reconciliation definitions and data-quality notes",
+      "path": "evidence/fmd-search-visibility-reconciliation-2026-07-19/report-transformations.sql"
+    }
+  ],
+  "surface": "report"
+}

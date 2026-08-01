@@ -17,8 +17,9 @@
 # StartWhenAvailable runs a missed trigger when the machine is next awake.
 # WakeToRun stays off — an SEO check can wait a day; waking the machine cannot.
 #
-# The task runs sync + assess only. It NEVER publishes, deploys, or sends
-# (CONTRACT.md). A non-zero exit means assess found a critical finding or gate
+# The task runs sync + assess only. It NEVER publishes or deploys (CONTRACT.md);
+# its only outbound send is a one-line Telegram run ping to Lou (clause 5).
+# A non-zero exit means assess found a critical finding or gate
 # drift worth a session run — surfaced in the log, not acted on automatically.
 
 $deployDir = 'C:\Users\lucas\Scripts'
@@ -40,7 +41,7 @@ $settings = New-ScheduledTaskSettingsSet `
 
 Register-ScheduledTask `
     -TaskName 'FMD-SEO-Daily' `
-    -Description 'FMD SEO engine daily brain tick (WSL, hidden via run-fmd-seo-cron-hidden.vbs): headless Semrush sync + threshold assess. Never publishes/deploys/sends. Logs to fmd-seo-engine/.run/cron/.' `
+    -Description 'FMD SEO engine daily brain tick (WSL, hidden via run-fmd-seo-cron-hidden.vbs): headless Semrush sync + threshold assess, then a one-line Telegram run ping. Never publishes/deploys. Logs to fmd-seo-engine/.run/cron/.' `
     -Action $action `
     -Trigger $trigger `
     -Settings $settings `

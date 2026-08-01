@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# One-line run notification to Telegram. Generic: any scheduled job can call it.
+#
+#   notify-run <label> <exit_code> [detail]
+#
+# `hermes send` reuses the gateway's bot token directly — no LLM, no agent loop,
+# no running gateway. A notification therefore costs zero tokens and cannot
+# stall on inference.
+#
+# Codes in NOTIFY_OK_CODES (default "0") read as a correct run; anything else is
+# an error. FMD-SEO passes "0 4" because assess's exit 4 means "ran fine, found
+# something" — the finding count rides in <detail>, not in the pass/fail state.
+#
+# Best-effort by contract: a dead Telegram must never turn a healthy run into a
+# failed one, so every path exits 0.
+set -uo pipefail
+
+label="${1:?usage: notify-run <label> <exit_code> [detail]}"
+code="${2:?usage: notify-run <label> <exit_code> [detail]}"
+detail="${3:-}"
+
+ok_codes="${NOTIFY_OK_CODES:-0}"
+
+icon="❌"
+state="ERROR (exit $code)"
+for ok in $ok_codes; do
+  if [[ "$code" == "$ok" ]]; then
+    icon="✅"
+    state="ok"
+    break
+  fi
+done
+
+msg="$icon $label $(date +%H:%M) — $state"
+[[ -n "$detail" ]] && msg="$msg — $detail"
+
+# PATH for a Task-Scheduler-launched shell, which inherits a bare PATH.
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+
+if ! command -v hermes >/dev/null 2>&1; then
+  echo "notify-run: hermes not on PATH — skipping notification" >&2
+  exit 0
+fi
+
+hermes send -q --to "${NOTIFY_TARGET:-telegram}" "$msg" 2>/dev/null \
+  || echo "notify-run: send failed (non-fatal)" >&2
+exit 0
