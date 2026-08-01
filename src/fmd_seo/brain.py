@@ -24,6 +24,7 @@ from . import paths
 BRAIN_DIR = paths.ENGINE_ROOT / "brain"
 CHECKS_FILE = BRAIN_DIR / "checks.yaml"
 STATE_FILE = BRAIN_DIR / "state.yaml"
+GATES_FILE = BRAIN_DIR / "gates.yaml"
 THESIS_FILE = BRAIN_DIR / "thesis.md"
 
 # per_draft is event-driven, never time-scheduled.
@@ -183,7 +184,10 @@ class Check:
 class Brain:
     checks: list[Check]
     state: dict[str, Any]
+    gate_rules: dict[str, dict[str, Any]] = field(default_factory=dict)
+    expression_constants: dict[str, Any] = field(default_factory=dict)
     thesis_path: Path = THESIS_FILE
+    state_path: Path = STATE_FILE
     _by_id: dict[str, Check] = field(default_factory=dict, repr=False)
 
     def __post_init__(self) -> None:
@@ -204,8 +208,13 @@ class Brain:
             raise BrainError(f"unknown gate: {gate_id}")
         return gate["state"]
 
+    def gate_rule(self, gate_id: str) -> dict[str, Any]:
+        if gate_id not in self.gate_rules:
+            raise BrainError(f"unknown gate rule: {gate_id}")
+        return dict(self.gate_rules[gate_id])
 
-def _parse_check(raw: dict) -> Check:
+
+def _parse_check(raw: dict, expression_constants: set[str] | None = None) -> Check:
     required = {"id", "domain", "title", "cadence", "cost", "method", "records",
                 "thresholds", "why"}
     missing = required - raw.keys()
@@ -237,7 +246,7 @@ def _parse_check(raw: dict) -> Check:
         except SyntaxError as err:
             raise BrainError(f"check {check.id}: bad expr {threshold.expr!r}: {err}") from err
         used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
-        unknown = used - names - set(LITERALS)
+        unknown = used - names - set(LITERALS) - (expression_constants or set())
         if unknown:
             raise BrainError(
                 f"check {check.id}: threshold {threshold.expr!r} references "
@@ -248,8 +257,10 @@ def _parse_check(raw: dict) -> Check:
 
 def load_brain(brain_dir: Path | None = None) -> Brain:
     directory = brain_dir or BRAIN_DIR
-    checks_file, state_file = directory / "checks.yaml", directory / "state.yaml"
-    for path in (checks_file, state_file):
+    checks_file = directory / "checks.yaml"
+    state_file = directory / "state.yaml"
+    gates_file = directory / "gates.yaml"
+    for path in (checks_file, state_file, gates_file):
         if not path.exists():
             raise BrainError(f"brain file missing: {path}")
 
@@ -260,12 +271,33 @@ def load_brain(brain_dir: Path | None = None) -> Brain:
     if state.get("schema_version") != 1:
         raise BrainError(f"unsupported state schema: {state_file}")
 
-    checks = [_parse_check(c) for c in raw_checks["checks"]]
+    raw_gates = yaml.safe_load(gates_file.read_text(encoding="utf-8"))
+    if raw_gates.get("schema_version") != 1:
+        raise BrainError(f"unsupported gates schema: {gates_file}")
+    gate_rules = raw_gates.get("gates") or {}
+    expression_constants: dict[str, Any] = {}
+    gate1 = gate_rules.get("GATE-1", {})
+    if gate1:
+        expression_constants = {
+            "gate1_indexed_min": gate1["indexed_min"],
+            "gate1_not_indexed_max_exclusive": gate1["not_indexed_max_exclusive"],
+        }
+    checks = [
+        _parse_check(c, set(expression_constants))
+        for c in raw_checks["checks"]
+    ]
     ids = [c.id for c in checks]
     duplicates = {i for i in ids if ids.count(i) > 1}
     if duplicates:
         raise BrainError(f"duplicate check ids: {sorted(duplicates)}")
-    return Brain(checks=checks, state=state, thesis_path=directory / "thesis.md")
+    return Brain(
+        checks=checks,
+        state=state,
+        gate_rules=gate_rules,
+        expression_constants=expression_constants,
+        thesis_path=directory / "thesis.md",
+        state_path=state_file,
+    )
 
 
 def due_checks(brain: Brain, last_seen: dict[str, str], now: datetime | None = None

@@ -87,10 +87,17 @@ def record_observation(brain: Brain, check_id: str, records: dict[str, Any],
     out_dir = (directory or OBSERVATIONS_DIR) / check_id
     out_dir.mkdir(parents=True, exist_ok=True)
     fname = stamp.replace(":", "").replace("-", "") + ".json"
-    path = out_dir / fname
-    path.write_text(json.dumps(obs.to_dict(), indent=2, sort_keys=True) + "\n",
-                    encoding="utf-8")
-    return path
+    base = out_dir / fname
+    payload = json.dumps(obs.to_dict(), indent=2, sort_keys=True) + "\n"
+    suffix = 1
+    while True:
+        path = base if suffix == 1 else base.with_name(f"{base.stem}~{suffix}{base.suffix}")
+        try:
+            with path.open("x", encoding="utf-8") as handle:
+                handle.write(payload)
+            return path
+        except FileExistsError:
+            suffix += 1
 
 
 def load_observations(check_id: str, directory: Path | None = None) -> list[Observation]:

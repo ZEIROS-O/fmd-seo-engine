@@ -47,7 +47,7 @@ def classify_coverage(coverage_state: str) -> str:
     return "not_indexed"
 
 
-def tally(coverage_states: list[str]) -> dict:
+def tally(coverage_states: list[str], *, inspected_ok: int | None = None) -> dict:
     """Aggregate coverageState strings into the seo.indexation record shape."""
     buckets = {"indexed": 0, "discovered_not_indexed": 0,
                "crawled_not_indexed": 0, "not_indexed_other": 0}
@@ -68,6 +68,7 @@ def tally(coverage_states: list[str]) -> dict:
         "not_indexed": not_indexed,
         "discovered_not_indexed": buckets["discovered_not_indexed"],
         "crawled_not_indexed": buckets["crawled_not_indexed"],
+        "inspected_ok": len(coverage_states) if inspected_ok is None else inspected_ok,
     }
 
 
@@ -116,10 +117,18 @@ def fetch_indexation(cfg: GscConfig, urls: list[str]) -> dict:
     GscUnavailable if the service can't be built; a per-URL error is recorded as
     not_indexed rather than aborting the whole tally (one bad URL != no reading)."""
     service = _build_service(cfg.key_path)
+    if not urls:
+        raise GscUnavailable("GSC inspection received no URLs")
     states: list[str] = []
+    succeeded = 0
     for url in urls:
         try:
             states.append(inspect_url(service, cfg.site_url, url))
+            succeeded += 1
         except Exception:  # noqa: BLE001 - a single inspect failure -> not_indexed bucket
             states.append("")
-    return tally(states)
+    if succeeded / len(urls) < 0.9:
+        raise GscUnavailable(
+            f"GSC URL Inspection succeeded for only {succeeded}/{len(urls)} URLs"
+        )
+    return tally(states, inspected_ok=succeeded)

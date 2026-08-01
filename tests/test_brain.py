@@ -49,6 +49,10 @@ def _write_brain(tmp_path, checks_body, state_body=None):
         state_body or "schema_version: 1\nsite: {domain: x.com}\ngates: {}\n",
         encoding="utf-8")
     (tmp_path / "thesis.md").write_text("# thesis\n", encoding="utf-8")
+    (tmp_path / "gates.yaml").write_text(
+        "schema_version: 1\ngates: {}\n",
+        encoding="utf-8",
+    )
     return load_brain(tmp_path)
 
 
@@ -88,6 +92,16 @@ def test_real_brain_loads_clean():
     b = load_brain()
     assert b.check("seo.indexation")
     assert b.gate_state("GATE-1") in ("OPEN", "CLOSED")
+
+
+def test_gate_rules_load_from_single_registry():
+    b = load_brain()
+    assert b.gate_rule("GATE-1") == {
+        "indexed_min": 10,
+        "not_indexed_max_exclusive": 8,
+        "consecutive_clean_required": 2,
+        "minimum_days_between_readings": 7,
+    }
 
 
 # ─────────────────────── due scheduling ───────────────────────

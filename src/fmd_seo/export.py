@@ -39,12 +39,50 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
 
     status = subprocess.run(["git", "-C", str(worktree), "status", "--porcelain"],
                             capture_output=True, text=True)
+    if status.returncode != 0:
+        checks.append(("worktree_clean", "BLOCK",
+                       f"git status failed: {status.stderr.strip()[-300:]}"))
+        return checks, None
     if status.stdout.strip():
         checks.append(("worktree_clean", "BLOCK", f"dirty worktree: {status.stdout.strip()[:200]}"))
         return checks, None
-    rollback_base = subprocess.run(["git", "-C", str(worktree), "rev-parse", "HEAD"],
-                                   capture_output=True, text=True).stdout.strip()
+    rev_parse = subprocess.run(["git", "-C", str(worktree), "rev-parse", "HEAD"],
+                               capture_output=True, text=True)
+    if rev_parse.returncode != 0:
+        checks.append(("worktree_clean", "BLOCK",
+                       f"git rev-parse failed: {rev_parse.stderr.strip()[-300:]}"))
+        return checks, None
+    rollback_base = rev_parse.stdout.strip()
     checks.append(("worktree_clean", "PASS", f"rollback base {rollback_base[:10]}"))
+
+    relative_dest = str(dest.relative_to(worktree))
+    tracked = subprocess.run(
+        ["git", "-C", str(worktree), "ls-files", "--error-unmatch", relative_dest],
+        capture_output=True,
+        text=True,
+    ).returncode == 0
+
+    def rollback() -> None:
+        reset = subprocess.run(
+            ["git", "-C", str(worktree), "reset", "--hard", rollback_base],
+            capture_output=True,
+            text=True,
+        )
+        if reset.returncode != 0:
+            checks.append(("rollback", "BLOCK", f"git reset failed: {reset.stderr[-300:]}"))
+            return
+        if not tracked and dest.exists():
+            dest.unlink()
+        clean = subprocess.run(
+            ["git", "-C", str(worktree), "status", "--porcelain"],
+            capture_output=True,
+            text=True,
+        )
+        if clean.returncode != 0 or clean.stdout.strip():
+            detail = clean.stderr[-300:] if clean.returncode else clean.stdout.strip()[:300]
+            checks.append(("rollback", "BLOCK", f"worktree not clean after rollback: {detail}"))
+        else:
+            checks.append(("rollback", "PASS", f"restored {rollback_base[:10]}"))
 
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(render_content_json(package), indent=2, ensure_ascii=False) + "\n",
@@ -55,14 +93,25 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
                            capture_output=True, text=True, timeout=900)
     if build.returncode != 0:
         checks.append(("production_build", "BLOCK", build.stderr[-500:]))
+        rollback()
         return checks, None
     checks.append(("production_build", "PASS", "bun run build exit 0"))
 
-    server = subprocess.Popen(["bun", "run", "preview", "--", "--port", str(port), "--strictPort"],
-                              cwd=worktree, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    try:
+        server = subprocess.Popen(
+            ["bun", "run", "preview", "--", "--port", str(port), "--strictPort"],
+            cwd=worktree,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT,
+        )
+    except OSError as err:
+        checks.append(("preview_server", "BLOCK", str(err)))
+        rollback()
+        return checks, None
     try:
         if not _wait_port(port):
             checks.append(("preview_server", "BLOCK", "never opened port"))
+            rollback()
             return checks, None
         results = check_slash_variants(f"http://127.0.0.1:{port}", f"blog/{slug}")
         for name, (verdict, detail) in results.items():
@@ -75,9 +124,18 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
             server.kill()
 
     if any(v == "BLOCK" for _, v, _ in checks):
+        rollback()
         return checks, None
 
-    subprocess.run(["git", "-C", str(worktree), "add", str(dest)], check=True)
+    add = subprocess.run(
+        ["git", "-C", str(worktree), "add", str(dest)],
+        capture_output=True,
+        text=True,
+    )
+    if add.returncode != 0:
+        checks.append(("site_commit", "BLOCK", f"git add failed: {add.stderr[-300:]}"))
+        rollback()
+        return checks, None
     commit = subprocess.run(
         ["git", "-C", str(worktree), "commit", "-q", "-m",
          f"Add verified blog content: {slug} (package {package.package_id})\n\n"
@@ -85,9 +143,19 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
         capture_output=True, text=True)
     if commit.returncode != 0:
         checks.append(("site_commit", "BLOCK", commit.stderr[-300:]))
+        rollback()
         return checks, None
-    dest_sha = subprocess.run(["git", "-C", str(worktree), "rev-parse", "HEAD"],
-                              capture_output=True, text=True).stdout.strip()
+    destination_rev = subprocess.run(
+        ["git", "-C", str(worktree), "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+    )
+    if destination_rev.returncode != 0:
+        checks.append(("site_commit", "BLOCK",
+                       f"git rev-parse failed: {destination_rev.stderr[-300:]}"))
+        rollback()
+        return checks, None
+    dest_sha = destination_rev.stdout.strip()
     checks.append(("site_commit", "PASS", dest_sha[:10]))
 
     manifest = ExportManifest(

@@ -28,7 +28,7 @@ def run_preflight(config: dict, *, online: bool = False) -> RunReceipt:
         return rb.finish("BLOCK")
     rb.check("killswitch", "PASS", "not engaged")
 
-    for label in ("fresh_repo", "operator_repo", "zeiros_repo"):
+    for label in ("operator_repo", "zeiros_repo"):
         repo = Path(config["paths"][label])
         if (repo / ".git").exists():
             rb.check(f"repo:{label}", "PASS", str(repo))

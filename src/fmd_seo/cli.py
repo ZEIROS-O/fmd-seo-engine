@@ -19,7 +19,7 @@ from .preflight import run_preflight
 from .receipts import ReceiptBuilder, write_receipt
 from .runstate import LockHeld, RunLock
 
-EXIT = {"DONE": 0, "NO_OP": 0, "PARTIAL": 3, "BLOCK": 4}
+EXIT = {"DONE": 0, "NO_OP": 0, "PARTIAL": 3, "BLOCK": 4, "ERROR": 5}
 
 
 def _not_implemented(command: str, detail: str):
@@ -33,6 +33,28 @@ def _emit(receipt, receipts_dir: Path) -> int:
     print(json.dumps(receipt.to_dict(), indent=2))
     print(f"receipt: {path}", file=sys.stderr)
     return EXIT[receipt.status]
+
+
+def _emit_loop(rb: ReceiptBuilder, payload: dict, code: int, receipts_dir: Path) -> int:
+    if code == EXIT["PARTIAL"]:
+        status, verdict = "PARTIAL", "WARN"
+    elif code in (EXIT["BLOCK"], EXIT["ERROR"]):
+        status, verdict = "BLOCK", "BLOCK"
+    elif (
+        (payload.get("command") == "sync" and payload.get("skipped_no_key")
+         and not payload.get("fetched"))
+        or (payload.get("command") == "gsc-sync" and payload.get("fetched") is False)
+    ):
+        status, verdict = "NO_OP", "WARN"
+    else:
+        status, verdict = "DONE", "PASS"
+    detail = payload.get("error") or f"exit {code}"
+    rb.check("command_result", verdict, str(detail))
+    receipt = rb.finish(status)
+    path = write_receipt(receipt, receipts_dir)
+    print(json.dumps(payload, indent=2))
+    print(f"receipt: {path}", file=sys.stderr)
+    return code
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -99,12 +121,22 @@ def main(argv: list[str] | None = None) -> int:
         # Preflight reports the kill switch as a blocker instead of refusing to run.
         return _emit(run_preflight(config, online=args.online), receipts_dir)
 
-    # Loop-surface commands are read-mostly and must work even under the kill
-    # switch (a caller needs to see WHY it is disabled). They do not take the run
-    # lock — they never spend or mutate the site.
+    # Read-only loop commands remain available under the kill switch so an
+    # operator can inspect why the engine stopped. Observation-writing and
+    # provider-sync commands are locked and respect DISABLED.
     if args.command in ("beat", "assess", "brief", "observe", "sync", "gsc-sync"):
         from . import loop_cli
+        rb = ReceiptBuilder(args.command)
+        mutating = args.command in ("observe", "sync", "gsc-sync")
+        lock = None
+        lock_acquired = False
         try:
+            if mutating:
+                killswitch.assert_not_engaged()
+                paths.ensure_run_dirs()
+                lock = RunLock(paths.LOCK_FILE)
+                lock.acquire(rb.run_id)
+                lock_acquired = True
             if args.command == "beat":
                 payload, code = loop_cli.cmd_beat(config)
             elif args.command == "assess":
@@ -119,11 +151,17 @@ def main(argv: list[str] | None = None) -> int:
                 payload, code = loop_cli.cmd_observe(
                     config, args.check_id, args.records,
                     fulfillment=args.fulfillment, source=args.source, note=args.note)
-        except Exception as err:  # noqa: BLE001 - surface any brain-load error as BLOCK
-            print(json.dumps({"command": args.command, "error": str(err)}, indent=2))
-            return EXIT["BLOCK"]
-        print(json.dumps(payload, indent=2))
-        return code
+        except (LockHeld, killswitch.KillSwitchEngaged) as err:
+            payload, code = {"command": args.command, "error": str(err)}, EXIT["BLOCK"]
+        except Exception as err:  # noqa: BLE001 - internal failure is distinct from findings
+            payload, code = {
+                "command": args.command,
+                "error": f"{type(err).__name__}: {err}",
+            }, EXIT["ERROR"]
+        finally:
+            if lock is not None and lock_acquired:
+                lock.release()
+        return _emit_loop(rb, payload, code, receipts_dir)
 
     try:
         killswitch.assert_not_engaged()

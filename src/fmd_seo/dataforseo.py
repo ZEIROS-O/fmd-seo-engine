@@ -13,7 +13,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from . import killswitch
+from . import health, killswitch, paths
 from .spend import SpendLedger
 
 API_BASE = "https://api.dataforseo.com"
@@ -48,12 +48,13 @@ def load_creds(env_file: Path) -> tuple[str, str]:
 
 class DataForSeoClient:
     def __init__(self, env_file: Path, ledger: SpendLedger, *,
-                 systemic_failures_to_kill: int = 2, timeout_s: int = 30):
+                 systemic_failures_to_kill: int = 2, timeout_s: int = 30,
+                 health_file: Path | None = None):
         self.env_file = env_file
         self.ledger = ledger
         self.timeout_s = timeout_s
         self.systemic_failures_to_kill = systemic_failures_to_kill
-        self._systemic_failures = 0
+        self.health_file = health_file or paths.HEALTH_FILE
         self._auth: str | None = None
 
     def _ensure_auth(self) -> str:
@@ -64,9 +65,9 @@ class DataForSeoClient:
         return self._auth
 
     def _record_systemic_failure(self, reason: str) -> None:
-        self._systemic_failures += 1
-        if self._systemic_failures >= self.systemic_failures_to_kill:
-            killswitch.engage(f"DataForSEO systemic failures x{self._systemic_failures}: {reason}")
+        count = health.record_systemic_failure(self.health_file, "dataforseo")
+        if count >= self.systemic_failures_to_kill:
+            killswitch.engage(f"DataForSEO systemic failures x{count}: {reason}")
 
     def _request(self, endpoint: str, payload: list | None = None) -> dict:
         killswitch.assert_not_engaged()
@@ -92,7 +93,7 @@ class DataForSeoClient:
             if code in (40100, 40200, 40101):
                 self._record_systemic_failure(f"API status {code} on {endpoint}")
             raise ApiFailure(f"API status {code} on {endpoint}: {body.get('status_message')}")
-        self._systemic_failures = 0
+        health.clear_systemic_failures(self.health_file, "dataforseo")
         return body
 
     def probe(self) -> dict:

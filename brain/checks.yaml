@@ -108,12 +108,13 @@ checks:
       - {name: not_indexed, type: int}
       - {name: discovered_not_indexed, type: int}
       - {name: crawled_not_indexed, type: int}
+      - {name: inspected_ok, type: int}
     thresholds:
-      - expr: not_indexed >= 8
+      - expr: not_indexed >= gate1_not_indexed_max_exclusive
         severity: critical
         finding: "Indexation failing — GATE-1 (publish gate) stays CLOSED."
         action: "No new pages or posts. Route capacity to schema / entity / linking / copy (thesis priority order)."
-      - expr: not_indexed < 8 and indexed >= 10
+      - expr: not_indexed < gate1_not_indexed_max_exclusive and indexed >= gate1_indexed_min
         severity: info
         finding: "Indexation recovering — GATE-1 may open after a second consecutive clean weekly reading."
         action: "Re-read next week. Two consecutive clean readings required before authoring resumes."
@@ -430,6 +431,49 @@ checks:
         finding: "business-facts.yaml will become stale within seven days."
         action: "Schedule Lou's fact review before the hard preflight block."
     why: "Turns the 30-day fact staleness cliff into a visible seven-day warning ramp."
+
+  - id: sync.health
+    domain: engine
+    title: Headless data-sync health
+    cadence: daily
+    cost: free
+    method:
+      kind: engine
+      run: |
+        After every headless sync attempt, record how many due checks were
+        attempted, succeeded, and failed. Provider errors are findings, not
+        transient console text.
+    records:
+      - {name: checks_attempted, type: int}
+      - {name: checks_succeeded, type: int}
+      - {name: checks_failed, type: int}
+    thresholds:
+      - expr: checks_failed > 0
+        severity: critical
+        finding: "One or more headless data checks failed during sync."
+        action: "Inspect the sync receipt and provider health; do not report the run healthy."
+    why: "A fetch failure must become a standing finding so the autonomous loop cannot fail quietly."
+
+  - id: engine.freshness
+    domain: engine
+    title: Observation freshness watchdog
+    cadence: daily
+    cost: free
+    method:
+      kind: engine
+      run: |
+        Compare every time-scheduled check's newest committed observation to
+        twice its cadence. Record the stalest observed age and how many checks
+        exceed that limit. Never-observed checks remain explicit in `beat`.
+    records:
+      - {name: stalest_check_age_days, type: int}
+      - {name: checks_overdue, type: int}
+    thresholds:
+      - expr: checks_overdue > 0
+        severity: critical
+        finding: "One or more observation streams are older than twice their cadence."
+        action: "Treat the measurement loop as unhealthy until every overdue stream is restored or explicitly retired."
+    why: "This watchdog turns a multi-day data blackout into a standing critical finding."
 
   # ───────────────────── BLOG / TOPICS ─────────────────────
   - id: topics.related_clusters

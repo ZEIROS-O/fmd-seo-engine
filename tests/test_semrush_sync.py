@@ -122,3 +122,39 @@ def test_sync_no_key_reports_skipped(tmp_path, monkeypatch):
     assert result.errors == {}
     # the API-backed checks with no prior observation are due -> listed as skipped
     assert "topics.related_clusters" in result.skipped_no_key
+
+
+def test_sync_failure_persists_critical_health_observation(tmp_path, monkeypatch):
+    from fmd_seo import sync
+    from fmd_seo.assess import assess_check
+    from fmd_seo.brain import load_brain
+    from fmd_seo.observations import latest_observation
+
+    creds = tmp_path / "semrush.env"
+    creds.write_text("SEMRUSH_API_KEY=test-key\n", encoding="utf-8")
+
+    class FailingClient:
+        def __init__(self, *_args, **_kwargs):
+            pass
+
+        def fetch(self, report_type, **_params):
+            raise SemrushApiFailure(f"ERROR 132 on {report_type}")
+
+    monkeypatch.setattr(sync, "SemrushClient", FailingClient)
+    observations = tmp_path / "observations"
+    config = {
+        "creds_env": str(creds),
+        "semrush": {"units_cap": 500, "database": "us"},
+    }
+
+    result = sync.sync_due(config, observations_dir=observations)
+
+    health = latest_observation("sync.health", observations)
+    assert health is not None
+    assert health.records["checks_attempted"] == (
+        health.records["checks_succeeded"] + health.records["checks_failed"]
+    )
+    assert health.records["checks_failed"] == len(result.errors)
+    assert health.records["checks_failed"] > 0
+    _, findings = assess_check(load_brain(), "sync.health", observations)
+    assert any(f.severity == "critical" for f in findings)

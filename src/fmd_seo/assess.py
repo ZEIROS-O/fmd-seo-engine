@@ -50,7 +50,10 @@ def assess_check(brain: Brain, check_id: str, directory: Path | None = None
         return None, []
     findings: list[Finding] = []
     for threshold in check.thresholds:
-        if evaluate(threshold.expr, obs.records):
+        if evaluate(
+            threshold.expr,
+            {**brain.expression_constants, **obs.records},
+        ):
             findings.append(Finding(
                 check_id=check.id,
                 domain=check.domain,
@@ -67,8 +70,25 @@ def assess_check(brain: Brain, check_id: str, directory: Path | None = None
 def assess_all(brain: Brain, directory: Path | None = None) -> list[Finding]:
     findings: list[Finding] = []
     for check in brain.checks:
-        _, check_findings = assess_check(brain, check.id, directory)
-        findings.extend(check_findings)
+        try:
+            _, check_findings = assess_check(brain, check.id, directory)
+            findings.extend(check_findings)
+        except Exception as err:  # noqa: BLE001 - one broken check must not erase the rest
+            try:
+                obs = latest_observation(check.id, directory)
+            except Exception:  # noqa: BLE001 - malformed storage is the failure being surfaced
+                obs = None
+            findings.append(Finding(
+                check_id=check.id,
+                domain=check.domain,
+                severity="critical",
+                finding=(f"Threshold evaluation failed for {check.id}: "
+                         f"{type(err).__name__}: {err}"),
+                action="Repair the malformed observation or threshold; other checks remain active.",
+                observed_at=obs.observed_at if obs else "unknown",
+                fulfillment=obs.fulfillment if obs else "engine",
+                expr="<assessment>",
+            ))
     findings.sort(key=lambda f: (-f.rank, f.domain, f.check_id))
     return findings
 
@@ -87,7 +107,11 @@ def _indexation_says(brain: Brain, directory: Path | None) -> str | None:
     indexed = obs.records.get("indexed")
     if not_indexed is None or indexed is None:
         return None
-    if not_indexed < 8 and indexed >= 10:
+    rule = brain.gate_rule("GATE-1")
+    if (
+        not_indexed < rule["not_indexed_max_exclusive"]
+        and indexed >= rule["indexed_min"]
+    ):
         return "OPEN"
     return "CLOSED"
 
@@ -97,13 +121,15 @@ def assess_gates(brain: Brain, directory: Path | None = None) -> list[GateReport
     for gate_id, gate in brain.gates.items():
         drift = None
         if gate_id == "GATE-1":
+            rule = brain.gate_rule(gate_id)
+            required = int(rule["consecutive_clean_required"])
             observed = _indexation_says(brain, directory)
             declared = "OPEN" if gate["state"] == "OPEN" else "CLOSED"
             if observed is not None and observed != declared:
                 consecutive = gate.get("consecutive_clean_readings", 0)
-                if observed == "OPEN" and consecutive < 2:
+                if observed == "OPEN" and consecutive < required:
                     drift = ("indexation now meets the open condition; needs "
-                             f"{2 - consecutive} more consecutive clean weekly "
+                             f"{required - consecutive} more consecutive clean weekly "
                              "reading(s) before GATE-1 opens")
                 else:
                     drift = (f"declared {declared} but live indexation implies "

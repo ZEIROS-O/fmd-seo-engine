@@ -167,4 +167,20 @@ def sync_due(config: dict, *, brain: Brain | None = None,
         except Exception as err:  # noqa: BLE001 - one bad check must not abort the rest
             errors[pc.check_id] = str(err)
 
+    if due_api:
+        note = "; ".join(f"{check_id}: {message}" for check_id, message in errors.items())
+        record_observation(
+            brain,
+            "sync.health",
+            {
+                "checks_attempted": len(due_api),
+                "checks_succeeded": len(fetched),
+                "checks_failed": len(errors),
+            },
+            fulfillment="engine",
+            source="fmd-seo sync",
+            note=note,
+            directory=observations_dir,
+        )
+
     return SyncResult(fetched=fetched, skipped_no_key=[], errors=errors)

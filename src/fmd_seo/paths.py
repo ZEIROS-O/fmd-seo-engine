@@ -18,6 +18,7 @@ RUN_DIR = ENGINE_ROOT / ".run"
 RAW_DIR = RUN_DIR / "raw"
 LOCK_FILE = RUN_DIR / "lock"
 SPEND_LEDGER = RUN_DIR / "spend.json"
+HEALTH_FILE = RUN_DIR / "health.json"
 KILL_FILE = ENGINE_ROOT / "DISABLED"
 
 EVIDENCE_DIR = ENGINE_ROOT / "evidence"

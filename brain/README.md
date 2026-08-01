@@ -11,7 +11,8 @@ every time. The brain removes him from that seat.
 |---|---|---|
 | `thesis.md` | Standing beliefs (T1–T8) + the hard gates. The judgment layer. | Human, or agent with measured evidence |
 | `checks.yaml` | The check registry: what to check, how, how often, and what each result means (thresholds → findings → actions). | Human / agent |
-| `state.yaml` | Measured world-state + machine-owned gate state. Every value traces to an evidence file + date. | `observe` writes observations; gates hand-managed |
+| `gates.yaml` | Single rule registry for machine-managed gate thresholds and transition requirements. | Human / agent |
+| `state.yaml` | Measured world-state + machine-owned gate state. Every value traces to an evidence file + date. | Indexation observations machine-manage GATE-1 |
 | `observations/` | Time-series of every recorded check result. Committed evidence. | `observe` only |
 
 ## How the loop thinks

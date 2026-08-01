@@ -6,6 +6,7 @@
   "records": {
     "crawled_not_indexed": 2,
     "discovered_not_indexed": 14,
+    "inspected_ok": 22,
     "indexed": 4,
     "not_indexed": 18
   },

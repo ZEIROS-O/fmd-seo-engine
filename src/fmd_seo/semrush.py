@@ -22,7 +22,7 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import killswitch
+from . import health, killswitch, paths
 
 ANALYTICS_BASE = "https://api.semrush.com/"
 BACKLINKS_BASE = "https://api.semrush.com/analytics/v1/"
@@ -152,12 +152,13 @@ def parse_csv(text: str, columns: list[str] | None = None) -> list[dict[str, str
 
 class SemrushClient:
     def __init__(self, env_file: Path, ledger: UnitsLedger, *,
-                 systemic_failures_to_kill: int = 2, timeout_s: int = 30):
+                 systemic_failures_to_kill: int = 2, timeout_s: int = 30,
+                 health_file: Path | None = None):
         self.env_file = env_file
         self.ledger = ledger
         self.timeout_s = timeout_s
         self.systemic_failures_to_kill = systemic_failures_to_kill
-        self._systemic_failures = 0
+        self.health_file = health_file or paths.HEALTH_FILE
         self._key: str | None = None
 
     def _ensure_key(self) -> str:
@@ -166,9 +167,9 @@ class SemrushClient:
         return self._key
 
     def _record_systemic_failure(self, reason: str) -> None:
-        self._systemic_failures += 1
-        if self._systemic_failures >= self.systemic_failures_to_kill:
-            killswitch.engage(f"Semrush systemic failures x{self._systemic_failures}: {reason}")
+        count = health.record_systemic_failure(self.health_file, "semrush")
+        if count >= self.systemic_failures_to_kill:
+            killswitch.engage(f"Semrush systemic failures x{count}: {reason}")
 
     def fetch(self, report_type: str, **params) -> list[dict[str, str]]:
         """Call one Analytics report. Reserves units first, returns parsed rows.
@@ -210,11 +211,11 @@ class SemrushClient:
                 self._record_systemic_failure(first)
             # "NOTHING FOUND" is a legitimate empty result, not a failure.
             if "NOTHING FOUND" in first.upper():
-                self._systemic_failures = 0
+                health.clear_systemic_failures(self.health_file, "semrush")
                 return []
             raise SemrushApiFailure(f"Semrush error on {report_type}: {first}")
 
-        self._systemic_failures = 0
+        health.clear_systemic_failures(self.health_file, "semrush")
         # Key rows positionally by the codes we requested — the response header
         # is display names, not codes.
         return parse_csv(body, columns=spec["columns"].split(","))
