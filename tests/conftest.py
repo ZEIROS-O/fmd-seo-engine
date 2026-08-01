@@ -1,4 +1,5 @@
 import subprocess
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -7,12 +8,13 @@ import pytest
 @pytest.fixture
 def facts_file(tmp_path: Path) -> Path:
     path = tmp_path / "business-facts.yaml"
+    today = date.today().isoformat()
     path.write_text(
-        """\
+        f"""\
 schema_version: 1
 business_id: fresh-mobile-detailing
-source_last_updated: 2026-07-04
-reviewed_at: 2026-07-12
+source_last_updated: {today}
+reviewed_at: {today}
 review_after_days: 30
 identity:
   name: Fresh Mobile Detailing

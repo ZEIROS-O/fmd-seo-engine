@@ -23,16 +23,17 @@ signal for a young entity — not a content-quality gap.
 **Therefore: writing more pages right now is actively counterproductive.** It adds
 to a pile of 14 pages Google already refuses to index. This is why `GATE-1` exists.
 
-## T2. Structured data is now LIVE (was zero at the 07-14 audit). Remaining gap is narrow.
+## T2. Structured data is SSR in raw HTML. The remaining gap is narrow.
 
-**Superseded reading (accurate at audit time, 2026-07-14):** Semrush Site Audit +
-live-HTML md5 both showed Schema.org on **0** pages — social meta present, schema
-absent.
+**Superseded reading (2026-07-14):** Semrush Site Audit and an earlier raw-HTML
+capture showed Schema.org on **0** pages. That snapshot became stale when the
+site changed; it was not evidence that schema required JavaScript or a headless
+browser.
 
-**Corrected reading (live re-fetch, 2026-07-14, same day, after the audit):** schema
-was **added**. Now: **32 ld+json blocks across 16/20 pages**, with `LocalBusiness`,
-`Service`, and `AggregateRating` all present. The homepage, money pages, and every
-suburb page carry it.
+**Corrected reading:** the TanStack Start site renders server-side, and schema is
+present directly in raw HTML. A plain `curl` fetch finds **32 ld+json blocks
+across 16/20 pages**, with `LocalBusiness`, `Service`, and `AggregateRating` all
+present. The homepage, money pages, and every suburb page carry it.
 
 **What this means:** the single highest-leverage fix identified at baseline **has
 largely been executed.** T2 is no longer the open bottleneck. The residual schema

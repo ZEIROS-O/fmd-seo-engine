@@ -1,0 +1,14 @@
+{
+  "check_id": "seo.positions",
+  "fulfillment": "engine_api",
+  "note": "Coordinate-anchored mobile standard-queue SERPs at depth 20.",
+  "observed_at": "2026-07-19T22:14:55+00:00",
+  "records": {
+    "blocked": false,
+    "keywords_tracked": 467,
+    "top10_count": 8,
+    "top20_count": 41,
+    "top3_count": 1
+  },
+  "source": "evidence/geo-top20-2026-07-19/geo-top20-summary.json"
+}

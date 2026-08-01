@@ -1,0 +1,10 @@
+{
+  "check_id": "facts.freshness",
+  "fulfillment": "engine",
+  "note": "reviewed_at 2026-07-12; review_after_days 30; Lou re-review still required",
+  "observed_at": "2026-08-01T06:01:33+00:00",
+  "records": {
+    "days_until_stale": 10
+  },
+  "source": "/mnt/c/Users/lucas/OneDrive/Documents/Cowork Detailing Folder/business-facts.yaml"
+}

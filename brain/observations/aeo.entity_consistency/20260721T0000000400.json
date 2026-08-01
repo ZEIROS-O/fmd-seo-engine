@@ -1,0 +1,12 @@
+{
+  "check_id": "aeo.entity_consistency",
+  "fulfillment": "console",
+  "note": "Full 25-directory scan; three connected listings publish Express Mobile Detailing instead of Fresh Mobile Detailing.",
+  "observed_at": "2026-07-21T00:00:00-04:00",
+  "records": {
+    "drivefresh_contaminated": 0,
+    "nap_mismatches": 3,
+    "surfaces_checked": 25
+  },
+  "source": "evidence/listing-management-scan-2026-07-21/scan-results.md"
+}

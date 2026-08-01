@@ -3,7 +3,7 @@
 import pytest
 
 from fmd_seo.assess import assess_all, assess_check, assess_gates
-from fmd_seo.brain import load_brain
+from fmd_seo.brain import Brain, Check, load_brain
 from fmd_seo.observations import (
     latest_observation, load_observations, record_observation,
 )
@@ -48,6 +48,42 @@ def test_observe_rejects_bool_for_int(brain, obs_dir):
                            {"indexed": True, "not_indexed": 18,
                             "discovered_not_indexed": 14, "crawled_not_indexed": 2},
                            fulfillment="console", source="test", directory=obs_dir)
+
+
+def test_observe_validates_float_fields(obs_dir):
+    float_check = Check(
+        id="aeo.share_of_voice",
+        domain="aeo",
+        title="AEO share of voice",
+        cadence="monthly",
+        cost="free",
+        method_kind="agent",
+        method_run="measure",
+        records=[{"name": "ai_sov_percent", "type": "float"}],
+        thresholds=[],
+        why="test",
+    )
+    float_brain = Brain(checks=[float_check], state={})
+
+    with pytest.raises(ValueError, match="must be float"):
+        record_observation(
+            float_brain,
+            "aeo.share_of_voice",
+            {"ai_sov_percent": "1.9"},
+            fulfillment="agent",
+            source="test",
+            directory=obs_dir,
+        )
+
+    path = record_observation(
+        float_brain,
+        "aeo.share_of_voice",
+        {"ai_sov_percent": 1.9},
+        fulfillment="agent",
+        source="test",
+        directory=obs_dir,
+    )
+    assert path.exists()
 
 
 def test_observe_and_readback(brain, obs_dir):

@@ -32,6 +32,8 @@ checks:
         JavaScript disabled (plain curl; no headless browser). Count occurrences of
         `application/ld+json`, `schema.org`, `@type`, and `itemtype` in the raw
         response body. Record per-page and site-wide totals.
+        Plain curl is sufficient because TanStack Start renders the JSON-LD
+        server-side into the initial HTML response.
         Do NOT count Open Graph or Twitter Card meta — they are not schema.
     records:
       - {name: pages_checked, type: int}
@@ -54,9 +56,9 @@ checks:
         finding: "LocalBusiness present without AggregateRating — review corroboration not machine-readable."
         action: "Add AggregateRating bound to the verified Google review count (GATE-3: bind to business-facts.yaml, never invent)."
     why: |
-      T2. Two independent sources confirmed zero schema.org site-wide against a
-      95/100, zero-error site. Schema is the direct machine-readable lever on the
-      entity-trust bottleneck (T1). Free to fix, no authority required.
+      T2. The live TanStack Start site emits JSON-LD in SSR raw HTML. This check
+      guards that machine-readable entity surface without introducing a fragile
+      headless-browser dependency.
 
   - id: schema.validate
     domain: schema
@@ -154,26 +156,50 @@ checks:
     domain: seo
     title: Position tracking against the 467-keyword master list
     cadence: weekly
-    cost: mcp
+    cost: paid
     method:
-      kind: mcp
+      kind: engine
       run: |
-        mcp__semrush__position_tracking for the configured project. If it is still
-        not readable over API (it was not on 2026-07-14 — see
-        evidence/site-audit-2026-07-14.md §6), record blocked=true with the exact
-        error and DO NOT substitute estimates (GATE-4).
-        Keyword list: evidence/keywords/position-tracking-keywords.txt
+        Run the resumable DataForSEO standard-queue SERP bulk path over
+        evidence/keywords/position-tracking-keywords.txt at the configured
+        operating coordinate, mobile, depth 20. Record measured rank counts.
+        Never substitute estimates when the provider is unavailable (GATE-4).
     records:
       - {name: blocked, type: bool}
       - {name: keywords_tracked, type: int}
       - {name: top10_count, type: int}
       - {name: top3_count, type: int}
+      - {name: top20_count, type: int}
     thresholds:
       - expr: blocked == true
-        severity: medium
-        finding: "Position tracking unreadable over API — known limitation, not a regression."
-        action: "Record honestly. Do not estimate. Re-attempt next cycle; if still blocked after 3 cycles, drop the check rather than fake it."
-    why: "Trend detection for the master list. Honest-blocked beats invented numbers (GATE-4)."
+        severity: critical
+        finding: "The weekly position dataset could not be measured."
+        action: "Surface the provider failure through sync.health; never estimate rankings."
+    why: "Coordinate-accurate trend detection for the master list. Honest-blocked beats invented numbers (GATE-4)."
+
+  - id: seo.map_pack
+    domain: seo
+    title: Map-pack visibility across the service-area geogrid
+    cadence: weekly
+    cost: paid
+    method:
+      kind: engine
+      run: |
+        Sample the configured 5x5 service-area grid for the core money queries,
+        mobile. Record the median FMD rank among present points, the number of
+        sampled/present points, and competitors ranked above FMD.
+    records:
+      - {name: queries, type: int}
+      - {name: points_sampled, type: int}
+      - {name: points_present, type: int}
+      - {name: median_rank, type: float}
+      - {name: competitors_above, type: int}
+    thresholds:
+      - expr: points_present == 0
+        severity: high
+        finding: "FMD is absent from every sampled map-pack point."
+        action: "Prioritize entity consistency, review velocity, and GBP completeness; do not add pages."
+    why: "The map pack is the primary discovery surface for a mobile local-service business; a single point is too noisy to govern decisions."
 
   - id: seo.site_health
     domain: seo
@@ -257,6 +283,29 @@ checks:
       T6. AI answers already cite FMD accurately (pricing, Door-Open Guarantee,
       47-point reset, text-3-photos flow). The job is defend-and-extend; the live
       risk is drift, not absence.
+
+  - id: aeo.share_of_voice
+    domain: aeo
+    title: AI answer share of voice against the local peer set
+    cadence: monthly
+    cost: free
+    method:
+      kind: agent
+      run: |
+        Measure the standing Cleveland query universe across the selected answer
+        engine and record FMD share of voice, the leading competitor's share,
+        and the number of answers citing FMD. Keep query universe and platform
+        fixed so readings remain comparable.
+    records:
+      - {name: ai_sov_percent, type: float}
+      - {name: competitor_top_sov, type: float}
+      - {name: fmd_cited_count, type: int}
+    thresholds:
+      - expr: ai_sov_percent < 2.0
+        severity: medium
+        finding: "FMD AI share of voice remains at the 1.9% baseline."
+        action: "Improve entity corroboration and answer-source reach; preserve accurate facts."
+    why: "Measures AEO reach separately from answer accuracy. Baseline: FMD 1.9% versus CLE Detailing 16.8%."
 
   - id: aeo.entity_consistency
     domain: aeo
@@ -357,6 +406,30 @@ checks:
         finding: "The 'near me' cluster fell well below its 2,350/mo baseline."
         action: "Check for seasonality before treating it as decay — verify against the monthly trend array, not a single reading."
     why: "T3. 'near me' cluster = 2,350/mo and is where the demand actually lives."
+
+  - id: facts.freshness
+    domain: facts
+    title: Business-facts review window
+    cadence: daily
+    cost: free
+    method:
+      kind: engine
+      run: |
+        Read business-facts.yaml reviewed_at and review_after_days. Record the
+        number of calendar days until the review deadline. Do not advance
+        reviewed_at without Lou's explicit re-review.
+    records:
+      - {name: days_until_stale, type: int}
+    thresholds:
+      - expr: days_until_stale <= 0
+        severity: critical
+        finding: "business-facts.yaml is at or past its review deadline."
+        action: "BLOCK fact-bound generation until Lou re-reviews and advances reviewed_at."
+      - expr: days_until_stale > 0 and days_until_stale <= 7
+        severity: high
+        finding: "business-facts.yaml will become stale within seven days."
+        action: "Schedule Lou's fact review before the hard preflight block."
+    why: "Turns the 30-day fact staleness cliff into a visible seven-day warning ramp."
 
   # ───────────────────── BLOG / TOPICS ─────────────────────
   - id: topics.related_clusters

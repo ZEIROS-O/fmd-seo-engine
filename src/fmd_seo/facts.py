@@ -29,6 +29,16 @@ class FactsStale(FactError):
     pass
 
 
+def days_until_stale(facts_file: Path, *, today: date | None = None) -> int:
+    """Return calendar days remaining in the business-facts review window."""
+    data = yaml.safe_load(facts_file.read_bytes())
+    if not isinstance(data, dict) or data.get("schema_version") != 1:
+        raise FactError(f"Unsupported business-facts schema in {facts_file}")
+    reviewed_at = date.fromisoformat(str(data["reviewed_at"]))
+    deadline = reviewed_at + timedelta(days=int(data["review_after_days"]))
+    return (deadline - (today or date.today())).days
+
+
 def _dig(data: Any, dotted_key: str) -> Any:
     node = data
     for part in dotted_key.split("."):

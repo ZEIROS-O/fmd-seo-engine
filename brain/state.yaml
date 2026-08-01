@@ -27,9 +27,9 @@ baseline:
     method: Google Search Console → Indexing → Pages
 
   schema:
-    # CORRECTED 2026-07-14 (live re-fetch): schema was ADDED to the site after the
-    # same-day site audit that reported zero. The "zero schema" finding below is
-    # superseded — kept only as the prior reading for trend. Current live state:
+    # CORRECTED 2026-08-01: the TanStack Start site renders schema server-side.
+    # JSON-LD is present in the raw response body, so a plain HTTP fetch is the
+    # authoritative presence check; no headless browser is required.
     ld_json_count: 32
     pages_with_ld_json: 16
     has_localbusiness: true
@@ -37,13 +37,15 @@ baseline:
     has_aggregaterating: true
     pages_without_schema: [/chat, /fresh-pro, /areas, /blog]
     blog_posts_missing_blogposting: true   # blog posts carry FAQPage, not BlogPosting
-    source: live sitemap fetch (20 URLs, Googlebot UA), 2026-07-14
+    source: live raw-HTML sitemap fetch (20 URLs, plain curl), 2026-07-14
+    render_mode: ssr
     prior_reading:
       ld_json_count: 0
       source: evidence/site-audit-2026-07-14.md
       note: >-
-        Semrush Site Audit (snapshot 6a56ad279ccf5fa799f3db94) + live-HTML md5
-        ad2858...058 both showed zero — accurate at audit time, now stale.
+        Semrush Site Audit (snapshot 6a56ad279ccf5fa799f3db94) and the earlier
+        raw-HTML capture both showed zero. The site changed after that capture;
+        current TanStack Start SSR emits JSON-LD directly in raw HTML.
     caveat: >-
       AggregateRating appears on all suburb pages; if those reuse the same reviews
       across suburbs (known_issues: reused-suburb-reviews) the schema propagates a

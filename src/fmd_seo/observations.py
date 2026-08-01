@@ -61,6 +61,10 @@ def _validate(check: Check, records: dict[str, Any], fulfillment: str) -> None:
             raise ValueError(f"{check.id}.{name} must be bool, got {value!r}")
         if kind == "int" and (isinstance(value, bool) or not isinstance(value, int)):
             raise ValueError(f"{check.id}.{name} must be int, got {value!r}")
+        if kind == "float" and (
+            isinstance(value, bool) or not isinstance(value, (int, float))
+        ):
+            raise ValueError(f"{check.id}.{name} must be float, got {value!r}")
         if kind == "str" and not isinstance(value, str):
             raise ValueError(f"{check.id}.{name} must be str, got {value!r}")
 

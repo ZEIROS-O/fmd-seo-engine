@@ -20,7 +20,6 @@ budget:
 
 paths:
   facts_file: "/mnt/c/Users/lucas/OneDrive/Documents/Cowork Detailing Folder/business-facts.yaml"
-  fresh_repo: "/home/lucascoh/fresh-mobile-detailing"
   operator_repo: "/home/lucascoh/operator-agent"
   zeiros_repo: "/home/lucascoh/ZEIROS"
   site_worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fresh-site"

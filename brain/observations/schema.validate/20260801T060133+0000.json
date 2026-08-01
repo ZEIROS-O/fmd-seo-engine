@@ -1,0 +1,12 @@
+{
+  "check_id": "schema.validate",
+  "fulfillment": "agent",
+  "note": "reviewCount values 11 and 40 are both unbound public claims while business-facts claim gate is false",
+  "observed_at": "2026-08-01T06:01:33+00:00",
+  "records": {
+    "blocks_found": 4,
+    "fact_mismatches": 2,
+    "parse_errors": 0
+  },
+  "source": "live SSR HTML: /, /areas/beachwood/, /fleet/, /boat/; verified 2026-08-01"
+}
