@@ -1,0 +1,169 @@
+name: daily optimizer
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+    inputs:
+      serp_mode:
+        description: Optional weekly ranking-queue operation
+        required: false
+        type: choice
+        default: none
+        options: [none, post, collect]
+      grid_mode:
+        description: Optional weekly map-grid queue operation
+        required: false
+        type: choice
+        default: none
+        options: [none, post, collect]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fmd-seo-daily
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    env:
+      FMD_SEO_CREDS_ENV: /home/runner/.dataforseo.env
+      FMD_SEO_FACTS_FILE: /home/runner/business-facts.yaml
+      FMD_SEO_GOOGLE_KEY: /home/runner/.gsc-service-account.json
+      FMD_SEO_SITE_WORKTREE: ${{ github.workspace }}/.worktrees/fresh-site-v3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install engine
+        run: pip install -e ".[google]"
+
+      - name: Materialize provider credentials
+        env:
+          DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
+          DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          BUSINESS_FACTS_YAML: ${{ secrets.BUSINESS_FACTS_YAML }}
+        run: |
+          umask 077
+          printf 'DATAFORSEO_LOGIN=%s\nDATAFORSEO_PASSWORD=%s\n' "$DATAFORSEO_LOGIN" "$DATAFORSEO_PASSWORD" > "$HOME/.dataforseo.env"
+          printf '%s' "$GSC_SERVICE_ACCOUNT_JSON" > "$HOME/.gsc-service-account.json"
+          printf '%s' "$BUSINESS_FACTS_YAML" > "$HOME/business-facts.yaml"
+
+      - name: Checkout site worktree
+        uses: actions/checkout@v4
+        with:
+          repository: ZEIROS-O/fresh-mobile-detailing
+          token: ${{ secrets.SITE_REPO_TOKEN }}
+          path: .worktrees/fresh-site-v3
+          fetch-depth: 0
+
+      - name: Sync headless sources
+        id: sync
+        continue-on-error: true
+        run: fmd-seo sync
+
+      - name: Sync GSC indexation
+        id: gsc
+        if: always()
+        continue-on-error: true
+        run: fmd-seo gsc-sync
+
+      - name: Post weekly ranking tasks
+        id: serp_post
+        if: always()
+        continue-on-error: true
+        run: |
+          if [[ "${{ inputs.serp_mode }}" = post || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 7) ]]; then
+            fmd-seo serp-bulk --post
+          else
+            echo "weekly SERP post not due"
+          fi
+
+      - name: Collect weekly ranking tasks
+        id: serp_collect
+        if: always()
+        continue-on-error: true
+        run: |
+          if [[ "${{ inputs.serp_mode }}" = collect || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 1) ]]; then
+            fmd-seo serp-bulk --collect
+          else
+            echo "weekly SERP collect not due"
+          fi
+
+      - name: Post weekly map-grid tasks
+        id: grid_post
+        if: always()
+        continue-on-error: true
+        run: |
+          if [[ "${{ inputs.grid_mode }}" = post || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 7) ]]; then
+            fmd-seo geogrid --post
+          else
+            echo "weekly map-grid post not due"
+          fi
+
+      - name: Collect weekly map-grid tasks
+        id: grid_collect
+        if: always()
+        continue-on-error: true
+        run: |
+          if [[ "${{ inputs.grid_mode }}" = collect || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 1) ]]; then
+            fmd-seo geogrid --collect
+          else
+            echo "weekly map-grid collect not due"
+          fi
+
+      - name: Assess standing findings
+        id: assess
+        if: always()
+        continue-on-error: true
+        run: |
+          set +e
+          fmd-seo assess
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          set -e
+          if [[ "$code" -eq 0 || "$code" -eq 4 ]]; then
+            exit 0
+          fi
+          exit "$code"
+
+      - name: Plan gate-safe actions
+        id: act
+        if: always()
+        continue-on-error: true
+        run: fmd-seo act --dry-run
+
+      - name: Notify Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          state="sync:${{ steps.sync.outcome }} gsc:${{ steps.gsc.outcome }} serp:${{ steps.serp_post.outcome }}/${{ steps.serp_collect.outcome }} grid:${{ steps.grid_post.outcome }}/${{ steps.grid_collect.outcome }} assess:${{ steps.assess.outcome }}/${{ steps.assess.outputs.exit_code }} act:${{ steps.act.outcome }}"
+          if [[ -n "$TELEGRAM_BOT_TOKEN" && -n "$TELEGRAM_CHAT_ID" ]]; then
+            curl --fail --silent --show-error \
+              --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+              --data-urlencode "text=FMD SEO daily: $state — $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+              "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage"
+          fi
+
+      - name: Fail if a required stage failed
+        if: always()
+        run: |
+          test "${{ steps.sync.outcome }}" = success
+          test "${{ steps.gsc.outcome }}" = success
+          test "${{ steps.serp_post.outcome }}" = success
+          test "${{ steps.serp_collect.outcome }}" = success
+          test "${{ steps.grid_post.outcome }}" = success
+          test "${{ steps.grid_collect.outcome }}" = success
+          test "${{ steps.assess.outcome }}" = success
+          test "${{ steps.act.outcome }}" = success

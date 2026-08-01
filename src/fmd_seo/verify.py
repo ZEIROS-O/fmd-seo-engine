@@ -23,6 +23,11 @@ BLOCKED_TERM_PATTERNS = [
 ]
 
 
+def checks_pass(results: list[tuple[str, str, str]]) -> bool:
+    """Aggregate deterministic checks; one BLOCK makes the package ineligible."""
+    return bool(results) and all(verdict != "BLOCK" for _, verdict, _ in results)
+
+
 def _all_text(package: PagePackage) -> str:
     parts = [package.content.get("title", ""), package.content.get("description", "")]
     for block in package.content.get("blocks", []):

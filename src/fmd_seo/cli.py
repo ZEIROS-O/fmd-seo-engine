@@ -48,7 +48,24 @@ def _emit_loop(rb: ReceiptBuilder, payload: dict, code: int, receipts_dir: Path)
         status, verdict = "NO_OP", "WARN"
     else:
         status, verdict = "DONE", "PASS"
-    detail = payload.get("error") or f"exit {code}"
+    for item in payload.get("checks") or []:
+        if isinstance(item, dict):
+            name = str(item.get("name", "check"))
+            check_verdict = str(item.get("verdict", "WARN"))
+            check_detail = str(item.get("detail", ""))
+        else:
+            name, check_verdict, check_detail = (str(value) for value in item)
+        rb.check(name, check_verdict, check_detail)
+    for blocker in payload.get("blockers") or []:
+        blocker_text = str(blocker)
+        if blocker_text not in rb.blockers:
+            rb.blockers.append(blocker_text)
+    commit_hashes = payload.get("commit_hashes") or {}
+    if isinstance(commit_hashes, dict):
+        rb.commit_hashes.update({str(key): str(value) for key, value in commit_hashes.items()})
+    if payload.get("branch"):
+        rb.resume_point = f"site branch {payload['branch']}"
+    detail = payload.get("error") or payload.get("stderr") or f"exit {code}"
     rb.check("command_result", verdict, str(detail))
     receipt = rb.finish(status)
     path = write_receipt(receipt, receipts_dir)
@@ -93,6 +110,16 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("reverify", help="re-run verification over existing packages")
 
+    p = sub.add_parser("act", help="plan or publish a verified site change")
+    p.add_argument("--package", type=Path, default=None, help="immutable PagePackage to publish")
+    p.add_argument("--dry-run", action="store_true", help="print planned diff without touching git")
+
+    p = sub.add_parser("report", help="read-only outcome deltas from observation history")
+    p.add_argument("--since", required=True, help="ISO date or timestamp")
+
+    p = sub.add_parser("gbp-draft", help="generate fact-bound GBP and review-request drafts")
+    p.add_argument("--output", type=Path, default=None, help="draft directory")
+
     p = sub.add_parser("spike", help="Phase 2 rendering spike against the site worktree")
     p.add_argument("--port", type=int, default=4173)
     p.add_argument("--skip-build", action="store_true")
@@ -132,6 +159,34 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "preflight":
         # Preflight reports the kill switch as a blocker instead of refusing to run.
         return _emit(run_preflight(config, online=args.online), receipts_dir)
+
+    if args.command == "act" and args.dry_run:
+        from .act import dry_run_plan
+        rb = ReceiptBuilder(args.command)
+        try:
+            payload = dry_run_plan(
+                Path(config["paths"]["site_worktree"]), args.package,
+            )
+            code = 0
+        except Exception as err:  # noqa: BLE001 - malformed package/repo is a hard error
+            payload = {"command": "act", "error": f"{type(err).__name__}: {err}"}
+            code = EXIT["ERROR"]
+        return _emit_loop(rb, payload, code, receipts_dir)
+
+    if args.command == "report":
+        from .report import build_report
+        rb = ReceiptBuilder(args.command)
+        try:
+            payload = build_report(
+                args.since,
+                observations_dir=paths.ENGINE_ROOT / "brain" / "observations",
+                interventions_path=paths.EVIDENCE_DIR / "interventions.jsonl",
+            )
+            code = 0
+        except Exception as err:  # noqa: BLE001 - malformed history must fail loudly
+            payload = {"command": "report", "error": f"{type(err).__name__}: {err}"}
+            code = EXIT["ERROR"]
+        return _emit_loop(rb, payload, code, receipts_dir)
 
     if args.command == "serp-bulk":
         from . import serp_bulk
@@ -300,6 +355,64 @@ def main(argv: list[str] | None = None) -> int:
         return _emit(rb.finish("BLOCK"), receipts_dir)
 
     with lock:
+        if args.command == "reverify":
+            from .reverify import reverify_manifests
+            from .site import SiteSyncError
+            rb = ReceiptBuilder(args.command)
+            try:
+                payload = reverify_manifests(
+                    paths.EVIDENCE_DIR / "exports",
+                    Path(config["paths"]["site_worktree"]),
+                )
+                code = EXIT["BLOCK"] if payload["status"] == "BLOCK" else 0
+                if code == 0:
+                    from .reverify import record_reconciled_interventions
+                    payload["interventions_recorded"] = record_reconciled_interventions(
+                        payload,
+                        Path(config["paths"]["site_worktree"]),
+                        paths.EVIDENCE_DIR / "interventions.jsonl",
+                    )
+            except SiteSyncError as err:
+                payload = {"command": "reverify", "status": "BLOCK", "error": str(err)}
+                code = EXIT["BLOCK"]
+            except Exception as err:  # noqa: BLE001 - malformed evidence is internal failure
+                payload = {
+                    "command": "reverify",
+                    "status": "ERROR",
+                    "error": f"{type(err).__name__}: {err}",
+                }
+                code = EXIT["ERROR"]
+            return _emit_loop(rb, payload, code, receipts_dir)
+        if args.command == "act":
+            from .act import publish_package
+            rb = ReceiptBuilder(args.command)
+            if args.package is None:
+                payload = {
+                    "command": "act",
+                    "status": "BLOCK",
+                    "error": "--package is required unless --dry-run is used",
+                }
+                return _emit_loop(rb, payload, EXIT["BLOCK"], receipts_dir)
+            try:
+                payload = publish_package(config, args.package)
+                code = 0 if payload["status"] == "DONE" else EXIT["BLOCK"]
+            except Exception as err:  # noqa: BLE001
+                payload = {"command": "act", "error": f"{type(err).__name__}: {err}"}
+                code = EXIT["ERROR"]
+            return _emit_loop(rb, payload, code, receipts_dir)
+        if args.command == "gbp-draft":
+            from .gbp import draft_gbp_assets
+            rb = ReceiptBuilder(args.command)
+            try:
+                output = args.output or (paths.ENGINE_ROOT / "drafts" / "gbp")
+                payload = draft_gbp_assets(
+                    Path(config["paths"]["facts_file"]), output,
+                )
+                code = 0 if payload["status"] == "DONE" else EXIT["BLOCK"]
+            except Exception as err:  # noqa: BLE001
+                payload = {"command": "gbp-draft", "error": f"{type(err).__name__}: {err}"}
+                code = EXIT["ERROR"]
+            return _emit_loop(rb, payload, code, receipts_dir)
         if args.command == "spike":
             from .spike import run_spike, write_memo
             worktree = Path(config["paths"]["site_worktree"])
@@ -312,7 +425,6 @@ def main(argv: list[str] | None = None) -> int:
             "verify": "Phase 3 delivers deterministic + semantic verification",
             "export": "Phase 2/3 deliver the site-worktree exporter",
             "run": "Phase 5 delivers the coordinator",
-            "reverify": "Phase 5 delivers reverify",
         }[args.command]
         return _emit(_not_implemented(args.command, detail), receipts_dir)
 

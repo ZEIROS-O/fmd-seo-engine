@@ -8,6 +8,8 @@ import pytest
 import yaml
 
 from fmd_seo.preflight import run_preflight
+from fmd_seo.cli import _emit_loop
+from fmd_seo.receipts import ReceiptBuilder
 
 ENGINE_ROOT = Path(__file__).resolve().parents[1]
 
@@ -113,6 +115,28 @@ def test_cli_loop_surface_emits_receipt(tmp_path, facts_file, git_repo):
     assert receipt["status"] == "DONE"
 
 
+def test_loop_receipt_preserves_structured_checks_blockers_and_commit(tmp_path):
+    code = _emit_loop(
+        ReceiptBuilder("act"),
+        {
+            "command": "act",
+            "branch": "seo-engine/2026-08-01-test",
+            "checks": [{"name": "external_publish", "verdict": "BLOCK", "detail": "auth failed"}],
+            "blockers": ["auth failed"],
+            "commit_hashes": {"site": "abc123"},
+        },
+        4,
+        tmp_path,
+    )
+
+    receipt = json.loads(next(tmp_path.glob("*.json")).read_text())
+    assert code == 4
+    assert receipt["checks"][0]["name"] == "external_publish"
+    assert any("auth failed" in blocker for blocker in receipt["blockers"])
+    assert receipt["commit_hashes"] == {"site": "abc123"}
+    assert receipt["resume_point"] == "site branch seo-engine/2026-08-01-test"
+
+
 def test_cli_observe_machine_updates_gate1_state(tmp_path, facts_file, git_repo):
     records = {
         "indexed": 20,
@@ -207,14 +231,15 @@ def test_cli_preflight_emits_receipt(tmp_path, facts_file, git_repo):
     assert list((root / "receipts").glob("*.json"))
 
 
-def test_cli_stub_commands_block_honestly(tmp_path, facts_file, git_repo):
+def test_cli_reverify_is_wired_and_blocks_on_invalid_worktree(tmp_path, facts_file, git_repo):
     _add_verifier_context(git_repo)
     config = _config(tmp_path, facts_file, git_repo, creds=True, worktree=True)
     result, root = _run_cli(tmp_path, config, "reverify")
     assert result.returncode == 4
     receipt = json.loads(result.stdout)
     assert receipt["status"] == "BLOCK"
-    assert any("NOT_IMPLEMENTED" in b for b in receipt["blockers"])
+    assert "not a git worktree" in receipt["error"] or "git status --porcelain failed" in receipt["error"]
+    assert "NOT_IMPLEMENTED" not in result.stdout
     assert not (root / ".run" / "lock").exists()  # lock released
 
 

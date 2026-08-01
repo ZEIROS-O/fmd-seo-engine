@@ -154,6 +154,16 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     except Exception as err:  # noqa: BLE001 - provider failure becomes sync health
         gbp_result = {"status": "failed", "error": str(err)}
         errors["gbp.performance"] = str(err)
+    from .site_facts import sync_public_facts
+    try:
+        site_facts_result = sync_public_facts(
+            config, brain, observations_dir=observations_dir,
+        )
+        if site_facts_result["status"] == "fetched":
+            fetched.append("site.facts_drift")
+    except Exception as err:  # noqa: BLE001 - surfaced through sync.health
+        site_facts_result = {"status": "failed", "error": str(err)}
+        errors["site.facts_drift"] = str(err)
     attempted = len(fetched) + len(errors)
     if attempted:
         record_observation(
@@ -176,6 +186,7 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
         "skipped_no_key": result.skipped_no_key,
         "errors": errors,
         "gbp": gbp_result,
+        "site_facts": site_facts_result,
         "note": ("no SEMRUSH_API_KEY present — these API-backed checks stay on the "
                  "session (MCP) path" if result.skipped_no_key else
                  f"fetched {len(fetched)} check(s) headlessly"),

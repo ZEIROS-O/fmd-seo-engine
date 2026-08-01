@@ -51,14 +51,11 @@ checks:
         severity: high
         finding: "Schema exists but no LocalBusiness — entity resolution still unserved."
         action: "Add LocalBusiness/AutoDetailing to the homepage and each money page."
-      - expr: has_localbusiness == true and has_aggregaterating == false
-        severity: medium
-        finding: "LocalBusiness present without AggregateRating — review corroboration not machine-readable."
-        action: "Add AggregateRating bound to the verified Google review count (GATE-3: bind to business-facts.yaml, never invent)."
     why: |
       T2. The live TanStack Start site emits JSON-LD in SSR raw HTML. This check
       guards that machine-readable entity surface without introducing a fragile
-      headless-browser dependency.
+      headless-browser dependency. AggregateRating stays omitted while the
+      business-facts review-count claim gate is closed.
 
   - id: schema.validate
     domain: schema
@@ -210,15 +207,18 @@ checks:
     method:
       kind: engine
       run: |
-        Fetch the prior 28 days from the Google Business Profile Performance API.
-        Sum call clicks, direction requests, and website clicks. Classify monthly
-        search-keyword impressions as discovery when the query is non-branded.
+        Fetch the prior 28 days of daily actions from the Google Business Profile
+        Performance API. Sum call clicks, direction requests, and website clicks.
+        Separately classify calendar-month search-keyword impressions as discovery
+        when non-branded; count threshold-only keyword rows without converting
+        their unknown values to zero-measured impressions.
         Requires gbp.location_id and the business.manage OAuth scope.
     records:
       - {name: calls, type: int}
       - {name: direction_requests, type: int}
       - {name: website_clicks, type: int}
       - {name: searches_discovery, type: int}
+      - {name: search_keywords_thresholded, type: int}
     thresholds: []
     why: "Discovery searches and profile actions are the closest first-party measures of map-pack visibility and business impact."
 
@@ -473,6 +473,26 @@ checks:
         finding: "One or more headless data checks failed during sync."
         action: "Inspect the sync receipt and provider health; do not report the run healthy."
     why: "A fetch failure must become a standing finding so the autonomous loop cannot fail quietly."
+
+  - id: site.facts_drift
+    domain: engine
+    title: Deployed site facts match canonical business facts
+    cadence: daily
+    cost: free
+    method:
+      kind: engine
+      run: |
+        Fetch /api/business-facts from the live site and compare its source hash
+        and public values with the canonical business-facts.yaml. Record every
+        successful comparison, including a clean zero mismatch result.
+    records:
+      - {name: fact_mismatches, type: int}
+    thresholds:
+      - expr: fact_mismatches > 0
+        severity: critical
+        finding: "The deployed site contradicts canonical business-facts.yaml."
+        action: "BLOCK publishing and regenerate every public fact surface before other site work."
+    why: "Makes one-source-of-truth drift observable after deployment instead of trusting generated files locally."
 
   - id: engine.freshness
     domain: engine

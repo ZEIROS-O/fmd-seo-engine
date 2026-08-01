@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "source_hash": "727df9604aa51766c464f41255430106fa9ee2f2d2689a284ccc7405e8c2d4d7",
+  "evidence_source": "evidence/listing-management-scan-2026-07-21/scan-results.md",
+  "observed_wrong_name": "Express Mobile Detailing",
+  "correct_business": {
+    "name": "Fresh Mobile Detailing",
+    "phone": "(216) 359-1034",
+    "website": "https://freshmobiledetail.com"
+  },
+  "submissions": "human_only",
+  "targets": [
+    {
+      "directory": "EZlocal",
+      "request": "Replace the published business name Express Mobile Detailing with Fresh Mobile Detailing. Preserve the verified phone and website above."
+    },
+    {
+      "directory": "HotFrog",
+      "request": "Replace the published business name Express Mobile Detailing with Fresh Mobile Detailing. Preserve the verified phone and website above."
+    },
+    {
+      "directory": "Cylex",
+      "request": "Replace the published business name Express Mobile Detailing with Fresh Mobile Detailing. Preserve the verified phone and website above."
+    }
+  ]
+}

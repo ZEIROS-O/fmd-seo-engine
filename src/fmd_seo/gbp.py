@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+
+from .contracts import PagePackage
+from .facts import load_snapshot
+from .receipts import now_iso
+from .verify import checks_pass, deterministic_checks
 
 GBP_SCOPE = "https://www.googleapis.com/auth/business.manage"
 PERFORMANCE_BASE = "https://businessprofileperformance.googleapis.com/v1"
@@ -42,27 +48,31 @@ def _sum_daily(response: dict) -> dict[str, int]:
     return totals
 
 
-def _insight_count(insight: dict) -> int:
+def _insight_count(insight: dict) -> tuple[int, bool]:
     # A threshold means the actual value is unknown but below that number. It is
     # not a count and must never be promoted into measured truth (GATE-4).
     if insight.get("value") is not None:
-        return int(insight["value"])
-    return 0
+        return int(insight["value"]), False
+    return 0, insight.get("threshold") is not None
 
 
 def normalize_performance(daily: dict, keywords: dict) -> dict[str, int]:
     totals = _sum_daily(daily)
     discovery = 0
+    thresholded = 0
     for row in keywords.get("searchKeywordsCounts") or []:
         keyword = str(row.get("searchKeyword") or "").casefold()
         if "fresh mobile" in keyword or keyword.startswith("fresh detail"):
             continue
-        discovery += _insight_count(row.get("insightsValue") or {})
+        count, was_thresholded = _insight_count(row.get("insightsValue") or {})
+        discovery += count
+        thresholded += int(was_thresholded)
     return {
         "calls": totals.get("CALL_CLICKS", 0),
         "direction_requests": totals.get("BUSINESS_DIRECTION_REQUESTS", 0),
         "website_clicks": totals.get("WEBSITE_CLICKS", 0),
         "searches_discovery": discovery,
+        "search_keywords_thresholded": thresholded,
     }
 
 
@@ -169,7 +179,98 @@ def sync_if_due(config: dict, brain, *, observations_dir: Path | None = None) ->
         records,
         fulfillment="engine_api",
         source="Google Business Profile Performance API",
-        note=f"prior {int(raw.get('days', 28))} days; discovery excludes branded keywords",
+        note=(f"daily actions cover prior {int(raw.get('days', 28))} days; search impressions "
+              "cover API calendar months, exclude branded keywords, and omit threshold-only counts"),
         directory=observations_dir,
     )
     return {"status": "fetched", "records": records}
+
+
+def draft_gbp_assets(facts_file: Path, output_dir: Path) -> dict:
+    """Write fact-bound GBP/review drafts; never publish or contact a customer."""
+    keys = [
+        "identity.name",
+        "identity.phone",
+        "identity.positioning",
+        "service_area.base",
+        "pricing.one_time.full_interior.price",
+        "pricing.one_time.ultimate_interior.price",
+        "guarantee.name",
+        "autonomy.customer_contact",
+        "autonomy.posting",
+    ]
+    snapshot = load_snapshot(facts_file, keys)
+    facts = snapshot.facts_used
+    full = facts["pricing.one_time.full_interior.price"]
+    ultimate = facts["pricing.one_time.ultimate_interior.price"]
+    phone = facts["identity.phone"]
+    post_text = (
+        f"A cleaner car without the drop-off. {facts['identity.name']} brings "
+        f"mobile interior car detailing to {facts['service_area.base']} and nearby "
+        f"east-side communities. Full Interior is ${full}; Ultimate Interior is "
+        f"${ultimate}. Text {phone} for a photo quote. Every job carries the "
+        f"{facts['guarantee.name']}."
+    )
+    content = {
+        "slug": "gbp-draft",
+        "title": "Mobile interior car detailing on Cleveland's east side",
+        "description": post_text,
+        "blocks": [{"type": "p", "text": post_text}],
+        "claims": [
+            {"fact_key": "identity.phone", "value": phone},
+            {"fact_key": "pricing.one_time.full_interior.price", "value": full},
+            {"fact_key": "pricing.one_time.ultimate_interior.price", "value": ultimate},
+            {"fact_key": "guarantee.name", "value": facts["guarantee.name"]},
+        ],
+        "evidence_figures": [],
+        "mentioned_places": [],
+        "internal_links": [{"href": "/", "label": "Book online"}],
+    }
+    package = PagePackage.create(
+        intent_key="gbp:weekly-post",
+        tier="supporting-post",
+        created_at=now_iso(),
+        fact_snapshot=snapshot.to_dict(),
+        evidence_refs=[],
+        content=content,
+        internal_links=content["internal_links"],
+        assets=[],
+    )
+    checks = deterministic_checks(package, known_routes={"/"})
+    if not checks_pass(checks):
+        return {"status": "BLOCK", "posting": facts["autonomy.posting"], "checks": checks}
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    shared = {
+        "source_hash": snapshot.source_hash,
+        "generated_at": package.created_at,
+        "posting": facts["autonomy.posting"],
+    }
+    (output_dir / "gbp-post.json").write_text(
+        json.dumps({**shared, "kind": "gbp_post", "text": post_text}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    review_text = (
+        f"Hey — thanks again for choosing {facts['identity.name']}. If opening "
+        "your car door made you say wow, would you mind leaving a quick Google "
+        "review? It helps a local business a ton."
+    )
+    (output_dir / "review-request.json").write_text(
+        json.dumps({
+            **shared,
+            "kind": "review_request",
+            "customer_contact": facts["autonomy.customer_contact"],
+            "text": review_text,
+        }, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "status": "DONE",
+        "posting": facts["autonomy.posting"],
+        "customer_contact": facts["autonomy.customer_contact"],
+        "checks": checks,
+        "files": [
+            str(output_dir / "gbp-post.json"),
+            str(output_dir / "review-request.json"),
+        ],
+    }

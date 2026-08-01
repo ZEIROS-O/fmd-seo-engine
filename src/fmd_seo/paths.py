@@ -33,6 +33,22 @@ def load_config(path: Path | None = None) -> dict:
         cfg = yaml.safe_load(fh)
     if not isinstance(cfg, dict) or cfg.get("schema_version") != 1:
         raise ValueError(f"Unsupported engine config schema: {path or CONFIG_FILE}")
+    # CI and other machines must not inherit Lou's workstation paths. These
+    # narrow overrides keep the committed config useful locally without
+    # requiring workflows to rewrite it in place.
+    if value := os.environ.get("FMD_SEO_CREDS_ENV"):
+        cfg["creds_env"] = value
+    path_overrides = {
+        "FMD_SEO_FACTS_FILE": "facts_file",
+        "FMD_SEO_SITE_WORKTREE": "site_worktree",
+    }
+    cfg_paths = cfg.setdefault("paths", {})
+    for env_name, key in path_overrides.items():
+        if value := os.environ.get(env_name):
+            cfg_paths[key] = value
+    if value := os.environ.get("FMD_SEO_GOOGLE_KEY"):
+        cfg.setdefault("gsc", {})["key_path"] = value
+        cfg.setdefault("gbp", {})["key_path"] = value
     return cfg
 
 

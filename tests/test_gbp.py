@@ -31,6 +31,7 @@ def test_normalize_gbp_performance_sums_clicks_and_nonbrand_searches():
         "direction_requests": 4,
         "website_clicks": 7,
         "searches_discovery": 11,
+        "search_keywords_thresholded": 1,
     }
 
 
@@ -44,6 +45,7 @@ def test_sync_gbp_records_weekly_observation(tmp_path, monkeypatch):
         "direction_requests": 4,
         "website_clicks": 7,
         "searches_discovery": 11,
+        "search_keywords_thresholded": 1,
     }
     monkeypatch.setattr(gbp, "fetch_performance", lambda *_args, **_kwargs: expected)
     observations = tmp_path / "observations"
@@ -63,3 +65,25 @@ def test_sync_gbp_records_weekly_observation(tmp_path, monkeypatch):
     observation = latest_observation("gbp.performance", observations)
     assert observation is not None
     assert observation.records == expected
+
+
+def test_gbp_drafts_are_fact_bound_verified_and_human_only(tmp_path, facts_file):
+    from fmd_seo.gbp import draft_gbp_assets
+
+    # Slice/GBP copy needs the positioning key in addition to the shared fixture.
+    text = facts_file.read_text(encoding="utf-8")
+    facts_file.write_text(text.replace(
+        '  phone: "(216) 359-1034"\n',
+        '  phone: "(216) 359-1034"\n'
+        '  positioning: "Interior-first mobile detailing for Cleveland\'s east side"\n',
+    ), encoding="utf-8")
+
+    result = draft_gbp_assets(facts_file, tmp_path / "drafts")
+
+    assert result["status"] == "DONE"
+    assert result["posting"] == "human_only"
+    assert all(check[1] != "BLOCK" for check in result["checks"])
+    post = (tmp_path / "drafts" / "gbp-post.json").read_text(encoding="utf-8").lower()
+    assert '"source_hash"' in post
+    assert "steam" not in post and "ozone" not in post and "sanitiz" not in post
+    assert (tmp_path / "drafts" / "review-request.json").exists()

@@ -7,6 +7,7 @@ The site's JSON is generated output; the package stays authoritative.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 from pathlib import Path
 
@@ -19,6 +20,40 @@ RENDER_KEYS = [
     "slug", "title", "description", "canonical", "robots", "date_published",
     "hero_image", "blocks", "internal_links", "cta", "jsonld",
 ]
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def content_destination(worktree: Path, slug: str) -> Path:
+    """Return a contained content path for a strictly portable URL slug."""
+    if not isinstance(slug, str) or len(slug) > 80 or not SLUG_RE.fullmatch(slug):
+        raise ValueError(f"unsafe content slug: {slug!r}")
+    content_root = (worktree / "content" / "blog").resolve()
+    destination = (content_root / f"{slug}.json").resolve()
+    if destination.parent != content_root:
+        raise ValueError(f"content destination escapes blog root: {destination}")
+    return destination
+
+
+def _changed_paths(worktree: Path) -> tuple[list[Path], str]:
+    status = subprocess.run(
+        ["git", "-C", str(worktree), "status", "--porcelain", "--untracked-files=all"],
+        capture_output=True,
+        text=True,
+    )
+    if status.returncode != 0:
+        return [], status.stderr.strip()
+    paths: list[Path] = []
+    for line in status.stdout.splitlines():
+        relative = line[3:]
+        if " -> " in relative:
+            relative = relative.split(" -> ", 1)[1]
+        candidate = (worktree / relative).resolve()
+        try:
+            candidate.relative_to(worktree.resolve())
+        except ValueError:
+            return [], f"changed path escapes worktree: {relative}"
+        paths.append(candidate)
+    return paths, ""
 
 
 def render_content_json(package: PagePackage) -> dict:
@@ -27,17 +62,31 @@ def render_content_json(package: PagePackage) -> dict:
     return {k: package.content[k] for k in RENDER_KEYS if k in package.content}
 
 
+def expected_page_contract(package: PagePackage) -> dict[str, str]:
+    jsonld = package.content.get("jsonld") or {}
+    return {
+        "canonical": package.content["canonical"],
+        "schema_type": str(jsonld.get("@type", "BlogPosting")),
+        "headline": str(jsonld.get("headline", package.content.get("title", ""))),
+        "date_published": str(jsonld.get("datePublished", package.content.get("date_published", ""))),
+    }
+
+
 def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
                    dry_run: bool = False) -> tuple[list[tuple[str, str, str]], ExportManifest | None]:
     checks: list[tuple[str, str, str]] = []
     slug = package.content["slug"]
-    dest = worktree / "content" / "blog" / f"{slug}.json"
+    try:
+        dest = content_destination(worktree, slug)
+    except ValueError as err:
+        checks.append(("content_slug", "BLOCK", str(err)))
+        return checks, None
 
     if dry_run:
         checks.append(("export_plan", "PASS", f"would write {dest}"))
         return checks, None
 
-    status = subprocess.run(["git", "-C", str(worktree), "status", "--porcelain"],
+    status = subprocess.run(["git", "-C", str(worktree), "status", "--porcelain", "--untracked-files=all"],
                             capture_output=True, text=True)
     if status.returncode != 0:
         checks.append(("worktree_clean", "BLOCK",
@@ -56,12 +105,6 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
     checks.append(("worktree_clean", "PASS", f"rollback base {rollback_base[:10]}"))
 
     relative_dest = str(dest.relative_to(worktree))
-    tracked = subprocess.run(
-        ["git", "-C", str(worktree), "ls-files", "--error-unmatch", relative_dest],
-        capture_output=True,
-        text=True,
-    ).returncode == 0
-
     def rollback() -> None:
         reset = subprocess.run(
             ["git", "-C", str(worktree), "reset", "--hard", rollback_base],
@@ -71,10 +114,15 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
         if reset.returncode != 0:
             checks.append(("rollback", "BLOCK", f"git reset failed: {reset.stderr[-300:]}"))
             return
-        if not tracked and dest.exists():
-            dest.unlink()
+        changed, error = _changed_paths(worktree)
+        if error:
+            checks.append(("rollback", "BLOCK", error))
+            return
+        for changed_path in changed:
+            if changed_path.is_file() or changed_path.is_symlink():
+                changed_path.unlink()
         clean = subprocess.run(
-            ["git", "-C", str(worktree), "status", "--porcelain"],
+            ["git", "-C", str(worktree), "status", "--porcelain", "--untracked-files=all"],
             capture_output=True,
             text=True,
         )
@@ -113,7 +161,11 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
             checks.append(("preview_server", "BLOCK", "never opened port"))
             rollback()
             return checks, None
-        results = check_slash_variants(f"http://127.0.0.1:{port}", f"blog/{slug}")
+        results = check_slash_variants(
+            f"http://127.0.0.1:{port}",
+            f"blog/{slug}",
+            expected=expected_page_contract(package),
+        )
         for name, (verdict, detail) in results.items():
             checks.append((f"html:{name}", verdict, detail))
     finally:
@@ -127,8 +179,24 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
         rollback()
         return checks, None
 
+    generated_paths, status_error = _changed_paths(worktree)
+    if status_error or not generated_paths:
+        checks.append((
+            "generated_artifacts",
+            "BLOCK",
+            status_error or "build produced no committable content artifacts",
+        ))
+        rollback()
+        return checks, None
+    generated_files = [str(path.relative_to(worktree.resolve())) for path in generated_paths]
+    if relative_dest not in generated_files:
+        checks.append(("generated_artifacts", "BLOCK", f"missing generated content {relative_dest}"))
+        rollback()
+        return checks, None
+    checks.append(("generated_artifacts", "PASS", ", ".join(generated_files)))
+
     add = subprocess.run(
-        ["git", "-C", str(worktree), "add", str(dest)],
+        ["git", "-C", str(worktree), "add", "--", *generated_files],
         capture_output=True,
         text=True,
     )
@@ -158,14 +226,23 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
     dest_sha = destination_rev.stdout.strip()
     checks.append(("site_commit", "PASS", dest_sha[:10]))
 
+    remaining, status_error = _changed_paths(worktree)
+    if status_error or remaining:
+        detail = status_error or ", ".join(str(path.relative_to(worktree)) for path in remaining)
+        checks.append(("postcommit_clean", "BLOCK", detail))
+        rollback()
+        return checks, None
+    checks.append(("postcommit_clean", "PASS", "worktree clean after generated commit"))
+
     manifest = ExportManifest(
         package_id=package.package_id,
         package_hash=package.content_hash(),
-        generated_files=[str(dest.relative_to(worktree))],
+        generated_files=generated_files,
         canonical_url=package.content["canonical"],
         destination_commit=dest_sha,
         rollback_base=rollback_base,
         exported_at=now_iso(),
+        expected=expected_page_contract(package),
     )
     return checks, manifest
 

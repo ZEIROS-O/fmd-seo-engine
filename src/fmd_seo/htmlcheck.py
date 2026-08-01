@@ -64,36 +64,69 @@ def fetch_raw(url: str, timeout_s: int = 15) -> tuple[int, str, str]:
         return resp.status, resp.url, resp.read().decode("utf-8", errors="replace")
 
 
-def check_page(url: str, *, min_body_chars: int = 400, require_cta: bool = True) -> dict:
+def check_page(url: str, *, min_body_chars: int = 400, require_cta: bool = True,
+               expected: dict[str, str] | None = None) -> dict:
     """Run all raw-HTML checks against one URL. Returns {check: (verdict, detail)}."""
     results: dict[str, tuple[str, str]] = {}
     try:
         status, final_url, body = fetch_raw(url)
     except (urllib.error.URLError, TimeoutError, OSError) as err:
         return {"fetch": ("BLOCK", f"{url}: {err}")}
-    results["fetch"] = ("PASS", f"{status} {final_url}")
+    results["fetch"] = (
+        ("PASS", f"{status} {final_url}")
+        if status == 200
+        else ("BLOCK", f"{status} {final_url}")
+    )
+    if status != 200:
+        return results
 
     ex = _Extractor()
     ex.feed(body)
 
     results["title"] = ("PASS", ex.title.strip()) if ex.title.strip() else ("BLOCK", "no <title>")
     results["canonical"] = ("PASS", ex.canonical) if ex.canonical else ("BLOCK", "no canonical link")
+    if expected and expected.get("canonical"):
+        wanted = expected["canonical"]
+        results["canonical_expected"] = (
+            ("PASS", wanted) if ex.canonical.rstrip("/") == wanted.rstrip("/")
+            else ("BLOCK", f"expected {wanted}, got {ex.canonical or 'missing'}")
+        )
     results["body_substantial"] = (
         ("PASS", f"{ex.text_chars} chars") if ex.text_chars >= min_body_chars
         else ("BLOCK", f"only {ex.text_chars} body chars (<{min_body_chars})")
     )
 
     valid_jsonld = 0
+    jsonld_objects: list[dict] = []
     for blob in ex.jsonld:
         try:
-            json.loads(blob)
+            parsed = json.loads(blob)
             valid_jsonld += 1
+            if isinstance(parsed, dict):
+                jsonld_objects.append(parsed)
         except json.JSONDecodeError:
             pass
     results["structured_data"] = (
         ("PASS", f"{valid_jsonld} JSON-LD block(s)") if valid_jsonld
         else ("BLOCK", "no parseable application/ld+json")
     )
+    if expected and expected.get("schema_type"):
+        schema_type = expected["schema_type"]
+        matching = [item for item in jsonld_objects if item.get("@type") == schema_type]
+        results["schema_expected"] = (
+            ("PASS", schema_type) if matching
+            else ("BLOCK", f"no JSON-LD {schema_type} object")
+        )
+        if matching:
+            block = matching[0]
+            for field, key in (("headline", "headline"), ("date_published", "datePublished")):
+                wanted = expected.get(field)
+                if wanted:
+                    got = str(block.get(key, ""))
+                    results[f"schema_{field}"] = (
+                        ("PASS", got) if got == wanted
+                        else ("BLOCK", f"expected {wanted}, got {got or 'missing'}")
+                    )
 
     internal = [href for href in ex.links if href.startswith("/")]
     results["internal_links"] = (

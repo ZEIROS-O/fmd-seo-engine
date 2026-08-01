@@ -23,7 +23,7 @@ paths:
   facts_file: "/mnt/c/Users/lucas/OneDrive/Documents/Cowork Detailing Folder/business-facts.yaml"
   operator_repo: "/home/lucascoh/operator-agent"
   zeiros_repo: "/home/lucascoh/ZEIROS"
-  site_worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fresh-site"
+  site_worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fresh-site-v3"
   position_keywords: "/home/lucascoh/fmd-seo-engine/evidence/keywords/position-tracking-keywords.txt"
 
 creds_env: "/home/lucascoh/.dataforseo.env"
@@ -45,6 +45,18 @@ gsc:
   key_path: "/home/lucascoh/.gsc-service-account.json"
   site_url: "sc-domain:freshmobiledetail.com"
   sitemap_url: "https://freshmobiledetail.com/sitemap.xml"
+
+site:
+  facts_url: "https://freshmobiledetail.com/api/business-facts"
+  fact_surfaces:
+    - url: "https://freshmobiledetail.com/"
+      required: [phoneDisplay, pricing.fullInterior, pricing.ultimateInterior]
+    - url: "https://freshmobiledetail.com/interior-detailing"
+      required: [phoneDisplay, pricing.fullInterior, pricing.ultimateInterior]
+    - url: "https://freshmobiledetail.com/mobile-detailing"
+      required: [phoneDisplay, pricing.fullInterior, pricing.ultimateInterior]
+    - url: "https://freshmobiledetail.com/areas/beachwood"
+      required: [phoneDisplay, pricing.fullInterior, pricing.ultimateInterior]
 
 # Fixed-coordinate mobile position panel. Targets include FMD and the local
 # competitors already present in the measured July baseline.

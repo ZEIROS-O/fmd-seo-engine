@@ -150,6 +150,7 @@ class ExportManifest:
     destination_commit: str
     rollback_base: str
     exported_at: str
+    expected: dict[str, str] = dataclasses.field(default_factory=dict)
     schema_version: int = SCHEMA_VERSION
 
     def to_dict(self) -> dict:

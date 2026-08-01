@@ -41,6 +41,23 @@ def test_good_page_passes_all_checks(site):
     assert failing == {}
 
 
+def test_expected_page_contract_blocks_wrong_schema_fields(site):
+    results = check_page(
+        f"{site}/blog/good/",
+        expected={
+            "canonical": "https://x/blog/good/",
+            "schema_type": "BlogPosting",
+            "headline": "Expected headline",
+            "date_published": "2026-08-01",
+        },
+    )
+
+    assert results["canonical_expected"][0] == "PASS"
+    assert results["schema_expected"][0] == "PASS"
+    assert results["schema_headline"][0] == "BLOCK"
+    assert results["schema_date_published"][0] == "BLOCK"
+
+
 def test_spa_shell_blocks_content_checks(site):
     results = check_page(f"{site}/blog/bad/")
     verdicts = {k: v[0] for k, v in results.items()}
@@ -52,4 +69,18 @@ def test_spa_shell_blocks_content_checks(site):
 
 def test_unreachable_url_blocks_fetch():
     results = check_page("http://127.0.0.1:1/nope/", min_body_chars=1)
+    assert results["fetch"][0] == "BLOCK"
+
+
+def test_check_page_never_marks_non_200_fetch_as_pass(monkeypatch):
+    from fmd_seo import htmlcheck
+
+    monkeypatch.setattr(
+        htmlcheck,
+        "fetch_raw",
+        lambda _url: (404, "https://example.test/missing", "<html><body>missing</body></html>"),
+    )
+
+    results = htmlcheck.check_page("https://example.test/missing")
+
     assert results["fetch"][0] == "BLOCK"

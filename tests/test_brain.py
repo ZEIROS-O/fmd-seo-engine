@@ -109,6 +109,7 @@ def test_real_brain_includes_gbp_performance_check():
     assert check.cadence == "weekly"
     assert check.record_names == [
         "calls", "direction_requests", "website_clicks", "searches_discovery",
+        "search_keywords_thresholded",
     ]
 
 
