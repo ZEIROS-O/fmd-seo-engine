@@ -202,6 +202,26 @@ checks:
         action: "Prioritize entity consistency, review velocity, and GBP completeness; do not add pages."
     why: "The map pack is the primary discovery surface for a mobile local-service business; a single point is too noisy to govern decisions."
 
+  - id: gbp.performance
+    domain: seo
+    title: Google Business Profile discovery and conversion actions
+    cadence: weekly
+    cost: free
+    method:
+      kind: engine
+      run: |
+        Fetch the prior 28 days from the Google Business Profile Performance API.
+        Sum call clicks, direction requests, and website clicks. Classify monthly
+        search-keyword impressions as discovery when the query is non-branded.
+        Requires gbp.location_id and the business.manage OAuth scope.
+    records:
+      - {name: calls, type: int}
+      - {name: direction_requests, type: int}
+      - {name: website_clicks, type: int}
+      - {name: searches_discovery, type: int}
+    thresholds: []
+    why: "Discovery searches and profile actions are the closest first-party measures of map-pack visibility and business impact."
+
   - id: seo.site_health
     domain: seo
     title: Semrush Site Audit health and errors
@@ -366,13 +386,13 @@ checks:
     domain: competitor
     title: Who holds the city-level SERP
     cadence: weekly
-    cost: mcp
+    cost: paid
     method:
-      kind: mcp
+      kind: engine
       run: |
-        mcp__semrush__organic_research / competitors_research for the city-level head
-        terms in brain/state.yaml → head_terms. Record which competitors hold page 1
-        and any new entrant. Note aggregator (Yelp/national) share of page 1.
+        Reuse the weekly coordinate-anchored mobile `serp-bulk` dataset at zero
+        marginal cost. For brain/state.yaml head_terms, record FMD page-one
+        appearances and domains not present in the prior comparable panel.
     records:
       - {name: head_terms_checked, type: int}
       - {name: fmd_page1_count, type: int}

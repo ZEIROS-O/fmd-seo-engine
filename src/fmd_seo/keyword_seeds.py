@@ -11,6 +11,8 @@ defensible list in a single call. Seeds are grounded in:
 
 from __future__ import annotations
 
+import re
+
 # Head terms — GSC shows searchers use "car"/"auto"/"mobile" + "detailing".
 SERVICE_TERMS = [
     "car detailing",
@@ -31,6 +33,47 @@ PLACES = [
     "south euclid", "mentor", "willoughby", "euclid", "wickliffe", "bedford",
     "twinsburg", "hudson",
 ]
+
+# One shared classification taxonomy for PDF extraction and queue SERP results.
+# Include both the canonical business-facts spelling ("Orange") and the legacy
+# campaign spelling ("Orange Village") so old and new evidence classify alike.
+CLASSIFICATION_SUBURBS = tuple(dict.fromkeys([
+    *PLACES,
+    "orange village", "richmond heights", "aurora", "streetsboro",
+    "warrensville",
+]))
+
+CLASSIFICATION_SERVICE_TERMS = (
+    "detail", "car wash", "interior clean", "car clean", "vehicle clean",
+    "ceramic", "paint correction", "odor", "pet hair", "seat shampoo",
+    "headlight", "wax", "polish", "scratch", "stain", "rust proof",
+)
+
+INFO_PREFIXES = (
+    "how ", "what ", "why ", "when ", "where ", "which ", "can ",
+    "does ", "do ", "is ", "are ", "should ", "tips ",
+)
+
+
+def classify(keyword: str) -> dict[str, bool]:
+    value = keyword.casefold()
+    branded = value.startswith("fresh ") or "fresh mobile" in value
+    return {
+        "branded": branded,
+        "non_branded": not branded,
+        "near_me": bool(re.search(
+            r"\bnear me\b|\bnearby\b|\bin my area\b|\baround me\b", value,
+        )),
+        "cleveland": "cleveland" in value,
+        "suburb": any(term in value for term in CLASSIFICATION_SUBURBS),
+        "service": any(term in value for term in CLASSIFICATION_SERVICE_TERMS),
+        "informational": (
+            value.startswith(INFO_PREFIXES)
+            or any(term in value for term in (
+                " cost", " price", " prices", "best ", " vs ", "how much",
+            ))
+        ),
+    }
 
 # Problem-aware / buyer-intent topics FMD genuinely serves (interior-first).
 PAIN_TERMS = [

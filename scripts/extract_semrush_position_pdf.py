@@ -15,7 +15,13 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from fmd_seo.keyword_seeds import classify  # noqa: E402
 
 
 ROW_RE = re.compile(r"^ {8}(\d+)\.\s+(.*)$")
@@ -34,26 +40,6 @@ DOMAINS = {
     "atf": "allthingsfreshcardetailing.com",
     "rhino": "rhinomobiledetailing.com",
 }
-
-SUBURBS = (
-    "mayfield heights", "beachwood", "solon", "pepper pike",
-    "moreland hills", "chagrin falls", "shaker heights",
-    "university heights", "highland heights", "lyndhurst", "gates mills",
-    "orange village", "cleveland heights", "south euclid",
-    "richmond heights", "mentor", "willoughby", "hudson", "twinsburg",
-    "aurora", "streetsboro", "bedford", "warrensville", "euclid",
-)
-
-SERVICE_TERMS = (
-    "detail", "car wash", "interior clean", "car clean", "vehicle clean",
-    "ceramic", "paint correction", "odor", "pet hair", "seat shampoo",
-    "headlight", "wax", "polish", "scratch", "stain", "rust proof",
-)
-
-INFO_PREFIXES = (
-    "how ", "what ", "why ", "when ", "where ", "which ", "can ",
-    "does ", "do ", "is ", "are ", "should ", "tips ",
-)
 
 
 def _sha256(path: Path) -> str:
@@ -195,28 +181,6 @@ def parse_rows(text: str) -> list[dict]:
             f"missing={missing[:10]} duplicates={duplicates[:10]}"
         )
     return rows
-
-
-def classify(keyword: str) -> dict[str, bool]:
-    value = keyword.casefold()
-    branded = value.startswith("fresh ") or "fresh mobile" in value
-    near_me = bool(re.search(r"\bnear me\b|\bnearby\b|\bin my area\b|\baround me\b", value))
-    cleveland = "cleveland" in value
-    suburb = any(term in value for term in SUBURBS)
-    service = any(term in value for term in SERVICE_TERMS)
-    informational = (
-        value.startswith(INFO_PREFIXES)
-        or any(term in value for term in (" cost", " price", " prices", "best ", " vs ", "how much"))
-    )
-    return {
-        "branded": branded,
-        "non_branded": not branded,
-        "near_me": near_me,
-        "cleveland": cleveland,
-        "suburb": suburb,
-        "service": service,
-        "informational": informational,
-    }
 
 
 def _rank_counts(rows: list[dict], field: str) -> dict:

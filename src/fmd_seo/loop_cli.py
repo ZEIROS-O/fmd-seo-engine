@@ -144,19 +144,45 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     from .freshness import record_daily_engine_checks
     engine_checks = record_daily_engine_checks(config, brain, observations_dir)
     result = sync_due(config, brain=brain, observations_dir=observations_dir)
+    from .gbp import sync_if_due
+    fetched = list(result.fetched)
+    errors = dict(result.errors)
+    try:
+        gbp_result = sync_if_due(config, brain, observations_dir=observations_dir)
+        if gbp_result["status"] == "fetched":
+            fetched.append("gbp.performance")
+    except Exception as err:  # noqa: BLE001 - provider failure becomes sync health
+        gbp_result = {"status": "failed", "error": str(err)}
+        errors["gbp.performance"] = str(err)
+    attempted = len(fetched) + len(errors)
+    if attempted:
+        record_observation(
+            brain,
+            "sync.health",
+            {
+                "checks_attempted": attempted,
+                "checks_succeeded": len(fetched),
+                "checks_failed": len(errors),
+            },
+            fulfillment="engine",
+            source="fmd-seo sync (all headless providers)",
+            note="; ".join(f"{key}: {value}" for key, value in errors.items()),
+            directory=observations_dir,
+        )
     payload = {
         "command": "sync",
         "engine_checks": engine_checks,
-        "fetched": result.fetched,
+        "fetched": fetched,
         "skipped_no_key": result.skipped_no_key,
-        "errors": result.errors,
+        "errors": errors,
+        "gbp": gbp_result,
         "note": ("no SEMRUSH_API_KEY present — these API-backed checks stay on the "
                  "session (MCP) path" if result.skipped_no_key else
-                 f"fetched {len(result.fetched)} check(s) headlessly"),
+                 f"fetched {len(fetched)} check(s) headlessly"),
     }
-    if result.errors and result.fetched:
+    if errors and fetched:
         return payload, 3
-    if result.errors:
+    if errors:
         return payload, 4
     return payload, 0
 

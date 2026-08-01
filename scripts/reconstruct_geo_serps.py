@@ -23,8 +23,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from extract_semrush_position_pdf import classify  # noqa: E402
 from fmd_seo.dataforseo import DataForSeoClient  # noqa: E402
+from fmd_seo.keyword_seeds import classify  # noqa: E402
 from fmd_seo.spend import SpendLedger  # noqa: E402
 
 

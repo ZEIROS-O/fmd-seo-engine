@@ -14,6 +14,8 @@ dependencies = ["PyYAML>=6.0"]
 # to enable the headless index-coverage check via the URL Inspection API.
 [project.optional-dependencies]
 gsc = ["google-auth>=2.0", "google-api-python-client>=2.0"]
+gbp = ["google-auth>=2.0", "requests>=2.0"]
+google = ["google-auth>=2.0", "google-api-python-client>=2.0", "requests>=2.0"]
 
 [project.scripts]
 fmd-seo = "fmd_seo.cli:main"

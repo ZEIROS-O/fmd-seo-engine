@@ -104,6 +104,18 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
     sub.add_parser("gsc-sync", help="headless index-coverage fetch via the GSC URL Inspection API")
 
+    p = sub.add_parser("serp-bulk", help="capped resumable position-tracking queue")
+    serp_mode = p.add_mutually_exclusive_group(required=True)
+    serp_mode.add_argument("--dry-run", action="store_true", help="estimate only; post zero tasks")
+    serp_mode.add_argument("--post", action="store_true", help="post missing tasks to the standard queue")
+    serp_mode.add_argument("--collect", action="store_true", help="collect posted tasks and record results")
+
+    p = sub.add_parser("geogrid", help="capped resumable map-pack grid queue")
+    grid_mode = p.add_mutually_exclusive_group(required=True)
+    grid_mode.add_argument("--dry-run", action="store_true", help="estimate only; post zero tasks")
+    grid_mode.add_argument("--post", action="store_true", help="post missing grid tasks")
+    grid_mode.add_argument("--collect", action="store_true", help="collect grid tasks and record map-pack results")
+
     p = sub.add_parser("observe", help="record one measured check observation")
     p.add_argument("check_id")
     p.add_argument("--records", required=True, help="JSON object of the check's declared fields")
@@ -120,6 +132,113 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "preflight":
         # Preflight reports the kill switch as a blocker instead of refusing to run.
         return _emit(run_preflight(config, online=args.online), receipts_dir)
+
+    if args.command == "serp-bulk":
+        from . import serp_bulk
+        rb = ReceiptBuilder(args.command)
+        lock = None
+        lock_acquired = False
+        try:
+            if args.dry_run:
+                payload = serp_bulk.dry_run(config)
+                code = 0 if payload["within_cap"] else EXIT["BLOCK"]
+            else:
+                killswitch.assert_not_engaged()
+                paths.ensure_run_dirs()
+                lock = RunLock(paths.LOCK_FILE)
+                lock.acquire(rb.run_id)
+                lock_acquired = True
+                if args.post:
+                    payload = serp_bulk.post_tasks(config)
+                    code = 0
+                else:
+                    payload, rows = serp_bulk.collect_tasks(config)
+                    if payload["pending"]:
+                        code = EXIT["PARTIAL"]
+                    else:
+                        from .brain import load_brain
+                        from .observations import record_observation
+                        brain = load_brain()
+                        path = record_observation(
+                            brain,
+                            "seo.positions",
+                            payload["records"],
+                            fulfillment="engine_api",
+                            source=payload["results"],
+                            note="DataForSEO standard queue, coordinate-anchored mobile depth 20",
+                        )
+                        payload["recorded"] = str(path.relative_to(paths.ENGINE_ROOT))
+                        competitor_path = record_observation(
+                            brain,
+                            "competitor.serp_movement",
+                            payload["competitor_records"],
+                            fulfillment="engine_api",
+                            source=payload["results"],
+                            note="same coordinate-anchored mobile SERP dataset as seo.positions",
+                        )
+                        payload["competitor_recorded"] = str(
+                            competitor_path.relative_to(paths.ENGINE_ROOT)
+                        )
+                        code = 0
+        except (LockHeld, killswitch.KillSwitchEngaged) as err:
+            payload, code = {"command": args.command, "error": str(err)}, EXIT["BLOCK"]
+        except Exception as err:  # noqa: BLE001 - receipt distinguishes internal failure
+            payload, code = {
+                "command": args.command,
+                "error": f"{type(err).__name__}: {err}",
+            }, EXIT["ERROR"]
+        finally:
+            if lock is not None and lock_acquired:
+                lock.release()
+        return _emit_loop(rb, payload, code, receipts_dir)
+
+    if args.command == "geogrid":
+        from . import geogrid
+        rb = ReceiptBuilder(args.command)
+        lock = None
+        lock_acquired = False
+        try:
+            if args.dry_run:
+                payload = geogrid.dry_run(config)
+                code = 0 if payload["within_cap"] else EXIT["BLOCK"]
+            else:
+                killswitch.assert_not_engaged()
+                paths.ensure_run_dirs()
+                lock = RunLock(paths.LOCK_FILE)
+                lock.acquire(rb.run_id)
+                lock_acquired = True
+                if args.post:
+                    payload = geogrid.post_tasks(config)
+                    code = 0
+                else:
+                    payload, _rows = geogrid.collect_tasks(config)
+                    if payload["pending"]:
+                        code = EXIT["PARTIAL"]
+                    else:
+                        from .brain import load_brain
+                        from .observations import record_observation
+                        brain = load_brain()
+                        path = record_observation(
+                            brain,
+                            "seo.map_pack",
+                            payload["records"],
+                            fulfillment="engine_api",
+                            source=payload["results"],
+                            note="5x5 service-area mobile geogrid",
+                        )
+                        payload["recorded"] = str(path.relative_to(paths.ENGINE_ROOT))
+                        code = 0
+        except (LockHeld, killswitch.KillSwitchEngaged) as err:
+            payload, code = {"command": args.command, "error": str(err)}, EXIT["BLOCK"]
+        except Exception as err:  # noqa: BLE001
+            payload, code = {
+                "command": args.command,
+                "error": f"{type(err).__name__}: {err}",
+            }, EXIT["ERROR"]
+        finally:
+            if lock is not None and lock_acquired:
+                lock.release()
+        return _emit_loop(rb, payload, code, receipts_dir)
 
     # Read-only loop commands remain available under the kill switch so an
     # operator can inspect why the engine stopped. Observation-writing and

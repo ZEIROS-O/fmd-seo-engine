@@ -104,6 +104,14 @@ def test_gate_rules_load_from_single_registry():
     }
 
 
+def test_real_brain_includes_gbp_performance_check():
+    check = load_brain().check("gbp.performance")
+    assert check.cadence == "weekly"
+    assert check.record_names == [
+        "calls", "direction_requests", "website_clicks", "searches_discovery",
+    ]
+
+
 # ─────────────────────── due scheduling ───────────────────────
 
 def test_never_observed_check_is_always_due():

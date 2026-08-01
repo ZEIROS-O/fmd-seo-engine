@@ -69,8 +69,15 @@ Without the key it degrades to the manual console reading — never a guess (GAT
 
 - **Semrush REST** (`SEMRUSH_API_KEY`) → `sync`, headless.
 - **GSC URL Inspection** (service-account key) → `gsc-sync`, headless.
+- **GBP Performance** (same Google project + `gbp.location_id`) → `sync`, headless.
+- **DataForSEO standard queue** → `serp-bulk` positions and `geogrid` map-pack panels.
 - **Semrush MCP** / **live HTTP** / **model judgment** → session, via the
   `fmd-seo-loop` skill.
+
+Paid SERP commands require an explicit mode. `--dry-run` computes the full
+bounded cost and posts nothing; `--post` creates/resumes the durable task
+manifest; `--collect` retrieves ready tasks and records normalized observations.
+The position and geogrid caps are independent in `config/engine.yaml`.
 
 ## Gates (enforced, not advisory)
 

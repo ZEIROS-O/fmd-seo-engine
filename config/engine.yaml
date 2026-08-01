@@ -1,17 +1,18 @@
 schema_version: 1
 
-# Balance is NOT replenishable: DataForSEO requires a $50 minimum deposit and
-# the account holds $0.8786. total_usd is set so committed spend (which already
-# includes $0.1214 from Phase 3) can never exceed the real balance.
+# DataForSEO requires a $50 minimum deposit. The ledger still accounts for all
+# earlier spend and reserves each task before posting.
 # Measured per-call costs: serp $0.002 | llm_responses $0.0063 |
 # business_data $0.0131 | llm_mentions $0.10 (50x a SERP — capped to zero).
 budget:
-  total_usd: 0.95
+  total_usd: 50.0
   endpoint_caps_usd:
     probe: 0.05
     keywords: 0.20      # Google Ads search volume: SAME price for 1 or 1000 keywords
                         # (~$0.075/request) — always batch to the 1000 limit.
     serp: 0.15          # ~75 SERP pulls (10 queries x desktop/mobile + listicles)
+    serp_bulk: 0.60     # 467 keywords x depth 20 x $0.0006/page = <= $0.5604
+    geogrid: 0.12       # 25 points x 8 queries x depth 10 x $0.0006 = $0.12
     llm_responses: 0.40 # ~63 AI answers (stable-core sampling + per-query citation SOV)
     business_data: 0.10 # ~7 local-listing pulls (GBP + competitors)
     labs: 0.10          # competitor ranked_keywords
@@ -23,6 +24,7 @@ paths:
   operator_repo: "/home/lucascoh/operator-agent"
   zeiros_repo: "/home/lucascoh/ZEIROS"
   site_worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fresh-site"
+  position_keywords: "/home/lucascoh/fmd-seo-engine/evidence/keywords/position-tracking-keywords.txt"
 
 creds_env: "/home/lucascoh/.dataforseo.env"
 
@@ -43,6 +45,57 @@ gsc:
   key_path: "/home/lucascoh/.gsc-service-account.json"
   site_url: "sc-domain:freshmobiledetail.com"
   sitemap_url: "https://freshmobiledetail.com/sitemap.xml"
+
+# Fixed-coordinate mobile position panel. Targets include FMD and the local
+# competitors already present in the measured July baseline.
+serp_bulk:
+  coordinate: "41.4645,-81.5087,200"
+  depth: 20
+  page_price_usd: 0.0006
+  head_terms:
+    - car detailing
+    - auto detailing
+    - mobile detailing
+    - car detailing near me
+    - auto detailers near me
+    - mobile detailing near me
+    - best mobile car detailing cleveland
+  targets:
+    fmd:
+      domain: freshmobiledetail.com
+      aliases: [Fresh Mobile Detailing, Fresh Mobile Detail]
+    atf:
+      domain: allthingsfreshcardetailing.com
+      aliases: [All Things Fresh Car Detailing, All Things Fresh]
+    refresh:
+      domain: refreshmobiledetailingcle.com
+      aliases: [Refresh Mobile Detailing]
+    nathans:
+      domain: nathansdetailing.com
+      aliases: [Nathan's Detailing, Nathans Detailing]
+    diamond_finish:
+      domain: diamondfinishdetailing.com
+      aliases: [Diamond Finish Detailing, Diamond Finish]
+
+geogrid:
+  center: [41.4645, -81.5087]
+  size: 5
+  queries:
+    - car detailing near me
+    - mobile detailing near me
+    - auto detailing near me
+    - car detailing beachwood
+    - car detailing solon
+    - car detailing orange ohio
+    - car detailing pepper pike
+    - interior car detailing near me
+
+# The unobfuscated GBP listing id must be supplied by Lou after API access is
+# enabled. Empty means explicit no-op, never a guessed listing.
+gbp:
+  key_path: "/home/lucascoh/.gsc-service-account.json"
+  location_id: ""
+  days: 28
 
 limits:
   attempts_per_milestone: 2
