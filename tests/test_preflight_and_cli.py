@@ -14,6 +14,23 @@ from fmd_seo.receipts import ReceiptBuilder
 ENGINE_ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_bin_launcher_ignores_shell_cdpath():
+    env = os.environ.copy()
+    env["CDPATH"] = ".:/home/lucascoh"
+    env.pop("PYTHONPATH", None)
+
+    result = subprocess.run(
+        ["bash", "bin/fmd-seo", "--help"],
+        cwd=ENGINE_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "facts-check" in result.stdout
+
+
 def _config(tmp_path, facts_file, git_repo, *, creds=False, worktree=False):
     creds_file = tmp_path / "dataforseo.env"
     if creds:
@@ -137,6 +154,19 @@ def test_loop_receipt_preserves_structured_checks_blockers_and_commit(tmp_path):
     assert receipt["resume_point"] == "site branch seo-engine/2026-08-01-test"
 
 
+def test_loop_receipt_preserves_error_status(tmp_path):
+    code = _emit_loop(
+        ReceiptBuilder("sync"),
+        {"command": "sync", "error": "provider parser crashed"},
+        5,
+        tmp_path,
+    )
+
+    receipt = json.loads(next(tmp_path.glob("*.json")).read_text())
+    assert code == 5
+    assert receipt["status"] == "ERROR"
+
+
 def test_cli_observe_machine_updates_gate1_state(tmp_path, facts_file, git_repo):
     records = {
         "indexed": 20,
@@ -219,7 +249,7 @@ def test_cli_assess_internal_error_is_exit_five(tmp_path, facts_file, git_repo):
     payload = json.loads(result.stdout)
     assert "error" in payload
     receipt = json.loads(next((env_root / "receipts").glob("*.json")).read_text())
-    assert receipt["status"] == "BLOCK"
+    assert receipt["status"] == "ERROR"
 
 
 def test_cli_preflight_emits_receipt(tmp_path, facts_file, git_repo):

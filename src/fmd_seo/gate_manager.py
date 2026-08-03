@@ -58,8 +58,12 @@ def update_gate1_state(
         gate["consecutive_clean_readings"] = 0
     gate["last_counted_at"] = observed_at
 
-    start = text.index("  GATE-1:\n")
-    end = text.index("  GATE-2:\n", start)
+    marker = re.search(r"(?m)^  GATE-1:\s*$", text)
+    if marker is None:
+        raise ValueError("state file has no GATE-1 section")
+    start = marker.start()
+    next_gate = re.search(r"(?m)^  [A-Za-z0-9_-]+:\s*$", text[marker.end():])
+    end = marker.end() + next_gate.start() if next_gate else len(text)
     section = text[start:end]
     section = _replace_line(section, "state", gate["state"])
     section = _replace_line(section, "reason", json.dumps(gate["reason"]))

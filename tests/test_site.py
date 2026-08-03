@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from fmd_seo.site import SiteSyncError, sync_worktree
+from fmd_seo.site import SiteSyncError, reset_worktree, sync_worktree
 
 
 def _git(path: Path, *args: str) -> str:
@@ -84,3 +84,22 @@ def test_sync_worktree_preserves_clean_unpushed_commit(tmp_path: Path):
 
     assert _git(repo, "rev-parse", "HEAD") == local_sha
     assert (repo / "site.txt").read_text(encoding="utf-8") == "local commit\n"
+
+    report = reset_worktree(repo)
+    assert report["ahead"] == 1
+    assert report["needs_reset"] is True
+    assert _git(repo, "rev-parse", "HEAD") == local_sha
+
+    # An uncommitted edit is destroyed outright by --force, so the receipt has
+    # to name it; `dirty` describes the worktree after the reset, which is empty.
+    (repo / "scratch.txt").write_text("operator work in progress\n", encoding="utf-8")
+
+    reset = reset_worktree(repo, force=True)
+    assert reset["status"] == "DONE"
+    assert reset["needs_reset"] is False
+    assert _git(repo, "branch", "--show-current") == ""
+    assert _git(repo, "rev-parse", "main") == local_sha
+    assert (repo / "site.txt").read_text(encoding="utf-8") == "base\n"
+    assert reset["dirty"] == []
+    assert any("scratch.txt" in entry for entry in reset["discarded"])
+    assert not (repo / "scratch.txt").exists()

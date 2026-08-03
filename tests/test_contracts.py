@@ -40,6 +40,7 @@ def test_invalid_enums_rejected():
         RunReceipt("r", "MAYBE", "t0", "t1", "c", 1, [], 0.0, [], None, {})
     with pytest.raises(ContractError):
         _package(tier="landing-page")
+    assert RunReceipt("r", "ERROR", "t0", "t1", "c", 1, [], 0.0, [], None, {}).status == "ERROR"
 
 
 def test_schema_version_enforced():

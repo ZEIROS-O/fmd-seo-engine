@@ -8,9 +8,11 @@ Content carries explicit `claims` (each tied to a fact key) and
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
+from . import paths
 from .contracts import PagePackage
 
 # Terms gated by claim_gates.blocked_until_equipment_owned + scarcity/review gates.
@@ -33,11 +35,85 @@ def _all_text(package: PagePackage) -> str:
     for block in package.content.get("blocks", []):
         parts.append(block.get("text", ""))
         parts.extend(block.get("items", []))
-    return "\n".join(parts)
+    parts.append(json.dumps(package.content.get("jsonld") or {}, ensure_ascii=False))
+    parts.append(str((package.content.get("cta") or {}).get("label", "")))
+    parts.extend(str(asset.get("alt", "")) for asset in package.assets)
+    return "\n".join(str(part) for part in parts)
+
+
+# Content-addressed evidence ids only. Anything else could reach rglob as a
+# wildcard and bind a figure to whatever file the filesystem happens to yield.
+EVIDENCE_ID_PATTERN = re.compile(r"\A[A-Za-z0-9_-]+\Z")
+
+# Schema.org carries prices as bare numerics, so the `$N` scan never sees them.
+JSONLD_PRICE_KEYS = {"price", "lowprice", "highprice", "minprice", "maxprice", "pricerange"}
+
+
+def _resolve_evidence(evidence_id: str, evidence_dir: Path) -> Path | None:
+    """Resolve one committed evidence record by exact content-addressed ID."""
+    if not EVIDENCE_ID_PATTERN.match(evidence_id):
+        return None
+    # Sorted so a duplicated id across subdirectories resolves deterministically.
+    return next(iter(sorted(evidence_dir.rglob(f"{evidence_id}.json"))), None)
+
+
+def _jsonld_price_values(node: object) -> list[str]:
+    """Every numeric value sitting under a price-bearing schema.org key."""
+    found: list[str] = []
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if str(key).lower() in JSONLD_PRICE_KEYS:
+                for token in re.findall(r"\d{2,4}", str(value)):
+                    found.append(token)
+            found.extend(_jsonld_price_values(value))
+    elif isinstance(node, list):
+        for item in node:
+            found.extend(_jsonld_price_values(item))
+    return found
+
+
+def contains_currency_token(text: str, value: str | int) -> bool:
+    """Return true only for an explicit dollar figure of the requested value."""
+    return re.search(
+        rf"\$\s*{re.escape(str(value))}(?!\d)", text,
+    ) is not None
+
+
+def _figure_evidence(
+    package: PagePackage,
+    value: str,
+    evidence_dir: Path,
+) -> tuple[bool, str]:
+    entries = package.content.get("evidence_figures") or []
+    matching = [entry for entry in entries if isinstance(entry, dict) and str(entry.get("value")) == value]
+    if not matching:
+        return False, "no evidence_figures entry"
+    referenced = set(package.evidence_refs)
+    failures: list[str] = []
+    for entry in matching:
+        evidence_id = str(entry.get("evidence_id") or "")
+        if evidence_id not in referenced:
+            failures.append(f"{evidence_id or '<missing id>'} is not in package.evidence_refs")
+            continue
+        evidence_path = _resolve_evidence(evidence_id, evidence_dir)
+        if evidence_path is None:
+            failures.append(f"{evidence_id} evidence file is missing")
+            continue
+        try:
+            evidence_text = evidence_path.read_text(encoding="utf-8", errors="replace")
+        except OSError as err:  # unreadable evidence proves nothing - fail closed
+            failures.append(f"{evidence_id} evidence file is unreadable: {err}")
+            continue
+        if not contains_currency_token(evidence_text, value):
+            failures.append(f"{evidence_id} does not contain {value}")
+            continue
+        return True, f"bound to {evidence_id}"
+    return False, "; ".join(failures)
 
 
 def deterministic_checks(package: PagePackage, *, site_public_dir: Path | None = None,
-                         known_routes: set[str] | None = None) -> list[tuple[str, str, str]]:
+                         known_routes: set[str] | None = None,
+                         evidence_dir: Path | None = None) -> list[tuple[str, str, str]]:
     results: list[tuple[str, str, str]] = []
     facts = package.fact_snapshot.get("facts_used", {})
     text = _all_text(package)
@@ -57,13 +133,27 @@ def deterministic_checks(package: PagePackage, *, site_public_dir: Path | None =
 
     # 2. Every FMD price/phone in the text must be a declared claim value.
     claimed_values = {str(c.get("value")) for c in claims}
-    for price in re.findall(r"\$(\d{2,4})\b", text):
+    scanned = re.findall(r"\$(\d{2,4})\b", text)
+    for price in scanned:
         if price in claimed_values:
             continue
-        if price in {str(v) for v in package.content.get("evidence_figures", [])}:
+        proven, detail = _figure_evidence(package, price, evidence_dir or paths.EVIDENCE_DIR)
+        if proven:
             continue
         results.append(("price_provenance", "BLOCK",
-                        f"${price} appears without claim or evidence provenance"))
+                        f"${price} appears without resolved evidence provenance: {detail}"))
+    # Structured data states prices without a currency symbol, so it needs its
+    # own pass or a figure can hide in JSON-LD that the `$N` scan cannot see.
+    already_scanned = set(scanned)
+    for price in _jsonld_price_values(package.content.get("jsonld") or {}):
+        if price in claimed_values or price in already_scanned:
+            continue
+        already_scanned.add(price)
+        proven, detail = _figure_evidence(package, price, evidence_dir or paths.EVIDENCE_DIR)
+        if proven:
+            continue
+        results.append(("jsonld_price_provenance", "BLOCK",
+                        f"jsonld price {price} lacks resolved evidence provenance: {detail}"))
     phones = re.findall(r"\(\d{3}\)\s*\d{3}-\d{4}", text)
     for phone in phones:
         if phone not in claimed_values:

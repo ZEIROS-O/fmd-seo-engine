@@ -100,7 +100,10 @@ def test_publish_returns_resumable_block_when_push_fails(
         lambda *_args, **_kwargs: engine_paths.EVIDENCE_DIR / "exports/test.json",
     )
 
+    calls = []
+
     def fake_run(_repo, *args):
+        calls.append(args)
         if args[:2] == ("git", "push"):
             raise ActError("git push failed: auth denied")
         if args[:3] == ("git", "rev-parse", "HEAD"):
@@ -117,3 +120,4 @@ def test_publish_returns_resumable_block_when_push_fails(
     assert result["commit_hashes"] == {"site": "abc123"}
     assert result["manifest"].endswith("exports/test.json")
     assert "auth denied" in result["blockers"][0]
+    assert ("git", "switch", "--detach", "base") in calls

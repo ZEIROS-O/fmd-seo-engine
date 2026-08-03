@@ -1,0 +1,3750 @@
+{
+  "approved_run_cap_usd": 0.6,
+  "completed_at": "2026-07-19T22:21:33.303142+00:00",
+  "depth": 20,
+  "device": "mobile",
+  "location_coordinate": "41.4645,-81.5087,200",
+  "os": "android",
+  "post_cost_usd": 0.5604,
+  "posted_at": "2026-07-19T22:02:45.490488+00:00",
+  "schema_version": 1,
+  "source_keyword_file": "evidence/keywords/position-tracking-keywords.txt",
+  "tasks": [
+    {
+      "keyword": "car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-001",
+      "task_id": "07200102-2063-0066-0000-8d0ca6d3e817"
+    },
+    {
+      "keyword": "car detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-002",
+      "task_id": "07200102-2063-0066-0000-b849962e46f7"
+    },
+    {
+      "keyword": "car detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-003",
+      "task_id": "07200102-2063-0066-0000-84069c7b4b56"
+    },
+    {
+      "keyword": "car detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-004",
+      "task_id": "07200102-2063-0066-0000-ed8e2b33d74c"
+    },
+    {
+      "keyword": "car detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-005",
+      "task_id": "07200102-2063-0066-0000-ced90500e800"
+    },
+    {
+      "keyword": "car detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-006",
+      "task_id": "07200102-2063-0066-0000-fc49064543cd"
+    },
+    {
+      "keyword": "car detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-007",
+      "task_id": "07200102-2063-0066-0000-6d32bef7fefc"
+    },
+    {
+      "keyword": "car detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-008",
+      "task_id": "07200102-2063-0066-0000-1f965191626d"
+    },
+    {
+      "keyword": "car detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-009",
+      "task_id": "07200102-2063-0066-0000-cb0487f3aa7e"
+    },
+    {
+      "keyword": "car detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-010",
+      "task_id": "07200102-2063-0066-0000-5ebc4b17fa81"
+    },
+    {
+      "keyword": "car detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-011",
+      "task_id": "07200102-2063-0066-0000-3c046826fb5a"
+    },
+    {
+      "keyword": "car detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-012",
+      "task_id": "07200102-2063-0066-0000-623aa3d26e96"
+    },
+    {
+      "keyword": "car detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-013",
+      "task_id": "07200102-2063-0066-0000-0cc63a8a664d"
+    },
+    {
+      "keyword": "car detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-014",
+      "task_id": "07200102-2063-0066-0000-7f688131232f"
+    },
+    {
+      "keyword": "car detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-015",
+      "task_id": "07200102-2063-0066-0000-6f3581b1ae53"
+    },
+    {
+      "keyword": "car detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-016",
+      "task_id": "07200102-2063-0066-0000-42f2bcef1397"
+    },
+    {
+      "keyword": "car detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-017",
+      "task_id": "07200102-2063-0066-0000-6d6cbd063af5"
+    },
+    {
+      "keyword": "car detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-018",
+      "task_id": "07200102-2063-0066-0000-a6bed5f5ca8f"
+    },
+    {
+      "keyword": "car detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-019",
+      "task_id": "07200102-2063-0066-0000-8df261a8aaf4"
+    },
+    {
+      "keyword": "car detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-020",
+      "task_id": "07200102-2063-0066-0000-d235c75ac0c6"
+    },
+    {
+      "keyword": "auto detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-021",
+      "task_id": "07200102-2063-0066-0000-65460a7ba75a"
+    },
+    {
+      "keyword": "auto detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-022",
+      "task_id": "07200102-2063-0066-0000-4235d280ccb0"
+    },
+    {
+      "keyword": "auto detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-023",
+      "task_id": "07200102-2063-0066-0000-8bd83be5624c"
+    },
+    {
+      "keyword": "auto detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-024",
+      "task_id": "07200102-2063-0066-0000-042d742b02a0"
+    },
+    {
+      "keyword": "auto detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-025",
+      "task_id": "07200102-2063-0066-0000-f0ffa1ac3983"
+    },
+    {
+      "keyword": "auto detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-026",
+      "task_id": "07200102-2063-0066-0000-c81c0bab8c03"
+    },
+    {
+      "keyword": "auto detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-027",
+      "task_id": "07200102-2063-0066-0000-94d8915c5b5c"
+    },
+    {
+      "keyword": "auto detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-028",
+      "task_id": "07200102-2063-0066-0000-68f1157c218c"
+    },
+    {
+      "keyword": "auto detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-029",
+      "task_id": "07200102-2063-0066-0000-55954d5215ef"
+    },
+    {
+      "keyword": "auto detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-030",
+      "task_id": "07200102-2063-0066-0000-8c3fdf90502a"
+    },
+    {
+      "keyword": "auto detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-031",
+      "task_id": "07200102-2063-0066-0000-f9f0bbbfe75a"
+    },
+    {
+      "keyword": "auto detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-032",
+      "task_id": "07200102-2063-0066-0000-f53c7eb68dc7"
+    },
+    {
+      "keyword": "auto detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-033",
+      "task_id": "07200102-2063-0066-0000-ea38496f1f39"
+    },
+    {
+      "keyword": "auto detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-034",
+      "task_id": "07200102-2063-0066-0000-7e5eef29ba5c"
+    },
+    {
+      "keyword": "auto detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-035",
+      "task_id": "07200102-2063-0066-0000-702809fee917"
+    },
+    {
+      "keyword": "auto detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-036",
+      "task_id": "07200102-2063-0066-0000-667584710d1f"
+    },
+    {
+      "keyword": "auto detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-037",
+      "task_id": "07200102-2063-0066-0000-5e4a66c1f847"
+    },
+    {
+      "keyword": "auto detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-038",
+      "task_id": "07200102-2063-0066-0000-e7d56dfb6d5d"
+    },
+    {
+      "keyword": "auto detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-039",
+      "task_id": "07200102-2063-0066-0000-73a2054e627b"
+    },
+    {
+      "keyword": "auto detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-040",
+      "task_id": "07200102-2063-0066-0000-0432cf68b357"
+    },
+    {
+      "keyword": "mobile detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-041",
+      "task_id": "07200102-2063-0066-0000-96c40c047e03"
+    },
+    {
+      "keyword": "mobile detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-042",
+      "task_id": "07200102-2063-0066-0000-a9f1ec9546c4"
+    },
+    {
+      "keyword": "mobile detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-043",
+      "task_id": "07200102-2063-0066-0000-badae2aeb63c"
+    },
+    {
+      "keyword": "mobile detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-044",
+      "task_id": "07200102-2063-0066-0000-13c4d970e0f2"
+    },
+    {
+      "keyword": "mobile detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-045",
+      "task_id": "07200102-2063-0066-0000-5615ea084906"
+    },
+    {
+      "keyword": "mobile detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-046",
+      "task_id": "07200102-2063-0066-0000-ff5bd8318af7"
+    },
+    {
+      "keyword": "mobile detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-047",
+      "task_id": "07200102-2063-0066-0000-9fc2e8638000"
+    },
+    {
+      "keyword": "mobile detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-048",
+      "task_id": "07200102-2063-0066-0000-d89da800978a"
+    },
+    {
+      "keyword": "mobile detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-049",
+      "task_id": "07200102-2063-0066-0000-9fb16d896b19"
+    },
+    {
+      "keyword": "mobile detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-050",
+      "task_id": "07200102-2063-0066-0000-b9eb97604a35"
+    },
+    {
+      "keyword": "mobile detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-051",
+      "task_id": "07200102-2063-0066-0000-2ed39254aee9"
+    },
+    {
+      "keyword": "mobile detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-052",
+      "task_id": "07200102-2063-0066-0000-a03e4fbef74a"
+    },
+    {
+      "keyword": "mobile detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-053",
+      "task_id": "07200102-2063-0066-0000-acf730828c4e"
+    },
+    {
+      "keyword": "mobile detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-054",
+      "task_id": "07200102-2063-0066-0000-27e026e1806c"
+    },
+    {
+      "keyword": "mobile detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-055",
+      "task_id": "07200102-2063-0066-0000-78b1f4e985d8"
+    },
+    {
+      "keyword": "mobile detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-056",
+      "task_id": "07200102-2063-0066-0000-d4abc80bb475"
+    },
+    {
+      "keyword": "mobile detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-057",
+      "task_id": "07200102-2063-0066-0000-7ea9e605858b"
+    },
+    {
+      "keyword": "mobile detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-058",
+      "task_id": "07200102-2063-0066-0000-e83e72f0be38"
+    },
+    {
+      "keyword": "mobile detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-059",
+      "task_id": "07200102-2063-0066-0000-4a212501f9ac"
+    },
+    {
+      "keyword": "mobile detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-060",
+      "task_id": "07200102-2063-0066-0000-fa79fba3ed81"
+    },
+    {
+      "keyword": "mobile car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-061",
+      "task_id": "07200102-2063-0066-0000-c8d4e13c3712"
+    },
+    {
+      "keyword": "mobile car detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-062",
+      "task_id": "07200102-2063-0066-0000-1ff7c221741b"
+    },
+    {
+      "keyword": "mobile car detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-063",
+      "task_id": "07200102-2063-0066-0000-33de49f78551"
+    },
+    {
+      "keyword": "mobile car detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-064",
+      "task_id": "07200102-2063-0066-0000-a4ef27c36198"
+    },
+    {
+      "keyword": "mobile car detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-065",
+      "task_id": "07200102-2063-0066-0000-772e7a94c7cb"
+    },
+    {
+      "keyword": "mobile car detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-066",
+      "task_id": "07200102-2063-0066-0000-f917e7a0a4dd"
+    },
+    {
+      "keyword": "mobile car detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-067",
+      "task_id": "07200102-2063-0066-0000-596c70b1ea5c"
+    },
+    {
+      "keyword": "mobile car detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-068",
+      "task_id": "07200102-2063-0066-0000-115506f3b8a9"
+    },
+    {
+      "keyword": "mobile car detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-069",
+      "task_id": "07200102-2063-0066-0000-879bbeb4d509"
+    },
+    {
+      "keyword": "mobile car detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-070",
+      "task_id": "07200102-2063-0066-0000-c995fa0820bb"
+    },
+    {
+      "keyword": "mobile car detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-071",
+      "task_id": "07200102-2063-0066-0000-5c1229dbe62c"
+    },
+    {
+      "keyword": "mobile car detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-072",
+      "task_id": "07200102-2063-0066-0000-db640dc6f575"
+    },
+    {
+      "keyword": "mobile car detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-073",
+      "task_id": "07200102-2063-0066-0000-3ba0cd30f3d8"
+    },
+    {
+      "keyword": "mobile car detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-074",
+      "task_id": "07200102-2063-0066-0000-d0644ab3972a"
+    },
+    {
+      "keyword": "mobile car detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-075",
+      "task_id": "07200102-2063-0066-0000-bff858dc8df7"
+    },
+    {
+      "keyword": "mobile car detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-076",
+      "task_id": "07200102-2063-0066-0000-c1a0b16eeab4"
+    },
+    {
+      "keyword": "mobile car detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-077",
+      "task_id": "07200102-2063-0066-0000-9a539406324a"
+    },
+    {
+      "keyword": "mobile car detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-078",
+      "task_id": "07200102-2063-0066-0000-8d532328e45e"
+    },
+    {
+      "keyword": "mobile car detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-079",
+      "task_id": "07200102-2063-0066-0000-44c71564940f"
+    },
+    {
+      "keyword": "mobile car detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-080",
+      "task_id": "07200102-2063-0066-0000-61d90af5eddb"
+    },
+    {
+      "keyword": "mobile auto detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-081",
+      "task_id": "07200102-2063-0066-0000-90b64a32e6ed"
+    },
+    {
+      "keyword": "mobile auto detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-082",
+      "task_id": "07200102-2063-0066-0000-1e38e375bf3b"
+    },
+    {
+      "keyword": "mobile auto detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-083",
+      "task_id": "07200102-2063-0066-0000-57c38bea7de9"
+    },
+    {
+      "keyword": "mobile auto detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-084",
+      "task_id": "07200102-2063-0066-0000-728d6da7408c"
+    },
+    {
+      "keyword": "mobile auto detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-085",
+      "task_id": "07200102-2063-0066-0000-80e862635aa6"
+    },
+    {
+      "keyword": "mobile auto detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-086",
+      "task_id": "07200102-2063-0066-0000-16b0e110ff7c"
+    },
+    {
+      "keyword": "mobile auto detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-087",
+      "task_id": "07200102-2063-0066-0000-af659f5d39cd"
+    },
+    {
+      "keyword": "mobile auto detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-088",
+      "task_id": "07200102-2063-0066-0000-a5fb581537de"
+    },
+    {
+      "keyword": "mobile auto detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-089",
+      "task_id": "07200102-2063-0066-0000-60d3dcc92020"
+    },
+    {
+      "keyword": "mobile auto detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-090",
+      "task_id": "07200102-2063-0066-0000-0ccd8843bf7e"
+    },
+    {
+      "keyword": "mobile auto detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-091",
+      "task_id": "07200102-2063-0066-0000-7af2d0291658"
+    },
+    {
+      "keyword": "mobile auto detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-092",
+      "task_id": "07200102-2063-0066-0000-fbc851d6b8dd"
+    },
+    {
+      "keyword": "mobile auto detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-093",
+      "task_id": "07200102-2063-0066-0000-ed25438844a2"
+    },
+    {
+      "keyword": "mobile auto detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-094",
+      "task_id": "07200102-2063-0066-0000-0d632c10bd04"
+    },
+    {
+      "keyword": "mobile auto detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-095",
+      "task_id": "07200102-2063-0066-0000-1670b89fe0cb"
+    },
+    {
+      "keyword": "mobile auto detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-096",
+      "task_id": "07200102-2063-0066-0000-940709b3bb49"
+    },
+    {
+      "keyword": "mobile auto detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-097",
+      "task_id": "07200102-2063-0066-0000-e8bdb88439f1"
+    },
+    {
+      "keyword": "mobile auto detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-098",
+      "task_id": "07200102-2063-0066-0000-484369b86182"
+    },
+    {
+      "keyword": "mobile auto detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-099",
+      "task_id": "07200102-2063-0066-0000-e7640b64706d"
+    },
+    {
+      "keyword": "mobile auto detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-100",
+      "task_id": "07200102-2063-0066-0000-a890620c5133"
+    },
+    {
+      "keyword": "interior car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-101",
+      "task_id": "07200102-2063-0066-0000-857b7ae348d1"
+    },
+    {
+      "keyword": "interior car detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-102",
+      "task_id": "07200102-2063-0066-0000-abfc2210805c"
+    },
+    {
+      "keyword": "interior car detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-103",
+      "task_id": "07200102-2063-0066-0000-c328226b515a"
+    },
+    {
+      "keyword": "interior car detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-104",
+      "task_id": "07200102-2063-0066-0000-33abe3b9bd6f"
+    },
+    {
+      "keyword": "interior car detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-105",
+      "task_id": "07200102-2063-0066-0000-db04e98ff885"
+    },
+    {
+      "keyword": "interior car detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-106",
+      "task_id": "07200102-2063-0066-0000-e53a4e5a794a"
+    },
+    {
+      "keyword": "interior car detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-107",
+      "task_id": "07200102-2063-0066-0000-b7f2e89aecab"
+    },
+    {
+      "keyword": "interior car detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-108",
+      "task_id": "07200102-2063-0066-0000-05da1367ba9b"
+    },
+    {
+      "keyword": "interior car detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-109",
+      "task_id": "07200102-2063-0066-0000-e9100bf4f448"
+    },
+    {
+      "keyword": "interior car detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-110",
+      "task_id": "07200102-2063-0066-0000-d8c997f756d3"
+    },
+    {
+      "keyword": "interior car detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-111",
+      "task_id": "07200102-2063-0066-0000-183cba31e2cb"
+    },
+    {
+      "keyword": "interior car detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-112",
+      "task_id": "07200102-2063-0066-0000-4a84c454ba81"
+    },
+    {
+      "keyword": "interior car detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-113",
+      "task_id": "07200102-2063-0066-0000-2c47326d33fe"
+    },
+    {
+      "keyword": "interior car detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-114",
+      "task_id": "07200102-2063-0066-0000-a61d9bda2d9a"
+    },
+    {
+      "keyword": "interior car detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-115",
+      "task_id": "07200102-2063-0066-0000-7fdd8ec42fbe"
+    },
+    {
+      "keyword": "interior car detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-116",
+      "task_id": "07200102-2063-0066-0000-90704f91baa9"
+    },
+    {
+      "keyword": "interior car detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-117",
+      "task_id": "07200102-2063-0066-0000-c171a296ace8"
+    },
+    {
+      "keyword": "interior car detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-118",
+      "task_id": "07200102-2063-0066-0000-7f3f89f91195"
+    },
+    {
+      "keyword": "interior car detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-119",
+      "task_id": "07200102-2063-0066-0000-acddbd68b71c"
+    },
+    {
+      "keyword": "interior car detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-120",
+      "task_id": "07200102-2063-0066-0000-a5446d707d10"
+    },
+    {
+      "keyword": "car interior cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-121",
+      "task_id": "07200102-2063-0066-0000-08aeca1001e8"
+    },
+    {
+      "keyword": "car interior cleaning cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-122",
+      "task_id": "07200102-2063-0066-0000-0aa47c7f6646"
+    },
+    {
+      "keyword": "car interior cleaning cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-123",
+      "task_id": "07200102-2063-0066-0000-50b3f38c5dc9"
+    },
+    {
+      "keyword": "car interior cleaning mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-124",
+      "task_id": "07200102-2063-0066-0000-c74af519f922"
+    },
+    {
+      "keyword": "car interior cleaning beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-125",
+      "task_id": "07200102-2063-0066-0000-f245a230fb65"
+    },
+    {
+      "keyword": "car interior cleaning solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-126",
+      "task_id": "07200102-2063-0066-0000-9f2241cebbff"
+    },
+    {
+      "keyword": "car interior cleaning pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-127",
+      "task_id": "07200102-2063-0066-0000-0f1ec8e948d9"
+    },
+    {
+      "keyword": "car interior cleaning moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-128",
+      "task_id": "07200102-2063-0066-0000-1bb5c9ef511b"
+    },
+    {
+      "keyword": "car interior cleaning chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-129",
+      "task_id": "07200102-2063-0066-0000-8d01f7b4962c"
+    },
+    {
+      "keyword": "car interior cleaning shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-130",
+      "task_id": "07200102-2063-0066-0000-cdc76fe500db"
+    },
+    {
+      "keyword": "car interior cleaning university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-131",
+      "task_id": "07200102-2063-0066-0000-72c6ee189945"
+    },
+    {
+      "keyword": "car interior cleaning highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-132",
+      "task_id": "07200102-2063-0066-0000-2f9c3d67a004"
+    },
+    {
+      "keyword": "car interior cleaning lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-133",
+      "task_id": "07200102-2063-0066-0000-2851bcac6a44"
+    },
+    {
+      "keyword": "car interior cleaning gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-134",
+      "task_id": "07200102-2063-0066-0000-0c15fed0740b"
+    },
+    {
+      "keyword": "car interior cleaning orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-135",
+      "task_id": "07200102-2063-0066-0000-452074b0754b"
+    },
+    {
+      "keyword": "car interior cleaning cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-136",
+      "task_id": "07200102-2063-0066-0000-cb9f63c93f01"
+    },
+    {
+      "keyword": "car interior cleaning south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-137",
+      "task_id": "07200102-2063-0066-0000-9ca91615379b"
+    },
+    {
+      "keyword": "car interior cleaning richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-138",
+      "task_id": "07200102-2063-0066-0000-506f4df20559"
+    },
+    {
+      "keyword": "car interior cleaning mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-139",
+      "task_id": "07200102-2063-0066-0000-6b0cb3f6903c"
+    },
+    {
+      "keyword": "car interior cleaning willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-140",
+      "task_id": "07200102-2063-0066-0000-6a6f2ad34626"
+    },
+    {
+      "keyword": "interior detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-141",
+      "task_id": "07200102-2063-0066-0000-123260f7e101"
+    },
+    {
+      "keyword": "interior detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-142",
+      "task_id": "07200102-2063-0066-0000-e6e567f3ddd1"
+    },
+    {
+      "keyword": "interior detailing cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-143",
+      "task_id": "07200102-2063-0066-0000-7588c3342fbb"
+    },
+    {
+      "keyword": "interior detailing mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-144",
+      "task_id": "07200102-2063-0066-0000-51e708dfd178"
+    },
+    {
+      "keyword": "interior detailing beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-145",
+      "task_id": "07200102-2063-0066-0000-733050099319"
+    },
+    {
+      "keyword": "interior detailing solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-146",
+      "task_id": "07200102-2063-0066-0000-d5d616fc8167"
+    },
+    {
+      "keyword": "interior detailing pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-147",
+      "task_id": "07200102-2063-0066-0000-1a28cba3eef1"
+    },
+    {
+      "keyword": "interior detailing moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-148",
+      "task_id": "07200102-2063-0066-0000-3392411b1ca4"
+    },
+    {
+      "keyword": "interior detailing chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-149",
+      "task_id": "07200102-2063-0066-0000-e00b916a1f78"
+    },
+    {
+      "keyword": "interior detailing shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-150",
+      "task_id": "07200102-2063-0066-0000-60e3d0d897c6"
+    },
+    {
+      "keyword": "interior detailing university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-151",
+      "task_id": "07200102-2063-0066-0000-e90036ce46ff"
+    },
+    {
+      "keyword": "interior detailing highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-152",
+      "task_id": "07200102-2063-0066-0000-c83f97f30cd0"
+    },
+    {
+      "keyword": "interior detailing lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-153",
+      "task_id": "07200102-2063-0066-0000-e10e77208795"
+    },
+    {
+      "keyword": "interior detailing gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-154",
+      "task_id": "07200102-2063-0066-0000-21839c661c8c"
+    },
+    {
+      "keyword": "interior detailing orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-155",
+      "task_id": "07200102-2063-0066-0000-9018b1077ad2"
+    },
+    {
+      "keyword": "interior detailing cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-156",
+      "task_id": "07200102-2063-0066-0000-ab515ac41b87"
+    },
+    {
+      "keyword": "interior detailing south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-157",
+      "task_id": "07200102-2063-0066-0000-361e9fe3e6d0"
+    },
+    {
+      "keyword": "interior detailing richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-158",
+      "task_id": "07200102-2063-0066-0000-41dea72e8beb"
+    },
+    {
+      "keyword": "interior detailing mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-159",
+      "task_id": "07200102-2063-0066-0000-6528cc3457c5"
+    },
+    {
+      "keyword": "interior detailing willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-160",
+      "task_id": "07200102-2063-0066-0000-4ff410f62095"
+    },
+    {
+      "keyword": "car detailing service near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-161",
+      "task_id": "07200102-2063-0066-0000-8360d0f2c2c4"
+    },
+    {
+      "keyword": "car detailing service cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-162",
+      "task_id": "07200102-2063-0066-0000-0381df0d4e29"
+    },
+    {
+      "keyword": "car detailing service cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-163",
+      "task_id": "07200102-2063-0066-0000-d836a5eb62b0"
+    },
+    {
+      "keyword": "car detailing service mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-164",
+      "task_id": "07200102-2063-0066-0000-bc8de115331a"
+    },
+    {
+      "keyword": "car detailing service beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-165",
+      "task_id": "07200102-2063-0066-0000-6fc66121c4d2"
+    },
+    {
+      "keyword": "car detailing service solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-166",
+      "task_id": "07200102-2063-0066-0000-4f5dc49fbcea"
+    },
+    {
+      "keyword": "car detailing service pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-167",
+      "task_id": "07200102-2063-0066-0000-e8e0b1eaf9ce"
+    },
+    {
+      "keyword": "car detailing service moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-168",
+      "task_id": "07200102-2063-0066-0000-50a590f7334e"
+    },
+    {
+      "keyword": "car detailing service chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-169",
+      "task_id": "07200102-2063-0066-0000-cfb792238bbb"
+    },
+    {
+      "keyword": "car detailing service shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-170",
+      "task_id": "07200102-2063-0066-0000-3a890dd9d097"
+    },
+    {
+      "keyword": "car detailing service university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-171",
+      "task_id": "07200102-2063-0066-0000-48c8888b33e6"
+    },
+    {
+      "keyword": "car detailing service highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-172",
+      "task_id": "07200102-2063-0066-0000-b15a1c324da5"
+    },
+    {
+      "keyword": "car detailing service lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-173",
+      "task_id": "07200102-2063-0066-0000-dc72a9081dc5"
+    },
+    {
+      "keyword": "car detailing service gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-174",
+      "task_id": "07200102-2063-0066-0000-8d494bb420b9"
+    },
+    {
+      "keyword": "car detailing service orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-175",
+      "task_id": "07200102-2063-0066-0000-22e71f202758"
+    },
+    {
+      "keyword": "car detailing service cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-176",
+      "task_id": "07200102-2063-0066-0000-b5f1c33d1440"
+    },
+    {
+      "keyword": "car detailing service south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-177",
+      "task_id": "07200102-2063-0066-0000-1274e04406ac"
+    },
+    {
+      "keyword": "car detailing service richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-178",
+      "task_id": "07200102-2063-0066-0000-63df5fe9cf72"
+    },
+    {
+      "keyword": "car detailing service mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-179",
+      "task_id": "07200102-2063-0066-0000-43157babfabc"
+    },
+    {
+      "keyword": "car detailing service willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-180",
+      "task_id": "07200102-2063-0066-0000-6375e686b98b"
+    },
+    {
+      "keyword": "ceramic coating near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-181",
+      "task_id": "07200102-2063-0066-0000-cf7f580e2b3f"
+    },
+    {
+      "keyword": "ceramic coating cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-182",
+      "task_id": "07200102-2063-0066-0000-37d5d12a269a"
+    },
+    {
+      "keyword": "ceramic coating cleveland ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-183",
+      "task_id": "07200102-2063-0066-0000-cdb47055a199"
+    },
+    {
+      "keyword": "ceramic coating mayfield heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-184",
+      "task_id": "07200102-2063-0066-0000-0b1d3e3463ee"
+    },
+    {
+      "keyword": "ceramic coating beachwood",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-185",
+      "task_id": "07200102-2063-0066-0000-8438633d0f4e"
+    },
+    {
+      "keyword": "ceramic coating solon",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-186",
+      "task_id": "07200102-2063-0066-0000-ff09a469b1ca"
+    },
+    {
+      "keyword": "ceramic coating pepper pike",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-187",
+      "task_id": "07200102-2063-0066-0000-177230316ba7"
+    },
+    {
+      "keyword": "ceramic coating moreland hills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-188",
+      "task_id": "07200102-2063-0066-0000-b13f2f13c286"
+    },
+    {
+      "keyword": "ceramic coating chagrin falls",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-189",
+      "task_id": "07200102-2063-0066-0000-46e9dd62afd0"
+    },
+    {
+      "keyword": "ceramic coating shaker heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-190",
+      "task_id": "07200102-2063-0066-0000-539b57818649"
+    },
+    {
+      "keyword": "ceramic coating university heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-191",
+      "task_id": "07200102-2063-0066-0000-d4d3d0d27bd3"
+    },
+    {
+      "keyword": "ceramic coating highland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-192",
+      "task_id": "07200102-2063-0066-0000-6196341307d4"
+    },
+    {
+      "keyword": "ceramic coating lyndhurst",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-193",
+      "task_id": "07200102-2063-0066-0000-63bfa0276c7a"
+    },
+    {
+      "keyword": "ceramic coating gates mills",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-194",
+      "task_id": "07200102-2063-0066-0000-5843e93eb4bc"
+    },
+    {
+      "keyword": "ceramic coating orange village",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-195",
+      "task_id": "07200102-2063-0066-0000-641fc49a4779"
+    },
+    {
+      "keyword": "ceramic coating cleveland heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-196",
+      "task_id": "07200102-2063-0066-0000-0acfd6625a0d"
+    },
+    {
+      "keyword": "ceramic coating south euclid",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-197",
+      "task_id": "07200102-2063-0066-0000-b99fb902a6f6"
+    },
+    {
+      "keyword": "ceramic coating richmond heights",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-198",
+      "task_id": "07200102-2063-0066-0000-6a313954c96f"
+    },
+    {
+      "keyword": "ceramic coating mentor ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-199",
+      "task_id": "07200102-2063-0066-0000-94cd6438105b"
+    },
+    {
+      "keyword": "ceramic coating willoughby",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-200",
+      "task_id": "07200102-2063-0066-0000-df9b4eb065ea"
+    },
+    {
+      "keyword": "car detail near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-201",
+      "task_id": "07200102-2063-0066-0000-dac642f520b0"
+    },
+    {
+      "keyword": "auto detailers near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-202",
+      "task_id": "07200102-2063-0066-0000-965c2c7c3d3b"
+    },
+    {
+      "keyword": "car cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-203",
+      "task_id": "07200102-2063-0066-0000-445107266c1a"
+    },
+    {
+      "keyword": "detail car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-204",
+      "task_id": "07200102-2063-0066-0000-0db7cf87e43a"
+    },
+    {
+      "keyword": "full car detail near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-205",
+      "task_id": "07200102-2063-0066-0000-72d8e939caf3"
+    },
+    {
+      "keyword": "full detail car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-206",
+      "task_id": "07200102-2063-0066-0000-40bbfd985a8f"
+    },
+    {
+      "keyword": "car detailing near me prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-207",
+      "task_id": "07200102-2063-0066-0000-a772c4f5b9ff"
+    },
+    {
+      "keyword": "cheap car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-208",
+      "task_id": "07200102-2063-0066-0000-d0b4e73ff09c"
+    },
+    {
+      "keyword": "best car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-209",
+      "task_id": "07200102-2063-0066-0000-41c9ec2fd7c5"
+    },
+    {
+      "keyword": "car wash and detail near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-210",
+      "task_id": "07200102-2063-0066-0000-3660619227ea"
+    },
+    {
+      "keyword": "hand car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-211",
+      "task_id": "07200102-2063-0066-0000-0c9f497adbf4"
+    },
+    {
+      "keyword": "car interior shampoo near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-212",
+      "task_id": "07200102-2063-0066-0000-bc45d6c377c1"
+    },
+    {
+      "keyword": "car seat cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-213",
+      "task_id": "07200102-2063-0066-0000-a61fa7605c69"
+    },
+    {
+      "keyword": "car upholstery cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-214",
+      "task_id": "07200102-2063-0066-0000-731caf696e03"
+    },
+    {
+      "keyword": "car carpet cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-215",
+      "task_id": "07200102-2063-0066-0000-b51cd2bd53ce"
+    },
+    {
+      "keyword": "pet hair removal car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-216",
+      "task_id": "07200102-2063-0066-0000-02d005277722"
+    },
+    {
+      "keyword": "dog hair removal from car near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-217",
+      "task_id": "07200102-2063-0066-0000-f72937ee1d13"
+    },
+    {
+      "keyword": "car odor removal near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-218",
+      "task_id": "07200102-2063-0066-0000-33fc71d14314"
+    },
+    {
+      "keyword": "smoke smell removal car near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-219",
+      "task_id": "07200102-2063-0066-0000-61b7afc3e85a"
+    },
+    {
+      "keyword": "car seat stain removal",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-220",
+      "task_id": "07200102-2063-0066-0000-b80b7aff7efb"
+    },
+    {
+      "keyword": "leather seat cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-221",
+      "task_id": "07200102-2063-0066-0000-586d04b243a8"
+    },
+    {
+      "keyword": "headliner cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-222",
+      "task_id": "07200102-2063-0066-0000-3284edf3f383"
+    },
+    {
+      "keyword": "car biohazard cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-223",
+      "task_id": "07200102-2063-0066-0000-82b4829251d9"
+    },
+    {
+      "keyword": "vomit cleanup car near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-224",
+      "task_id": "07200102-2063-0066-0000-b8cd7a5f5ab5"
+    },
+    {
+      "keyword": "mold removal car interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-225",
+      "task_id": "07200102-2063-0066-0000-954387dfb20b"
+    },
+    {
+      "keyword": "how much does car detailing cost",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-226",
+      "task_id": "07200102-2063-0066-0000-e002b6b37d77"
+    },
+    {
+      "keyword": "car detailing prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-227",
+      "task_id": "07200102-2063-0066-0000-a949bf71565a"
+    },
+    {
+      "keyword": "how long does car detailing take",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-228",
+      "task_id": "07200102-2063-0066-0000-080aae59febd"
+    },
+    {
+      "keyword": "what does car detailing include",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-229",
+      "task_id": "07200102-2063-0066-0000-78b9fd59b69c"
+    },
+    {
+      "keyword": "how to get stains out of car seats",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-230",
+      "task_id": "07200102-2063-0066-0000-f0610a2f8777"
+    },
+    {
+      "keyword": "how to get car seat stains out",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-231",
+      "task_id": "07200102-2063-0066-0000-b87e1a0a949c"
+    },
+    {
+      "keyword": "remove stains from seat in car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-232",
+      "task_id": "07200102-2063-0066-0000-d8428a6bf1c6"
+    },
+    {
+      "keyword": "car interior shampooing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-233",
+      "task_id": "07200102-2063-0066-0000-f2dd6193578d"
+    },
+    {
+      "keyword": "how to clean car seats",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-234",
+      "task_id": "07200102-2063-0066-0000-e959ff26f953"
+    },
+    {
+      "keyword": "how to remove dog hair from car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-235",
+      "task_id": "07200102-2063-0066-0000-0dcc73222247"
+    },
+    {
+      "keyword": "how often should you detail your car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-236",
+      "task_id": "07200102-2063-0066-0000-77f605b70b87"
+    },
+    {
+      "keyword": "is car detailing worth it",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-237",
+      "task_id": "07200102-2063-0066-0000-d6ad298ebb9f"
+    },
+    {
+      "keyword": "mobile detailing vs car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-238",
+      "task_id": "07200102-2063-0066-0000-598302b653e4"
+    },
+    {
+      "keyword": "what is included in a full detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-239",
+      "task_id": "07200102-2063-0066-0000-032cec36fd2f"
+    },
+    {
+      "keyword": "same day car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-240",
+      "task_id": "07200102-2063-0066-0000-406725a289b0"
+    },
+    {
+      "keyword": "car detailing at home near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-241",
+      "task_id": "07200102-2063-0066-0000-4fa427df5ffc"
+    },
+    {
+      "keyword": "car detailing that comes to you",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-242",
+      "task_id": "07200102-2063-0066-0000-3203b3f12a7b"
+    },
+    {
+      "keyword": "detailer that comes to your house",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-243",
+      "task_id": "07200102-2063-0066-0000-8978f1b2139a"
+    },
+    {
+      "keyword": "mobile detailing prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-244",
+      "task_id": "07200102-2063-0066-0000-9dcea916e4d0"
+    },
+    {
+      "keyword": "mobile car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-245",
+      "task_id": "07200102-2063-0066-0000-4d452acdccc5"
+    },
+    {
+      "keyword": "car detailing gift certificate cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-246",
+      "task_id": "07200102-2063-0066-0000-0c3e0e46599c"
+    },
+    {
+      "keyword": "monthly car detailing service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-247",
+      "task_id": "07200102-2063-0066-0000-c5c1b55594dd"
+    },
+    {
+      "keyword": "suv detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-248",
+      "task_id": "07200102-2063-0066-0000-6a5a36eae334"
+    },
+    {
+      "keyword": "truck detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-249",
+      "task_id": "07200102-2063-0066-0000-a5c65013d745"
+    },
+    {
+      "keyword": "rv detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-250",
+      "task_id": "07200102-2063-0066-0000-3dc29efe3b92"
+    },
+    {
+      "keyword": "boat detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-251",
+      "task_id": "07200102-2063-0066-0000-6c1783642d25"
+    },
+    {
+      "keyword": "motorcycle detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-252",
+      "task_id": "07200102-2063-0066-0000-1d517b66c973"
+    },
+    {
+      "keyword": "tesla detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-253",
+      "task_id": "07200102-2063-0066-0000-af2b22610d3a"
+    },
+    {
+      "keyword": "luxury car detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-254",
+      "task_id": "07200102-2063-0066-0000-d75b729c1238"
+    },
+    {
+      "keyword": "fresh mobile detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-255",
+      "task_id": "07200102-2063-0066-0000-83ba2d452985"
+    },
+    {
+      "keyword": "fresh car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-256",
+      "task_id": "07200102-2063-0066-0000-3960bd4917c8"
+    },
+    {
+      "keyword": "fresh detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-257",
+      "task_id": "07200102-2063-0066-0000-2688169e50c8"
+    },
+    {
+      "keyword": "fresh mobile detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-258",
+      "task_id": "07200102-2063-0066-0000-951c24a1ae82"
+    },
+    {
+      "keyword": "drive fresh detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-259",
+      "task_id": "07200102-2063-0066-0000-b7b2fef519d6"
+    },
+    {
+      "keyword": "nathans detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-260",
+      "task_id": "07200102-2063-0066-0000-8625fe773da6"
+    },
+    {
+      "keyword": "all things fresh car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-261",
+      "task_id": "07200102-2063-0066-0000-27c7d667f2ed"
+    },
+    {
+      "keyword": "refresh mobile detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-262",
+      "task_id": "07200102-2063-0066-0000-19a75b5245c7"
+    },
+    {
+      "keyword": "diamond finish detailing cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-263",
+      "task_id": "07200102-2063-0066-0000-5b44e4100d2d"
+    },
+    {
+      "keyword": "car detailing east side cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-264",
+      "task_id": "07200102-2063-0066-0000-23169b85b056"
+    },
+    {
+      "keyword": "mobile detailing eastern suburbs cleveland",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-265",
+      "task_id": "07200102-2063-0066-0000-3212ede9ebf4"
+    },
+    {
+      "keyword": "car detailing cuyahoga county",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-266",
+      "task_id": "07200102-2063-0066-0000-c74cc9bf8aee"
+    },
+    {
+      "keyword": "mobile detailing lake county ohio",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-267",
+      "task_id": "07200102-2063-0066-0000-195e0b39655d"
+    },
+    {
+      "keyword": "car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-268",
+      "task_id": "07200102-2063-0066-0000-95b006f38f00"
+    },
+    {
+      "keyword": "auto detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-269",
+      "task_id": "07200102-2063-0066-0000-50cc066810bf"
+    },
+    {
+      "keyword": "vehicle detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-270",
+      "task_id": "07200102-2063-0066-0000-a63260aa288b"
+    },
+    {
+      "keyword": "detailing auto",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-271",
+      "task_id": "07200102-2063-0066-0000-0d4a236fa52e"
+    },
+    {
+      "keyword": "car detailing services",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-272",
+      "task_id": "07200102-2063-0066-0000-01f775918dbe"
+    },
+    {
+      "keyword": "car detail shops near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-273",
+      "task_id": "07200102-2063-0066-0000-824c8a3549f3"
+    },
+    {
+      "keyword": "automobile detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-274",
+      "task_id": "07200102-2063-0066-0000-e9c43967f84e"
+    },
+    {
+      "keyword": "auto detail shops near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-275",
+      "task_id": "07200102-2063-0066-0000-2b5b2a2fd10a"
+    },
+    {
+      "keyword": "car detailing places near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-276",
+      "task_id": "07200102-2063-0066-0000-278cb76b5471"
+    },
+    {
+      "keyword": "auto detailing services",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-277",
+      "task_id": "07200102-2063-0066-0000-3fb3c3295dc5"
+    },
+    {
+      "keyword": "auto car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-278",
+      "task_id": "07200102-2063-0066-0000-017bf2f4678f"
+    },
+    {
+      "keyword": "detailed car cleaning services",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-279",
+      "task_id": "07200102-2063-0066-0000-ea785246feb1"
+    },
+    {
+      "keyword": "car wash hand wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-280",
+      "task_id": "07200102-2063-0066-0000-475b9928391d"
+    },
+    {
+      "keyword": "auto car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-281",
+      "task_id": "07200102-2063-0066-0000-54fd0f1adb1a"
+    },
+    {
+      "keyword": "automotive detail shops near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-282",
+      "task_id": "07200102-2063-0066-0000-a0e805a41d99"
+    },
+    {
+      "keyword": "car auto detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-283",
+      "task_id": "07200102-2063-0066-0000-3f9575dc2e41"
+    },
+    {
+      "keyword": "detailing automobile",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-284",
+      "task_id": "07200102-2063-0066-0000-b34fcf58a380"
+    },
+    {
+      "keyword": "vehicle interior detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-285",
+      "task_id": "07200102-2063-0066-0000-62a4e2667348"
+    },
+    {
+      "keyword": "mobile detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-286",
+      "task_id": "07200102-2063-0066-0000-eccd3cb3ee30"
+    },
+    {
+      "keyword": "interior detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-287",
+      "task_id": "07200102-2063-0066-0000-2335ba809a43"
+    },
+    {
+      "keyword": "detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-288",
+      "task_id": "07200102-2063-0066-0000-09d731ddf762"
+    },
+    {
+      "keyword": "mobile car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-289",
+      "task_id": "07200102-2063-0066-0000-8037857ddc56"
+    },
+    {
+      "keyword": "mobile car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-290",
+      "task_id": "07200102-2063-0066-0000-445003f857c5"
+    },
+    {
+      "keyword": "car interior cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-291",
+      "task_id": "07200102-2063-0066-0000-a3ce609dc4a4"
+    },
+    {
+      "keyword": "detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-292",
+      "task_id": "07200102-2063-0066-0000-22954454a4f9"
+    },
+    {
+      "keyword": "car interior detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-293",
+      "task_id": "07200102-2063-0066-0000-c3ef0b2ea2b4"
+    },
+    {
+      "keyword": "detail shops near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-294",
+      "task_id": "07200102-2063-0066-0000-ba2fe4dcd6a0"
+    },
+    {
+      "keyword": "mobile auto detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-295",
+      "task_id": "07200102-2063-0066-0000-e4b4b116988b"
+    },
+    {
+      "keyword": "detail car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-296",
+      "task_id": "07200102-2063-0066-0000-7d378f1eebcf"
+    },
+    {
+      "keyword": "car deep cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-297",
+      "task_id": "07200102-2063-0066-0000-34d0d68948af"
+    },
+    {
+      "keyword": "interior car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-298",
+      "task_id": "07200102-2063-0066-0000-2de7e1fbf2d8"
+    },
+    {
+      "keyword": "car ceramic coating near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-299",
+      "task_id": "07200102-2063-0066-0000-33dd1d8d58cd"
+    },
+    {
+      "keyword": "professional car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-300",
+      "task_id": "07200102-2063-0066-0000-614f0e3fd0b4"
+    },
+    {
+      "keyword": "pro detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-301",
+      "task_id": "07200102-2063-0066-0000-a5f1392775b3"
+    },
+    {
+      "keyword": "auto detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-302",
+      "task_id": "07200102-2063-0066-0000-9f37b42017de"
+    },
+    {
+      "keyword": "car buffing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-303",
+      "task_id": "07200102-2063-0066-0000-b8b7f4b5a8f1"
+    },
+    {
+      "keyword": "interior car detailing near me prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-304",
+      "task_id": "07200102-2063-0066-0000-b5e68afef445"
+    },
+    {
+      "keyword": "car seat cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-305",
+      "task_id": "07200102-2063-0066-0000-691081b3a635"
+    },
+    {
+      "keyword": "interior car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-306",
+      "task_id": "07200102-2063-0066-0000-4e066d0f0d58"
+    },
+    {
+      "keyword": "car shampoo near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-307",
+      "task_id": "07200102-2063-0066-0000-11449c9259c2"
+    },
+    {
+      "keyword": "detail car cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-308",
+      "task_id": "07200102-2063-0066-0000-c09b17415ee7"
+    },
+    {
+      "keyword": "at home car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-309",
+      "task_id": "07200102-2063-0066-0000-43d3b451fad9"
+    },
+    {
+      "keyword": "best auto detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-310",
+      "task_id": "07200102-2063-0066-0000-f2f7b20e2557"
+    },
+    {
+      "keyword": "mobile rv detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-311",
+      "task_id": "07200102-2063-0066-0000-83aa26fe6e36"
+    },
+    {
+      "keyword": "detailing services near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-312",
+      "task_id": "07200102-2063-0066-0000-48fc6368b06a"
+    },
+    {
+      "keyword": "car detailing cost",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-313",
+      "task_id": "07200102-2063-0066-0000-ffe69cc19565"
+    },
+    {
+      "keyword": "car deep cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-314",
+      "task_id": "07200102-2063-0066-0000-9ca5eae3d26d"
+    },
+    {
+      "keyword": "detailing shop",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-315",
+      "task_id": "07200102-2063-0066-0000-e28dc77a577c"
+    },
+    {
+      "keyword": "professional car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-316",
+      "task_id": "07200102-2063-0066-0000-573a74872efc"
+    },
+    {
+      "keyword": "rv detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-317",
+      "task_id": "07200102-2063-0066-0000-08992c10dc2c"
+    },
+    {
+      "keyword": "car detail cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-318",
+      "task_id": "07200102-2063-0066-0000-7028334969f8"
+    },
+    {
+      "keyword": "auto spa",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-319",
+      "task_id": "07200102-2063-0066-0000-723214172129"
+    },
+    {
+      "keyword": "full service car wash inside and out near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-320",
+      "task_id": "07200102-2063-0066-0000-5b6980f9c76a"
+    },
+    {
+      "keyword": "car detailing services near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-321",
+      "task_id": "07200102-2063-0066-0000-deb73dddb124"
+    },
+    {
+      "keyword": "inside car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-322",
+      "task_id": "07200102-2063-0066-0000-6e68b7146f05"
+    },
+    {
+      "keyword": "auto ceramic coating near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-323",
+      "task_id": "07200102-2063-0066-0000-61ce877573c2"
+    },
+    {
+      "keyword": "auto ceramic coating",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-324",
+      "task_id": "07200102-2063-0066-0000-774258473bfb"
+    },
+    {
+      "keyword": "car wash inside and out",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-325",
+      "task_id": "07200102-2063-0066-0000-c6268e3c2818"
+    },
+    {
+      "keyword": "complete car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-326",
+      "task_id": "07200102-2063-0066-0000-9280c4dc7100"
+    },
+    {
+      "keyword": "car paint correction",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-327",
+      "task_id": "07200102-2063-0066-0000-e7c8deff6b02"
+    },
+    {
+      "keyword": "car paint correction near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-328",
+      "task_id": "07200102-2063-0066-0000-865596b927f8"
+    },
+    {
+      "keyword": "engine detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-329",
+      "task_id": "07200102-2063-0066-0000-c1d502686027"
+    },
+    {
+      "keyword": "mobile carwash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-330",
+      "task_id": "07200102-2063-0066-0000-3cb7965b44bd"
+    },
+    {
+      "keyword": "autodetailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-331",
+      "task_id": "07200102-2063-0066-0000-4ba5c11a5577"
+    },
+    {
+      "keyword": "best ceramic car wax",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-332",
+      "task_id": "07200102-2063-0066-0000-8bb582dfad6a"
+    },
+    {
+      "keyword": "best mobile car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-333",
+      "task_id": "07200102-2063-0066-0000-0964da7734d3"
+    },
+    {
+      "keyword": "cost to ceramic coat car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-334",
+      "task_id": "07200102-2063-0066-0000-2b66c5985f66"
+    },
+    {
+      "keyword": "inside car cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-335",
+      "task_id": "07200102-2063-0066-0000-26ded5294c38"
+    },
+    {
+      "keyword": "interior auto detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-336",
+      "task_id": "07200102-2063-0066-0000-6652428a5eae"
+    },
+    {
+      "keyword": "auto interior detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-337",
+      "task_id": "07200102-2063-0066-0000-670264c2bf91"
+    },
+    {
+      "keyword": "full car detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-338",
+      "task_id": "07200102-2063-0066-0000-10aed499b164"
+    },
+    {
+      "keyword": "at home car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-339",
+      "task_id": "07200102-2063-0066-0000-b36918efa87b"
+    },
+    {
+      "keyword": "best shop vac for car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-340",
+      "task_id": "07200102-2063-0066-0000-27fee4f5e170"
+    },
+    {
+      "keyword": "full detail car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-341",
+      "task_id": "07200102-2063-0066-0000-3174a8afcdbb"
+    },
+    {
+      "keyword": "vehicle detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-342",
+      "task_id": "07200102-2063-0066-0000-bc903eceaf09"
+    },
+    {
+      "keyword": "detailing prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-343",
+      "task_id": "07200102-2063-0066-0000-66aed66cc308"
+    },
+    {
+      "keyword": "home car detailing service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-344",
+      "task_id": "07200102-2063-0066-0000-b8aa52ae4b28"
+    },
+    {
+      "keyword": "professional detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-345",
+      "task_id": "07200102-2063-0066-0000-b7232bd7b762"
+    },
+    {
+      "keyword": "car carpet cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-346",
+      "task_id": "07200102-2063-0066-0000-599680eb142f"
+    },
+    {
+      "keyword": "car ceramic coating cost",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-347",
+      "task_id": "07200102-2063-0066-0000-c870f1e57e21"
+    },
+    {
+      "keyword": "truck detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-348",
+      "task_id": "07200102-2063-0066-0000-0af65e60bcca"
+    },
+    {
+      "keyword": "best detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-349",
+      "task_id": "07200102-2063-0066-0000-ab866633d865"
+    },
+    {
+      "keyword": "car seat shampoo",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-350",
+      "task_id": "07200102-2063-0066-0000-b3a83db6312c"
+    },
+    {
+      "keyword": "inside car cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-351",
+      "task_id": "07200102-2063-0066-0000-39353165a2cb"
+    },
+    {
+      "keyword": "car upholstery cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-352",
+      "task_id": "07200102-2063-0066-0000-6da634f8842c"
+    },
+    {
+      "keyword": "car detailing shop",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-353",
+      "task_id": "07200102-2063-0066-0000-e3d2d73f0ac0"
+    },
+    {
+      "keyword": "best car buffer",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-354",
+      "task_id": "07200102-2063-0066-0000-feeb26ecd700"
+    },
+    {
+      "keyword": "shampoo car seats near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-355",
+      "task_id": "07200102-2063-0066-0000-167a27cb59e7"
+    },
+    {
+      "keyword": "car detailing interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-356",
+      "task_id": "07200102-2063-0066-0000-8fa8c7b24884"
+    },
+    {
+      "keyword": "ceramic coating car price",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-357",
+      "task_id": "07200102-2063-0066-0000-caf637b93a1b"
+    },
+    {
+      "keyword": "mobile car detailing near me prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-358",
+      "task_id": "07200102-2063-0066-0000-719b9257e502"
+    },
+    {
+      "keyword": "car wash inside and out near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-359",
+      "task_id": "07200102-2063-0066-0000-b47c932ddcd0"
+    },
+    {
+      "keyword": "car detailers in my area",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-360",
+      "task_id": "07200102-2063-0066-0000-1fd27196143e"
+    },
+    {
+      "keyword": "deep clean car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-361",
+      "task_id": "07200102-2063-0066-0000-679a54524af3"
+    },
+    {
+      "keyword": "auto paint correction near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-362",
+      "task_id": "07200102-2063-0066-0000-b3212fa100b1"
+    },
+    {
+      "keyword": "best car ceramic coating",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-363",
+      "task_id": "07200102-2063-0066-0000-cd1160943a8d"
+    },
+    {
+      "keyword": "detailing services",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-364",
+      "task_id": "07200102-2063-0066-0000-3e4b220cab10"
+    },
+    {
+      "keyword": "cheap detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-365",
+      "task_id": "07200102-2063-0066-0000-02045a6681f6"
+    },
+    {
+      "keyword": "car detailing come to you",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-366",
+      "task_id": "07200102-2063-0066-0000-0ab480a387d4"
+    },
+    {
+      "keyword": "exterior car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-367",
+      "task_id": "07200102-2063-0066-0000-5ec18d1ea0ff"
+    },
+    {
+      "keyword": "car inside cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-368",
+      "task_id": "07200102-2063-0066-0000-a2044a85e7c2"
+    },
+    {
+      "keyword": "car paint detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-369",
+      "task_id": "07200102-2063-0066-0000-3ddf5cf58cb0"
+    },
+    {
+      "keyword": "deep clean car interior near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-370",
+      "task_id": "07200102-2063-0066-0000-caa0cffe380b"
+    },
+    {
+      "keyword": "best mobile detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-371",
+      "task_id": "07200102-2063-0066-0000-ea68d1d34066"
+    },
+    {
+      "keyword": "detail cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-372",
+      "task_id": "07200102-2063-0066-0000-0fbcdbab9dad"
+    },
+    {
+      "keyword": "cheap car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-373",
+      "task_id": "07200102-2063-0066-0000-62db29ff834d"
+    },
+    {
+      "keyword": "car interior deep cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-374",
+      "task_id": "07200102-2063-0066-0000-732280ed2b6e"
+    },
+    {
+      "keyword": "full service car wash inside and out",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-375",
+      "task_id": "07200102-2063-0066-0000-3785afd86bb5"
+    },
+    {
+      "keyword": "auto detailing prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-376",
+      "task_id": "07200102-2063-0066-0000-c33dd1c2214b"
+    },
+    {
+      "keyword": "full service car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-377",
+      "task_id": "07200102-2063-0066-0000-d6b0641c5a8f"
+    },
+    {
+      "keyword": "car wash and detail",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-378",
+      "task_id": "07200102-2063-0066-0000-51a417572643"
+    },
+    {
+      "keyword": "car buffing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-379",
+      "task_id": "07200102-2063-0066-0000-f42b5bbf3836"
+    },
+    {
+      "keyword": "car mobile detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-380",
+      "task_id": "07200102-2063-0066-0000-cbb5e0f90ae9"
+    },
+    {
+      "keyword": "car detailing near me interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-381",
+      "task_id": "07200102-2063-0066-0000-d67d251acfea"
+    },
+    {
+      "keyword": "car shampoo service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-382",
+      "task_id": "07200102-2063-0066-0000-28dda3425fc0"
+    },
+    {
+      "keyword": "toyota detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-383",
+      "task_id": "07200102-2063-0066-0000-c6c68cba5a1c"
+    },
+    {
+      "keyword": "car cleaning and detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-384",
+      "task_id": "07200102-2063-0066-0000-417cf52fe19d"
+    },
+    {
+      "keyword": "mobile detailing service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-385",
+      "task_id": "07200102-2063-0066-0000-e6b1fa095c8e"
+    },
+    {
+      "keyword": "car wash with interior cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-386",
+      "task_id": "07200102-2063-0066-0000-96b29ee91465"
+    },
+    {
+      "keyword": "best professional ceramic coating for cars",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-387",
+      "task_id": "07200102-2063-0066-0000-ec810831a511"
+    },
+    {
+      "keyword": "interior and exterior car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-388",
+      "task_id": "07200102-2063-0066-0000-2a0d908155e0"
+    },
+    {
+      "keyword": "mobile truck detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-389",
+      "task_id": "07200102-2063-0066-0000-83f40a4e5384"
+    },
+    {
+      "keyword": "car detailing packages",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-390",
+      "task_id": "07200102-2063-0066-0000-c7ccc741f179"
+    },
+    {
+      "keyword": "auto upholstery cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-391",
+      "task_id": "07200102-2063-0066-0000-871904778cc5"
+    },
+    {
+      "keyword": "home car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-392",
+      "task_id": "07200102-2063-0066-0000-36cc984e8960"
+    },
+    {
+      "keyword": "detail my car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-393",
+      "task_id": "07200102-2063-0066-0000-694de6969be3"
+    },
+    {
+      "keyword": "vehicle ceramic coating near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-394",
+      "task_id": "07200102-2063-0066-0000-3358d6fbe193"
+    },
+    {
+      "keyword": "rv mobile detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-395",
+      "task_id": "07200102-2063-0066-0000-f63439a97d5b"
+    },
+    {
+      "keyword": "car interior cleaning services near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-396",
+      "task_id": "07200102-2063-0066-0000-28b9823b6861"
+    },
+    {
+      "keyword": "ceramic coating cost for car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-397",
+      "task_id": "07200102-2063-0066-0000-9bcf65c9fe1f"
+    },
+    {
+      "keyword": "car wash inside",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-398",
+      "task_id": "07200102-2063-0066-0000-af8fa24c0410"
+    },
+    {
+      "keyword": "car detailing price list",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-399",
+      "task_id": "07200102-2063-0066-0000-9e7d69dad960"
+    },
+    {
+      "keyword": "engine detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-400",
+      "task_id": "07200102-2063-0066-0000-65fbbf2bafb0"
+    },
+    {
+      "keyword": "paint detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-401",
+      "task_id": "07200102-2063-0066-0000-f60d2e32175b"
+    },
+    {
+      "keyword": "car shampoo interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-402",
+      "task_id": "07200102-2063-0066-0000-2ec284a1e4bc"
+    },
+    {
+      "keyword": "car detailing mobile service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-403",
+      "task_id": "07200102-2063-0066-0000-45becf9a95e7"
+    },
+    {
+      "keyword": "detailing places near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-404",
+      "task_id": "07200102-2063-0066-0000-bdb087867b64"
+    },
+    {
+      "keyword": "mobile car wash and detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-405",
+      "task_id": "07200102-2063-0066-0000-c3dad0920bab"
+    },
+    {
+      "keyword": "professional detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-406",
+      "task_id": "07200102-2063-0066-0000-d9c341df71cd"
+    },
+    {
+      "keyword": "honda detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-407",
+      "task_id": "07200102-2063-0066-0000-60aefa6935de"
+    },
+    {
+      "keyword": "steam clean car seats",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-408",
+      "task_id": "07200102-2063-0066-0000-1f82a44a5aeb"
+    },
+    {
+      "keyword": "mobile interior car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-409",
+      "task_id": "07200102-2063-0066-0000-f422eb5936b9"
+    },
+    {
+      "keyword": "mobile car wash service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-410",
+      "task_id": "07200102-2063-0066-0000-d0d9bb7ecf6a"
+    },
+    {
+      "keyword": "professional car interior cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-411",
+      "task_id": "07200102-2063-0066-0000-ca03435dae96"
+    },
+    {
+      "keyword": "ceramic coating price for car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-412",
+      "task_id": "07200102-2063-0066-0000-b92a0a9d9814"
+    },
+    {
+      "keyword": "exterior detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-413",
+      "task_id": "07200102-2063-0066-0000-63dfc7d34f2b"
+    },
+    {
+      "keyword": "steam clean car interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-414",
+      "task_id": "07200102-2063-0066-0000-fb533c86293d"
+    },
+    {
+      "keyword": "mobile vehicle detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-415",
+      "task_id": "07200102-2063-0066-0000-67d18ab8a35b"
+    },
+    {
+      "keyword": "best car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-416",
+      "task_id": "07200102-2063-0066-0000-db3a857ada90"
+    },
+    {
+      "keyword": "auto detailing mobile",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-417",
+      "task_id": "07200102-2063-0066-0000-bb9a50b932b7"
+    },
+    {
+      "keyword": "car paint detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-418",
+      "task_id": "07200102-2063-0066-0000-c64521527d55"
+    },
+    {
+      "keyword": "inside car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-419",
+      "task_id": "07200102-2063-0066-0000-7ef214194756"
+    },
+    {
+      "keyword": "mobile detail car wash",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-420",
+      "task_id": "07200102-2063-0066-0000-b13a499f6603"
+    },
+    {
+      "keyword": "professional auto detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-421",
+      "task_id": "07200102-2063-0066-0000-b41f07ab9013"
+    },
+    {
+      "keyword": "car wash that cleans inside",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-422",
+      "task_id": "07200102-2063-0066-0000-e6c0db2f5eaa"
+    },
+    {
+      "keyword": "engine bay detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-423",
+      "task_id": "07200102-2063-0066-0000-b8852e255cd7"
+    },
+    {
+      "keyword": "local car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-424",
+      "task_id": "07200102-2063-0066-0000-39fcd884c058"
+    },
+    {
+      "keyword": "auto detailers in my area",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-425",
+      "task_id": "07200102-2063-0066-0000-e52e50f826f2"
+    },
+    {
+      "keyword": "exterior car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-426",
+      "task_id": "07200102-2063-0066-0000-9352c5f72b80"
+    },
+    {
+      "keyword": "traveling car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-427",
+      "task_id": "07200102-2063-0066-0000-6b1608e6341f"
+    },
+    {
+      "keyword": "cost of ceramic coating on car",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-428",
+      "task_id": "07200102-2063-0066-0000-71865eb0fb3a"
+    },
+    {
+      "keyword": "car deep clean near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-429",
+      "task_id": "07200102-2063-0066-0000-af88bc0e32ad"
+    },
+    {
+      "keyword": "car detailing places",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-430",
+      "task_id": "07200102-2063-0066-0000-6bfcf61e08ed"
+    },
+    {
+      "keyword": "van detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-431",
+      "task_id": "07200102-2063-0066-0000-49f300c3c080"
+    },
+    {
+      "keyword": "mobile car detailing prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-432",
+      "task_id": "07200102-2063-0066-0000-efdcebf696d7"
+    },
+    {
+      "keyword": "detail cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-433",
+      "task_id": "07200102-2063-0066-0000-93ca1a816f90"
+    },
+    {
+      "keyword": "come to you car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-434",
+      "task_id": "07200102-2063-0066-0000-9a0379cb33da"
+    },
+    {
+      "keyword": "toyota car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-435",
+      "task_id": "07200102-2063-0066-0000-a2f1bafa8cad"
+    },
+    {
+      "keyword": "auto mobile detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-436",
+      "task_id": "07200102-2063-0066-0000-c358e8905e38"
+    },
+    {
+      "keyword": "auto spa near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-437",
+      "task_id": "07200102-2063-0066-0000-3d6a507e1084"
+    },
+    {
+      "keyword": "detailing packages",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-438",
+      "task_id": "07200102-2063-0066-0000-04ac97aa1fd7"
+    },
+    {
+      "keyword": "full car detail price",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-439",
+      "task_id": "07200102-2063-0066-0000-f5100f8b6076"
+    },
+    {
+      "keyword": "deep clean car wash near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-440",
+      "task_id": "07200102-2063-0066-0000-68931f16593a"
+    },
+    {
+      "keyword": "car pro detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-441",
+      "task_id": "07200102-2063-0066-0000-2443fdacabf9"
+    },
+    {
+      "keyword": "auto detailing near me prices",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-442",
+      "task_id": "07200102-2063-0066-0000-11a63c46ca7a"
+    },
+    {
+      "keyword": "car seat detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-443",
+      "task_id": "07200102-2063-0066-0000-148cbafb2285"
+    },
+    {
+      "keyword": "car wash with interior cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-444",
+      "task_id": "07200102-2063-0066-0000-ee36dce6c970"
+    },
+    {
+      "keyword": "full auto detail near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-445",
+      "task_id": "07200102-2063-0066-0000-2845e25833da"
+    },
+    {
+      "keyword": "auto interior cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-446",
+      "task_id": "07200102-2063-0066-0000-3829786d164e"
+    },
+    {
+      "keyword": "car cleaning near me interior",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-447",
+      "task_id": "07200102-2063-0066-0000-31771ad43b16"
+    },
+    {
+      "keyword": "mobile motorcycle detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-448",
+      "task_id": "07200102-2063-0066-0000-10e2c27026e0"
+    },
+    {
+      "keyword": "deep car detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-449",
+      "task_id": "07200102-2063-0066-0000-1a6d0614e16a"
+    },
+    {
+      "keyword": "car seat shampoo service",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-450",
+      "task_id": "07200102-2063-0066-0000-ae17b688e7b9"
+    },
+    {
+      "keyword": "auto detail shop",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-451",
+      "task_id": "07200102-2063-0066-0000-7648f69d54d9"
+    },
+    {
+      "keyword": "car seat detailing near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-452",
+      "task_id": "07200102-2063-0066-0000-6b7be2f30f14"
+    },
+    {
+      "keyword": "car detailing around me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-453",
+      "task_id": "07200102-2063-0066-0000-0067f4507ed5"
+    },
+    {
+      "keyword": "car detailing cost near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-454",
+      "task_id": "07200102-2063-0066-0000-502ad0ac8e16"
+    },
+    {
+      "keyword": "detailing companies near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-455",
+      "task_id": "07200102-2063-0066-0000-eda8ea40deda"
+    },
+    {
+      "keyword": "car care detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-456",
+      "task_id": "07200102-2063-0066-0000-884d49919184"
+    },
+    {
+      "keyword": "vehicle interior cleaning",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-457",
+      "task_id": "07200102-2063-0066-0000-d9c077a8cb5b"
+    },
+    {
+      "keyword": "ceramic finish for cars",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-458",
+      "task_id": "07200102-2063-0066-0000-0564a4d3d707"
+    },
+    {
+      "keyword": "car wash and interior cleaning near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-459",
+      "task_id": "07200102-2063-0066-0000-3b2f7fd3ad78"
+    },
+    {
+      "keyword": "car detailing company",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-460",
+      "task_id": "07200102-2063-0066-0000-3d240f2fafc7"
+    },
+    {
+      "keyword": "car wash interior and exterior near me",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-461",
+      "task_id": "07200102-2063-0066-0000-493045303e07"
+    },
+    {
+      "keyword": "adams detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-462",
+      "task_id": "07200102-2063-0066-0000-64c690ff7337"
+    },
+    {
+      "keyword": "pressure washer for car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-463",
+      "task_id": "07200102-2063-0066-0000-c79471f328ee"
+    },
+    {
+      "keyword": "groupon car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-464",
+      "task_id": "07200102-2063-0066-0000-b31d89baa8b0"
+    },
+    {
+      "keyword": "car detailing business",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-465",
+      "task_id": "07200102-2063-0066-0000-0a26fa346555"
+    },
+    {
+      "keyword": "best pressure washer for car detailing",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-466",
+      "task_id": "07200102-2063-0066-0000-cb3b53a35f59"
+    },
+    {
+      "keyword": "detailing pressure washer",
+      "post_cost_usd": 0.0012,
+      "post_status_code": 20100,
+      "post_status_message": "Task Created.",
+      "tag": "fmd-geo-20260719-467",
+      "task_id": "07200102-2063-0066-0000-af11bd9c0c9a"
+    }
+  ]
+}

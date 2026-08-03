@@ -1,7 +1,7 @@
 """Engine filesystem layout and config loading.
 
-Committed zones: evidence/, packages/, receipts/, baselines/, fixtures/, config/.
-Ignored runtime zone: .run/ (raw API payloads, locks, spend ledger, controller state).
+Committed zones: evidence/, packages/, receipts/, baselines/, fixtures/, config/, state/.
+Ignored runtime zone: .run/ (raw API payloads, locks, and per-run scratch state).
 """
 
 from __future__ import annotations
@@ -17,8 +17,11 @@ CONFIG_FILE = ENGINE_ROOT / "config" / "engine.yaml"
 RUN_DIR = ENGINE_ROOT / ".run"
 RAW_DIR = RUN_DIR / "raw"
 LOCK_FILE = RUN_DIR / "lock"
-SPEND_LEDGER = RUN_DIR / "spend.json"
-HEALTH_FILE = RUN_DIR / "health.json"
+STATE_DIR = ENGINE_ROOT / "state"
+SPEND_LEDGER = STATE_DIR / "spend.json"
+HEALTH_FILE = STATE_DIR / "health.json"
+SERP_BULK_MANIFEST = STATE_DIR / "serp-bulk-task-manifest.json"
+GEOGRID_MANIFEST = STATE_DIR / "geogrid-task-manifest.json"
 KILL_FILE = ENGINE_ROOT / "DISABLED"
 
 EVIDENCE_DIR = ENGINE_ROOT / "evidence"

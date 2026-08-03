@@ -1,5 +1,5 @@
 """Budget ledger: reserve estimated cost before every API call, settle after,
-enforce total and per-endpoint caps. Ledger lives in ignored .run/ state."""
+and enforce total and per-endpoint caps in committed durable state."""
 
 from __future__ import annotations
 

@@ -1,6 +1,14 @@
 import yaml
 
+from fmd_seo import paths
 from fmd_seo.paths import load_config
+
+
+def test_safety_state_is_committed_outside_run_dir():
+    assert paths.SPEND_LEDGER == paths.STATE_DIR / "spend.json"
+    assert paths.HEALTH_FILE == paths.STATE_DIR / "health.json"
+    assert paths.SERP_BULK_MANIFEST == paths.STATE_DIR / "serp-bulk-task-manifest.json"
+    assert paths.GEOGRID_MANIFEST == paths.STATE_DIR / "geogrid-task-manifest.json"
 
 
 def test_load_config_applies_ci_path_overrides(tmp_path, monkeypatch):

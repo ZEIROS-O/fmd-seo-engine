@@ -77,6 +77,7 @@ def test_export_commits_content_and_build_generated_sitemap_cleanly(git_repo, mo
     subprocess.run(["git", "-C", str(git_repo), "commit", "-m", "add sitemap"], check=True)
     real_run = subprocess.run
     real_popen = subprocess.Popen
+    preview_args = []
 
     def fake_run(args, *pargs, **kwargs):
         if args[:3] == ["bun", "run", "build"]:
@@ -95,13 +96,13 @@ def test_export_commits_content_and_build_generated_sitemap_cleanly(git_repo, mo
             pass
 
     monkeypatch.setattr("fmd_seo.export.subprocess.run", fake_run)
-    monkeypatch.setattr(
-        "fmd_seo.export.subprocess.Popen",
-        lambda args, *pargs, **kwargs: (
-            FakeServer() if args[:3] == ["bun", "run", "preview"]
-            else real_popen(args, *pargs, **kwargs)
-        ),
-    )
+    def fake_popen(args, *pargs, **kwargs):
+        if args[:3] == ["bun", "run", "preview"]:
+            preview_args.append(args)
+            return FakeServer()
+        return real_popen(args, *pargs, **kwargs)
+
+    monkeypatch.setattr("fmd_seo.export.subprocess.Popen", fake_popen)
     monkeypatch.setattr("fmd_seo.export._wait_port", lambda _port: True)
     monkeypatch.setattr(
         "fmd_seo.export.check_slash_variants",
@@ -124,6 +125,7 @@ def test_export_commits_content_and_build_generated_sitemap_cleanly(git_repo, mo
         check=True, capture_output=True, text=True,
     ).stdout == ""
     assert any(name == "postcommit_clean" and verdict == "PASS" for name, verdict, _ in checks)
+    assert preview_args == [["bun", "run", "preview", "--", "--port", "4176"]]
 
 
 def test_verification_aggregation_blocks_if_any_check_blocks():

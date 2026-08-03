@@ -1,0 +1,146 @@
+[
+ {
+  "id": "3669dcaeb411",
+  "ts": "2026-07-14T15:36:57+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "580686e4228f",
+  "ts": "2026-07-14T15:40:22+00:00",
+  "endpoint": "serp",
+  "reserved_usd": 0.02,
+  "actual_usd": 0.002,
+  "note": "/v3/serp/google/organic/live/advanced"
+ },
+ {
+  "id": "4c25ad408747",
+  "ts": "2026-07-14T15:40:25+00:00",
+  "endpoint": "llm_responses",
+  "reserved_usd": 0.05,
+  "actual_usd": 0.006343,
+  "note": "/v3/ai_optimization/perplexity/llm_responses/live"
+ },
+ {
+  "id": "c5574f056b84",
+  "ts": "2026-07-14T15:40:32+00:00",
+  "endpoint": "llm_mentions",
+  "reserved_usd": 0.15,
+  "actual_usd": 0.1,
+  "note": "/v3/ai_optimization/llm_mentions/search_mentions/live"
+ },
+ {
+  "id": "c08297e65728",
+  "ts": "2026-07-14T15:40:38+00:00",
+  "endpoint": "business_data",
+  "reserved_usd": 0.03,
+  "actual_usd": 0.01308,
+  "note": "/v3/business_data/business_listings/search/live"
+ },
+ {
+  "id": "9999b4f04cab",
+  "ts": "2026-07-14T18:06:35+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "31f7946da721",
+  "ts": "2026-07-14T20:12:54+00:00",
+  "endpoint": "keywords",
+  "reserved_usd": 0.1,
+  "actual_usd": 0.09,
+  "note": "/v3/keywords_data/google_ads/search_volume/live"
+ },
+ {
+  "id": "c420b0c1de5f",
+  "ts": "2026-07-19T21:02:13+00:00",
+  "endpoint": "serp",
+  "reserved_usd": 0.02,
+  "actual_usd": 0.0,
+  "note": "sandbox transport failure; no provider request"
+ },
+ {
+  "id": "55ef45c879ae",
+  "ts": "2026-07-19T21:03:08+00:00",
+  "endpoint": "serp",
+  "reserved_usd": 0.02,
+  "actual_usd": 0.002,
+  "note": "/v3/serp/google/organic/live/advanced"
+ },
+ {
+  "id": "3187bbc6ccb5",
+  "ts": "2026-07-19T21:03:13+00:00",
+  "endpoint": "serp",
+  "reserved_usd": 0.02,
+  "actual_usd": 0.002,
+  "note": "/v3/serp/google/organic/live/advanced"
+ },
+ {
+  "id": "ef8093a1a229",
+  "ts": "2026-07-19T21:38:47+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "87cd7cb052e8",
+  "ts": "2026-07-19T22:02:29+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "24bae3a897a8",
+  "ts": "2026-07-19T22:02:30+00:00",
+  "endpoint": "serp_bulk",
+  "reserved_usd": 0.12,
+  "actual_usd": 0.12,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "c8889a24b9b1",
+  "ts": "2026-07-19T22:02:34+00:00",
+  "endpoint": "serp_bulk",
+  "reserved_usd": 0.12,
+  "actual_usd": 0.12,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "388249b1eb17",
+  "ts": "2026-07-19T22:02:36+00:00",
+  "endpoint": "serp_bulk",
+  "reserved_usd": 0.12,
+  "actual_usd": 0.12,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "1a5e5cc47f0a",
+  "ts": "2026-07-19T22:02:39+00:00",
+  "endpoint": "serp_bulk",
+  "reserved_usd": 0.12,
+  "actual_usd": 0.12,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "5725c7ec2b91",
+  "ts": "2026-07-19T22:02:43+00:00",
+  "endpoint": "serp_bulk",
+  "reserved_usd": 0.0804,
+  "actual_usd": 0.0804,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "66234ee3c5bc",
+  "ts": "2026-07-31T18:52:19+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ }
+]

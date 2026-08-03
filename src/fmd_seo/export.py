@@ -147,7 +147,7 @@ def export_package(package: PagePackage, worktree: Path, *, port: int = 4176,
 
     try:
         server = subprocess.Popen(
-            ["bun", "run", "preview", "--", "--port", str(port), "--strictPort"],
+            ["bun", "run", "preview", "--", "--port", str(port)],
             cwd=worktree,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.STDOUT,

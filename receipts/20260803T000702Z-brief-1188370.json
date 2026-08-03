@@ -1,0 +1,1 @@
+{"attempts":1,"blockers":[],"checks":[{"detail":"exit 0","name":"command_result","verdict":"PASS"}],"command":"brief","commit_hashes":{},"ended_at":"2026-08-03T00:07:02+00:00","resume_point":null,"run_id":"20260803T000702Z-brief-1188370","schema_version":1,"spend_usd":0.0,"started_at":"2026-08-03T00:07:02+00:00","status":"DONE"}

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from fmd_seo.contracts import from_dict
 from fmd_seo.semantic import semantic_review
+from fmd_seo import slice as slice_module
 from fmd_seo.slice import build_slice_package
 from fmd_seo.verify import checks_pass, deterministic_checks
 
@@ -36,7 +37,23 @@ def test_recorded_query_evidence_replays_through_contract_and_slice(facts_file):
     assert {item.kind for item in evidence} == {
         "ai_response_snapshot", "serp_snapshot", "llm_mentions_baseline", "gbp_snapshot",
     }
+    assert package.content["evidence_figures"] == [
+        {"value": value, "evidence_id": "ev-ai_response_snapshot-9f5724aa0491"}
+        for value in (40, 80, 100, 160, 190, 250, 300, 450, 600)
+    ]
+    assert "$50" not in json.dumps(package.content)
     assert checks_pass(checks)
+
+
+def test_slice_does_not_bind_a_figure_from_a_larger_number(tmp_path, monkeypatch):
+    evidence = tmp_path / "evidence"
+    evidence.mkdir()
+    (evidence / "ev-one.json").write_text(
+        json.dumps({"answer": "The package costs $140"}), encoding="utf-8",
+    )
+    monkeypatch.setattr(slice_module.paths, "EVIDENCE_DIR", evidence)
+
+    assert {item["value"] for item in slice_module._evidence_figures(["ev-one"])} == set()
 
 
 def test_semantic_replay_accepts_only_exact_pass_sentinel(monkeypatch, facts_file):

@@ -8,13 +8,17 @@ QueryEvidence and are declared in evidence_figures with their evidence IDs.
 
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 
+from . import paths
 from .contracts import PagePackage
 from .facts import load_snapshot
 from .receipts import now_iso
+from .verify import contains_currency_token
 
 SLICE_INTENT_KEY = "supporting:car-detailing-prices-cleveland"
+MARKET_PRICE_FIGURES = (40, 80, 100, 160, 190, 250, 300, 450, 600)
 
 FACT_KEYS = [
     "identity.name",
@@ -36,7 +40,29 @@ FACT_KEYS = [
 ]
 
 
-def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePackage:
+def _evidence_figures(evidence_refs: list[str]) -> list[dict[str, str | int]]:
+    """Bind only figures that occur in the bytes of referenced evidence."""
+    evidence_texts: list[tuple[str, str]] = []
+    for evidence_id in evidence_refs:
+        evidence_path = next(paths.EVIDENCE_DIR.rglob(f"{evidence_id}.json"), None)
+        if evidence_path is None:
+            continue
+        evidence_texts.append((evidence_id, evidence_path.read_text(encoding="utf-8")))
+    figures: list[dict[str, str | int]] = []
+    for value in MARKET_PRICE_FIGURES:
+        for evidence_id, evidence_text in evidence_texts:
+            if contains_currency_token(evidence_text, value):
+                figures.append({"value": value, "evidence_id": evidence_id})
+                break
+    return figures
+
+
+def build_slice_package(
+    facts_file: Path,
+    evidence_refs: list[str],
+    *,
+    published_on: str | None = None,
+) -> PagePackage:
     snapshot = load_snapshot(facts_file, FACT_KEYS)
     facts = snapshot.facts_used
     phone = facts["identity.phone"]
@@ -49,6 +75,7 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
     m_q = facts["pricing.membership_per_visit.quarterly"]
     neighbor = facts["pricing.neighbor_discount"]
     guarantee = facts["guarantee.name"]
+    published_on = published_on or date.today().isoformat()
 
     content = {
         "buyer_read": (
@@ -64,7 +91,7 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
             "actually costs on the east side."
         ),
         "canonical": "https://freshmobiledetail.com/blog/car-detailing-prices-cleveland",
-        "date_published": "2026-07-14",
+        "date_published": published_on,
         "hero_image": {"src": "/icon-512.png", "alt": "Fresh Mobile Detailing logo"},
         "blocks": [
             {"type": "p", "text": (
@@ -72,9 +99,9 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
                 "what you're getting: quick express details sit around $40–$100, "
                 "interior-only details typically land between $190 and $300, and a full "
                 "interior-plus-exterior detail on a sedan usually costs $250–$450. Those "
-                "ranges come from the price lists Cleveland-area detailing shops publish "
-                "on their own websites and listings, surveyed in July 2026 — they're the "
-                "numbers you'd find yourself if you spent an evening comparing quotes."
+                "ranges were compiled in July 2026 from published Cleveland-area shop "
+                "pricing, including Diamond Finish, Nathan's, GK's Custom, Clean "
+                "Concepts, and Panda Hub."
             )},
             {"type": "h2", "text": "Cleveland detailing prices by service type"},
             {"type": "ul", "items": [
@@ -86,7 +113,7 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
             ]},
             {"type": "h2", "text": "What actually moves the price"},
             {"type": "ul", "items": [
-                "Vehicle size — most Cleveland shops tier pricing from coupes up to full-size SUVs and trucks, often with a $50–$100 spread between the smallest and largest tier.",
+                "Vehicle size — most Cleveland shops tier pricing from coupes up to full-size SUVs and trucks, with larger vehicle classes priced higher.",
                 "Condition — heavy soiling and pet hair commonly add a surcharge at local shops.",
                 "Mobile vs. shop — mobile detailers come to your driveway; some price that convenience in, others charge the same as a shop visit.",
             ]},
@@ -122,7 +149,7 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": "How Much Does Car Detailing Cost in Cleveland? (2026 Pricing Guide)",
-            "datePublished": "2026-07-14",
+            "datePublished": published_on,
             "author": {"@type": "Organization", "name": facts["identity.name"]},
             "publisher": {"@type": "Organization", "name": facts["identity.name"]},
         },
@@ -138,7 +165,7 @@ def build_slice_package(facts_file: Path, evidence_refs: list[str]) -> PagePacka
             {"fact_key": "pricing.neighbor_discount", "value": neighbor},
             {"fact_key": "guarantee.name", "value": guarantee},
         ],
-        "evidence_figures": [40, 50, 80, 100, 160, 190, 250, 300, 450, 600],
+        "evidence_figures": _evidence_figures(evidence_refs),
         "mentioned_places": [
             "Cleveland", "Beachwood", "Mayfield Heights", "Solon",
             "Orange", "Pepper Pike", "Shaker Heights",

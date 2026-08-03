@@ -23,6 +23,13 @@ service_area:
   base: Beachwood / Mayfield Heights
   radius_miles: 30
   places: [Beachwood, Mayfield Heights, Solon, Orange, Pepper Pike, Shaker Heights]
+hours: {{days: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday], opens: "08:00", closes: "18:00"}}
+services:
+  duration_hours: {{min: 1.5, max: 4}}
+  offered: [Full Interior Detail, Ultimate Interior Detail]
+  exterior_add_on: à-la-carte exterior hand wash
+  not_offered: [ceramic coating, PPF, paint correction]
+fleet_discount: {{available: true, applies_to: [fleet, multi_car]}}
 pricing:
   one_time:
     full_interior:

@@ -46,7 +46,9 @@ File-backed contract for all work in this repo. Source plan:
 
 ## State rules
 
-- Raw API payloads and controller state live under ignored `.run/`.
+- Raw API payloads, locks, and per-run scratch state live under ignored `.run/`.
+- Spend, provider-health counters, and resumable task manifests live under
+  committed `state/` so cloud runs cannot silently reset their safety state.
 - Committed: normalized evidence, hashes, timestamps, final packages,
   fixtures, receipts, baselines, export manifests.
 - PagePackage IDs are immutable and content-addressed; rewriting an existing

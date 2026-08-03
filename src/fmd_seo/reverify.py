@@ -33,7 +33,11 @@ def reverify_manifests(
     synced_sha = sync_worktree(worktree) if sync else None
     checks: list[dict[str, str]] = []
     reconciled: list[dict[str, str]] = []
+    # Only active manifests live directly in exports/. Historical manifests
+    # move under exports/archive/ with a supersede record and are never
+    # re-verified against the current site.
     manifests = sorted(exports_dir.glob("*-export.json"))
+    archived = sorted((exports_dir / "archive").glob("*-export.json"))
     if not manifests:
         checks.append({
             "name": "exports", "verdict": "PASS", "detail": "no export manifests",
@@ -83,6 +87,7 @@ def reverify_manifests(
         "status": "BLOCK" if blocked else "DONE",
         "synced_sha": synced_sha,
         "manifests": len(manifests),
+        "archived_manifests": len(archived),
         "checks": checks,
         "blockers": blocked,
         "reconciled": reconciled,

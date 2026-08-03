@@ -1,0 +1,6 @@
+{
+  "archived_at": "2026-08-02",
+  "package_id": "pp-46b53f1841236e56",
+  "reason": "Destination commit 4968607 is not an ancestor of origin/main and the generated article file is absent from main. Superseded by evidence-bound replacement package pp-8aaa01ea7efaad48 prepared for site PR #1.",
+  "schema_version": 1
+}

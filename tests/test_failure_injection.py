@@ -6,6 +6,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import yaml
 
 from fmd_seo import dataforseo, killswitch
 from fmd_seo.dataforseo import ApiFailure, DataForSeoClient
@@ -75,8 +76,8 @@ def test_engine_freshness_flags_observations_older_than_twice_cadence(tmp_path):
     assert records == {"stalest_check_age_days": 3, "checks_overdue": 1}
 
 
-def test_sync_command_records_daily_engine_health_without_provider_key(tmp_path, facts_file):
-    from fmd_seo.loop_cli import cmd_sync
+def test_tick_records_daily_engine_health_without_provider_key(tmp_path, facts_file):
+    from fmd_seo.loop_cli import cmd_tick
     from fmd_seo.observations import latest_observation
 
     observations = tmp_path / "observations"
@@ -85,7 +86,7 @@ def test_sync_command_records_daily_engine_health_without_provider_key(tmp_path,
         "paths": {"facts_file": str(facts_file)},
     }
 
-    payload, code = cmd_sync(config, observations_dir=observations)
+    payload, code = cmd_tick(config, observations_dir=observations)
 
     assert code == 0
     assert payload["engine_checks"] == ["facts.freshness", "engine.freshness"]
@@ -94,15 +95,10 @@ def test_sync_command_records_daily_engine_health_without_provider_key(tmp_path,
 
 
 def test_sync_command_returns_partial_when_some_due_checks_fail(tmp_path, monkeypatch):
-    from fmd_seo import freshness, sync
+    from fmd_seo import sync
     from fmd_seo.loop_cli import cmd_sync
     from fmd_seo.sync import SyncResult
 
-    monkeypatch.setattr(
-        freshness,
-        "record_daily_engine_checks",
-        lambda *_args, **_kwargs: ["facts.freshness", "engine.freshness"],
-    )
     monkeypatch.setattr(
         sync,
         "sync_due",
@@ -151,3 +147,34 @@ def test_gate1_machine_counts_weekly_clean_readings_and_resets(tmp_path):
     assert duplicate["consecutive_clean_readings"] == 1
     assert (second["state"], second["consecutive_clean_readings"]) == ("OPEN", 2)
     assert (dirty["state"], dirty["consecutive_clean_readings"]) == ("CLOSED", 0)
+
+
+def test_gate1_update_does_not_depend_on_gate2_order(tmp_path):
+    from fmd_seo.gate_manager import update_gate1_state
+
+    state_file = tmp_path / "state.yaml"
+    state_file.write_text("""\
+schema_version: 1
+gates:
+  GATE-2:
+    state: CLOSED
+  GATE-1:
+    state: CLOSED
+    reason: "old"
+    consecutive_clean_readings: 0
+    last_counted_at: null
+""", encoding="utf-8")
+    result = update_gate1_state(
+        state_file,
+        {
+            "indexed_min": 10,
+            "not_indexed_max_exclusive": 8,
+            "consecutive_clean_required": 2,
+            "minimum_days_between_readings": 7,
+        },
+        {"indexed": 20, "not_indexed": 2},
+        "2026-08-02T12:00:00+00:00",
+    )
+
+    assert result["consecutive_clean_readings"] == 1
+    assert yaml.safe_load(state_file.read_text())["gates"]["GATE-2"]["state"] == "CLOSED"

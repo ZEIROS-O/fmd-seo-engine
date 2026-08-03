@@ -155,7 +155,7 @@ def dry_run(config: dict) -> dict:
 
 def _manifest_path(config: dict) -> Path:
     configured = (config.get("serp_bulk") or {}).get("manifest")
-    return Path(configured) if configured else paths.RUN_DIR / "serp-bulk-task-manifest.json"
+    return Path(configured) if configured else paths.SERP_BULK_MANIFEST
 
 
 def _load_manifest(config: dict, keyword_file: Path) -> dict:

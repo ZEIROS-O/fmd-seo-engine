@@ -20,7 +20,7 @@ QUERY_EVIDENCE_KINDS = frozenset(
     {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline",
      "stable_core_candidate", "gbp_snapshot", "keyword_volume"}
 )
-RECEIPT_STATUSES = frozenset({"DONE", "NO_OP", "PARTIAL", "BLOCK"})
+RECEIPT_STATUSES = frozenset({"DONE", "NO_OP", "PARTIAL", "BLOCK", "ERROR"})
 PACKAGE_TIERS = frozenset({"money-page", "supporting-post"})
 
 
@@ -121,7 +121,7 @@ class PagePackage:
 @dataclass(frozen=True)
 class RunReceipt:
     run_id: str
-    status: str  # one of RECEIPT_STATUSES
+    status: str  # one of RECEIPT_STATUSES; ERROR is an execution failure, not a refusal
     started_at: str
     ended_at: str
     command: str

@@ -42,7 +42,7 @@ def run_spike(worktree: Path, *, port: int = 4173, skip_build: bool = False) -> 
         rb.check("production_build", "PASS", "bun run build exit 0")
 
     server = subprocess.Popen(
-        ["bun", "run", "preview", "--", "--port", str(port), "--strictPort"],
+        ["bun", "run", "preview", "--", "--port", str(port)],
         cwd=worktree, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
     )
     try:

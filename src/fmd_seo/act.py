@@ -191,104 +191,105 @@ def publish_package(config: dict, package_path: Path) -> dict:
     slug = package.content["slug"]
     branch = f"seo-engine/{date.today().isoformat()}-{slug}"
     _run(worktree, "git", "switch", "-C", branch, "origin/main")
-
-    checks = [binding]
-    checks.extend(deterministic_checks(
-        package,
-        site_public_dir=worktree / "public",
-        known_routes={
-            "/", "/areas", "/blog", "/chat", "/fleet", "/boat",
-            "/fresh-pro", "/interior-detailing", "/mobile-detailing", "/#booking",
-        },
-    ))
-    places = package.fact_snapshot.get("facts_used", {}).get("service_area.places", [])
-    checks.extend(corpus_checks(
-        package.content,
-        worktree / "content" / "blog",
-        places,
-        live_posts=parse_live_posts(worktree),
-    ))
-    if not checks_pass(checks):
-        _run(worktree, "git", "switch", "--detach", base_sha)
-        return {
-            "command": "act",
-            "status": "BLOCK",
-            "branch": branch,
-            "checks": [
-                {"name": name, "verdict": verdict, "detail": detail}
-                for name, verdict, detail in checks
-            ],
-            "blockers": [name for name, verdict, _detail in checks if verdict == "BLOCK"],
-        }
-
-    export_checks, manifest = export_package(package, worktree)
-    checks.extend(export_checks)
-    if manifest is None or not checks_pass(checks):
-        return {
-            "command": "act",
-            "status": "BLOCK",
-            "branch": branch,
-            "checks": [
-                {"name": name, "verdict": verdict, "detail": detail}
-                for name, verdict, detail in checks
-            ],
-            "blockers": [name for name, verdict, _detail in checks if verdict == "BLOCK"],
-        }
-
-    manifest_path = write_manifest(manifest, paths.EVIDENCE_DIR / "exports")
-    branch_sha = _run(worktree, "git", "rev-parse", "HEAD")
     try:
-        _run(worktree, "git", "push", "-u", "origin", branch)
-        pr_url = _run(
-            worktree,
-            "gh", "pr", "create", "--draft", "--base", "main", "--head", branch,
-            "--title", f"SEO: {package.content['title']}",
-            "--body", (
-                f"Generated from immutable package `{package.package_id}`.\n\n"
-                "Deterministic, corpus, production-build, and raw-HTML checks passed."
-            ),
-        )
-    except ActError as err:
-        checks.append(("external_publish", "BLOCK", str(err)))
+        checks = [binding]
+        checks.extend(deterministic_checks(
+            package,
+            site_public_dir=worktree / "public",
+            known_routes={
+                "/", "/areas", "/blog", "/chat", "/fleet", "/boat",
+                "/fresh-pro", "/interior-detailing", "/mobile-detailing", "/#booking",
+            },
+        ))
+        places = package.fact_snapshot.get("facts_used", {}).get("service_area.places", [])
+        checks.extend(corpus_checks(
+            package.content,
+            worktree / "content" / "blog",
+            places,
+            live_posts=parse_live_posts(worktree),
+        ))
+        if not checks_pass(checks):
+            return {
+                "command": "act",
+                "status": "BLOCK",
+                "branch": branch,
+                "checks": [
+                    {"name": name, "verdict": verdict, "detail": detail}
+                    for name, verdict, detail in checks
+                ],
+                "blockers": [name for name, verdict, _detail in checks if verdict == "BLOCK"],
+            }
+
+        export_checks, manifest = export_package(package, worktree)
+        checks.extend(export_checks)
+        if manifest is None or not checks_pass(checks):
+            return {
+                "command": "act",
+                "status": "BLOCK",
+                "branch": branch,
+                "checks": [
+                    {"name": name, "verdict": verdict, "detail": detail}
+                    for name, verdict, detail in checks
+                ],
+                "blockers": [name for name, verdict, _detail in checks if verdict == "BLOCK"],
+            }
+
+        manifest_path = write_manifest(manifest, paths.EVIDENCE_DIR / "exports")
+        branch_sha = _run(worktree, "git", "rev-parse", "HEAD")
+        try:
+            _run(worktree, "git", "push", "-u", "origin", branch)
+            pr_url = _run(
+                worktree,
+                "gh", "pr", "create", "--draft", "--base", "main", "--head", branch,
+                "--title", f"SEO: {package.content['title']}",
+                "--body", (
+                    f"Generated from immutable package `{package.package_id}`.\n\n"
+                    "Deterministic, corpus, production-build, and raw-HTML checks passed."
+                ),
+            )
+        except ActError as err:
+            checks.append(("external_publish", "BLOCK", str(err)))
+            return {
+                "command": "act",
+                "status": "BLOCK",
+                "branch": branch,
+                "manifest": str(manifest_path.relative_to(paths.ENGINE_ROOT)),
+                "commit_hashes": {"site": branch_sha},
+                "checks": [
+                    {"name": name, "verdict": verdict, "detail": detail}
+                    for name, verdict, detail in checks
+                ],
+                "blockers": [str(err)],
+            }
+        append_intervention(paths.EVIDENCE_DIR / "interventions.jsonl", {
+            "occurred_at": now_iso(),
+            "change": f"published PagePackage {package.package_id}: {package.content['title']}",
+            "thesis_priority": "GATE-1 open topic queue",
+            "sha": branch_sha,
+            "branch": branch,
+            "pr_url": pr_url,
+            "merged_at": None,
+        })
+        notify = paths.ENGINE_ROOT / "bin" / "notify-run"
+        if notify.exists():
+            subprocess.run(
+                ["bash", str(notify), "FMD-SEO act", "0", f"draft PR {pr_url}"],
+                cwd=paths.ENGINE_ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
         return {
             "command": "act",
-            "status": "BLOCK",
+            "status": "DONE",
             "branch": branch,
+            "pr_url": pr_url,
             "manifest": str(manifest_path.relative_to(paths.ENGINE_ROOT)),
             "commit_hashes": {"site": branch_sha},
             "checks": [
                 {"name": name, "verdict": verdict, "detail": detail}
                 for name, verdict, detail in checks
             ],
-            "blockers": [str(err)],
         }
-    append_intervention(paths.EVIDENCE_DIR / "interventions.jsonl", {
-        "occurred_at": now_iso(),
-        "change": f"published PagePackage {package.package_id}: {package.content['title']}",
-        "thesis_priority": "GATE-1 open topic queue",
-        "sha": branch_sha,
-        "branch": branch,
-        "pr_url": pr_url,
-        "merged_at": None,
-    })
-    notify = paths.ENGINE_ROOT / "bin" / "notify-run"
-    if notify.exists():
-        subprocess.run(
-            ["bash", str(notify), "FMD-SEO act", "0", f"draft PR {pr_url}"],
-            cwd=paths.ENGINE_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=30,
-        )
-    return {
-        "command": "act",
-        "status": "DONE",
-        "branch": branch,
-        "pr_url": pr_url,
-        "manifest": str(manifest_path.relative_to(paths.ENGINE_ROOT)),
-        "commit_hashes": {"site": branch_sha},
-        "checks": [
-            {"name": name, "verdict": verdict, "detail": detail}
-            for name, verdict, detail in checks
-        ],
-    }
+    finally:
+        _run(worktree, "git", "switch", "--detach", base_sha)

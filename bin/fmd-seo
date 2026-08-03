@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # Run the fmd-seo CLI without requiring an installed package.
-ENGINE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ENGINE_ROOT="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 exec env PYTHONPATH="$ENGINE_ROOT/src" python3 -m fmd_seo "$@"

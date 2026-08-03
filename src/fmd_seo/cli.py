@@ -38,7 +38,9 @@ def _emit(receipt, receipts_dir: Path) -> int:
 def _emit_loop(rb: ReceiptBuilder, payload: dict, code: int, receipts_dir: Path) -> int:
     if code == EXIT["PARTIAL"]:
         status, verdict = "PARTIAL", "WARN"
-    elif code in (EXIT["BLOCK"], EXIT["ERROR"]):
+    elif code == EXIT["ERROR"]:
+        status, verdict = "ERROR", "BLOCK"
+    elif code == EXIT["BLOCK"]:
         status, verdict = "BLOCK", "BLOCK"
     elif (
         (payload.get("command") == "sync" and payload.get("skipped_no_key")
@@ -129,7 +131,14 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("assess", help="evaluate thresholds against latest observations; report gate drift")
     sub.add_parser("brief", help="full operator briefing: gates + due + standing findings + priority")
     sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
+    sub.add_parser("tick", help="record credential-free engine freshness checks")
     sub.add_parser("gsc-sync", help="headless index-coverage fetch via the GSC URL Inspection API")
+
+    p = sub.add_parser("site-reset", help="report or repair the isolated site worktree")
+    p.add_argument("--force", action="store_true", help="hard-sync the worktree to origin/main")
+
+    p = sub.add_parser("facts-check", help="compare canonical facts with the generated site payload")
+    p.add_argument("--generated", type=Path, default=None, help="business-facts.ts path")
 
     p = sub.add_parser("serp-bulk", help="capped resumable position-tracking queue")
     serp_mode = p.add_mutually_exclusive_group(required=True)
@@ -185,6 +194,52 @@ def main(argv: list[str] | None = None) -> int:
             code = 0
         except Exception as err:  # noqa: BLE001 - malformed history must fail loudly
             payload = {"command": "report", "error": f"{type(err).__name__}: {err}"}
+            code = EXIT["ERROR"]
+        return _emit_loop(rb, payload, code, receipts_dir)
+
+    if args.command == "site-reset":
+        # Destructive: --force discards uncommitted worktree edits. It must obey
+        # the kill switch and hold the run lock, or it can reset the worktree out
+        # from under an `act` that is mid-publish.
+        from .site import reset_worktree
+        rb = ReceiptBuilder(args.command)
+        lock = None
+        lock_acquired = False
+        try:
+            if args.force:
+                killswitch.assert_not_engaged()
+                paths.ensure_run_dirs()
+                lock = RunLock(paths.LOCK_FILE)
+                lock.acquire(rb.run_id)
+                lock_acquired = True
+            payload = reset_worktree(
+                Path(config["paths"]["site_worktree"]), force=args.force,
+            )
+            code = 0
+        except (LockHeld, killswitch.KillSwitchEngaged) as err:
+            payload = {"command": args.command, "error": str(err)}
+            code = EXIT["BLOCK"]
+        except Exception as err:  # noqa: BLE001 - git failures are execution errors
+            payload = {"command": args.command, "error": f"{type(err).__name__}: {err}"}
+            code = EXIT["ERROR"]
+        finally:
+            if lock is not None and lock_acquired:
+                lock.release()
+        return _emit_loop(rb, payload, code, receipts_dir)
+
+    if args.command == "facts-check":
+        from .site_facts import verify_generated_fact_hash
+        rb = ReceiptBuilder(args.command)
+        generated = args.generated or (
+            Path(config["paths"]["site_worktree"]) / "src/lib/business-facts.ts"
+        )
+        try:
+            payload = verify_generated_fact_hash(
+                Path(config["paths"]["facts_file"]), generated,
+            )
+            code = 0
+        except Exception as err:  # noqa: BLE001 - drift must fail loudly in CI
+            payload = {"command": args.command, "error": f"{type(err).__name__}: {err}"}
             code = EXIT["ERROR"]
         return _emit_loop(rb, payload, code, receipts_dir)
 
@@ -298,10 +353,10 @@ def main(argv: list[str] | None = None) -> int:
     # Read-only loop commands remain available under the kill switch so an
     # operator can inspect why the engine stopped. Observation-writing and
     # provider-sync commands are locked and respect DISABLED.
-    if args.command in ("beat", "assess", "brief", "observe", "sync", "gsc-sync"):
+    if args.command in ("beat", "assess", "brief", "observe", "sync", "tick", "gsc-sync"):
         from . import loop_cli
         rb = ReceiptBuilder(args.command)
-        mutating = args.command in ("observe", "sync", "gsc-sync")
+        mutating = args.command in ("observe", "sync", "tick", "gsc-sync")
         lock = None
         lock_acquired = False
         try:
@@ -319,6 +374,8 @@ def main(argv: list[str] | None = None) -> int:
                 payload, code = loop_cli.cmd_brief(config)
             elif args.command == "sync":
                 payload, code = loop_cli.cmd_sync(config)
+            elif args.command == "tick":
+                payload, code = loop_cli.cmd_tick(config)
             elif args.command == "gsc-sync":
                 payload, code = loop_cli.cmd_gsc_sync(config)
             else:

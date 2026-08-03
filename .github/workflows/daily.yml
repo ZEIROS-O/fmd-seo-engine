@@ -19,7 +19,7 @@ on:
         options: [none, post, collect]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: fmd-seo-daily
@@ -34,52 +34,110 @@ jobs:
       FMD_SEO_GOOGLE_KEY: /home/runner/.gsc-service-account.json
       FMD_SEO_SITE_WORKTREE: ${{ github.workspace }}/.worktrees/fresh-site-v3
     steps:
-      - uses: actions/checkout@v4
+      # Full history: the state write-back rebases, and rebasing a grafted
+      # shallow clone is a known flake that would cost the spend ledger.
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Honor committed kill switch
+        id: kill
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [[ ! -f DISABLED ]]; then
+            echo "killed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "killed=true" >> "$GITHUB_OUTPUT"
+          echo "DISABLED is committed; stopping before setup or provider calls"
+          if [[ -n "$TELEGRAM_BOT_TOKEN" && -n "$TELEGRAM_CHAT_ID" ]]; then
+            curl --fail --silent --show-error \
+              --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+              --data-urlencode "text=🛑 KILLED — FMD SEO daily stopped by committed DISABLED" \
+              "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+              || echo "warning: kill-switch Telegram notification failed"
+          fi
+
+      - uses: actions/setup-python@v6
+        if: steps.kill.outputs.killed != 'true'
         with:
           python-version: "3.12"
           cache: pip
 
       - uses: oven-sh/setup-bun@v2
+        if: steps.kill.outputs.killed != 'true'
 
       - name: Install engine
+        if: steps.kill.outputs.killed != 'true'
         run: pip install -e ".[google]"
 
       - name: Materialize provider credentials
+        if: steps.kill.outputs.killed != 'true'
         env:
           DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
           DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+          SEMRUSH_API_KEY: ${{ secrets.SEMRUSH_API_KEY }}
           GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
           BUSINESS_FACTS_YAML: ${{ secrets.BUSINESS_FACTS_YAML }}
         run: |
           umask 077
-          printf 'DATAFORSEO_LOGIN=%s\nDATAFORSEO_PASSWORD=%s\n' "$DATAFORSEO_LOGIN" "$DATAFORSEO_PASSWORD" > "$HOME/.dataforseo.env"
+          printf 'DATAFORSEO_LOGIN=%s\nDATAFORSEO_PASSWORD=%s\nSEMRUSH_API_KEY=%s\n' "$DATAFORSEO_LOGIN" "$DATAFORSEO_PASSWORD" "$SEMRUSH_API_KEY" > "$HOME/.dataforseo.env"
           printf '%s' "$GSC_SERVICE_ACCOUNT_JSON" > "$HOME/.gsc-service-account.json"
           printf '%s' "$BUSINESS_FACTS_YAML" > "$HOME/business-facts.yaml"
 
       - name: Checkout site worktree
-        uses: actions/checkout@v4
+        if: steps.kill.outputs.killed != 'true'
+        uses: actions/checkout@v6
         with:
           repository: ZEIROS-O/fresh-mobile-detailing
           token: ${{ secrets.SITE_REPO_TOKEN }}
           path: .worktrees/fresh-site-v3
           fetch-depth: 0
 
+      - name: Verify canonical facts match the site payload
+        id: facts
+        if: steps.kill.outputs.killed != 'true'
+        continue-on-error: true
+        run: fmd-seo facts-check
+
+      - name: Record credential-free watchdogs
+        id: tick
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
+        continue-on-error: true
+        run: fmd-seo tick
+
+      - name: Validate required provider credentials
+        id: providers
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
+        continue-on-error: true
+        env:
+          DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
+          DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+          SEMRUSH_API_KEY: ${{ secrets.SEMRUSH_API_KEY }}
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+        run: |
+          test -n "$DATAFORSEO_LOGIN"
+          test -n "$DATAFORSEO_PASSWORD"
+          test -n "$SEMRUSH_API_KEY"
+          test -n "$GSC_SERVICE_ACCOUNT_JSON"
+
       - name: Sync headless sources
         id: sync
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: fmd-seo sync
 
       - name: Sync GSC indexation
         id: gsc
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: fmd-seo gsc-sync
 
       - name: Post weekly ranking tasks
         id: serp_post
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: |
           if [[ "${{ inputs.serp_mode }}" = post || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 7) ]]; then
@@ -90,7 +148,7 @@ jobs:
 
       - name: Collect weekly ranking tasks
         id: serp_collect
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: |
           if [[ "${{ inputs.serp_mode }}" = collect || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 1) ]]; then
@@ -101,7 +159,7 @@ jobs:
 
       - name: Post weekly map-grid tasks
         id: grid_post
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: |
           if [[ "${{ inputs.grid_mode }}" = post || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 7) ]]; then
@@ -112,7 +170,7 @@ jobs:
 
       - name: Collect weekly map-grid tasks
         id: grid_collect
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' && steps.providers.outcome == 'success' }}
         continue-on-error: true
         run: |
           if [[ "${{ inputs.grid_mode }}" = collect || ("${{ github.event_name }}" = schedule && "$(date -u +%u)" = 1) ]]; then
@@ -123,7 +181,7 @@ jobs:
 
       - name: Assess standing findings
         id: assess
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
         continue-on-error: true
         run: |
           set +e
@@ -138,12 +196,12 @@ jobs:
 
       - name: Plan gate-safe actions
         id: act
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
         continue-on-error: true
         run: fmd-seo act --dry-run
 
       - name: Notify Telegram
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -157,8 +215,11 @@ jobs:
           fi
 
       - name: Fail if a required stage failed
-        if: always()
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
         run: |
+          test "${{ steps.facts.outcome }}" = success
+          test "${{ steps.tick.outcome }}" = success
+          test "${{ steps.providers.outcome }}" = success
           test "${{ steps.sync.outcome }}" = success
           test "${{ steps.gsc.outcome }}" = success
           test "${{ steps.serp_post.outcome }}" = success
@@ -167,3 +228,36 @@ jobs:
           test "${{ steps.grid_collect.outcome }}" = success
           test "${{ steps.assess.outcome }}" = success
           test "${{ steps.act.outcome }}" = success
+
+      - name: Persist durable loop state
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
+        run: |
+          # brain/ (not just brain/observations) carries state.yaml, which holds
+          # GATE-1's counters and is machine-written by gsc-sync. DISABLED is
+          # written by killswitch.engage() after 2 systemic provider failures.
+          # Leaving either out both loses the guard and, because an unstaged
+          # tracked file makes `git pull --rebase` refuse, kills the push that
+          # carries the spend ledger.
+          git add -- state brain receipts evidence DISABLED
+          if git diff --cached --quiet; then
+            echo "no durable state changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "state: persist daily optimizer observations"
+          for attempt in 1 2 3; do
+            # autoStash so any other tracked write cannot wedge the rebase and
+            # strand the ledger commit on a runner that is about to disappear.
+            if git -c rebase.autoStash=true pull --rebase origin "$GITHUB_REF_NAME" \
+              && git push origin "HEAD:$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            git rebase --abort || true
+            echo "state push attempt $attempt failed"
+            sleep $((attempt * 2))
+          done
+          # Last resort: never let a runner take the spend ledger with it.
+          git push origin "HEAD:state-recovery/$GITHUB_RUN_ID" \
+            && echo "::error::state push failed; ledger parked on state-recovery/$GITHUB_RUN_ID"
+          exit 1

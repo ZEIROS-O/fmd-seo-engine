@@ -12,6 +12,7 @@ from typing import Callable
 import yaml
 
 from .brain import Brain
+from .contracts import canonical_json
 from .observations import record_observation
 
 
@@ -32,6 +33,9 @@ def public_fact_payload(facts_file: Path) -> dict:
     pricing = data["pricing"]
     guarantee = data["guarantee"]
     claims = data["claim_gates"]
+    hours = data["hours"]
+    services = data["services"]
+    fleet_discount = data["fleet_discount"]
     facts = {
         "businessName": identity["name"],
         "phoneDisplay": identity["phone"],
@@ -61,9 +65,29 @@ def public_fact_payload(facts_file: Path) -> dict:
             "steamerOwned": bool(data["equipment"]["steamer"]["owned"]),
             "ozoneOwned": bool(data["equipment"]["ozone_machine"]["owned"]),
         },
+        "hours": {
+            "days": hours["days"],
+            "opens": hours["opens"],
+            "closes": hours["closes"],
+        },
+        "services": {
+            "durationHoursMin": services["duration_hours"]["min"],
+            "durationHoursMax": services["duration_hours"]["max"],
+            "offered": services["offered"],
+            "exteriorAddOn": services["exterior_add_on"],
+            "notOffered": services["not_offered"],
+        },
+        "fleetDiscount": {
+            "available": bool(fleet_discount["available"]),
+            "appliesTo": fleet_discount["applies_to"],
+        },
     }
+    # Public drift binds to the derived payload, so review metadata and YAML
+    # formatting do not invalidate every rendered surface. FactSnapshot's
+    # source_hash deliberately remains a raw-byte hash in facts.load_snapshot:
+    # immutable packages must still bind to the exact canonical file state.
     return {
-        "sourceHash": hashlib.sha256(raw).hexdigest(),
+        "sourceHash": hashlib.sha256(canonical_json(facts).encode("utf-8")).hexdigest(),
         "facts": facts,
     }
 
@@ -95,6 +119,11 @@ def _render_llms(payload: dict) -> str:
 - Fresh Club: ${pricing['monthly']} monthly, ${pricing['biMonthly']} bi-monthly, ${pricing['quarterly']} quarterly per visit
 - Guarantee: {facts['guarantee']['summary']}
 - Service area: {places}
+- Hours: {', '.join(facts['hours']['days'])}, {facts['hours']['opens']}–{facts['hours']['closes']}
+- Services: {', '.join(facts['services']['offered'])}; exterior add-on: {facts['services']['exteriorAddOn']}
+- Typical duration: {facts['services']['durationHoursMin']}-{facts['services']['durationHoursMax']} hours
+- Not offered: {', '.join(facts['services']['notOffered'])}
+- Fleet and multi-car discounts: {'available' if facts['fleetDiscount']['available'] else 'not available'}
 
 ## Pages
 
@@ -132,6 +161,44 @@ def compare_public_facts(expected: dict, observed: dict) -> int:
     keys = set(expected_facts) | set(observed_facts)
     mismatches += sum(expected_facts.get(key) != observed_facts.get(key) for key in keys)
     return mismatches
+
+
+def verify_generated_fact_hash(facts_file: Path, generated_ts: Path) -> dict:
+    """Fail if a materialized canonical file and site-generated payload diverge."""
+    expected_payload = public_fact_payload(facts_file)
+    expected = expected_payload["sourceHash"]
+    generated = generated_ts.read_text(encoding="utf-8")
+    match = re.search(
+        r"BUSINESS_FACTS_PAYLOAD\s*=\s*(\{.*\})\s+as const;",
+        generated,
+        re.DOTALL,
+    )
+    if match is None:
+        raise ValueError(f"no generated BUSINESS_FACTS_PAYLOAD found in {generated_ts}")
+    try:
+        observed_payload = json.loads(match.group(1))
+    except json.JSONDecodeError as err:
+        raise ValueError(f"generated facts payload is not JSON: {err}") from err
+    observed_facts = observed_payload.get("facts") if isinstance(observed_payload, dict) else None
+    observed = (
+        observed_payload.get("sourceHash") if isinstance(observed_payload, dict) else None
+    )
+    if observed_facts != expected_payload["facts"]:
+        raise ValueError("generated facts payload mismatch with canonical projection")
+    recomputed = hashlib.sha256(
+        canonical_json(observed_facts).encode("utf-8")
+    ).hexdigest()
+    if observed != expected or recomputed != expected:
+        raise ValueError(
+            "business facts payload hash mismatch: "
+            f"canonical={expected} site={observed} recomputed={recomputed}"
+        )
+    return {
+        "command": "facts-check",
+        "status": "DONE",
+        "source_hash": expected,
+        "generated_file": str(generated_ts),
+    }
 
 
 def fetch_public_facts(url: str) -> dict:

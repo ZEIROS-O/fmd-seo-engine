@@ -141,8 +141,6 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     that names the checks still needing a session."""
     from .sync import sync_due
     brain = load_brain()
-    from .freshness import record_daily_engine_checks
-    engine_checks = record_daily_engine_checks(config, brain, observations_dir)
     result = sync_due(config, brain=brain, observations_dir=observations_dir)
     from .gbp import sync_if_due
     fetched = list(result.fetched)
@@ -181,7 +179,6 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
         )
     payload = {
         "command": "sync",
-        "engine_checks": engine_checks,
         "fetched": fetched,
         "skipped_no_key": result.skipped_no_key,
         "errors": errors,
@@ -196,6 +193,17 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     if errors:
         return payload, 4
     return payload, 0
+
+
+def cmd_tick(config: dict, observations_dir: Path | None = None) -> tuple[dict, int]:
+    """Record credential-free daily watchdog observations."""
+    from .freshness import record_daily_engine_checks
+    engine_checks = record_daily_engine_checks(config, load_brain(), observations_dir)
+    return {
+        "command": "tick",
+        "engine_checks": engine_checks,
+        "note": "credential-free freshness watchdog recorded",
+    }, 0
 
 
 def _sitemap_urls(sitemap_url: str) -> list[str]:
