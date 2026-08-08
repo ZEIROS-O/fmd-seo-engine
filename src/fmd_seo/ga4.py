@@ -59,6 +59,21 @@ def _is_ai_source(raw: str) -> bool:
 
 
 def normalize_report(response: dict) -> dict[str, int]:
+    metadata = response.get("metadata") or {}
+    if not isinstance(metadata, dict):
+        raise Ga4Unavailable("invalid GA4 response metadata")
+    if metadata.get("dataLossFromOtherRow"):
+        raise Ga4Unavailable("GA4 report has dimension data loss")
+    if metadata.get("samplingMetadatas"):
+        raise Ga4Unavailable("GA4 report is sampled")
+    if metadata.get("subjectToThresholding"):
+        raise Ga4Unavailable("GA4 report is thresholded")
+    restrictions = metadata.get("schemaRestrictionResponse") or {}
+    if not isinstance(restrictions, dict):
+        raise Ga4Unavailable("invalid GA4 schema restriction metadata")
+    if restrictions.get("activeMetricRestrictions"):
+        raise Ga4Unavailable("GA4 report has restricted metrics")
+
     records = {
         "sessions": 0,
         "engaged_sessions": 0,
@@ -69,6 +84,15 @@ def normalize_report(response: dict) -> dict[str, int]:
     rows = response.get("rows") or []
     if not isinstance(rows, list):
         raise Ga4Unavailable("invalid GA4 row shape")
+    row_count = response.get("rowCount")
+    if row_count is not None:
+        expected_rows = _whole_count(row_count)
+        if expected_rows > len(rows):
+            raise Ga4Unavailable(
+                f"GA4 report is truncated: received {len(rows)}/{expected_rows} rows"
+            )
+        if expected_rows != len(rows):
+            raise Ga4Unavailable("GA4 report row count does not match response rows")
     for row in rows:
         dimensions = row.get("dimensionValues") or []
         metrics = row.get("metricValues") or []

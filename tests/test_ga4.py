@@ -71,6 +71,51 @@ def test_normalize_report_rejects_malformed_rows():
         normalize_report(response)
 
 
+@pytest.mark.parametrize(
+    ("metadata", "message"),
+    [
+        ({"dataLossFromOtherRow": True}, "data loss"),
+        (
+            {
+                "samplingMetadatas": [
+                    {"samplesReadCount": "10", "samplingSpaceSize": "100"},
+                ],
+            },
+            "sampled",
+        ),
+        ({"subjectToThresholding": True}, "thresholded"),
+        (
+            {
+                "schemaRestrictionResponse": {
+                    "activeMetricRestrictions": [
+                        {"metricName": "keyEvents"},
+                    ],
+                },
+            },
+            "restricted",
+        ),
+    ],
+)
+def test_normalize_report_rejects_incomplete_metadata(metadata, message):
+    response = {
+        "rows": [_row("google", "Organic Search", "1", "1", "0")],
+        "metadata": metadata,
+    }
+
+    with pytest.raises(Ga4Unavailable, match=message):
+        normalize_report(response)
+
+
+def test_normalize_report_rejects_truncated_rows():
+    response = {
+        "rowCount": 2,
+        "rows": [_row("google", "Organic Search", "1", "1", "0")],
+    }
+
+    with pytest.raises(Ga4Unavailable, match="truncated"):
+        normalize_report(response)
+
+
 class FakeResponse:
     ok = True
     status_code = 200
