@@ -65,10 +65,12 @@ no bulk API, so the engine inspects each sitemap URL and tallies the coverageSta
 
 Without the key it degrades to the manual console reading — never a guess (GATE-4).
 
-## Three fulfillment paths for data now
+## Headless and session fulfillment paths
 
 - **Semrush REST** (`SEMRUSH_API_KEY`) → `sync`, headless.
 - **GSC URL Inspection** (service-account key) → `gsc-sync`, headless.
+- **GA4 Data API** (same service-account key + GA4 property access) → `sync`,
+  weekly headless `analytics.traffic` observations.
 - **GBP Performance** (same Google project + `gbp.location_id`) → `sync`, headless.
 - **DataForSEO standard queue** → `serp-bulk` positions and `geogrid` map-pack panels.
 - **Semrush MCP** / **live HTTP** / **model judgment** → session, via the
