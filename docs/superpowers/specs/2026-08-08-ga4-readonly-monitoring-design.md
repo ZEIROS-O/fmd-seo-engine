@@ -74,7 +74,7 @@ the sync partial or blocked according to the existing provider rules.
 
 ## Observation Contract
 
-Add a weekly, free, engine-backed check named `analytics.traffic` with these
+Add a weekly, free, API-backed check named `analytics.traffic` with these
 integer records:
 
 ```text
@@ -177,3 +177,24 @@ All work occurs on branch `codex/ga4-readonly-monitoring` in
 dirty `main` checkout remains unchanged. The implementation commit will be based
 on `e7f7db3`; integrating it with the user's overlapping uncommitted changes is a
 separate, explicit handoff step.
+
+## Review Hardening
+
+The response normalizer is the trust boundary for `runReport`. It requires the
+documented `dimensionHeaders`, `metricHeaders`, `metadata`, and `rowCount`
+fields before interpreting rows. Dimension and metric header names must exactly
+match the request order. A response with valid headers, metadata, and
+`rowCount: 0` may omit `rows` and records a legitimate zero observation;
+missing structural fields never become zeros.
+
+The brain check uses `console` as its honest fallback. `beat` and `brief`
+upgrade `analytics.traffic` to `engine_api` only when the GA4 property ID is
+configured and the service-account key exists. This mirrors the existing GSC
+planner boundary and prevents hosts without credentials from being told that
+GA4 is pure local engine work.
+
+To remain compatible with the user's dirty `main`, the GA4 check is anchored
+after `gbp.performance`, away from the dirty checkout's new
+`seo.local_visibility` insertion after `seo.map_pack`. A three-way compatibility
+check must retain both check blocks without importing any other dirty-main work
+into this PR.

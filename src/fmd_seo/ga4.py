@@ -21,6 +21,15 @@ AI_SOURCE_HOSTS = (
     "copilot.microsoft.com",
     "gemini.google.com",
 )
+REPORT_DIMENSIONS = (
+    "sessionSource",
+    "sessionDefaultChannelGroup",
+)
+REPORT_METRICS = (
+    "sessions",
+    "engagedSessions",
+    "keyEvents",
+)
 
 
 class Ga4Unavailable(RuntimeError):
@@ -58,8 +67,33 @@ def _is_ai_source(raw: str) -> bool:
     )
 
 
+def _validate_headers(response: dict, field: str, expected: tuple[str, ...],
+                      label: str) -> None:
+    if field not in response:
+        raise Ga4Unavailable(f"GA4 response missing {label}")
+    headers = response[field]
+    if not isinstance(headers, list):
+        raise Ga4Unavailable(f"invalid GA4 {label}")
+    names = [
+        header.get("name") if isinstance(header, dict) else None
+        for header in headers
+    ]
+    if names != list(expected):
+        raise Ga4Unavailable(f"unexpected GA4 {label}")
+
+
 def normalize_report(response: dict) -> dict[str, int]:
-    metadata = response.get("metadata") or {}
+    if not isinstance(response, dict):
+        raise Ga4Unavailable("invalid GA4 response shape")
+    _validate_headers(
+        response, "dimensionHeaders", REPORT_DIMENSIONS, "dimension headers",
+    )
+    _validate_headers(
+        response, "metricHeaders", REPORT_METRICS, "metric headers",
+    )
+    if "metadata" not in response:
+        raise Ga4Unavailable("GA4 response missing metadata")
+    metadata = response["metadata"]
     if not isinstance(metadata, dict):
         raise Ga4Unavailable("invalid GA4 response metadata")
     if metadata.get("dataLossFromOtherRow"):
@@ -81,18 +115,18 @@ def normalize_report(response: dict) -> dict[str, int]:
         "ai_referral_sessions": 0,
         "key_events": 0,
     }
-    rows = response.get("rows") or []
+    rows = response.get("rows", [])
     if not isinstance(rows, list):
         raise Ga4Unavailable("invalid GA4 row shape")
-    row_count = response.get("rowCount")
-    if row_count is not None:
-        expected_rows = _whole_count(row_count)
-        if expected_rows > len(rows):
-            raise Ga4Unavailable(
-                f"GA4 report is truncated: received {len(rows)}/{expected_rows} rows"
-            )
-        if expected_rows != len(rows):
-            raise Ga4Unavailable("GA4 report row count does not match response rows")
+    if "rowCount" not in response:
+        raise Ga4Unavailable("GA4 response missing row count")
+    expected_rows = _whole_count(response["rowCount"])
+    if expected_rows > len(rows):
+        raise Ga4Unavailable(
+            f"GA4 report is truncated: received {len(rows)}/{expected_rows} rows"
+        )
+    if expected_rows != len(rows):
+        raise Ga4Unavailable("GA4 report row count does not match response rows")
     for row in rows:
         dimensions = row.get("dimensionValues") or []
         metrics = row.get("metricValues") or []
@@ -144,13 +178,10 @@ def fetch_traffic(
             {"startDate": f"{config.days}daysAgo", "endDate": "yesterday"},
         ],
         "dimensions": [
-            {"name": "sessionSource"},
-            {"name": "sessionDefaultChannelGroup"},
+            {"name": name} for name in REPORT_DIMENSIONS
         ],
         "metrics": [
-            {"name": "sessions"},
-            {"name": "engagedSessions"},
-            {"name": "keyEvents"},
+            {"name": name} for name in REPORT_METRICS
         ],
         "limit": "100000",
     }

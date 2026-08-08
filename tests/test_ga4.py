@@ -17,7 +17,7 @@ def test_analytics_traffic_check_has_strict_record_shape():
     check = load_brain().check("analytics.traffic")
 
     assert check.cadence == "weekly"
-    assert check.method_kind == "engine"
+    assert check.method_kind == "console"
     assert check.record_names == [
         "sessions",
         "engaged_sessions",
@@ -38,13 +38,32 @@ def _row(source, channel, sessions, engaged, key_events):
     }
 
 
+def _report(*, rows=None, row_count=None, metadata=None):
+    payload = {
+        "dimensionHeaders": [
+            {"name": "sessionSource"},
+            {"name": "sessionDefaultChannelGroup"},
+        ],
+        "metricHeaders": [
+            {"name": "sessions", "type": "TYPE_INTEGER"},
+            {"name": "engagedSessions", "type": "TYPE_INTEGER"},
+            {"name": "keyEvents", "type": "TYPE_FLOAT"},
+        ],
+        "metadata": {} if metadata is None else metadata,
+        "rowCount": len(rows or []) if row_count is None else row_count,
+    }
+    if rows is not None:
+        payload["rows"] = rows
+    return payload
+
+
 def test_normalize_report_sums_total_organic_ai_and_key_events():
-    response = {"rows": [
+    response = _report(rows=[
         _row("google", "Organic Search", "8", "6", "1.0"),
         _row("chatgpt.com", "Referral", "2", "2", "0"),
         _row("www.perplexity.ai", "Referral", "1", "1", "0.0"),
         _row("example.com", "Referral", "3", "1", "0"),
-    ]}
+    ])
 
     assert normalize_report(response) == {
         "sessions": 14,
@@ -56,19 +75,71 @@ def test_normalize_report_sums_total_organic_ai_and_key_events():
 
 
 def test_normalize_report_rejects_fractional_counts():
-    response = {
-        "rows": [_row("google", "Organic Search", "1", "1", "0.5")],
-    }
+    response = _report(
+        rows=[_row("google", "Organic Search", "1", "1", "0.5")],
+    )
 
     with pytest.raises(Ga4Unavailable, match="whole count"):
         normalize_report(response)
 
 
 def test_normalize_report_rejects_malformed_rows():
-    response = {"rows": [{"dimensionValues": [], "metricValues": []}]}
+    response = _report(rows=[{"dimensionValues": [], "metricValues": []}])
 
     with pytest.raises(Ga4Unavailable, match="GA4 row shape"):
         normalize_report(response)
+
+
+@pytest.mark.parametrize(
+    "missing",
+    ["dimensionHeaders", "metricHeaders", "metadata", "rowCount"],
+)
+def test_normalize_report_rejects_missing_response_contract(missing):
+    response = _report(rows=[])
+    response.pop(missing)
+
+    with pytest.raises(Ga4Unavailable, match="GA4 response"):
+        normalize_report(response)
+
+
+@pytest.mark.parametrize(
+    ("field", "headers", "message"),
+    [
+        (
+            "dimensionHeaders",
+            [
+                {"name": "sessionDefaultChannelGroup"},
+                {"name": "sessionSource"},
+            ],
+            "dimension headers",
+        ),
+        (
+            "metricHeaders",
+            [
+                {"name": "engagedSessions", "type": "TYPE_INTEGER"},
+                {"name": "sessions", "type": "TYPE_INTEGER"},
+                {"name": "keyEvents", "type": "TYPE_FLOAT"},
+            ],
+            "metric headers",
+        ),
+    ],
+)
+def test_normalize_report_rejects_unexpected_headers(field, headers, message):
+    response = _report(rows=[])
+    response[field] = headers
+
+    with pytest.raises(Ga4Unavailable, match=message):
+        normalize_report(response)
+
+
+def test_normalize_report_accepts_complete_zero_row_response():
+    assert normalize_report(_report(rows=None, row_count=0)) == {
+        "sessions": 0,
+        "engaged_sessions": 0,
+        "organic_search_sessions": 0,
+        "ai_referral_sessions": 0,
+        "key_events": 0,
+    }
 
 
 @pytest.mark.parametrize(
@@ -97,20 +168,20 @@ def test_normalize_report_rejects_malformed_rows():
     ],
 )
 def test_normalize_report_rejects_incomplete_metadata(metadata, message):
-    response = {
-        "rows": [_row("google", "Organic Search", "1", "1", "0")],
-        "metadata": metadata,
-    }
+    response = _report(
+        rows=[_row("google", "Organic Search", "1", "1", "0")],
+        metadata=metadata,
+    )
 
     with pytest.raises(Ga4Unavailable, match=message):
         normalize_report(response)
 
 
 def test_normalize_report_rejects_truncated_rows():
-    response = {
-        "rowCount": 2,
-        "rows": [_row("google", "Organic Search", "1", "1", "0")],
-    }
+    response = _report(
+        row_count=2,
+        rows=[_row("google", "Organic Search", "1", "1", "0")],
+    )
 
     with pytest.raises(Ga4Unavailable, match="truncated"):
         normalize_report(response)
@@ -121,7 +192,7 @@ class FakeResponse:
     status_code = 200
 
     def json(self):
-        return {"rows": []}
+        return _report(rows=[])
 
 
 class FakeSession:

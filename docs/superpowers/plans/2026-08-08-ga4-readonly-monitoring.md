@@ -18,6 +18,8 @@
 - Raw API payloads, access tokens, and key material are never committed or logged.
 - Missing configuration skips honestly; configured provider failures surface through `sync.health`.
 - Implementation remains isolated on `codex/ga4-readonly-monitoring`; the dirty `main` checkout is untouched.
+- A valid zero-row GA4 response includes exact requested headers, metadata, and `rowCount: 0`; missing response structure fails closed.
+- GA4 is `engine_api` only when its property ID is configured and its key file exists; otherwise its fallback is `human`.
 
 ---
 
@@ -61,7 +63,7 @@ from fmd_seo.brain import load_brain
 def test_analytics_traffic_check_has_strict_record_shape():
     check = load_brain().check("analytics.traffic")
     assert check.cadence == "weekly"
-    assert check.method_kind == "engine"
+    assert check.method_kind == "console"
     assert check.record_names == [
         "sessions",
         "engaged_sessions",
@@ -113,7 +115,7 @@ Add the check to `brain/checks.yaml`:
     cadence: weekly
     cost: free
     method:
-      kind: engine
+      kind: console
       run: |
         Fetch a read-only 28-day GA4 Data API report grouped by session source
         and default channel group. Record total, engaged, organic-search, known
@@ -680,3 +682,100 @@ git log --oneline --decorate -6
 ```
 
 Expected: full suite passes; diff check is clean; only intentionally uncommitted temporary verification artifacts are absent; feature commits are on `codex/ga4-readonly-monitoring`.
+
+---
+
+### Task 6: Harden the reviewed response and planner contracts
+
+**Files:**
+- Modify: `src/fmd_seo/ga4.py`
+- Modify: `src/fmd_seo/planner.py`
+- Modify: `src/fmd_seo/loop_cli.py`
+- Modify: `brain/checks.yaml`
+- Modify: `tests/test_ga4.py`
+- Modify: `tests/test_planner.py`
+
+**Interfaces:**
+- Consumes: GA4 `RunReportResponse` and `build_plan(..., has_ga4: bool = False)` availability input.
+- Produces: fail-closed normalization and truthful `human` versus `engine_api` GA4 fulfillment.
+
+- [ ] **Step 1: Write response-contract regression tests**
+
+Use a complete response helper in `tests/test_ga4.py`:
+
+```python
+def _report(*, rows=None, row_count=None, metadata=None):
+    payload = {
+        "dimensionHeaders": [
+            {"name": "sessionSource"},
+            {"name": "sessionDefaultChannelGroup"},
+        ],
+        "metricHeaders": [
+            {"name": "sessions", "type": "TYPE_INTEGER"},
+            {"name": "engagedSessions", "type": "TYPE_INTEGER"},
+            {"name": "keyEvents", "type": "TYPE_FLOAT"},
+        ],
+        "metadata": {} if metadata is None else metadata,
+        "rowCount": len(rows or []) if row_count is None else row_count,
+    }
+    if rows is not None:
+        payload["rows"] = rows
+    return payload
+```
+
+Prove `normalize_report({})` raises `Ga4Unavailable`, reordered headers raise,
+and `_report(rows=None, row_count=0)` returns the five literal zero records.
+
+- [ ] **Step 2: Run the GA4 tests and verify RED**
+
+```bash
+PYTHONPATH=src python3 -m pytest tests/test_ga4.py -q
+```
+
+Expected: the incomplete response is accepted as zeros before the fix.
+
+- [ ] **Step 3: Validate the structural contract minimally**
+
+Add ordered constants for the two requested dimensions and three metrics.
+Require `metadata` to be a dictionary, `rowCount` to be present and whole, and
+header `.name` lists to equal those constants before reading optional rows.
+
+- [ ] **Step 4: Write planner availability regression tests and verify RED**
+
+Add tests asserting:
+
+```python
+plan = build_plan(brain, has_semrush_key=False, has_ga4=True,
+                  observations_dir=empty_obs)
+traffic = next(pc for pc in plan.due if pc.check_id == "analytics.traffic")
+assert traffic.fulfillment == "engine_api"
+assert traffic.api_reports == ["ga4:runReport"]
+```
+
+Repeat with `has_ga4=False` and assert `traffic.fulfillment == "human"`.
+
+- [ ] **Step 5: Implement configuration-aware GA4 fulfillment**
+
+Change the check fallback kind to `console`, add `has_ga4=False` to
+`build_plan`, and return `("engine_api", ["ga4:runReport"])` for the traffic
+check when true. Add `_has_ga4(config)` in `loop_cli.py`; it returns true only
+when `property_id` exists and `key_path` names an existing file. Pass it from
+both `cmd_beat` and `cmd_brief`.
+
+- [ ] **Step 6: Remove the dirty-main registry overlap**
+
+Move the GA4 check after `gbp.performance`, then three-way-check the branch
+version against committed `main` and dirty-main `brain/checks.yaml`. Both
+`analytics.traffic` and `seo.local_visibility` must survive without conflict.
+
+- [ ] **Step 7: Verify and publish**
+
+```bash
+PYTHONPATH=src python3 -m pytest tests/test_ga4.py tests/test_planner.py tests/test_gsc.py -q
+PYTHONPATH=src python3 -m pytest -q
+git diff --check
+```
+
+Review the scoped diff, commit, push, wait for required checks, resolve the
+addressed review thread, and merge PR #1 only while its expected head SHA is
+unchanged.

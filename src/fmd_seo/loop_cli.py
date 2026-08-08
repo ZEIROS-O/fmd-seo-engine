@@ -34,11 +34,27 @@ def _has_gsc(config: dict) -> bool:
     return bool(key_path and Path(key_path).exists())
 
 
+def _has_ga4(config: dict) -> bool:
+    """GA4 is headless only with both a property and an existing key file."""
+    ga4_cfg = config.get("ga4") or {}
+    key_path = ga4_cfg.get("key_path")
+    return bool(
+        ga4_cfg.get("property_id")
+        and key_path
+        and Path(key_path).is_file()
+    )
+
+
 def cmd_beat(config: dict) -> tuple[dict, int]:
     """What is due right now, ordered, with fulfillment paths."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
+    plan = build_plan(
+        brain,
+        has_semrush_key=has_key,
+        has_gsc=_has_gsc(config),
+        has_ga4=_has_ga4(config),
+    )
     payload = {
         "command": "beat",
         "generated_at": plan.generated_at,
@@ -282,7 +298,12 @@ def cmd_brief(config: dict) -> tuple[dict, int]:
     priority order. One call answers 'what do I do now and why'."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
+    plan = build_plan(
+        brain,
+        has_semrush_key=has_key,
+        has_gsc=_has_gsc(config),
+        has_ga4=_has_ga4(config),
+    )
     findings = assess_all(brain)
     gates = assess_gates(brain)
     payload = {
