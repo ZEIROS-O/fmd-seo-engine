@@ -162,6 +162,16 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     except Exception as err:  # noqa: BLE001 - surfaced through sync.health
         site_facts_result = {"status": "failed", "error": str(err)}
         errors["site.facts_drift"] = str(err)
+    from .ga4 import sync_if_due as sync_ga4_if_due
+    try:
+        ga4_result = sync_ga4_if_due(
+            config, brain, observations_dir=observations_dir,
+        )
+        if ga4_result["status"] == "fetched":
+            fetched.append("analytics.traffic")
+    except Exception as err:  # noqa: BLE001 - surfaced through sync.health
+        ga4_result = {"status": "failed", "error": str(err)}
+        errors["analytics.traffic"] = str(err)
     attempted = len(fetched) + len(errors)
     if attempted:
         record_observation(
@@ -184,6 +194,7 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
         "errors": errors,
         "gbp": gbp_result,
         "site_facts": site_facts_result,
+        "ga4": ga4_result,
         "note": ("no SEMRUSH_API_KEY present — these API-backed checks stay on the "
                  "session (MCP) path" if result.skipped_no_key else
                  f"fetched {len(fetched)} check(s) headlessly"),
