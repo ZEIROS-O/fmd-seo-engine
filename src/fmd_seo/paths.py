@@ -52,6 +52,7 @@ def load_config(path: Path | None = None) -> dict:
     if value := os.environ.get("FMD_SEO_GOOGLE_KEY"):
         cfg.setdefault("gsc", {})["key_path"] = value
         cfg.setdefault("gbp", {})["key_path"] = value
+        cfg.setdefault("ga4", {})["key_path"] = value
     return cfg
 
 

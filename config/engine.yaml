@@ -46,6 +46,14 @@ gsc:
   site_url: "sc-domain:freshmobiledetail.com"
   sitemap_url: "https://freshmobiledetail.com/sitemap.xml"
 
+# Google Analytics Data API, read-only. The property ID is the numeric GA4
+# property ID, not the account, stream, or measurement ID. `sync` records a
+# normalized acquisition/conversion observation at most once every seven days.
+ga4:
+  key_path: "/home/lucascoh/.gsc-service-account.json"
+  property_id: "541970582"
+  days: 28
+
 site:
   facts_url: "https://freshmobiledetail.com/api/business-facts"
   fact_surfaces:

@@ -14,7 +14,8 @@ bin/fmd-seo preflight --online   # adds the capped DataForSEO account probe
 PYTHONPATH=src python3 -m pytest  # test suite
 ```
 
-No third-party dependencies beyond PyYAML (system Python 3.10 works as-is).
+The core engine only requires PyYAML. Google provider support is opt-in with
+`pip install -e .[google]`.
 
 ## Layout
 
@@ -82,3 +83,30 @@ DataForSEO creds go in `~/.dataforseo.env` (`DATAFORSEO_LOGIN=…`,
 `DATAFORSEO_PASSWORD=…`). Never committed, never printed, loaded only by the
 engine's client. Spend is reserved before every call against the committed $50
 monotonic ledger with per-endpoint sub-caps (`config/engine.yaml`).
+
+### Google Search Console and GA4
+
+The two integrations share one service account and JSON key, but Google grants
+access separately in each product. One-time setup:
+
+1. In the selected Google Cloud project, enable **Google Search Console API**
+   and **Google Analytics Data API**. A service-account flow does not need an
+   OAuth consent-screen scope entry.
+2. Create a service account and place its JSON key outside the repository with
+   owner-only permissions. This repo expects
+   `/home/lucascoh/.gsc-service-account.json`; never commit or print the key.
+3. In Search Console, open `sc-domain:freshmobiledetail.com` → Settings → Users
+   and permissions, then add the service-account email as a **Full** user.
+4. In GA4 property `541970582`, open Admin → Property access management and add
+   the same email. **Viewer** is sufficient for this read-only implementation;
+   Editor also works.
+5. Confirm `gsc` and `ga4` in `config/engine.yaml`, install
+   `pip install -e .[google]`, then run `bin/fmd-seo sync` for weekly GA4
+   acquisition/conversion monitoring and `bin/fmd-seo gsc-sync` for URL
+   Inspection coverage.
+
+Runtime credentials are explicitly restricted to
+`analytics.readonly` for GA4 and `webmasters.readonly` for Search Console. The
+GA4 sync records only aggregate sessions, engaged sessions, organic sessions,
+allowlisted AI-referral sessions, and key events; it does not retain raw API
+responses or perform Analytics Admin mutations.

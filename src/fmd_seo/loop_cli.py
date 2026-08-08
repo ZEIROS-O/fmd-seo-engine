@@ -34,11 +34,27 @@ def _has_gsc(config: dict) -> bool:
     return bool(key_path and Path(key_path).exists())
 
 
+def _has_ga4(config: dict) -> bool:
+    """GA4 is headless only with both a property and an existing key file."""
+    ga4_cfg = config.get("ga4") or {}
+    key_path = ga4_cfg.get("key_path")
+    return bool(
+        ga4_cfg.get("property_id")
+        and key_path
+        and Path(key_path).is_file()
+    )
+
+
 def cmd_beat(config: dict) -> tuple[dict, int]:
     """What is due right now, ordered, with fulfillment paths."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
+    plan = build_plan(
+        brain,
+        has_semrush_key=has_key,
+        has_gsc=_has_gsc(config),
+        has_ga4=_has_ga4(config),
+    )
     payload = {
         "command": "beat",
         "generated_at": plan.generated_at,
@@ -162,6 +178,16 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
     except Exception as err:  # noqa: BLE001 - surfaced through sync.health
         site_facts_result = {"status": "failed", "error": str(err)}
         errors["site.facts_drift"] = str(err)
+    from .ga4 import sync_if_due as sync_ga4_if_due
+    try:
+        ga4_result = sync_ga4_if_due(
+            config, brain, observations_dir=observations_dir,
+        )
+        if ga4_result["status"] == "fetched":
+            fetched.append("analytics.traffic")
+    except Exception as err:  # noqa: BLE001 - surfaced through sync.health
+        ga4_result = {"status": "failed", "error": str(err)}
+        errors["analytics.traffic"] = str(err)
     attempted = len(fetched) + len(errors)
     if attempted:
         record_observation(
@@ -184,6 +210,7 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
         "errors": errors,
         "gbp": gbp_result,
         "site_facts": site_facts_result,
+        "ga4": ga4_result,
         "note": ("no SEMRUSH_API_KEY present — these API-backed checks stay on the "
                  "session (MCP) path" if result.skipped_no_key else
                  f"fetched {len(fetched)} check(s) headlessly"),
@@ -271,7 +298,12 @@ def cmd_brief(config: dict) -> tuple[dict, int]:
     priority order. One call answers 'what do I do now and why'."""
     brain = load_brain()
     has_key = _has_semrush_key(config)
-    plan = build_plan(brain, has_semrush_key=has_key, has_gsc=_has_gsc(config))
+    plan = build_plan(
+        brain,
+        has_semrush_key=has_key,
+        has_gsc=_has_gsc(config),
+        has_ga4=_has_ga4(config),
+    )
     findings = assess_all(brain)
     gates = assess_gates(brain)
     payload = {
