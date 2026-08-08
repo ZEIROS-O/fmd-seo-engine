@@ -46,6 +46,11 @@ gsc:
   site_url: "sc-domain:freshmobiledetail.com"
   sitemap_url: "https://freshmobiledetail.com/sitemap.xml"
 
+ga4:
+  key_path: "/home/lucascoh/.gsc-service-account.json"
+  property_id: "541970582"
+  days: 28
+
 site:
   facts_url: "https://freshmobiledetail.com/api/business-facts"
   fact_surfaces:

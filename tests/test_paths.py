@@ -22,6 +22,11 @@ def test_load_config_applies_ci_path_overrides(tmp_path, monkeypatch):
         },
         "gsc": {"key_path": "/home/local/google.json"},
         "gbp": {"key_path": "/home/local/google.json"},
+        "ga4": {
+            "key_path": "/home/local/google.json",
+            "property_id": "541970582",
+            "days": 28,
+        },
     }), encoding="utf-8")
     monkeypatch.setenv("FMD_SEO_CREDS_ENV", "/ci/dataforseo.env")
     monkeypatch.setenv("FMD_SEO_FACTS_FILE", "/ci/business-facts.yaml")
@@ -35,3 +40,5 @@ def test_load_config_applies_ci_path_overrides(tmp_path, monkeypatch):
     assert config["paths"]["site_worktree"] == "/ci/site"
     assert config["gsc"]["key_path"] == "/ci/google.json"
     assert config["gbp"]["key_path"] == "/ci/google.json"
+    assert config["ga4"]["key_path"] == "/ci/google.json"
+    assert config["ga4"]["property_id"] == "541970582"

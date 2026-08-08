@@ -15,6 +15,7 @@ dependencies = ["PyYAML>=6.0"]
 [project.optional-dependencies]
 gsc = ["google-auth>=2.0", "google-api-python-client>=2.0"]
 gbp = ["google-auth>=2.0", "requests>=2.0"]
+ga4 = ["google-auth>=2.0", "requests>=2.0"]
 google = ["google-auth>=2.0", "google-api-python-client>=2.0", "requests>=2.0"]
 
 [project.scripts]
