@@ -3,9 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
+
+if TYPE_CHECKING:
+    from .brain import Brain
 
 GA4_SCOPE = "https://www.googleapis.com/auth/analytics.readonly"
 DATA_BASE = "https://analyticsdata.googleapis.com"
@@ -143,3 +148,47 @@ def fetch_traffic(
         raise Ga4Unavailable("GA4 Data API returned invalid JSON") from err
 
     return normalize_report(payload)
+
+
+def sync_if_due(
+    config: dict,
+    brain: Brain,
+    *,
+    observations_dir: Path | None = None,
+) -> dict:
+    """Fetch and record a weekly normalized GA4 observation when configured."""
+    from .observations import latest_observation, record_observation
+
+    raw = config.get("ga4") or {}
+    key_path = raw.get("key_path")
+    property_id = raw.get("property_id")
+    if not key_path or not property_id:
+        return {"status": "skipped_config"}
+
+    latest = latest_observation("analytics.traffic", observations_dir)
+    if latest is not None:
+        observed_at = datetime.fromisoformat(latest.observed_at.replace("Z", "+00:00"))
+        if observed_at > datetime.now(timezone.utc) - timedelta(days=7):
+            return {"status": "not_due", "observed_at": latest.observed_at}
+
+    days = int(raw.get("days", 28))
+    records = fetch_traffic(
+        Ga4Config(
+            key_path=Path(str(key_path)),
+            property_id=str(property_id),
+            days=days,
+        )
+    )
+    record_observation(
+        brain,
+        "analytics.traffic",
+        records,
+        fulfillment="engine_api",
+        source="google_analytics:data_api",
+        note=(
+            f"property={property_id}; window={days}daysAgo..yesterday; "
+            "ai_sources=host_allowlist"
+        ),
+        directory=observations_dir,
+    )
+    return {"status": "fetched", "records": records}

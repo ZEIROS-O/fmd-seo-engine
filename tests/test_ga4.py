@@ -3,7 +3,14 @@ from pathlib import Path
 import pytest
 
 from fmd_seo.brain import load_brain
-from fmd_seo.ga4 import Ga4Config, Ga4Unavailable, fetch_traffic, normalize_report
+from fmd_seo.ga4 import (
+    Ga4Config,
+    Ga4Unavailable,
+    fetch_traffic,
+    normalize_report,
+    sync_if_due,
+)
+from fmd_seo.observations import latest_observation, record_observation
 
 
 def test_analytics_traffic_check_has_strict_record_shape():
@@ -142,3 +149,78 @@ def test_fetch_traffic_names_missing_key_without_exposing_contents(tmp_path):
 
     with pytest.raises(Ga4Unavailable, match="service-account key not found"):
         fetch_traffic(Ga4Config(missing, "541970582"))
+
+
+def test_sync_if_due_records_weekly_ga4_observation(tmp_path, monkeypatch):
+    records = {
+        "sessions": 12,
+        "engaged_sessions": 8,
+        "organic_search_sessions": 7,
+        "ai_referral_sessions": 2,
+        "key_events": 1,
+    }
+    monkeypatch.setattr("fmd_seo.ga4.fetch_traffic", lambda config: records)
+    brain = load_brain()
+
+    result = sync_if_due(
+        {
+            "ga4": {
+                "key_path": str(tmp_path / "key.json"),
+                "property_id": "541970582",
+                "days": 28,
+            }
+        },
+        brain,
+        observations_dir=tmp_path / "observations",
+    )
+
+    assert result == {"status": "fetched", "records": records}
+    observation = latest_observation(
+        "analytics.traffic", tmp_path / "observations",
+    )
+    assert observation is not None
+    assert observation.records == records
+    assert observation.fulfillment == "engine_api"
+    assert observation.source == "google_analytics:data_api"
+
+
+def test_sync_if_due_skips_missing_config_and_recent_observation(tmp_path, monkeypatch):
+    brain = load_brain()
+    observations_dir = tmp_path / "observations"
+    assert sync_if_due({}, brain, observations_dir=observations_dir) == {
+        "status": "skipped_config",
+    }
+
+    records = {
+        "sessions": 1,
+        "engaged_sessions": 1,
+        "organic_search_sessions": 1,
+        "ai_referral_sessions": 0,
+        "key_events": 0,
+    }
+    record_observation(
+        brain,
+        "analytics.traffic",
+        records,
+        fulfillment="engine_api",
+        source="test",
+        directory=observations_dir,
+    )
+    monkeypatch.setattr(
+        "fmd_seo.ga4.fetch_traffic",
+        lambda config: pytest.fail("recent observations must suppress GA4 fetches"),
+    )
+
+    result = sync_if_due(
+        {
+            "ga4": {
+                "key_path": str(tmp_path / "key.json"),
+                "property_id": "541970582",
+            }
+        },
+        brain,
+        observations_dir=observations_dir,
+    )
+
+    assert result["status"] == "not_due"
+    assert result["observed_at"]
