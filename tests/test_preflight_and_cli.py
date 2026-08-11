@@ -102,12 +102,30 @@ def test_preflight_does_not_require_removed_fresh_repo_path(
     assert all(check["name"] != "repo:fresh_repo" for check in receipt.checks)
 
 
+def _clear_live_gate_timestamps(state_file):
+    """Seeded tests copy the real brain/ to exercise the true state.yaml shape,
+    but must not inherit its live gate counters. `last_counted_at` is the volatile
+    one: gates.yaml enforces minimum_days_between_readings, so a real reading
+    recorded today would make every synthetic clean reading in the suite fail the
+    gap check. Drop it so each test controls its own time baseline.
+
+    Read-side twin of docs/incidents/2026-08-03-fixture-overwrote-evidence.md —
+    there a test wrote over real evidence; here real evidence changes test
+    outcomes. Both come from coupling tests to committed data.
+    """
+    text = state_file.read_text(encoding="utf-8")
+    kept = [ln for ln in text.splitlines(keepends=True)
+            if "last_counted_at:" not in ln]
+    state_file.write_text("".join(kept), encoding="utf-8")
+
+
 def _run_cli(tmp_path, config, *args):
     cfg_file = tmp_path / "engine.yaml"
     cfg_file.write_text(yaml.safe_dump(config))
     env_root = tmp_path / "engine-root"
     env_root.mkdir(exist_ok=True)
     shutil.copytree(ENGINE_ROOT / "brain", env_root / "brain", dirs_exist_ok=True)
+    _clear_live_gate_timestamps(env_root / "brain" / "state.yaml")
     result = subprocess.run(
         ["python3", "-m", "fmd_seo", "--config", str(cfg_file), *args],
         capture_output=True, text=True, timeout=60,
@@ -150,7 +168,8 @@ def test_loop_receipt_preserves_structured_checks_blockers_and_commit(tmp_path):
     assert code == 4
     assert receipt["checks"][0]["name"] == "external_publish"
     assert any("auth failed" in blocker for blocker in receipt["blockers"])
-    assert receipt["commit_hashes"] == {"site": "abc123"}
+    assert receipt["commit_hashes"]["site"] == "abc123"
+    assert {"fresh_repo", "operator_repo", "zeiros_repo"} <= set(receipt["commit_hashes"])
     assert receipt["resume_point"] == "site branch seo-engine/2026-08-01-test"
 
 

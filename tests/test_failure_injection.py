@@ -125,6 +125,14 @@ def test_gate1_machine_counts_weekly_clean_readings_and_resets(tmp_path):
         Path(__file__).resolve().parents[1] / "brain" / "state.yaml",
         state_file,
     )
+    # Copying the real file exercises the true state.yaml shape, but its live
+    # `last_counted_at` would make these fixed 2026-08-01 readings fail the
+    # minimum_days_between_readings gap check. Drop it; the test supplies its own
+    # timeline. See _clear_live_gate_timestamps in test_preflight_and_cli.py.
+    state_file.write_text("".join(
+        ln for ln in state_file.read_text(encoding="utf-8").splitlines(keepends=True)
+        if "last_counted_at:" not in ln
+    ), encoding="utf-8")
     rule = {
         "indexed_min": 10,
         "not_indexed_max_exclusive": 8,

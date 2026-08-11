@@ -1,0 +1,16 @@
+{
+  "check_id": "seo.indexation",
+  "fulfillment": "engine_api",
+  "note": "headless index-coverage tally",
+  "observed_at": "2026-08-11T21:27:17.553835+00:00",
+  "records": {
+    "crawled_not_indexed": 0,
+    "discovered_not_indexed": 10,
+    "indexed": 11,
+    "inspected_ok": 24,
+    "not_indexed": 13
+  },
+  "source": "google_search_console:url_inspection",
+  "source_kind": "api",
+  "source_sha256": ""
+}

@@ -85,19 +85,193 @@ baseline:
       The earlier "zero AI citations" reading was WRONG — it came from an empty
       LLM-Mentions API baseline, not from absence.
 
+    # First measured AI-answer referral traffic. Ad-hoc single query — NOT a
+    # weekly aeo.answer_accuracy reading (standing set is 5 queries, unrun).
+    chatgpt_citation:
+      as_of: 2026-08-06
+      platform: ChatGPT (consumer web, search-enabled)
+      query: best place to get mobile detailing around beachwood ohio
+      query_in_standing_set: false
+      fmd_cited: true
+      fmd_in_ranked_picks: false
+      fmd_in_map_module: true
+      fmd_placement: unranked conditional paragraph, interior-scoped
+      facts_checked: 6
+      wrong_facts: 0
+      fmd_review_count_cited: null
+      ranked_competitor_review_counts: [72, 129, 65]
+      source: evidence/aeo-chatgpt-citation-2026-08-06/findings.json
+      note: >-
+        ChatGPT gave FMD its own recommendation paragraph with correct pricing
+        ($209 / $279), the guarantee, and the photo-quote flow — 0 wrong facts.
+        But FMD is the CONDITIONAL pick ("go Fresh if the inside is trashed"),
+        not one of the three ranked picks. ChatGPT cited a review count for all
+        three ranked competitors (65-129) and cited NONE for FMD (16). Same
+        corroboration floor the local pack applies (T5/T7), on a second surface.
+        Competitor figures are as-stated-by-ChatGPT and unverified — do not
+        promote them to measured competitor facts (GATE-4).
+
+    ai_referral_traffic:
+      as_of: 2026-08-06
+      window: single day (2026-08-06)
+      chatgpt_sessions: 2
+      chatgpt_first_source_users: 1
+      total_active_users: 9
+      key_events_configured: false
+      source: evidence/aeo-chatgpt-citation-2026-08-06/findings.json
+      note: >-
+        FIRST measured AI-sourced traffic in the analytics record. Small n, one
+        day — proves the channel exists, measures no rate. GA4 "Key events"
+        reads "No data available", so there is NO conversion measurement: Lou's
+        report that online-booking leads are arriving from ChatGPT is
+        OWNER-REPORTED, not measured (GATE-4). 100% bounce / 11s engagement
+        indicates misconfigured engagement events, not visitor behaviour.
+        Ashburn + Council Bluffs users are likely datacenter traffic.
+
   reviews:
-    google_reviews: 13
-    source: evidence/entity-audit-2026-07-14.md
-    note: "Corrected from ~11 and from 'Yelp' — it is 13, on Google. GBP is claimed & verified."
+    google_reviews: 16
+    as_of: 2026-08-03
+    source: DataForSEO Local Finder live/advanced (rating.votes_count), 2026-08-03
+    prior_reading: {google_reviews: 13, as_of: 2026-07-14, source: evidence/entity-audit-2026-07-14.md}
+    note: >-
+      13 → 16 between 2026-07-14 and 2026-08-03. Every business holding a local
+      pack slot in the 2026-08-03 sample carried 37–1600 reviews. GBP is claimed
+      & verified.
+
+  local_visibility:
+    as_of: 2026-08-03
+    method: DataForSEO Local Finder live/advanced, Places tab, depth 20, mobile
+    cost_usd: 0.076
+    pairs_tested: 18
+    pairs_ranked: 4
+    pairs_in_pack: 2
+    best_rank: 2
+    ranked:
+      - {location: Mayfield Heights, query: mobile detailing mayfield heights, rank: 2, in_pack: true}
+      - {location: Mayfield Heights, query: car detailing mayfield heights, rank: 3, in_pack: true}
+      - {location: Mayfield Heights, query: mobile detailing near me, rank: 11, in_pack: false}
+      - {location: Beachwood, query: mobile detailing beachwood, rank: 6, in_pack: false}
+    absent_locations: [Solon]
+    note: >-
+      RECONSTRUCTED FROM THE SESSION RUN LOG. The underlying results.jsonl was
+      destroyed before commit when a test suite wrote fixture output over it
+      (docs/incidents/2026-08-03-fixture-overwrote-evidence.md). The ranks above
+      are the printed run output and are trustworthy; the per-cell competitor
+      detail is not recoverable. No observation was recorded for
+      seo.local_visibility — the full matrix is to be re-run and will supersede
+      this. Treat as provisional until then.
+    supersedes: >-
+      The 5x5 geogrid the same night reported points_present 0 across 181
+      samples. That reading is an artifact of pack-only sampling (3 slots cannot
+      express rank 4-20) plus a query set that omitted the
+      'mobile detailing <suburb>' shape and never sampled Mayfield Heights.
+
+  backlinks:
+    as_of: 2026-08-03
+    quality: fake
+    source: owner disclosure (Lou), 2026-08-03
+    note: >-
+      The 211 backlinks / 106 referring domains are fake. This explains
+      Authority Score 2 without AS being a constraint. Semrush AS is not a
+      Google ranking factor and does not govern the map pack, which is where
+      FMD's demand sits. Not yet checked: whether GSC shows a manual action —
+      free to check and the only reason the fake profile would matter.
+
+# ── Current readings (supersede `baseline` where the same key appears) ──
+#
+# `baseline` is the frozen 2026-07-14 snapshot and stays as written. Anything
+# here is newer and wins. Every entry carries its own source + method.
+current:
+
+  indexation:
+    as_of: 2026-08-11
+    indexed: 11
+    not_indexed: 13
+    discovered_not_indexed: 10
+    crawled_not_indexed: 0
+    unknown_to_google: 3
+    inspected_ok: 24
+    source: brain/observations/seo.indexation/20260811T212717.553835+0000.json
+    method: GSC URL Inspection API over all 24 sitemap URLs (`fmd-seo gsc-sync`)
+    indexed_urls: [/, /areas, /areas/beachwood, /areas/mayfield-heights,
+                   /blog/car-detailing-prices-cleveland, /boat, /chat, /fleet,
+                   /fresh-pro, /interior-detailing, /mobile-detailing]
+    not_indexed_boilerplate: [/privacy-policy, /terms-of-service, /cancellation-refund-policy]
+    note: >-
+      4 → 11 indexed and 18 → 13 not-indexed since the 2026-07-14 baseline. The
+      `indexed >= 10` half of GATE-1 is now MET; `not_indexed < 8` is not, so the
+      gate stays CLOSED with consecutive_clean_readings 0.
+      Both money pages (/interior-detailing, /mobile-detailing) are indexed, and
+      /chat is indexed — retiring the chat-orphaned issue.
+      THREE of the 13 not-indexed URLs are legal boilerplate with no search value;
+      removing them from the sitemap would read 10, which still does not open the
+      gate but means the real content backlog is 10, not 18.
+      A first probe 10 minutes earlier counted 9 discovered / 4 unknown; this run
+      counted 10 / 3. One URL moved from unknown to discovered between the two —
+      Google is actively processing the set.
+
+  organic_gsc:
+    as_of: 2026-08-11
+    window: 2026-07-12..2026-08-08 (28d)
+    total_queries: 56
+    nonbranded_queries: 41
+    total_impressions: 213
+    total_clicks: 4
+    queries_pos_1_3: 4
+    queries_pos_4_20: 11
+    impressions_pos_4_20: 87
+    pages_with_impressions: 5
+    source: GSC Search Analytics API (searchanalytics.query), retrieved 2026-08-11
+    note: >-
+      SUPERSEDES baseline.organic for footprint questions. Semrush reported
+      "4 keywords, all branded, none page 1"; GSC — Google's own record — shows 56
+      queries of which 41 are non-branded. The Semrush figure is a third-party
+      database artifact, not a measurement of what Google served.
+      Not yet recorded as a check observation: no seo.* check declares these
+      fields (see S2 in the hardening spec).
+
+  near_me_cluster_gsc:
+    as_of: 2026-08-11
+    window: 2026-07-12..2026-08-08 (28d)
+    queries: 5
+    total_impressions: 16
+    total_clicks: 1
+    positions:
+      - {query: mobile car detailing near me, avg_position: 1.0, impressions: 1}
+      - {query: mobile detailing near me, avg_position: 2.6, impressions: 8, clicks: 1}
+      - {query: car detailing near me, avg_position: 10.7, impressions: 3, clicks: 1}
+      - {query: detailing near me, avg_position: 19.7, impressions: 3}
+      - {query: mobile detail near me, avg_position: 32.0, impressions: 1}
+    source: GSC Search Analytics API, retrieved 2026-08-11
+    note: >-
+      Does NOT contradict the 2026-08-03 Local Finder rank-11 reading — the two
+      measure different things. DataForSEO measures a coordinate the engine picks;
+      GSC averages over the searchers Google actually served, who skew close to
+      the business. Both are true.
+      The reading that matters: FMD ranks 1-2.6 for near-me searches among people
+      Google serves it to, and Google serves it to almost nobody — 16 impressions
+      in 28 days against a cluster measured at ~2,350/mo. The constraint is
+      impression volume (ring radius), NOT rank. See T5.
+
+  canonical:
+    as_of: 2026-08-11
+    www_redirect_status: 302
+    apex_canonical_tag: "https://freshmobiledetail.com/"
+    source: curl -sI https://www.freshmobiledetail.com/, 2026-08-11
+    note: >-
+      www → apex is a 302 (temporary), not a 301. GSC lists
+      www.freshmobiledetail.com/ as its own page at average position 201. The
+      canonical tag itself is correct. Free fix, adds no URLs.
 
 # ── Gate state (machine-evaluated; do not hand-edit) ──
 gates:
   GATE-1:
     name: publish-gate
     state: CLOSED
-    reason: "not_indexed = 18 (>= 8). T1: publishing into a 14-page unindexed backlog dilutes crawl budget."
+    reason: "indexation dirty: indexed=11, not_indexed=13"
     opens_when: "machine-evaluated from brain/gates.yaml#GATE-1"
     consecutive_clean_readings: 0
+    last_counted_at: "2026-08-11T21:27:17.553835+00:00"
   GATE-2:
     name: suburb-page-gate
     state: CLOSED
@@ -158,9 +332,94 @@ zero_volume_suburbs:
    shaker-heights, university-heights, highland-heights]
 
 known_issues:
+  - id: ga4-no-key-event
+    detail: >-
+      GA4's "Key events by Platform" card reads "No data available" — there is
+      NO booking/lead conversion event configured. AI-answer referral traffic is
+      now measurable (2 chatgpt.com sessions on 2026-08-06) but its conversion
+      is not, so every revenue claim about the channel stays owner-reported
+      under GATE-4. Configuring a booking key event is the single highest-value
+      analytics fix; without it the AEO channel cannot be optimised, only
+      observed. Secondary: 100% bounce on both top pages with 11s average
+      engagement indicates engagement/scroll events are also misconfigured.
+    source: evidence/aeo-chatgpt-citation-2026-08-06/findings.json (2026-08-06)
+  - id: aeo-review-floor
+    detail: >-
+      ChatGPT's 2026-08-06 Beachwood answer ranked three competitors carrying
+      72 / 129 / 65 reviews and cited a review count for each. It cited NO count
+      for FMD (16) and placed FMD as an unranked conditional pick. The observed
+      floor for a ranked AI slot was 65 reviews; the observed floor for a local
+      pack slot on 2026-08-03 was 37. Two independent surfaces, one gate.
+      Review velocity (priority #1) is the lever on both.
+    source: evidence/aeo-chatgpt-citation-2026-08-06/findings.json (2026-08-06)
+  - id: gbp-anchor-unconfirmed
+    detail: >-
+      Local visibility centres on Mayfield Heights (rank 2-3) and decays to
+      absent by Solon, while business-facts.yaml calls the base
+      "Beachwood / Mayfield Heights". The GBP's actual registered address,
+      service-area settings, primary category, and verification state have not
+      been inspected. This determines the ring's centre and radius.
+    source: brain/state.yaml#baseline.local_visibility (2026-08-03)
+  - id: near-me-cluster-absent
+    detail: >-
+      The 'near me' cluster is ~2,350/mo (the largest measured demand) and FMD
+      appears in it once, at rank 11, at the anchor. Absent at every other
+      sampled location. Position tracking agrees: 0 of 123 near_me keywords
+      ranked.
+    source: brain/state.yaml#baseline.local_visibility (2026-08-03)
+  - id: geogrid-query-set-misses-stronghold
+    detail: >-
+      config/engine.yaml geogrid.queries tests 'car detailing <suburb>' and
+      'near me' shapes but never 'mobile detailing <suburb>', and its 5x5 grid
+      never samples Mayfield Heights. It therefore reported absence for a
+      business at rank 2. Superseded by seo.local_visibility; the geogrid query
+      set still needs correcting or retiring.
+    source: docs/incidents/2026-08-03-fixture-overwrote-evidence.md
   - id: chat-orphaned
-    detail: "/chat is in the sitemap with no internal links pointing to it."
-    source: git c134e2e
+    status: RETIRED 2026-08-11
+    detail: >-
+      /chat was in the sitemap with no internal links pointing to it. GSC URL
+      Inspection on 2026-08-11 reports it "Submitted and indexed", so the crawl
+      outcome this issue predicted did not occur. Internal linking may still be
+      worth doing on its own merits; the indexation argument for it is closed.
+    source: git c134e2e; brain/observations/seo.indexation/20260811T212717.553835+0000.json
+
+  - id: coverage-state-collapses-unknown
+    detail: >-
+      `gsc.classify_coverage` maps "URL is unknown to Google" to the generic
+      not_indexed bucket, so `seo.indexation` cannot distinguish a DISCOVERY
+      failure (Google does not know the URL exists) from a CRAWL-BUDGET decision
+      (Google found it and declined). Those need opposite fixes, and T1's whole
+      argument rests on the second. 3 of 13 not-indexed URLs were in the first
+      state on 2026-08-11. The fallback is safe but lossy; the record needs an
+      unknown_to_google field.
+    source: brain/observations/seo.indexation/20260811T212717.553835+0000.json
+
+  - id: sitemap-carries-legal-boilerplate
+    detail: >-
+      /privacy-policy, /terms-of-service, and /cancellation-refund-policy sit in
+      the sitemap, are not indexed, and have no search value. They inflate
+      not_indexed by 3 (13 → 10) and make the indexation backlog look worse than
+      the content backlog is. Removing them adds no URLs and does not open GATE-1.
+    source: brain/observations/seo.indexation/20260811T212717.553835+0000.json
+
+  - id: www-302-not-301
+    detail: >-
+      https://www.freshmobiledetail.com/ returns 302 (temporary) to the apex
+      rather than 301 (permanent). GSC lists the www host as its own page at
+      average position 201. The apex canonical tag is correct. Free fix, no new
+      URLs, GATE-1-compatible.
+    source: brain/state.yaml#current.canonical (2026-08-11)
+
+  - id: ga4-service-account-unauthorized
+    detail: >-
+      The GSC service account (fmd-seo-engine@local-lead-machine-498016) has
+      siteFullUser on the GSC property but NO access to GA4. Three separate
+      blockers: the Analytics Admin/Data APIs are not enabled on Cloud project
+      local-lead-machine-498016, the service account is not granted on the GA4
+      property, and google-analytics-data is not installed. This is what keeps
+      ga4-no-key-event unfixable from the engine side.
+    source: analyticsadmin accounts.list -> HTTP 403 SERVICE_DISABLED, 2026-08-11
   - id: drive-fresh-contamination
     detail: "'Drive Fresh' naming across social + directories; drivefreshdetail.com is Lou's own legacy domain."
     source: evidence/citation-sweep-2026-07-14.md

@@ -11,17 +11,49 @@ state wins.
 
 ## T1. Entity trust is step zero. Rankings pay authority, not merit.
 
-**Measured basis (2026-07-14):** GSC reports **4 URLs indexed, 18 not** — 14 of
+**Original basis (2026-07-14):** GSC reported **4 URLs indexed, 18 not** — 14 of
 them "Discovered – currently not indexed." The nine `/areas` suburb pages are
 already written, and are *not* lazy geo-swaps: each carries its own
 `introHeading`, `intro`, `neighborhoods`, and reviews. The craft is present.
 
-Google has discovered these pages and is **declining to spend crawl budget**
-indexing them. At this scale that is the classic low-authority, low-corroboration
-signal for a young entity — not a content-quality gap.
+**Remeasured 2026-08-11** (`fmd-seo gsc-sync`, URL Inspection over all 24 sitemap
+URLs — the first fresh reading in 28 days):
 
-**Therefore: writing more pages right now is actively counterproductive.** It adds
-to a pile of 14 pages Google already refuses to index. This is why `GATE-1` exists.
+| | 2026-07-14 | 2026-08-11 |
+|---|---|---|
+| indexed | 4 | **11** |
+| not indexed | 18 | **13** |
+| discovered – not indexed | 14 | 10 |
+
+**Indexation is recovering, and T1's core claim survives in a narrower form.**
+
+Three things this forces:
+
+1. **GATE-1 is now half-met.** The rule is `not_indexed < 8` **and**
+   `indexed >= 10`. The second condition is satisfied (11). The first is not (13).
+   The gate stays CLOSED with `consecutive_clean_readings: 0` — but it is one
+   condition away, not two, and the direction of travel is toward opening.
+2. **The real backlog is 10, not 18.** Three of the 13 not-indexed URLs are legal
+   boilerplate — `/privacy-policy`, `/terms-of-service`,
+   `/cancellation-refund-policy` — with no search value and no business being in a
+   sitemap. Removing them is free, does not open the gate, and stops the engine
+   from counting doc-required pages as an indexation failure.
+3. **"Unknown to Google" is a different diagnosis, and the engine cannot see it.**
+   Three URLs return *"URL is unknown to Google"* — Google does not know they
+   exist, despite the sitemap. That is a **discovery** failure. "Discovered –
+   currently not indexed" is a **crawl-budget/authority** decision. They call for
+   opposite fixes, and `gsc.classify_coverage` collapses both into `not_indexed`,
+   so `seo.indexation` cannot express the distinction. T1's whole argument rests on
+   the second mechanism; the engine should stop asserting it for URLs exhibiting
+   the first.
+
+**Both money pages are now indexed** (`/interior-detailing`, `/mobile-detailing`),
+as is `/chat` — which retires the `chat-orphaned` known issue.
+
+**Therefore: writing more pages is still counterproductive**, but the reason is
+thinner than it was. It is now a 10-page backlog, not 14, and the gate is one
+condition from opening. T1 should be re-examined on the next clean reading rather
+than treated as settled.
 
 ## T2. Structured data is SSR in raw HTML. The remaining gap is narrow.
 
@@ -69,18 +101,67 @@ GSC + GBP query data: head terms are **"car detailing"**, **"auto detailing"**,
 The site's own language is **"Mobile Interior Detailing."** It contains neither
 **"car"** nor **"auto"**. This is a free, uncapped fix that requires no authority.
 
-## T5. FMD owns the east-side suburb niche and is invisible at city level.
+## T5. Local visibility is a tight ring around the profile anchor, not a niche.
 
-- East-side / suburb queries → **#1 organic, cited in the AI summary**.
-- City-level ("best mobile car detailing Cleveland") → **absent**; page one is ATF,
-  It's A Wash, Zayas, Detail Dash, Panda Hub, Yelp, aggregators.
+**Measured 2026-08-03 (DataForSEO Local Finder, Places tab, depth 20, mobile, $0.076):**
 
-**Caveat that matters:** the "#1 for east side" reading is a **zero-volume #1** — FMD
-ranks first for *"east side"* only because nobody else uses the phrase and nobody
-searches it. Do not read it as strength. Treat T5 as a statement about where the
-gap is, not a win to defend.
+| Location | Result |
+|---|---|
+| Mayfield Heights | "mobile detailing mayfield heights" **rank 2**, "car detailing mayfield heights" **rank 3** — both in the 3-slot pack. "mobile detailing near me" rank 11. |
+| Beachwood (~4mi) | "mobile detailing beachwood" **rank 6** — Places tab only, not the pack. Everything else absent. |
+| Solon (~10mi) | Absent on all six queries. |
 
-## T6. AI answers already cite FMD accurately.
+4 of 18 query/location pairs. **Visibility decays with distance from the anchor and
+is gone by ~10 miles.** That is standard service-area-business behaviour: Google
+ranks an SAB in a ring around its registered address, and the ring's *radius* is
+set by prominence — reviews and citations — not by pages or domain authority.
+
+**Two corrections this measurement forced:**
+
+1. The earlier "#1 for east-side suburb queries" reading was a zero-volume #1 on a
+   phrase nobody searches. Superseded: the real reading is rank 2–3 at the anchor,
+   6 one suburb out, absent two suburbs out.
+2. **A 3-slot probe cannot measure this.** The 5x5 geogrid run the same night
+   reported `points_present: 0` across 181 samples — for a business holding rank 2
+   in its own strongest suburb. The pack has three slots; rank 4–20 reads as
+   absence. It also never tested the `mobile detailing <suburb>` shape and never
+   sampled Mayfield Heights, so it missed the stronghold entirely. Local
+   visibility is measured at depth (`seo.local_visibility`), never pack-only.
+
+**The binding gap is "near me."** That cluster is ~2,350/mo (T3). The
+2026-08-03 Local Finder run found FMD in it once, at rank 11, at the anchor.
+
+**Sharpened 2026-08-11 by GSC Search Analytics (28d, 2026-07-12..08-08):**
+
+| query | avg position | impressions | clicks |
+|---|---|---|---|
+| mobile car detailing near me | **1.0** | 1 | 0 |
+| mobile detailing near me | **2.6** | 8 | 1 |
+| car detailing near me | 10.7 | 3 | 1 |
+| detailing near me | 19.7 | 3 | 0 |
+| mobile detail near me | 32.0 | 1 | 0 |
+
+**This does not contradict the rank-11 reading — the two measure different
+questions.** DataForSEO measures a coordinate *the engine picks*. GSC averages over
+the searchers *Google actually served*, who skew heavily toward people near the
+business. Both are true simultaneously.
+
+**What it changes is the diagnosis.** FMD ranks 1–2.6 for near-me searches among
+the people Google serves it to, and Google serves it to **almost nobody**: 16
+impressions in 28 days against a cluster measured at ~2,350/mo.
+
+**So the near-me gap is an impression-volume problem, not a ranking problem.** That
+is the same ring mechanism this thesis already argues, stated more precisely — and
+it matters because "appears once at rank 11" invites ranking work, while the true
+constraint is radius. Prominence widens the radius; nothing about the ranking needs
+fixing where the ring already reaches.
+
+**Vocabulary decides the marginal ring.** At the anchor both "mobile" and "car"
+phrasings rank (2 and 3) — proximity dominates. One suburb out, "mobile" ranks 6
+and "car" is absent. So T4's copy fix is not cosmetic: it is what converts the
+ring's outer band from absent to present.
+
+## T6. AI answers cite FMD accurately — and now send traffic. The slot is conditional, and reviews are what upgrade it.
 
 The Phase-3 LLM-Mentions baseline came back empty and was reported as "zero AI
 citations." **That was wrong as stated.** Live search shows AI summaries citing FMD
@@ -91,15 +172,104 @@ in detail — pricing ($209 Full / $279 Ultimate), the Door-Open Guarantee, the
 *drift* — an AI answer citing stale prices or the wrong entity — which is why
 `aeo.answer_accuracy` runs weekly and treats a wrong fact as high severity.
 
-## T7. Authority gap is real and is the binding constraint.
+**Extended 2026-08-06** (`evidence/aeo-chatgpt-citation-2026-08-06/`). Lou captured a
+live ChatGPT answer to *"best place to get mobile detailing around beachwood ohio"*
+plus the same-day GA4 snapshot. Three things came out of it, and only the first is
+the good news:
+
+**1. The channel now delivers traffic, not just visibility.** GA4 recorded **2
+sessions from `chatgpt.com`** on 2026-08-06, one of them a new user whose *first*
+source was the AI assistant. That is the first AI-sourced arrival in the analytics
+record. Accuracy held: ChatGPT cited **6 FMD facts, 0 wrong** — $209 sedan interior,
+$279 deeper reset, the guarantee, the photo-based quote flow, interior focus,
+Beachwood coverage.
+
+**2. But FMD's slot is *conditional*, not default.** The answer ranks three picks —
+Mavics (4.8★, **72 reviews**), Lucente (4.9★, **129**), Refresh (5.0★, **65**) — and
+places FMD *after* them, unranked, in a use-case paragraph: *"If your interior is the
+main concern…"*, closing with *"go Fresh if the inside is trashed."* FMD is the
+contingency, never the first call.
+
+**3. The mechanism is the same one T5 and T7 already identified.** ChatGPT cited a
+star rating and review count for **all three** ranked competitors and **none** for
+FMD, which carries 16. The floor for a ranked AI slot in this answer was 65 reviews;
+the floor for a local pack slot on 2026-08-03 was 37. **Two independent surfaces are
+applying the same corroboration gate.**
+
+**Therefore: review velocity is not a local-SEO lever that also helps AEO — it is one
+lever gating both surfaces.** This is the strongest corroboration the thesis has for
+priority #1, and it arrived from a direction that had nothing to do with the local
+ring.
+
+Two corollaries:
+
+- **The interior wedge is worth defending.** ChatGPT correctly identified the
+  specialization and matched it to a use case. T4's breadth language
+  ("car detailing" / "auto detailing" / "near me") should be added *alongside* the
+  interior positioning, not in place of it — the wedge is what earns the slot; breadth
+  is what widens which queries reach it.
+- **GATE-3 is now a revenue control.** Published prices are being read verbatim into
+  answers that route booking traffic. A stale price does not just mislead — it
+  propagates into the acquisition path.
+
+**Two things this evidence does NOT establish**, and the engine must not treat as
+measured: (a) **no conversion measurement exists.** GA4's "Key events" card reads
+"No data available"; Lou's report that online-booking leads are arriving from ChatGPT
+is credible and is why this was captured, but it stays labelled *owner-reported* under
+GATE-4 until a booking key event exists. (b) The capture was an **ad-hoc query**, not
+the standing 5-query `aeo_query_set`, so it is **not** a weekly `aeo.answer_accuracy`
+reading and was deliberately not recorded as one — a 1-query universe would destroy
+comparability. That check remains due.
+
+**It does not open GATE-1.** AI traffic is a reason to do prominence work faster, not
+a reason to publish into an 18-page unindexed backlog.
+
+## T7. Authority Score is a symptom, not the constraint. Prominence is.
 
 Authority Score **2** vs competitors 7–16 (Refresh 7, cledetailing 7, Detail Dash 8,
-Diamond Finish 9, Nathan's 11, Ceramic Pro CLE 16, Inside Out 16). Organic footprint:
-**4 keywords, all branded, none on page 1**, 9 clicks / 28d.
+Diamond Finish 9, Nathan's 11, Ceramic Pro CLE 16, Inside Out 16).
 
-Backlinks 211 / 106 referring domains — higher raw counts than Refresh, yet AS 2.
-That combination means the links are low-quality or non-corroborating. **Chasing
-link volume is not the move; chasing local corroboration is.**
+**The "4 keywords, all branded, none on page 1" figure is retired (2026-08-11).**
+It came from Semrush's third-party database. GSC — Google's own record of what it
+served — reports for the same kind of window (28d, 2026-07-12..08-08):
+
+- **56 queries**, of which **41 are non-branded** (96 impressions, 2 clicks)
+- **4 queries at position ≤ 3**; **11 in positions 4–20** carrying 87 impressions
+- 213 impressions, 4 clicks total
+- **5 pages** have ever received an impression, of 24 in the sitemap
+
+So the claim "zero organic discovery by strangers" was **wrong as stated** — a
+Semrush coverage artifact for a domain too small for its index, not a measurement.
+Strangers do find this site. The honest reading is that they find it in very small
+numbers: 96 non-branded impressions in 28 days.
+
+**This does not weaken T7's conclusion; it relocates the evidence.** The constraint
+was never keyword count — `seo.organic_footprint`'s `nonbranded_keywords == 0`
+threshold was measuring the wrong instrument. Prominence is still the binding gap,
+now visible as 5 pages of 24 ever being served and 87 impressions sitting in
+striking distance unconverted.
+
+**Revised 2026-08-03.** Two things forced this:
+
+1. **Owner disclosure: the 211 backlinks / 106 referring domains are fake.** That
+   fully explains AS 2 without AS being a constraint on anything. The prior
+   inference ("low-quality or non-corroborating") was right about the mechanism.
+   Do not spend effort on disavow — Google discounts spam links on its own. The one
+   free action worth taking is checking GSC for a manual action; a penalty would
+   change the picture, and its absence closes the question.
+2. **Semrush Authority Score is not a Google ranking factor.** It is a third-party
+   proxy for organic domain strength. The queries that carry FMD's demand are
+   "near me" and `service + suburb`, where the map pack sits above organic and is
+   ranked on proximity, prominence, and relevance. AS barely touches that surface.
+
+**The measured constraint is prominence, expressed as ring radius (T5).** Every
+business holding a pack slot in the 2026-08-03 sample carried 37–1600 reviews;
+FMD carries 16. Proshine (18) and Brushwood (26) rank in Solon where FMD does not
+— they are simply closer, which is exactly the point: reviews are what buy reach
+past the businesses nearest the searcher.
+
+**Therefore:** reviews and citation consistency, not link volume and not domain
+authority. Treat AS as a diagnostic readout, never as a target.
 
 ## T8. Entity contamination: 'Drive Fresh' bleed.
 
@@ -162,15 +332,27 @@ labeled as such, with source and retrieval time.
 
 The loop works this list top-down. Each item is free or near-free and none adds a URL.
 
-1. **Entity decontamination** (T8) — collapse 'Drive Fresh' → 'Fresh Mobile
-   Detailing' across social + directories; consistent NAP. Now the top lever:
-   schema (the former #1) is largely done.
-2. **Copy language** (T4) — introduce "car detailing" / "auto detailing" /
-   "near me" into existing page copy. No new URLs.
-3. **Internal linking** (T1) — the unindexed pages are link-starved; crawl
+Reordered 2026-08-03 on the T5 ring measurement. Review velocity moves to the top:
+it is the only lever that widens the ring, and the ring is what gates every query
+at every location.
+
+1. **Review velocity** (T5/T7) — 16 → 40+. Pack holders in the measured sample
+   carry 37–1600. This widens the radius, which is the binding constraint; it also
+   compounds into AI answers (T6), which already cite FMD.
+2. **GBP configuration audit** (T5) — confirm the anchor address, service-area
+   settings, primary category, and verification state. The ring centres on
+   Mayfield Heights while `business-facts.yaml` calls the base
+   "Beachwood / Mayfield Heights". Free, and it explains the ring's shape.
+3. **Entity decontamination** (T8) — collapse 'Drive Fresh' → 'Fresh Mobile
+   Detailing' across social + directories; consistent NAP. Feeds prominence
+   directly, so it now serves the same goal as #1.
+4. **Copy language** (T4) — introduce "car detailing" / "auto detailing" /
+   "near me" into existing copy. No new URLs. Measured effect: at the anchor both
+   phrasings rank, one suburb out only "mobile" does — this is what converts the
+   ring's outer band.
+5. **Internal linking** (T1) — the unindexed pages are link-starved; crawl
    priority follows internal links.
-4. **Review velocity** (T7) — local corroboration is what AS 2 actually lacks.
-5. **Schema finish + validate** (T2) — the 4 unschema'd pages + `BlogPosting` on
+6. **Schema finish + validate** (T2) — the 4 unschema'd pages + `BlogPosting` on
    posts, and confirm `AggregateRating` is fact-bound (not reused across suburbs).
    Maintenance now, not the bottleneck.
-6. **Only then** reassess GATE-1.
+7. **Only then** reassess GATE-1.
