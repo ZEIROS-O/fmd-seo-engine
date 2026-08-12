@@ -1,0 +1,272 @@
+{
+ "source_pdf": "Semrush-Brand_Performance-freshmobiledetail_com_(EN__Cleveland__Ohio__United-19th_Jul_2026.pdf",
+ "source_sha256": "66cf487f13d376f6d26f31ad459b85ef9380fe53a6ee7c0afdc154d2cc8616df",
+ "pages": 43,
+ "scope": {
+  "platform": "ChatGPT",
+  "language": "English",
+  "market": "Cleveland, Ohio, United States",
+  "generated_on": "2026-07-19",
+  "question_type_for_breakdowns": "non-branded"
+ },
+ "extraction": {
+  "method": "PDF text layer (PyMuPDF), page-by-page, transcribed into typed fields",
+  "note": "This universe (ChatGPT / Cleveland) is NOT comparable to the Competitor Research universe (all AI platforms / United States). Do not merge the two.",
+  "images_checked": "All 20 embedded raster objects in this PDF are small platform-badge graphics (356-406 x ~69 px), not data. Every chart in this report is vector-drawn and its values are present in the text layer."
+ },
+
+ "share_of_voice_percent": {
+  "Fresh mobile detail": 1.9,
+  "Cle detailing": 16.8,
+  "Detail dash": 12.4,
+  "Garrett's detailing": 11.3,
+  "Gould standard mobile detailing": 10.4,
+  "Other": 47.0
+ },
+ "share_of_voice_precise_for_fmd_percent": 1.91,
+
+ "mentions_distribution": {
+  "Fresh mobile detail": {"share_percent": 4.6, "count": 8},
+  "Cle detailing": {"share_percent": 42.9, "count": 75},
+  "Detail dash": {"share_percent": 30.3, "count": 53},
+  "Garrett's detailing": {"share_percent": 27.4, "count": 48},
+  "Gould standard mobile detailing": {"share_percent": 28.0, "count": 49}
+ },
+
+ "average_position_when_mentioned": {
+  "Fresh mobile detail": 1.75,
+  "Cle detailing": 2.29,
+  "Detail dash": 1.91,
+  "Garrett's detailing": 1.9,
+  "Gould standard mobile detailing": 2.73
+ },
+
+ "overall_sentiment_percent": {"favorable": 63, "general": 38},
+ "fmd_positive_perception_share_percent": 62.5,
+ "peer_positive_perception_share_percent": {
+  "Nathan's": 75.0,
+  "She Details": 74.29,
+  "Inside Out": 72.73
+ },
+
+ "top_domains_by_citations": [
+  {"domain": "cledetailing.com", "share_of_citations_percent": 8.0, "citations": 80},
+  {"domain": "gkspolishing.com", "share_of_citations_percent": 8.0, "citations": 80},
+  {"domain": "zayasmobiledetailing.com", "share_of_citations_percent": 6.2, "citations": 62},
+  {"domain": "gouldstandarddetail.com", "share_of_citations_percent": 5.0, "citations": 50},
+  {"domain": "thedetaildash.com", "share_of_citations_percent": 4.9, "citations": 49},
+  {"domain": "freshmobiledetail.com", "share_of_citations_percent": 0.0, "citations": 0}
+ ],
+ "headline_contradiction": "freshmobiledetail.com is cited 0 times while the brand 'Fresh mobile detail' is mentioned 8 times. ChatGPT knows the brand from third-party sources and never sources the site itself.",
+
+ "cited_domains": [
+  {"domain": "cledetailing.com", "pages": 2, "answers": 79, "fmd_citations": 3, "fmd_sentiment_percent": 100, "cle_citations": 72, "cle_sentiment_percent": 82.4, "detaildash_citations": 28},
+  {"domain": "gkspolishing.com", "pages": 5, "answers": 75, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 36, "cle_sentiment_percent": 75.9, "detaildash_citations": 12},
+  {"domain": "zayasmobiledetailing.com", "pages": 3, "answers": 61, "fmd_citations": 7, "fmd_sentiment_percent": 100, "cle_citations": 26, "cle_sentiment_percent": 82.1, "detaildash_citations": 22},
+  {"domain": "gouldstandarddetail.com", "pages": 1, "answers": 50, "fmd_citations": 2, "fmd_sentiment_percent": 100, "cle_citations": 26, "cle_sentiment_percent": 78.6, "detaildash_citations": 24},
+  {"domain": "thedetaildash.com", "pages": 3, "answers": 49, "fmd_citations": 3, "fmd_sentiment_percent": 100, "cle_citations": 25, "cle_sentiment_percent": 78.8, "detaildash_citations": 49},
+  {"domain": "garrettsdetailing.com", "pages": 2, "answers": 48, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 20, "cle_sentiment_percent": 73.2, "detaildash_citations": 23},
+  {"domain": "itsawash.net", "pages": 5, "answers": 37, "fmd_citations": 8, "fmd_sentiment_percent": 100, "cle_citations": 18, "cle_sentiment_percent": 81.6, "detaildash_citations": 12},
+  {"domain": "shedetails4u.com", "pages": 1, "answers": 35, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 18, "cle_sentiment_percent": 80.5, "detaildash_citations": 16},
+  {"domain": "ontheroaddetail.com", "pages": 1, "answers": 30, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 11, "cle_sentiment_percent": 76.2, "detaildash_citations": 17},
+  {"domain": "idsoh.com", "pages": 1, "answers": 29, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 19, "cle_sentiment_percent": 81.6, "detaildash_citations": 4},
+  {"domain": "reddit.com", "pages": 13, "answers": 28, "fmd_citations": 8, "fmd_sentiment_percent": 100, "cle_citations": 19, "cle_sentiment_percent": 92.2, "detaildash_citations": 15},
+  {"domain": "greigspremiumdetailing.com", "pages": 1, "answers": 22, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 6, "cle_sentiment_percent": 93.8, "detaildash_citations": 5},
+  {"domain": "prestigeworldwidecle.com", "pages": 1, "answers": 21, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 13, "cle_sentiment_percent": 80.8, "detaildash_citations": 9},
+  {"domain": "allthingsfreshcardetailing.com", "pages": 3, "answers": 18, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 9, "cle_sentiment_percent": 73.7, "detaildash_citations": 6},
+  {"domain": "redlineprofessionals.com", "pages": 1, "answers": 17, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 8, "cle_sentiment_percent": 88.2, "detaildash_citations": 3},
+  {"domain": "pandahub.com", "pages": 1, "answers": 12, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 2, "cle_sentiment_percent": 100, "detaildash_citations": 5},
+  {"domain": "trustindex.io", "pages": 6, "answers": 11, "fmd_citations": 11, "fmd_sentiment_percent": 100, "cle_citations": 5, "cle_sentiment_percent": 100, "detaildash_citations": 8},
+  {"domain": "insideoutcleveland.com", "pages": 4, "answers": 11, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 4, "cle_sentiment_percent": 80, "detaildash_citations": 5},
+  {"domain": "buckeyebrosdetailing.com", "pages": 1, "answers": 11, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 4, "cle_sentiment_percent": 90, "detaildash_citations": 5},
+  {"domain": "sureshinemarinedetailing.com", "pages": 1, "answers": 11, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 3, "cle_sentiment_percent": 85.7, "detaildash_citations": 2},
+  {"domain": "bbb.org", "pages": 5, "answers": 10, "fmd_citations": 3, "fmd_sentiment_percent": 100, "cle_citations": 7, "cle_sentiment_percent": 92.6, "detaildash_citations": 5},
+  {"domain": "riverfrontyacht.com", "pages": 1, "answers": 10, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 81.8, "detaildash_citations": null},
+  {"domain": "lucentedetailing.com", "pages": 1, "answers": 9, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 90.9, "detaildash_citations": 3},
+  {"domain": "epxmobiledetailing.com", "pages": 1, "answers": 8, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 88.9, "detaildash_citations": 8},
+  {"domain": "expressmobiledetail.com", "pages": 1, "answers": 8, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 4, "cle_sentiment_percent": 100, "detaildash_citations": 3}
+ ],
+ "fmd_citation_sources_note": "Every domain that cites FMD is somebody else's property: a competitor's site, a review aggregator (trustindex.io 11, bbb.org 3), or reddit.com (8). FMD's own domain contributes zero.",
+
+ "cited_pages": [
+  {"title": "Cleveland Professional Auto Detailing", "url": "cledetailing.com/?utm_source=openai", "answers": 78, "fmd_citations": 3, "fmd_sentiment_percent": 100, "cle_citations": 71, "cle_sentiment_percent": 82.2, "detaildash_citations": 27, "detaildash_sentiment_percent": 81.7},
+  {"title": "Professional Detailing | Gould Standard Mobile Detailing", "url": "gouldstandarddetail.com/?utm_source=openai", "answers": 50, "fmd_citations": 2, "fmd_sentiment_percent": 100, "cle_citations": 26, "cle_sentiment_percent": 78.6, "detaildash_citations": 24, "detaildash_sentiment_percent": 78.7},
+  {"title": "Detail Dash | Downtown Cleveland | Mobile Auto Detailing | We Come To You", "url": "thedetaildash.com/?utm_source=openai", "answers": 45, "fmd_citations": 3, "fmd_sentiment_percent": 100, "cle_citations": 23, "cle_sentiment_percent": 77.6, "detaildash_citations": 45, "detaildash_sentiment_percent": 80.2},
+  {"title": "Garrett's Auto Detailing", "url": "garrettsdetailing.com/?utm_source=openai", "answers": 44, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 19, "cle_sentiment_percent": 71.8, "detaildash_citations": 21, "detaildash_sentiment_percent": 67.4},
+  {"title": "Mobile Detailing Cleveland OH | Zayas Mobile Detailing", "url": "zayasmobiledetailing.com/?utm_source=openai", "answers": 41, "fmd_citations": 6, "fmd_sentiment_percent": 100, "cle_citations": 20, "cle_sentiment_percent": 86.0, "detaildash_citations": 18, "detaildash_sentiment_percent": 85.1},
+  {"title": "Boat Detailing | GK's Custom Polishing, Inc. | Cleveland, OH", "url": "gkspolishing.com/detailing/boats/?utm_source=openai", "answers": 39, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 18, "cle_sentiment_percent": 81.0, "detaildash_citations": 2, "detaildash_sentiment_percent": 75.0},
+  {"title": "Professional Car Detailing Service You Can Trust", "url": "shedetails4u.com/?utm_source=openai", "answers": 35, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 18, "cle_sentiment_percent": 80.5, "detaildash_citations": 16, "detaildash_sentiment_percent": 86.5},
+  {"title": "On The Road Detail - Mobile Car Detailing in Wadsworth, Akron & Cleveland, OH", "url": "ontheroaddetail.com/?utm_source=openai", "answers": 30, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 11, "cle_sentiment_percent": 76.2, "detaildash_citations": 17, "detaildash_sentiment_percent": 67.6},
+  {"title": "Innovative Detailing Solutions | Mobile Detailing Lorain County, OH", "url": "idsoh.com/?utm_source=openai", "answers": 29, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 19, "cle_sentiment_percent": 81.6, "detaildash_citations": 4, "detaildash_sentiment_percent": 87.5},
+  {"title": "It's A Wash Cleveland | Mobile Detailing Service", "url": "itsawash.net/?utm_source=openai", "answers": 25, "fmd_citations": 8, "fmd_sentiment_percent": 100, "cle_citations": 12, "cle_sentiment_percent": 94.3, "detaildash_citations": 9, "detaildash_sentiment_percent": 100},
+  {"title": "Greig's Premium Automotive Detailing | Cleveland, Ohio", "url": "greigspremiumdetailing.com/?utm_source=openai", "answers": 22, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 6, "cle_sentiment_percent": 93.8, "detaildash_citations": 5, "detaildash_sentiment_percent": 84.6},
+  {"title": "Detailing | Prestige Worldwide Cle", "url": "prestigeworldwidecle.com/?utm_source=openai", "answers": 21, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 13, "cle_sentiment_percent": 80.8, "detaildash_citations": 9, "detaildash_sentiment_percent": 71.4},
+  {"title": "Interior Car Detailing Cleveland OH | We Bring Your Car's Interior Back to Life", "url": "zayasmobiledetailing.com/full-interior-detail?utm_source=openai", "answers": 20, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 6, "cle_sentiment_percent": 69.2, "detaildash_citations": 3, "detaildash_sentiment_percent": 80},
+  {"title": "Auto Detailing | GK's Custom Polishing, Inc. | Cleveland, OH", "url": "gkspolishing.com/detailing/automotive/?utm_source=openai", "answers": 17, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 8, "cle_sentiment_percent": 71.4, "detaildash_citations": 2, "detaildash_sentiment_percent": 100},
+  {"title": "Mobile Detailing | GK's Custom Polishing, Inc. | Cleveland, OH", "url": "gkspolishing.com/detailing/mobile-car-detailing/?utm_source=openai", "answers": 17, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 7, "cle_sentiment_percent": 73.3, "detaildash_citations": 7, "detaildash_sentiment_percent": 80},
+  {"title": "Redline Professional Mobile Detailing", "url": "redlineprofessionals.com/?utm_source=openai", "answers": 17, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 8, "cle_sentiment_percent": 88.2, "detaildash_citations": 3, "detaildash_sentiment_percent": 80},
+  {"title": "ATF Detail | All Things Fresh Mobile Car Detailing", "url": "allthingsfreshcardetailing.com/?utm_source=openai", "answers": 15, "fmd_citations": 1, "fmd_sentiment_percent": 100, "cle_citations": 6, "cle_sentiment_percent": 78.6, "detaildash_citations": 6, "detaildash_sentiment_percent": 76.9},
+  {"title": "Panda Hub: Car Detailing in Cleveland, OH", "url": "pandahub.com/car-detailing/cleveland-oh?utm_source=openai", "answers": 12, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 2, "cle_sentiment_percent": 100, "detaildash_citations": 5, "detaildash_sentiment_percent": 90},
+  {"title": "Buckeye Brothers Detailing", "url": "buckeyebrosdetailing.com/?utm_source=openai", "answers": 11, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 4, "cle_sentiment_percent": 90, "detaildash_citations": 5, "detaildash_sentiment_percent": 66.7},
+  {"title": "Sureshine Marine Detailing - From Catawba to Mentor We Come to You", "url": "sureshinemarinedetailing.com/?utm_source=openai", "answers": 11, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 3, "cle_sentiment_percent": 85.7, "detaildash_citations": 2, "detaildash_sentiment_percent": 75},
+  {"title": "CHANDLER MARINE SERVICES, LLC (PDF work order)", "url": "riverfrontyacht.com/wp-content/uploads/2025/10/2026-Spring-Cover-Letter-Fit-out-Work-Order.pdf?utm_source=openai", "answers": 10, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 81.8, "detaildash_citations": null, "detaildash_sentiment_percent": null},
+  {"title": "Car Detailer (r/Cleveland thread)", "url": "reddit.com/r/Cleveland/comments/1tebo7r/car_detailer/?utm_source=openai", "answers": 9, "fmd_citations": 5, "fmd_sentiment_percent": 100, "cle_citations": 2, "cle_sentiment_percent": 85.7, "detaildash_citations": 4, "detaildash_sentiment_percent": 92.9},
+  {"title": "Mobile Car Detailing Willoughby & Lake County OH | Lucente", "url": "lucentedetailing.com/?utm_source=openai", "answers": 9, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 90.9, "detaildash_citations": 3, "detaildash_sentiment_percent": 100},
+  {"title": "Flex Details", "url": "flexdetails.com/?utm_source=openai", "answers": 8, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 3, "cle_sentiment_percent": 100, "detaildash_citations": 3, "detaildash_sentiment_percent": 100},
+  {"title": "EPX Mobile Detailing | Mobile Car Detailing in Cleveland, OH", "url": "epxmobiledetailing.com/?utm_source=openai", "answers": 8, "fmd_citations": null, "fmd_sentiment_percent": null, "cle_citations": 5, "cle_sentiment_percent": 88.9, "detaildash_citations": 8, "detaildash_sentiment_percent": 85.7}
+ ],
+
+ "breakdown_by_question": [
+  {"question": "Which mobile detailers in Cleveland are best for people who want minimal disruption and a quiet work process?", "competitors_in_answer": 5, "fmd": {"position": 1, "sentiment_percent": 100}, "cle_detailing": {"position": 6, "sentiment_percent": 100}, "detail_dash": {"position": 4, "sentiment_percent": 100}},
+  {"question": "Which mobile detailers in Cleveland are best suited for someone nervous about letting strangers work on their car at home?", "competitors_in_answer": 5, "fmd": {"position": 1, "sentiment_percent": 100}, "cle_detailing": {"position": 4, "sentiment_percent": 100}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "Where can I get a fair-priced, professional mobile detail in Cleveland without all the upsell pressure?", "competitors_in_answer": 3, "fmd": {"position": 1, "sentiment_percent": 100}, "cle_detailing": {"position": 4, "sentiment_percent": 100}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "What mobile auto detailing companies in Cleveland have the best online reviews for consistent quality?", "competitors_in_answer": 4, "fmd": {"position": 2, "sentiment_percent": 100}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": 4, "sentiment_percent": 100}},
+  {"question": "Who in Cleveland has strong word-of-mouth among local families and professionals for mobile detailing?", "competitors_in_answer": 4, "fmd": {"position": 2, "sentiment_percent": 100}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "What are some reputable mobile detailing services in Cleveland that won't rush through the job?", "competitors_in_answer": 3, "fmd": {"position": 2, "sentiment_percent": 100}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "Which mobile car detail services around Cleveland are good with repeat customers and building relationships?", "competitors_in_answer": 3, "fmd": {"position": 2, "sentiment_percent": 100}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": 4, "sentiment_percent": 100}},
+  {"question": "Which Cleveland mobile detailing services are known for punctuality and clear communication?", "competitors_in_answer": 3, "fmd": {"position": 3, "sentiment_percent": 100}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": 2, "sentiment_percent": 100}},
+  {"question": "Which mobile auto detail services in Cleveland are comfortable handling luxury cars without cutting corners?", "competitors_in_answer": 6, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 4, "sentiment_percent": 66.7}, "detail_dash": {"position": 1, "sentiment_percent": 100}},
+  {"question": "Who in Cleveland provides full-service detailing, including wheels, tires, and interior, at my home?", "competitors_in_answer": 6, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 3, "sentiment_percent": 0}, "detail_dash": {"position": 1, "sentiment_percent": 0}},
+  {"question": "Who in the Cleveland area offers high-touch customer service for mobile detailing, like follow-ups and check-ins?", "competitors_in_answer": 6, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 2, "sentiment_percent": 100}, "detail_dash": {"position": 3, "sentiment_percent": 100}},
+  {"question": "Who offers professional-level detailing in Cleveland that's better than drive-through car washes but still convenient?", "competitors_in_answer": 6, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 6, "sentiment_percent": 100}, "detail_dash": {"position": 2, "sentiment_percent": 100}},
+  {"question": "Who offers spring cleanup detailing in Cleveland for cars coming out of winter with salt, slush, and stains?", "competitors_in_answer": 6, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 2, "sentiment_percent": 100}, "detail_dash": {"position": 3, "sentiment_percent": 100}},
+  {"question": "What mobile detailing options exist in Cleveland that adjust their process for cold or rainy weather?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 3, "sentiment_percent": 100}, "detail_dash": {"position": 1, "sentiment_percent": 50}},
+  {"question": "Which Cleveland auto detailers understand that I don't want my car drenched in shiny dressings or fake scents?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 1, "sentiment_percent": 100}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "Which Cleveland mobile detailers are good at getting rid of road salt residue and winter grime from cars?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 3, "sentiment_percent": 0}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "Which mobile detail services in Cleveland actually clean under and between the seats instead of skipping it?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": 1, "sentiment_percent": 50}},
+  {"question": "Which mobile detailers in Cleveland can help if my car smells like mold after a water leak?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 4, "sentiment_percent": 100}, "detail_dash": {"position": 2, "sentiment_percent": 100}},
+  {"question": "Which mobile detailers in Cleveland offer both interior and exterior detailing as a single package?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 4, "sentiment_percent": 100}, "detail_dash": {"position": 1, "sentiment_percent": 0}},
+  {"question": "Who around Cleveland does reliable interior detailing through the spring, summer, and fall seasons?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 5, "sentiment_percent": 100}, "detail_dash": {"position": 1, "sentiment_percent": 50}},
+  {"question": "Who in Cleveland can come to my apartment complex to detail my car without needing a garage?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 5, "sentiment_percent": 50}, "detail_dash": {"position": 2, "sentiment_percent": 50}},
+  {"question": "Who in Cleveland is trusted to detail cars for people with respiratory issues who are worried about chemicals?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 4, "sentiment_percent": 0}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "Who provides mid-range, professional-level detailing in Cleveland that feels worth what you pay?", "competitors_in_answer": 5, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": 1, "sentiment_percent": 100}, "detail_dash": {"position": 2, "sentiment_percent": 100}},
+  {"question": "Are there any mobile detailers around Cleveland that specialize in cleaning kid messes, car seats, and snack stains?", "competitors_in_answer": 4, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": null, "sentiment_percent": null}},
+  {"question": "What car detailing services in Cleveland are good at removing dog hair and pet odors from the interior?", "competitors_in_answer": 4, "fmd": {"position": null, "sentiment_percent": null}, "cle_detailing": {"position": null, "sentiment_percent": null}, "detail_dash": {"position": 3, "sentiment_percent": 50}}
+ ],
+ "breakdown_by_question_summary": {
+  "questions_shown": 25,
+  "fmd_present": 8,
+  "fmd_absent": 17,
+  "pattern": "FMD appears only in trust/process/low-pressure/word-of-mouth questions, and when it appears it ranks 1-3 with 100% sentiment. It is absent from every service-scope, seasonal, weather, family-mess, and pet-odor question — including 'kid messes, car seats, and snack stains' and 'dog hair and pet odors', the two questions that name FMD's own claimed specialty."
+ },
+
+ "topic_distribution_percent": {
+  "convenience, scheduling & customer experience": 30.5,
+  "service quality, results & special messes": 29.5,
+  "finding & comparing detailers (cars & boats)": 12.5,
+  "pricing, value & packages": 10.5,
+  "health, safety & product concerns": 8.5,
+  "brand-specific perception & competitive positioning": 8.5
+ },
+ "query_intent_distribution_percent": {
+  "research": 45.4,
+  "comparison": 23.5,
+  "finding": 12.2,
+  "support": 11.2,
+  "finding & comparing detailers (cars & boats)": 4.1,
+  "purchase": 3.6
+ },
+ "query_topics_intent_split_percent": {
+  "convenience, scheduling & customer experience": {"research": 38, "support": 23, "comparison": 15, "finding": 13, "finding & comparing detailers (cars & boats)": 5, "purchase": 3, "convenience": 3},
+  "service quality, results & special messes": {"research": 61, "finding": 15, "support": 8, "comparison": 7, "finding & comparing detailers (cars & boats)": 5, "education": 2, "pricing, value & packages": 2},
+  "finding & comparing detailers (cars & boats)": {"research": 40, "comparison": 36, "finding": 20, "support": 4},
+  "pricing, value & packages": {"comparison": 48, "purchase": 24, "research": 24, "finding & comparing detailers (cars & boats)": 5},
+  "health, safety & product concerns": {"research": 59, "support": 12, "comparison": 12}
+ },
+
+ "brand_strength_factors": [
+  "Process transparency (47-point checklist, before/after photos, guarantees) that reduces anxiety and builds trust",
+  "Clear, flat pricing with photo-based quotes and minimal upsell pressure",
+  "Consistently strong results and 'almost like new' interior transformations",
+  "High trust and professionalism for mobile work at homes/offices (communication, punctuality, respect for property)",
+  "Interior-first specialist for dirty family cars (kids, pets, stains, salt)",
+  "Perceived as higher on quality and depth than quick washes or coupon-level details",
+  "Good fit for repeat/relationship-oriented customers in east-side suburbs"
+ ],
+ "areas_for_improvement": [
+  "Not positioned as a long-term protection or rust-prevention specialist",
+  "Less suited to fleet and corporate vehicle programs than fleet-focused competitors",
+  "Not positioned as a specialist for boats/marinas compared with dedicated marine detailers",
+  "Perceived parity rather than clear superiority on convenience and scheduling vs other mobile detailers",
+  "Geographic concentration on east-side suburbs limits accessibility for west-side and outlying customers",
+  "Limited public review volume compared with large local players makes performance feel less proven at scale"
+ ],
+
+ "business_driver_mention_counts": {
+  "driver": "Mobile Convenience & Access",
+  "Fresh mobile detail": 8,
+  "Cle detailing": 42,
+  "Detail dash": 35,
+  "Gould standard": 32,
+  "Garrett's detailing": 30
+ },
+ "drivers_where_fmd_is_few_or_zero": [
+  "Maintenance Plans & Recurring Detailing",
+  "Self-Contained Mobile Operations",
+  "Low-Odor & Eco-Friendly Cleaning",
+  "Multi-Vehicle & Fleet Capability",
+  "Long-term protection / coatings / rust prevention",
+  "Boat & marina detailing"
+ ],
+
+ "semrush_stated_priorities": {
+  "urgent_strategic": [
+   {"name": "Turn 1.91% Into 5%", "detail": "Scale share of voice beyond 1.91% by standardizing AI-facing positioning across key profiles."},
+   {"name": "Own The Minivan Disaster", "detail": "Leverage 5/5 family-interior driver; target reviews highlighting kids, pets, salt transformations."},
+   {"name": "Own Family-Mess Hygiene", "detail": "65%+ queries mention kid, pet, sickness, or biohazard mess - launch 'Family Reset' and 'Allergy Detox' tiers."}
+  ],
+  "top_visibility": [
+   {"name": "Turn 1.91% Into 5%", "detail": "Standardize AI-facing positioning across key profiles."},
+   {"name": "Top-Tier Rank, Tiny Footprint", "detail": "Exploit 1.75 average position by multiplying mentions in comparison content with CLE, Detail Dash, Garrett's."},
+   {"name": "Show Up In Mobile Moments", "detail": "Boost only-eight convenience mentions by baking driveway, office, apartment scenarios into every public touchpoint."},
+   {"name": "Escape Aggregator Dependence", "detail": "Shift from review hubs to 3-5 owned and partner 'best mobile detailer' lists ChatGPT can mine."},
+   {"name": "Attach To High-Intent Drivers", "detail": "Formalize maintenance, low-odor, self-contained offers to join competitors dominating those AI query clusters."}
+  ],
+  "critical_sentiment_shifts": [
+   {"name": "Own The Minivan Disaster", "detail": "Leverage 5/5 family-interior driver."},
+   {"name": "Climb To 75% Club", "detail": "Lift sentiment from 62.5% toward Nathan's 75% via a systematic 12-18 month review playbook."},
+   {"name": "Beat Driveway Upsell Anxiety", "detail": "Exploit 5 transparent-pricing mentions; contrast no-upsell quotes against surcharge-heavy competitors."},
+   {"name": "Redefine Convenience For Families", "detail": "Reframe parity on convenience into scheduled, punctual east-side 'set-and-forget' interior resets."},
+   {"name": "Choose Focus, Not Gaps", "detail": "Clarify stance on fleets, boats, protection so underrepresentation looks strategic versus capability weakness."}
+  ],
+  "time_critical_shifts": [
+   {"name": "Own Family-Mess Hygiene", "detail": "65%+ queries mention kid, pet, sickness, or biohazard mess."},
+   {"name": "Turn Reliability Into Currency", "detail": "Over 40 punctuality and communication queries."},
+   {"name": "Monetize Transparency, Not Discounts", "detail": "Dozens of questions on quotes and upsells; 3-4 clear packages and photo-based pricing."}
+  ]
+ },
+
+ "semrush_opportunities_by_timeframe": {
+  "urgent": [
+   "AI discoverability as its own channel: pick priority use cases and align site copy, GBP, review language and partner content to those exact phrases.",
+   "Decide the growth thesis explicitly: deepen east-side family/professional penetration, or design operational models for fleets/marine/coatings.",
+   "FMD's citations come from review aggregators, not the 'best mobile detailer in Cleveland' lists ChatGPT actually sources; invest in 3-5 cornerstone owned/partner comparison pieces.",
+   "Reframe the core offer around healthy, family-safe deep interior resets with named tiers (Family Reset, Allergy & Odor Detox, Biohazard/Sick-Clean).",
+   "Publish clear arrival windows, reminders, en-route texts, weather and access policies.",
+   "Restructure into 3-4 named packages with visible starting prices and honest add-on pricing.",
+   "Build segment-specific offerings and landing pages (Busy Pro, Family & Pet, Fleet & Service Vehicles, Lake Erie Boat Interior Care)."
+  ],
+  "medium": [
+   "Brand FMD explicitly as the interior detailer for east-side Cleveland families and professionals; use neighborhood-specific language (Shaker, Solon, Beachwood).",
+   "Codify a positioning one-sheet for AI and reviewers and seed it into GBP, site and review platforms.",
+   "Reframe from 'a detailer that happens to be mobile' to 'the east-side mobile interior specialist'; get reviews to name where the service happened.",
+   "Decide deliberately whether boat interiors are a business; either build a labelled Lake Erie cabin page or remove ambiguous boat mentions.",
+   "Formalize maintenance plans, low-odor products and self-contained operations into named offers.",
+   "Run a 12-18 month review push to lift positive share from 62.5%.",
+   "Clarify the convenience promise (scheduled resets, optional 'Fresh Priority Slots') instead of racing same-day competitors.",
+   "Make an explicit call on fleet/marine/protection so absence reads as strategy, not incapacity.",
+   "Make care and craftsmanship a pillar: document wash technique, towels, products, protection steps."
+  ],
+  "short": [
+   "Align service design, messaging, partnerships and hiring around being Cleveland's go-to interior reset service for real family and professional vehicles.",
+   "Codify process and guarantees into named assets ('Fresh 47-Point Interior Reset', 'No Surprise Bill Promise') and put them on the site, GBP, and in review prompts.",
+   "Lean into the interior/family-mess perception niche in every public description.",
+   "Frame pricing ethos explicitly against upsell-heavy competitors."
+  ]
+ },
+
+ "unavailable_in_export": [
+  "Top Cited Domains Trends",
+  "Favorable Sentiment Over Time"
+ ]
+}

@@ -1,0 +1,100 @@
+{
+  "captured_at": "2026-08-06T22:48:00-04:00",
+  "captured_by": "Lou (screenshots, hand-transcribed by session)",
+  "gate_4_note": "Every number below is transcribed from the two attached screenshots. Nothing is estimated, extrapolated, or filled in from memory. Fields that the screenshots do not show are recorded as null with a reason.",
+
+  "chatgpt_answer": {
+    "artifact": "chatgpt-answer-beachwood-2026-08-06.png",
+    "platform": "ChatGPT (consumer web, search-enabled; 'Worked for 21s')",
+    "query": "best place to get mobile detailing around beachwood ohio",
+    "query_in_standing_set": false,
+    "standing_set_note": "Ad-hoc query typed by Lou. The closest standing aeo_query_set entry is 'interior car detailing beachwood ohio'. This reading is NOT comparable to a weekly aeo.answer_accuracy run and must not be recorded as one.",
+
+    "fmd_cited": true,
+    "fmd_in_ranked_picks": false,
+    "fmd_in_map_module": true,
+    "fmd_placement": "Unranked conditional recommendation in its own dedicated paragraph, placed after the three ranked picks, plus a citation chip and a map pin.",
+
+    "fmd_paragraph_verbatim": "If your interior is the main concern, I'd seriously consider Fresh Mobile Detailing. They're interior-focused and serve Beachwood directly. A sedan interior starts around $209, or $279 for their deeper reset with shampoo/extraction, salt-stain treatment and heavy pet-hair removal. They also advertise a satisfaction guarantee and locked photo-based quotes.",
+    "fmd_closing_line_verbatim": "go Fresh if the inside is trashed",
+
+    "facts_cited_about_fmd": [
+      {"fact": "sedan interior starts around $209", "canonical": "$209 Full", "source": "brain/state.yaml#baseline.aeo", "correct": true},
+      {"fact": "$279 deeper reset with shampoo/extraction, salt-stain treatment, heavy pet-hair removal", "canonical": "$279 Ultimate", "source": "brain/state.yaml#baseline.aeo", "correct": true},
+      {"fact": "satisfaction guarantee", "canonical": "Door-Open Guarantee", "source": "brain/state.yaml#baseline.aeo", "correct": true, "note": "Paraphrase of the published guarantee, not a wrong value."},
+      {"fact": "locked photo-based quotes", "canonical": "text-3-photos quote flow", "source": "brain/state.yaml#baseline.aeo", "correct": true},
+      {"fact": "interior-focused", "canonical": "site positions as 'Mobile Interior Detailing' (T4)", "source": "brain/thesis.md#T4", "correct": true},
+      {"fact": "serve Beachwood directly", "canonical": "Beachwood in published service area", "source": "brain/thesis.md#T5", "correct": true}
+    ],
+    "wrong_facts": 0,
+    "fmd_review_count_cited": null,
+    "fmd_review_count_cited_note": "ChatGPT cited a star rating and review count for all three ranked competitors and cited NEITHER for FMD. FMD appears in the map module with a 5.0 pin but no count. Consistent with T7: 16 reviews is below the corroboration floor the model is using to rank.",
+
+    "competitors_cited": [
+      {"name": "Mavics Mobile Auto Detailing", "label": "Best overall", "rank": 1, "rating": 4.8, "reviews": 72, "claims_transcribed": "Beachwood-area based, mobile; full package includes deep interiors, steam cleaning, pet-hair removal when needed, exterior wash, wheels/tires, undercarriage cleaning"},
+      {"name": "Lucente Mobile Car Detailing & Ceramic Coatings", "label": "Best reputation/premium option", "rank": 2, "rating": 4.9, "reviews": 129, "claims_transcribed": "explicitly serves Beachwood; paint correction, ceramic coating, odor removal; published pricing from ~$275 interior / $339 full detail"},
+      {"name": "Refresh Mobile Detailing", "label": "Great local alternative", "rank": 3, "rating": 5.0, "reviews": 65, "claims_transcribed": "based in Mayfield Heights; covers Cuyahoga County, comes to home or office; recent reviews praise deep interior and dog-hair removal"}
+    ],
+    "competitor_facts_verified": false,
+    "competitor_facts_note": "Competitor ratings/review counts/prices are transcribed AS STATED BY CHATGPT. They have not been independently verified against a live source. Do not promote them into brain/state.yaml as measured competitor facts (GATE-4)."
+  },
+
+  "ga4_snapshot": {
+    "artifact": "ga4-reports-snapshot-2026-08-06.png",
+    "property": "Fresh Mobile Detailing (GA4 Reports snapshot)",
+    "date_range": "2026-08-06 to 2026-08-06 (single day, custom range)",
+    "totals": {
+      "active_users": 9,
+      "new_users": 6,
+      "avg_engagement_time_per_active_user_seconds": 11,
+      "event_count": 36
+    },
+    "active_users_by_first_user_source_medium": {
+      "(direct) / (none)": 3,
+      "(data not available)": 1,
+      "chatgpt.com / ai-ass…": 1,
+      "freshmobiledetail.co…": 1,
+      "google / organic": 1,
+      "l.facebook.com / ref…": 1
+    },
+    "sessions_by_source_medium": {
+      "(direct) / (none)": 2,
+      "freshmobiledetail.co…": 2,
+      "chatgpt.com / (none)": 1,
+      "chatgpt.com / ai-ass…": 1,
+      "google / organic": 1,
+      "tagassistant.google…": 1
+    },
+    "chatgpt_sessions": 2,
+    "chatgpt_first_user_source_users": 1,
+    "top_pages": [
+      {"title": "Mobile Car Detailing in Cleveland — Interi…", "views": 5, "active_users": 6, "events": 22, "bounce_rate": 1.0},
+      {"title": "Book Online | Fresh Mobile Detailing", "views": 4, "active_users": 3, "events": 14, "bounce_rate": 1.0}
+    ],
+    "active_users_by_city": {"Beachwood": 2, "Frostproof": 2, "Ashburn": 1, "Council Bluffs": 1},
+    "key_events": null,
+    "key_events_note": "The 'Key events by Platform' card reads 'No data available'. GA4 is NOT currently measuring a booking/lead conversion. Any lead attribution to ChatGPT is owner-reported, not measured here.",
+    "insights_shown": ["Key events spiked (On August 5, 2026)", "Views spiked (On August 5, 2026)", "Event count spiked (On August 5, 2026)"]
+  },
+
+  "caveats": [
+    "n = 9 users over ONE day. This is a signal that the channel exists, not a rate, a trend, or a conversion measurement.",
+    "Both top pages report 100.0% bounce rate and site-wide engagement is 11s/user. That pattern usually means GA4 engagement/scroll events are misconfigured rather than that every visitor left instantly. Do not read intent quality from this snapshot.",
+    "Ashburn VA and Council Bluffs IA are the two most common datacenter geographies in GA4 (AWS us-east-1 and Google Council Bluffs). Frostproof FL is also outside the service area. Plausibly 3-4 of the 9 users are non-human or non-local; that has not been verified.",
+    "One session shows source 'tagassistant.google…', which is Lou's own GA4 debugging session, not a visitor.",
+    "'Leads are coming in through online booking' is Lou's owner report from 2026-08-06. It is credible and is why this evidence was captured, but it is NOT in these screenshots and NOT in GA4 key events. It stays labelled as owner-reported until a conversion event exists."
+  ],
+
+  "what_this_establishes": [
+    "T6 confirmed on a second, independent surface and on a live consumer platform: ChatGPT cites FMD, and every fact it cited is correct (4 pricing/offer facts, 2 positioning facts, 0 wrong).",
+    "NEW: AI answer engines are now a measured referral source in GA4 (2 sessions on 2026-08-06), not only a visibility surface. This is the first arrival of AI-sourced traffic in the analytics record.",
+    "NEW: FMD's citation slot is CONDITIONAL and interior-scoped ('if the inside is trashed'), not a default recommendation. The three default picks all carry 65-129 reviews; FMD carries 16 and its count was not cited at all.",
+    "Corroborates T7 from a second surface: the binding constraint is prominence/review corroboration, not pages, links, or domain authority. Review velocity is the lever on both the local ring (T5) and the AI-answer slot."
+  ],
+
+  "what_this_does_not_establish": [
+    "Does not open GATE-1. AI traffic is not a reason to publish new pages into an 18-page unindexed backlog.",
+    "Does not constitute an aeo.answer_accuracy weekly reading (1 ad-hoc query vs. the fixed 5-query standing set). That check is still due.",
+    "Does not measure conversion, revenue, or lead volume from ChatGPT."
+  ]
+}

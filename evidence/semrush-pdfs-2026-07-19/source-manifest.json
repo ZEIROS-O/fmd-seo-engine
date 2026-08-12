@@ -1,29 +1,62 @@
 {
   "generated_date": "2026-07-19",
-  "visual_inspection": {
-    "method": "Every PDF page was rendered to PNG with Ghostscript and inspected with the image viewing tool.",
-    "pages_inspected": 101
-  },
+  "extraction_passes": [
+    {
+      "pass": 1,
+      "run_on": "2026-08-03",
+      "scope": "summary findings only",
+      "method": "Every PDF page was rendered to PNG with Ghostscript and inspected with the image viewing tool.",
+      "pages_inspected": 101,
+      "output": ["pdf-findings.json"]
+    },
+    {
+      "pass": 2,
+      "run_on": "2026-08-03",
+      "scope": "full row-level and image-level extraction",
+      "method": "PyMuPDF: text layer pulled per page; the 479-row Position Tracking table parsed by binning words on their x-coordinate into the published column boundaries; embedded raster images pulled at native resolution from the PDF object stream and matched to their keyword label by page geometry; every Map Rank Tracker grid point classified by modal RGB and its rank integer transcribed visually.",
+      "why_not_playwright": "These are local PDFs, not web pages. Rendering them through a browser would have produced downsampled screenshots of the heatmaps; reading the embedded PNG objects directly gives the original 820x800 rasters Semrush shipped, which is what the digits and colour bands had to be read from.",
+      "validation": [
+        "Position Tracking: 479 parsed rows with contiguous indices 1..479; per-domain top-3/10/20/100 counts recomputed from the parsed rows reproduce the PDF's own Rankings Distribution tables exactly for all five tracked domains.",
+        "Map Rank Tracker: all 1127 grid points classified deterministically (colour distance 0.0, sample purity 1.00); all 1127 visually transcribed integers fall inside the band their pixel colour independently proves — 0 mismatches."
+      ],
+      "output": [
+        "position-tracking-479.json",
+        "position-tracking-479.csv",
+        "brand-performance.json",
+        "competitor-research.json",
+        "map-rank-heatmaps/heatmap-grids.json",
+        "map-rank-heatmaps/*.png (23 native-resolution grids)"
+      ]
+    }
+  ],
   "sources": [
     {
       "file_name": "Semrush-Competitor_Research__Overview-freshmobiledetail_com-19th_Jul_2026.pdf",
       "pages": 20,
-      "sha256": "e834da08b3c85b9b269e710888bb9f7eda28d0ac124714c2863089863ead09bf"
+      "sha256": "e834da08b3c85b9b269e710888bb9f7eda28d0ac124714c2863089863ead09bf",
+      "extracted_to": "competitor-research.json",
+      "embedded_images": "50 AI-platform badge graphics, no data content"
     },
     {
       "file_name": "Semrush-Map_Rank_Tracker__Heatmap-Fresh_Mobile_Detailing-19th_Jul_2026.pdf",
       "pages": 7,
-      "sha256": "b6dc0a9d4ba1d4b0188d8a72d645e24715ec5d8bf879f08c83e5ee8e76fd118c"
+      "sha256": "b6dc0a9d4ba1d4b0188d8a72d645e24715ec5d8bf879f08c83e5ee8e76fd118c",
+      "extracted_to": "map-rank-heatmaps/",
+      "embedded_images": "23 keyword heatmaps at 820x800; all data lives in these rasters, the text layer carries only the keyword labels"
     },
     {
       "file_name": "Semrush-Position_Tracking__Overview_(organic)-freshmobiledetail_com-19th_Jul_2026.pdf",
       "pages": 31,
-      "sha256": "e43bcfd2e482ee8b4f5474ec5f44909a8bcc15077e2d3aaf707fa18fba5fd046"
+      "sha256": "e43bcfd2e482ee8b4f5474ec5f44909a8bcc15077e2d3aaf707fa18fba5fd046",
+      "extracted_to": "position-tracking-479.json, position-tracking-479.csv",
+      "embedded_images": "none"
     },
     {
       "file_name": "Semrush-Brand_Performance-freshmobiledetail_com_(EN__Cleveland__Ohio__United-19th_Jul_2026.pdf",
       "pages": 43,
-      "sha256": "66cf487f13d376f6d26f31ad459b85ef9380fe53a6ee7c0afdc154d2cc8616df"
+      "sha256": "66cf487f13d376f6d26f31ad459b85ef9380fe53a6ee7c0afdc154d2cc8616df",
+      "extracted_to": "brand-performance.json",
+      "embedded_images": "20 platform badge graphics, no data content; all charts are vector with values in the text layer"
     }
   ]
 }

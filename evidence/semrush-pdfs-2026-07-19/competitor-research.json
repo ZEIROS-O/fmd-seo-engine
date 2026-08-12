@@ -1,0 +1,131 @@
+{
+ "source_pdf": "Semrush-Competitor_Research__Overview-freshmobiledetail_com-19th_Jul_2026.pdf",
+ "source_sha256": "e834da08b3c85b9b269e710888bb9f7eda28d0ac124714c2863089863ead09bf",
+ "pages": 20,
+ "scope": {
+  "platform": "All AI platforms (AI Overview, AI Mode, ChatGPT, Gemini)",
+  "target": "United States",
+  "data_as_of": "2026-07-19"
+ },
+ "extraction": {
+  "method": "PDF text layer (PyMuPDF), transcribed into typed fields",
+  "images_checked": "All 50 embedded raster objects on pages 10-15 are AI-platform badge graphics (184-275 x ~65 px), not data.",
+  "universe_warning": "This is a US-wide, all-platform query universe. It is NOT comparable to the Cleveland/ChatGPT Brand Performance universe. FMD's 0 here does not contradict the 8 Cleveland/ChatGPT mentions there."
+ },
+
+ "ai_visibility": {
+  "freshmobiledetail.com": {"score": 0, "change": 0},
+  "nathansdetailing.com": {"score": 30, "change": 3},
+  "rhinomobiledetailing.com": {"score": 18, "change": 5},
+  "allthingsfreshcardetailing.com": {"score": 14, "change": 0},
+  "refreshmobiledetailingcle.com": {"score": 0, "change": 0}
+ },
+ "audience": {
+  "freshmobiledetail.com": {"value": 0, "change_percent": 0},
+  "nathansdetailing.com": {"value": 440890, "change_percent": 0.3},
+  "allthingsfreshcardetailing.com": {"value": 109270, "change_percent": 25610.8},
+  "rhinomobiledetailing.com": {"value": 662, "change_percent": 21.1},
+  "refreshmobiledetailingcle.com": {"value": 0, "change_percent": 0}
+ },
+ "mentions": {
+  "freshmobiledetail.com": {"count": 0, "change_percent": 0},
+  "nathansdetailing.com": {"count": 49, "change_percent": 9.3},
+  "rhinomobiledetailing.com": {"count": 7, "change_percent": 56.2},
+  "allthingsfreshcardetailing.com": {"count": 4, "change_percent": 300},
+  "refreshmobiledetailingcle.com": {"count": 0, "change_percent": 0}
+ },
+ "totals": {"topics": 30, "sources": 183},
+
+ "topics": [
+  {"topic": "Car Window Tinting Laws and Percentages", "ai_volume": 453530, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Sir Francis Drake and Drake the Artist", "ai_volume": 133150, "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0},
+  {"topic": "Ohio Window Tint Laws", "ai_volume": 20350, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Window Tinting", "ai_volume": 15710, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Tesla Vehicle Wraps and Customization", "ai_volume": 9600, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Window Tinting and Eyebrow Design", "ai_volume": 4050, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Wash and Auto Detailing Services in Ohio", "ai_volume": 1130, "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0},
+  {"topic": "Car Rental and Vehicle Services in Mentor", "ai_volume": 1050, "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 1, "refresh": 0},
+  {"topic": "Car Detailing and Car Wash Services in Cleveland and Ohio", "ai_volume": 853, "fmd": 0, "nathans": 6, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Wash and Cleaning Supplies in Galt, CA", "ai_volume": 660, "fmd": 0, "nathans": 2, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Santa Rosa Window Tinting and Shade Services", "ai_volume": 548, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Detailing Warren Ohio", "ai_volume": 429, "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0},
+  {"topic": "Cleveland and Ohio Car Window Tinting", "ai_volume": 410, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Detailing and Wash Services in Taunton", "ai_volume": 381, "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 1, "refresh": 0},
+  {"topic": "Car Wash and Detailing Services in Ohio", "ai_volume": 323, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Auto Detailing and Car Wash Services Ohio", "ai_volume": 308, "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 2, "refresh": 0},
+  {"topic": "Medina Auto Detailing", "ai_volume": 239, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "esoteric car detailing and care", "ai_volume": 231, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Nathan's Auto Detailing and Automotive Services", "ai_volume": 206, "fmd": 0, "nathans": 14, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Island Auto Detailing and Car Wash Services", "ai_volume": 149, "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 1, "refresh": 0},
+  {"topic": "Car Wash Services in Streetsboro and Surrounding Ohio Areas", "ai_volume": 136, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Car Wash Services in Willoughby and Ravenna", "ai_volume": 130, "fmd": 0, "nathans": 2, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Auto Detailing Services in Elyria and Surrounding Areas", "ai_volume": 112, "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0},
+  {"topic": "Akron Auto Detailing and Car Wash Services", "ai_volume": 79, "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0},
+  {"topic": "Beachwood and Chagrin Auto Car Washes", "ai_volume": 73, "fmd": 0, "nathans": 2, "allthingsfresh": 0, "rhino": 0, "refresh": 0}
+ ],
+ "topics_note": "25 of the 30 topics are enumerated in the export. FMD is at 0 mentions on every one. The 'Missing Topics' table repeats the same rows, meaning Semrush classes the entire set as missing for FMD.",
+
+ "prompts": [
+  {"prompt": "eyebrow window tint", "ai_platform": "AI Overview", "mentions": 1, "brand": 15, "sources": 9},
+  {"prompt": "Car Detailing and Car Wash Services in Cleveland and Ohio", "ai_platform": "ChatGPT", "mentions": 1, "brand": 12, "sources": 14},
+  {"prompt": "Car Detailing Warren Ohio", "ai_platform": "AI Mode", "mentions": 1, "brand": 10, "sources": 21},
+  {"prompt": "Can you recommend top-rated auto polish services in Akron?", "ai_platform": "Gemini", "mentions": 1, "brand": 9, "sources": 8},
+  {"prompt": "How can I find a reliable Rhino custom detailing service nearby?", "ai_platform": "Gemini", "mentions": 1, "brand": 9, "sources": 1},
+  {"prompt": "Car Wash and Cleaning Supplies in Galt, CA", "ai_platform": "AI Mode", "mentions": 1, "brand": 8, "sources": 6},
+  {"prompt": "Can you recommend the best car wash and detailing places in Kent, Ohio?", "ai_platform": "Gemini", "mentions": 1, "brand": 8, "sources": 0},
+  {"prompt": "Car Detailing and Car Wash Services in Kent, Ohio", "ai_platform": "Gemini", "mentions": 1, "brand": 8, "sources": 5},
+  {"prompt": "Auto Detailing Services in Elyria and Surrounding Areas", "ai_platform": "Gemini", "mentions": 1, "brand": 8, "sources": 0},
+  {"prompt": "Can you recommend mobile car detailing options near Cleveland?", "ai_platform": "ChatGPT", "mentions": 1, "brand": 7, "sources": 13},
+  {"prompt": "Can you recommend a reliable car wash service in Mentor?", "ai_platform": "ChatGPT", "mentions": 1, "brand": 7, "sources": 6},
+  {"prompt": "What are the best car wash services in Galt, CA?", "ai_platform": "AI Mode", "mentions": 1, "brand": 7, "sources": 20},
+  {"prompt": "matte black tesla", "ai_platform": "AI Overview", "mentions": 1, "brand": 7, "sources": 10},
+  {"prompt": "Which car wash offers the best services in Beachwood and Chagrin?", "ai_platform": "Gemini", "mentions": 1, "brand": 7, "sources": 0},
+  {"prompt": "Car Wash Services in Willoughby and Ravenna", "ai_platform": "Gemini", "mentions": 1, "brand": 7, "sources": 8},
+  {"prompt": "What are the best car wash options in Willoughby and Ravenna?", "ai_platform": "Gemini", "mentions": 1, "brand": 7, "sources": 7},
+  {"prompt": "auto detailing in Strongsville Ohio", "ai_platform": "Gemini", "mentions": 1, "brand": 7, "sources": 0},
+  {"prompt": "Island Auto Detailing and Car Wash Services", "ai_platform": "ChatGPT", "mentions": 1, "brand": 6, "sources": 12},
+  {"prompt": "What are the best car detailing services in Cleveland?", "ai_platform": "AI Mode", "mentions": 1, "brand": 6, "sources": 8},
+  {"prompt": "Cleveland and Ohio Car Window Tinting", "ai_platform": "AI Mode", "mentions": 1, "brand": 6, "sources": 15},
+  {"prompt": "Can you recommend the top-rated car washes in Beachwood and Chagrin?", "ai_platform": "Gemini", "mentions": 1, "brand": 6, "sources": 0},
+  {"prompt": "How do I choose the best car wash in Pepper Pike for my vehicle?", "ai_platform": "Gemini", "mentions": 1, "brand": 6, "sources": 4},
+  {"prompt": "Car Wash and Auto Detailing Services in Ohio", "ai_platform": "AI Mode", "mentions": 1, "brand": 5, "sources": 5},
+  {"prompt": "Can you recommend mobile car detailing options near Cleveland?", "ai_platform": "AI Mode", "mentions": 1, "brand": 5, "sources": 28},
+  {"prompt": "Car Wash Services in Streetsboro and Surrounding Ohio Areas", "ai_platform": "Gemini", "mentions": 1, "brand": 5, "sources": 4}
+ ],
+ "prompts_note": "The 'All Prompts' and 'Missing Prompts' tables contain the identical 25 rows — every tracked prompt is a miss for FMD. Directly relevant misses include 'What are the best car detailing services in Cleveland?' (AI Mode) and 'Can you recommend mobile car detailing options near Cleveland?' (both ChatGPT and AI Mode).",
+
+ "sources": [
+  {"domain": "nathansdetailing.com", "fmd": 0, "nathans": 22, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 21, "prompts": 22},
+  {"domain": "reddit.com", "fmd": 0, "nathans": 7, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 7, "prompts": 7},
+  {"domain": "waterway.com", "fmd": 0, "nathans": 4, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 4, "prompts": 4},
+  {"domain": "youtube.com", "fmd": 0, "nathans": 3, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 6, "prompts": 3},
+  {"domain": "willowash.com", "fmd": 0, "nathans": 2, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 2, "prompts": 2},
+  {"domain": "rhinomobiledetailing.com", "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 2, "refresh": 0, "urls": 8, "prompts": 2},
+  {"domain": "wikipedia.org", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "kbb.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "imdb.com", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "teachrock.org", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "buckeyeexpresscarwash.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "megaautospa.com", "fmd": 0, "nathans": 0, "allthingsfresh": 0, "rhino": 1, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "businessinsider.com", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "tinting-laws.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "ohio.gov", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "tintguy.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "classicclean.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "insideoutcleveland.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "flexfilmstore.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "upenn.edu", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "contactmusic.com", "fmd": 0, "nathans": 0, "allthingsfresh": 1, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "tintingchicago.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "englewoodbestautobody.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "shinendrivedetailing.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1},
+  {"domain": "carlikewrap.com", "fmd": 0, "nathans": 1, "allthingsfresh": 0, "rhino": 0, "refresh": 0, "urls": 1, "prompts": 1}
+ ],
+ "sources_note": "25 of the 183 sources are enumerated. FMD is cited by none of them. nathansdetailing.com is its own top source (22 citations across 21 URLs) — the competitor's own site is what AI platforms quote.",
+
+ "unavailable_in_export": [
+  "Weak Topics", "Shared Topics", "Strong Topics", "Unique Topics",
+  "Shared Prompts", "Unique Prompts",
+  "Weak Sources", "Shared Sources", "Strong Sources", "Unique Sources"
+ ]
+}

@@ -1,0 +1,1927 @@
+{
+ "source_pdf": "Semrush-Map_Rank_Tracker__Heatmap-Fresh_Mobile_Detailing-19th_Jul_2026.pdf",
+ "source_sha256": "b6dc0a9d4ba1d4b0188d8a72d645e24715ec5d8bf879f08c83e5ee8e76fd118c",
+ "campaign": "Fresh Mobile Detailing",
+ "captured_at": "2026-07-19T17:38:00-04:00",
+ "subject": "freshmobiledetail.com / Fresh Mobile Detailing (Google Business Profile)",
+ "grid": {
+  "shape": "7x7",
+  "points_per_keyword": 49,
+  "row_0_is": "north",
+  "col_0_is": "west",
+  "visible_extent_from_basemap": "north edge along Wickliffe/Willoughby, south edge along Bedford/Bentleyville, west edge along East Cleveland/Cleveland Heights, east edge along Chesterland/Novelty",
+  "coordinates": "not published in the PDF; only row/col indices are recorded (GATE-4 \u2014 no invented lat/lng)"
+ },
+ "legend": {
+  "green": "rank 1-3",
+  "orange": "rank 4-10",
+  "red": "rank 11-20",
+  "gray": "20+ (outside the tracked top 20)"
+ },
+ "extraction": {
+  "images": "embedded PNGs pulled at native 820x800 from the PDF object stream (PyMuPDF), keyword label matched by page geometry",
+  "band_per_point": "deterministic \u2014 modal RGB sampled on a ring at r=8/10/12 px from each pin centre; every one of the 1127 points matched a legend colour exactly (distance 0.0, purity 1.00)",
+  "integer_per_point": "visual transcription of the rendered digits",
+  "cross_check": "all 1127 transcribed values fall inside the band their pixel colour independently proves; 0 mismatches",
+  "note": "\"interior detailing\" and \"interior car detailing\" share one PDF image object (byte-identical grids) \u2014 Semrush returned the same result set for both"
+ },
+ "totals": {
+  "keywords": 23,
+  "points_total": 1127,
+  "points_present": 287,
+  "points_absent": 840,
+  "presence_rate_percent": 25.5,
+  "top3_points": 7,
+  "top10_points": 110,
+  "best_rank_anywhere": 3,
+  "median_rank_where_present": 12
+ },
+ "keywords": [
+  {
+   "keyword": "mobile detailing service",
+   "image": "mobile-detailing-service.png",
+   "points_sampled": 49,
+   "points_present": 31,
+   "points_absent": 18,
+   "best_rank": 3,
+   "median_rank_present": 10,
+   "top3_points": 3,
+   "top10_points": 19,
+   "band_counts": {
+    "top3_green": 3,
+    "four_to_ten_orange": 16,
+    "eleven_to_twenty_red": 12,
+    "beyond_twenty_gray": 18
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     14,
+     9,
+     7,
+     12,
+     14
+    ],
+    [
+     null,
+     17,
+     8,
+     4,
+     5,
+     7,
+     15
+    ],
+    [
+     null,
+     20,
+     7,
+     3,
+     4,
+     7,
+     10
+    ],
+    [
+     null,
+     null,
+     5,
+     3,
+     3,
+     8,
+     10
+    ],
+    [
+     null,
+     null,
+     18,
+     14,
+     10,
+     10,
+     10
+    ],
+    [
+     null,
+     null,
+     null,
+     16,
+     12,
+     12,
+     13
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile detailing",
+   "image": "mobile-detailing.png",
+   "points_sampled": 49,
+   "points_present": 29,
+   "points_absent": 20,
+   "best_rank": 4,
+   "median_rank_present": 11,
+   "top3_points": 0,
+   "top10_points": 11,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 11,
+    "eleven_to_twenty_red": 18,
+    "beyond_twenty_gray": 20
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     20,
+     11,
+     12,
+     11,
+     16,
+     18
+    ],
+    [
+     null,
+     null,
+     11,
+     6,
+     5,
+     8,
+     16
+    ],
+    [
+     null,
+     null,
+     8,
+     4,
+     5,
+     7,
+     13
+    ],
+    [
+     null,
+     null,
+     6,
+     4,
+     4,
+     7,
+     11
+    ],
+    [
+     null,
+     null,
+     17,
+     15,
+     11,
+     11,
+     12
+    ],
+    [
+     null,
+     null,
+     null,
+     19,
+     null,
+     19,
+     13
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile car detailing",
+   "image": "mobile-car-detailing.png",
+   "points_sampled": 49,
+   "points_present": 27,
+   "points_absent": 22,
+   "best_rank": 4,
+   "median_rank_present": 10,
+   "top3_points": 0,
+   "top10_points": 14,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 14,
+    "eleven_to_twenty_red": 13,
+    "beyond_twenty_gray": 22
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     16,
+     9,
+     8,
+     16,
+     19
+    ],
+    [
+     null,
+     20,
+     10,
+     6,
+     5,
+     8,
+     16
+    ],
+    [
+     null,
+     null,
+     8,
+     4,
+     5,
+     7,
+     13
+    ],
+    [
+     null,
+     null,
+     8,
+     6,
+     4,
+     6,
+     13
+    ],
+    [
+     null,
+     null,
+     null,
+     18,
+     16,
+     11,
+     13
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     18,
+     17
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile car detailing near me",
+   "image": "mobile-car-detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 25,
+   "points_absent": 24,
+   "best_rank": 3,
+   "median_rank_present": 11,
+   "top3_points": 2,
+   "top10_points": 12,
+   "band_counts": {
+    "top3_green": 2,
+    "four_to_ten_orange": 10,
+    "eleven_to_twenty_red": 13,
+    "beyond_twenty_gray": 24
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     16,
+     11,
+     7,
+     13,
+     null
+    ],
+    [
+     null,
+     null,
+     12,
+     5,
+     5,
+     8,
+     15
+    ],
+    [
+     null,
+     null,
+     9,
+     3,
+     5,
+     7,
+     11
+    ],
+    [
+     null,
+     null,
+     13,
+     7,
+     3,
+     7,
+     11
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     11,
+     10,
+     11
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     18,
+     17
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile detailing near me",
+   "image": "mobile-detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 25,
+   "points_absent": 24,
+   "best_rank": 3,
+   "median_rank_present": 11,
+   "top3_points": 2,
+   "top10_points": 12,
+   "band_counts": {
+    "top3_green": 2,
+    "four_to_ten_orange": 10,
+    "eleven_to_twenty_red": 13,
+    "beyond_twenty_gray": 24
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     17,
+     11,
+     8,
+     16,
+     null
+    ],
+    [
+     null,
+     null,
+     13,
+     6,
+     5,
+     8,
+     16
+    ],
+    [
+     null,
+     20,
+     10,
+     3,
+     4,
+     7,
+     11
+    ],
+    [
+     null,
+     null,
+     11,
+     6,
+     3,
+     6,
+     11
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     10,
+     11,
+     12
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     16
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile car detailing cleveland",
+   "image": "mobile-car-detailing-cleveland.png",
+   "points_sampled": 49,
+   "points_present": 23,
+   "points_absent": 26,
+   "best_rank": 4,
+   "median_rank_present": 10,
+   "top3_points": 0,
+   "top10_points": 12,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 12,
+    "eleven_to_twenty_red": 11,
+    "beyond_twenty_gray": 26
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     17,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     12,
+     11,
+     13,
+     13
+    ],
+    [
+     null,
+     null,
+     9,
+     4,
+     4,
+     10,
+     11
+    ],
+    [
+     null,
+     null,
+     7,
+     4,
+     4,
+     9,
+     11
+    ],
+    [
+     null,
+     null,
+     9,
+     6,
+     6,
+     8,
+     11
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     13,
+     12,
+     12
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "mobile detailing cleveland ohio",
+   "image": "mobile-detailing-cleveland-ohio.png",
+   "points_sampled": 49,
+   "points_present": 17,
+   "points_absent": 32,
+   "best_rank": 6,
+   "median_rank_present": 16,
+   "top3_points": 0,
+   "top10_points": 4,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 4,
+    "eleven_to_twenty_red": 13,
+    "beyond_twenty_gray": 32
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     19,
+     20,
+     20,
+     null
+    ],
+    [
+     null,
+     null,
+     18,
+     8,
+     7,
+     16,
+     19
+    ],
+    [
+     null,
+     null,
+     16,
+     6,
+     6,
+     16,
+     null
+    ],
+    [
+     null,
+     null,
+     19,
+     14,
+     12,
+     15,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     20,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior mobile detailing",
+   "image": "interior-mobile-detailing.png",
+   "points_sampled": 49,
+   "points_present": 13,
+   "points_absent": 36,
+   "best_rank": 7,
+   "median_rank_present": 14,
+   "top3_points": 0,
+   "top10_points": 5,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 5,
+    "eleven_to_twenty_red": 8,
+    "beyond_twenty_gray": 36
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     11,
+     8,
+     9,
+     14,
+     null
+    ],
+    [
+     null,
+     null,
+     15,
+     7,
+     8,
+     17,
+     null
+    ],
+    [
+     null,
+     null,
+     16,
+     14,
+     10,
+     15,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     19,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "car detailing service",
+   "image": "car-detailing-service.png",
+   "points_sampled": 49,
+   "points_present": 11,
+   "points_absent": 38,
+   "best_rank": 5,
+   "median_rank_present": 13,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 9,
+    "beyond_twenty_gray": 38
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     15,
+     11,
+     11,
+     18,
+     null
+    ],
+    [
+     null,
+     null,
+     15,
+     5,
+     5,
+     15,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     13,
+     12,
+     15,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "auto detailing service",
+   "image": "auto-detailing-service.png",
+   "points_sampled": 49,
+   "points_present": 10,
+   "points_absent": 39,
+   "best_rank": 4,
+   "median_rank_present": 13.5,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 8,
+    "beyond_twenty_gray": 39
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     15,
+     11,
+     13,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     13,
+     4,
+     6,
+     17,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     14,
+     16,
+     19,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "car detailing",
+   "image": "car-detailing.png",
+   "points_sampled": 49,
+   "points_present": 10,
+   "points_absent": 39,
+   "best_rank": 6,
+   "median_rank_present": 15.0,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 8,
+    "beyond_twenty_gray": 39
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     20,
+     13,
+     12,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     19,
+     6,
+     9,
+     18,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     14,
+     16,
+     20,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "detailing near me",
+   "image": "detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 10,
+   "points_absent": 39,
+   "best_rank": 5,
+   "median_rank_present": 12.0,
+   "top3_points": 0,
+   "top10_points": 4,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 4,
+    "eleven_to_twenty_red": 6,
+    "beyond_twenty_gray": 39
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     15,
+     12,
+     10,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     12,
+     5,
+     5,
+     13,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     13,
+     9,
+     13,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "auto detailing near me",
+   "image": "auto-detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 9,
+   "points_absent": 40,
+   "best_rank": 5,
+   "median_rank_present": 15,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 7,
+    "beyond_twenty_gray": 40
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     14,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     19,
+     5,
+     6,
+     17,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     17,
+     15,
+     16,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "auto detailing",
+   "image": "auto-detailing.png",
+   "points_sampled": 49,
+   "points_present": 8,
+   "points_absent": 41,
+   "best_rank": 6,
+   "median_rank_present": 14.5,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 6,
+    "beyond_twenty_gray": 41
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     14,
+     14,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     18,
+     6,
+     8,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     16,
+     20,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "auto detailing cleveland",
+   "image": "auto-detailing-cleveland.png",
+   "points_sampled": 49,
+   "points_present": 7,
+   "points_absent": 42,
+   "best_rank": 9,
+   "median_rank_present": 15,
+   "top3_points": 0,
+   "top10_points": 1,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 1,
+    "eleven_to_twenty_red": 6,
+    "beyond_twenty_gray": 42
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     17,
+     12,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     20,
+     11,
+     9,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     15,
+     19,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior car detailng near me",
+   "image": "interior-car-detailng-near-me.png",
+   "points_sampled": 49,
+   "points_present": 7,
+   "points_absent": 42,
+   "best_rank": 7,
+   "median_rank_present": 16,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 5,
+    "beyond_twenty_gray": 42
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     16,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     7,
+     10,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     17,
+     17,
+     18,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior detailing near me",
+   "image": "interior-detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 7,
+   "points_absent": 42,
+   "best_rank": 7,
+   "median_rank_present": 16,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 5,
+    "beyond_twenty_gray": 42
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     14,
+     17,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     7,
+     9,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     16,
+     17,
+     20,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "car detailing near me",
+   "image": "car-detailing-near-me.png",
+   "points_sampled": 49,
+   "points_present": 6,
+   "points_absent": 43,
+   "best_rank": 6,
+   "median_rank_present": 13.0,
+   "top3_points": 0,
+   "top10_points": 2,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 2,
+    "eleven_to_twenty_red": 4,
+    "beyond_twenty_gray": 43
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     11,
+     15,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     6,
+     8,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     16,
+     19,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "car detailing cleveland",
+   "image": "car-detailing-cleveland.png",
+   "points_sampled": 49,
+   "points_present": 5,
+   "points_absent": 44,
+   "best_rank": 13,
+   "median_rank_present": 15,
+   "top3_points": 0,
+   "top10_points": 0,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 0,
+    "eleven_to_twenty_red": 5,
+    "beyond_twenty_gray": 44
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     19,
+     14,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     15,
+     13,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     18,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior detailing service",
+   "image": "interior-detailing-service.png",
+   "points_sampled": 49,
+   "points_present": 5,
+   "points_absent": 44,
+   "best_rank": 13,
+   "median_rank_present": 19,
+   "top3_points": 0,
+   "top10_points": 0,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 0,
+    "eleven_to_twenty_red": 5,
+    "beyond_twenty_gray": 44
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     18,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     20,
+     13,
+     19,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     20,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior car detailing",
+   "image": "interior-car-detailing.png",
+   "points_sampled": 49,
+   "points_present": 1,
+   "points_absent": 48,
+   "best_rank": 17,
+   "median_rank_present": 17,
+   "top3_points": 0,
+   "top10_points": 0,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 0,
+    "eleven_to_twenty_red": 1,
+    "beyond_twenty_gray": 48
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     17,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior detailing",
+   "image": "interior-detailing.png",
+   "points_sampled": 49,
+   "points_present": 1,
+   "points_absent": 48,
+   "best_rank": 17,
+   "median_rank_present": 17,
+   "top3_points": 0,
+   "top10_points": 0,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 0,
+    "eleven_to_twenty_red": 1,
+    "beyond_twenty_gray": 48
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     17,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  },
+  {
+   "keyword": "interior auto detailing",
+   "image": "interior-auto-detailing.png",
+   "points_sampled": 49,
+   "points_present": 0,
+   "points_absent": 49,
+   "best_rank": null,
+   "median_rank_present": null,
+   "top3_points": 0,
+   "top10_points": 0,
+   "band_counts": {
+    "top3_green": 0,
+    "four_to_ten_orange": 0,
+    "eleven_to_twenty_red": 0,
+    "beyond_twenty_gray": 49
+   },
+   "grid": [
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   ]
+  }
+ ]
+}

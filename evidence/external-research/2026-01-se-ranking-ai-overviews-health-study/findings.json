@@ -1,0 +1,70 @@
+{
+ "title": "SE Ranking study of 50,807 health searches and 465,823 AI Overview citations (Germany)",
+ "filed_on": "2026-08-03",
+ "kind": "external_research",
+ "subject": "How Google AI Overviews select the URLs they cite",
+
+ "provenance": {
+  "primary_study": "SE Ranking — analysis of 50,807 health-related searches and 465,823 citations in the German market. Prompted by a Guardian article, 'Google AI Overviews put people at risk of harm with misleading health advice'.",
+  "what_we_actually_hold": "A secondhand summary: an X/Twitter thread by Alex Groberman (@alexgroberman, Jan 2026), archived at source-thread-groberman-x.md, plus one chart image from SE Ranking archived at chart-trusted-medical-vs-general-sources.png.",
+  "reliability": "UNVERIFIED SECONDHAND. The primary SE Ranking report has not been read. The relaying author sells SEO packages and the thread interleaves study numbers with promotion for his own products; the promotional claims are excluded from `study_findings` below and kept separately in `authors_commentary`.",
+  "rule": "These numbers must NOT be written into brain/state.yaml or brain/thesis.md as measured facts. They are a prior about AI-answer behaviour, not a measurement of FMD (GATE-4). Treat as hypothesis-generating only."
+ },
+
+ "study_findings": {
+  "scope": {"searches": 50807, "citations": 465823, "market": "Germany", "vertical": "health"},
+  "ai_overview_trigger_rate_percent": {"value": 82, "operator": "greater_than", "note": "more than 82% of health-related searches triggered an AI Overview"},
+  "cited_url_organic_overlap_percent": {
+   "in_google_top_10": 36,
+   "in_google_top_20": 54,
+   "in_google_top_100": 74,
+   "implication_as_stated": "roughly 26% of AI-cited URLs sit outside the organic top 100 entirely; even when AI and organic cite the same domain they often cite different URLs"
+  },
+  "source_expertise_split_percent": {
+   "trusted_medical_sources": 34.45,
+   "general_or_non_expert_sources": 65.55,
+   "evidence": "chart-trusted-medical-vs-general-sources.png (SE Ranking)"
+  },
+  "authority_beats_expertise": {
+   "claim": "Domain authority often outweighs expertise in AI Overviews.",
+   "evidence_cited": "One of the top five most-cited domains was a career/job platform, not a hospital, government site, or academic journal."
+  },
+  "youtube": {
+   "claim": "YouTube was the leading source for health-related AI Overviews while ranking 11th in organic results for the same queries.",
+   "quoted": "This shows that AI often prioritizes video content even when more authoritative, easier-to-find sources exist."
+  },
+  "stated_pattern": [
+   "government and academic sources are underrepresented",
+   "authority-heavy but non-expert sites show up",
+   "lower-ranking URLs get cited",
+   "scale and consistency matter more than pedigree"
+  ]
+ },
+
+ "authors_commentary": {
+  "note": "The author's inferences and product pitches, kept separate from the study's numbers.",
+  "inferences": [
+   "AI Overviews infer trust from authority signals plus parseability rather than credentials.",
+   "Ranking a page is no longer sufficient; publishing the page AI wants to quote (comparison, FAQ, definition, buyer guide, explainer) is a separate job.",
+   "'Operational authority' is buildable by ordinary businesses: quotable pages, coverage at scale, authority signals to break ties."
+  ],
+  "unrelated_claims_in_the_same_thread": [
+   "64% of the SaaS blogs in a separate study grew search traffic in 2025",
+   "an ecommerce customer grew search traffic 126%",
+   "a recommendation of '3 DR50+ backlinks from domains LLMs already trust'"
+  ],
+  "commercial_interest": "Thread repeatedly links seo-stuff.com Gold Plan and Premium Content Bundle. Discount accordingly."
+ },
+
+ "relevance_to_fmd": {
+  "converges_with_measured_evidence": [
+   "The Semrush Brand Performance export (2026-07-19) measures freshmobiledetail.com at 0 citations while the brand is mentioned 8 times — every citation FMD earns comes from a third-party property (trustindex.io 11, reddit.com 8, itsawash.net 8, zayasmobiledetailing.com 7). The study's 'AI cites what is quotable and authoritative, not what ranks' pattern is the same shape.",
+   "The study's finding that only 36% of AI-cited URLs sit in the organic top 10 is consistent with FMD's split state: 0 organic top-10 positions across 479 tracked keywords, yet 8 ChatGPT mentions at an average position of 1.75 when mentioned."
+  ],
+  "does_not_change": [
+   "GATE-1 stays closed. The study's 'coverage at scale' advice is exactly the instruction the gate exists to refuse: 14 pages are already discovered-and-not-indexed. Publishing more pages does not become correct because a third-party study likes volume.",
+   "T1 (entity trust is step zero) is unaffected — if anything the study's 'authority breaks ties' finding reinforces it."
+  ],
+  "open_question_it_raises": "Whether a small number of genuinely quotable, answer-shaped assets (definitions, comparison tables, structured FAQ) on already-indexed URLs would earn citations without adding new pages. That is a refresh/consolidation question on existing pages, not a publishing question, so it is not gated by GATE-1."
+ }
+}
