@@ -344,7 +344,8 @@ def position_records(rows: list[dict], *, expected_keywords: int | None = None) 
     ]
     return {
         "blocked": len(rows) != expected,
-        "keywords_tracked": len(rows),
+        "keywords_tracked": expected,
+        "keywords_missing": max(expected - len(rows), 0),
         "top10_count": sum(position <= 10 for position in positions),
         "top3_count": sum(position <= 3 for position in positions),
         "top20_count": sum(position <= 20 for position in positions),
@@ -406,14 +407,28 @@ def _get_one(
     return status, normalize_result(task["keyword"], result, targets) if result else None
 
 
-def collect_tasks(config: dict) -> tuple[dict, list[dict]]:
+def _exclusive_results_path(output_dir: Path) -> Path:
+    base = output_dir / "results.jsonl"
+    suffix = 1
+    while True:
+        candidate = base if suffix == 1 else base.with_name(f"results~{suffix}.jsonl")
+        try:
+            candidate.touch(exist_ok=False)
+            return candidate
+        except FileExistsError:
+            suffix += 1
+
+
+def collect_tasks(
+    config: dict, *, evidence_dir: Path | None = None, raw_dir: Path | None = None,
+) -> tuple[dict, list[dict]]:
     manifest_path = _manifest_path(config)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     tasks = manifest.get("tasks") or []
     expected = len(load_keywords(Path(config["paths"]["position_keywords"])))
     if len(tasks) != expected:
         raise ValueError(f"manifest has {len(tasks)} tasks; expected {expected}")
-    raw_dir = paths.RAW_DIR / "serp-bulk"
+    raw_dir = raw_dir or (paths.RAW_DIR / "serp-bulk")
     raw_dir.mkdir(parents=True, exist_ok=True)
     client = _client(config)
     targets = config["serp_bulk"]["targets"]
@@ -432,7 +447,8 @@ def collect_tasks(config: dict) -> tuple[dict, list[dict]]:
                 pending += 1
     order = {task["keyword"].casefold(): index for index, task in enumerate(tasks)}
     rows.sort(key=lambda row: order[row["keyword"].casefold()])
-    prior_paths = sorted(paths.EVIDENCE_DIR.glob("serp-bulk-*/results.jsonl"))
+    evidence_root = evidence_dir or paths.EVIDENCE_DIR
+    prior_paths = sorted(evidence_root.glob("serp-bulk-*/results*.jsonl"))
     previous_rows = []
     if prior_paths:
         previous_rows = [
@@ -440,15 +456,13 @@ def collect_tasks(config: dict) -> tuple[dict, list[dict]]:
             for line in prior_paths[-1].read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-    output_dir = paths.EVIDENCE_DIR / (
+    output_dir = evidence_root / (
         "serp-bulk-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     )
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / "results.jsonl"
-    output_path.write_text(
-        "".join(json.dumps(row, sort_keys=True) + "\n" for row in rows),
-        encoding="utf-8",
-    )
+    output_path = _exclusive_results_path(output_dir)
+    with output_path.open("w", encoding="utf-8") as handle:
+        handle.write("".join(json.dumps(row, sort_keys=True) + "\n" for row in rows))
     records = position_records(rows, expected_keywords=expected)
     competitor = competitor_records(
         rows,

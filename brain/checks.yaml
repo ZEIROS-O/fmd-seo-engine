@@ -165,6 +165,7 @@ checks:
     records:
       - {name: blocked, type: bool}
       - {name: keywords_tracked, type: int}
+      - {name: keywords_missing, type: int}
       - {name: top10_count, type: int}
       - {name: top3_count, type: int}
       - {name: top20_count, type: int}
@@ -189,6 +190,7 @@ checks:
     records:
       - {name: queries, type: int}
       - {name: points_sampled, type: int}
+      - {name: points_missing, type: int}
       - {name: points_present, type: int}
       - {name: median_rank, type: float}
       - {name: competitors_above, type: int}
@@ -198,6 +200,44 @@ checks:
         finding: "FMD is absent from every sampled map-pack point."
         action: "Prioritize entity consistency, review velocity, and GBP completeness; do not add pages."
     why: "The map pack is the primary discovery surface for a mobile local-service business; a single point is too noisy to govern decisions."
+
+  - id: seo.local_visibility
+    domain: seo
+    title: Places-tab rank across the keyword x suburb matrix
+    cadence: weekly
+    cost: paid
+    method:
+      kind: engine
+      run: |
+        Run `fmd-seo local-finder --run` over config/engine.yaml → local_finder
+        (keyword templates x suburb locations, Places tab, depth 20, mobile).
+        Record how many pairs rank at all, how many reach the 3-slot pack, and
+        the best rank observed. Never substitute an estimate for an absent
+        measurement (GATE-4).
+    records:
+      - {name: pairs_tested, type: int}
+      - {name: pairs_ranked, type: int}
+      - {name: pairs_in_pack, type: int}
+      - {name: best_rank, type: int}
+      - {name: reviews, type: int}
+    thresholds:
+      - expr: pairs_ranked == 0
+        severity: critical
+        finding: "FMD ranks nowhere in the Places tab across the whole matrix."
+        action: "Verify the GBP is live, verified, and correctly categorized before any content or link work."
+      - expr: pairs_ranked > 0 and pairs_in_pack == 0
+        severity: high
+        finding: "FMD ranks in the Places tab but reaches no 3-slot pack — invisible on normal web searches."
+        action: "Prominence work: review velocity and citation consistency. Rank 4-6 is a near miss, not an absence."
+      - expr: pairs_ranked > 0 and pairs_ranked * 3 < pairs_tested
+        severity: high
+        finding: "Visibility is confined to a narrow ring around the profile's anchor."
+        action: "The ring widens with prominence, not with pages. Reviews and citations before content."
+    why: |
+      Measured 2026-08-03: the 3-slot pack probe reported points_present 0 across
+      181 samples while FMD actually held rank 2 in Mayfield Heights, 6 in
+      Beachwood, and nothing in Solon. Depth 20 is what makes a ring visible;
+      a 3-slot probe cannot tell "rank 6" from "does not exist".
 
   - id: gbp.performance
     domain: seo
@@ -219,7 +259,11 @@ checks:
       - {name: website_clicks, type: int}
       - {name: searches_discovery, type: int}
       - {name: search_keywords_thresholded, type: int}
-    thresholds: []
+    thresholds:
+      - expr: calls + direction_requests + website_clicks == 0
+        severity: high
+        finding: "GBP produced no recorded customer actions in the measurement window."
+        action: "Verify the profile and measurement connection before using GBP performance in decisions."
     why: "Discovery searches and profile actions are the closest first-party measures of map-pack visibility and business impact."
 
   - id: seo.site_health

@@ -73,6 +73,7 @@ def test_position_records_count_top3_top10_and_top20():
     assert position_records(rows, expected_keywords=4) == {
         "blocked": False,
         "keywords_tracked": 4,
+        "keywords_missing": 0,
         "top10_count": 2,
         "top3_count": 1,
         "top20_count": 3,

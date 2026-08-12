@@ -77,7 +77,9 @@ def task_specs(queries: list[str], points: list[GridPoint]) -> list[dict]:
     } for query in queries for point in points]
 
 
-def aggregate_map_pack(rows: list[dict], *, fmd_aliases: list[str]) -> dict:
+def aggregate_map_pack(
+    rows: list[dict], *, fmd_aliases: list[str], tasks_posted: int | None = None,
+) -> dict:
     aliases = {alias.casefold() for alias in fmd_aliases}
     present_ranks = [
         int(row["fmd_local_pack_position"])
@@ -94,9 +96,13 @@ def aggregate_map_pack(rows: list[dict], *, fmd_aliases: list[str]) -> dict:
             rank = business.get("order")
             if name and name.casefold() not in aliases and rank is not None and int(rank) < int(fmd_rank):
                 competitors.add(name.casefold())
+    denominator = len(rows) if tasks_posted is None else int(tasks_posted)
+    if denominator < len(rows):
+        raise ValueError("tasks_posted cannot be smaller than collected rows")
     return {
         "queries": len({str(row.get("query")) for row in rows}),
-        "points_sampled": len(rows),
+        "points_sampled": denominator,
+        "points_missing": denominator - len(rows),
         "points_present": len(present_ranks),
         "median_rank": float(statistics.median(present_ranks)) if present_ranks else 0.0,
         "competitors_above": len(competitors),
@@ -113,13 +119,13 @@ def _radius_from_facts(config: dict) -> tuple[str, float]:
 
 
 def _specs(config: dict) -> tuple[str, list[dict]]:
-    base, radius = _radius_from_facts(config)
+    base, _service_radius = _radius_from_facts(config)
     grid = config["geogrid"]
     center_latitude, center_longitude = map(float, grid["center"])
     points = build_grid(
         center_latitude,
         center_longitude,
-        radius_miles=radius,
+        radius_miles=float(grid["radius_miles"]),
         size=int(grid.get("size", 5)),
     )
     return base, task_specs(list(grid["queries"]), points)
@@ -232,14 +238,28 @@ def post_tasks(config: dict) -> dict:
     }
 
 
-def collect_tasks(config: dict) -> tuple[dict, list[dict]]:
+def _exclusive_results_path(output_dir: Path) -> Path:
+    base = output_dir / "results.jsonl"
+    suffix = 1
+    while True:
+        candidate = base if suffix == 1 else base.with_name(f"results~{suffix}.jsonl")
+        try:
+            candidate.touch(exist_ok=False)
+            return candidate
+        except FileExistsError:
+            suffix += 1
+
+
+def collect_tasks(
+    config: dict, *, evidence_dir: Path | None = None, raw_dir: Path | None = None,
+) -> tuple[dict, list[dict]]:
     manifest_path = _manifest_path(config)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     _base, specs = _specs(config)
     tasks = manifest.get("tasks") or []
     if len(tasks) != len(specs):
         raise ValueError(f"manifest has {len(tasks)} grid tasks; expected {len(specs)}")
-    raw_dir = paths.RAW_DIR / "geogrid"
+    raw_dir = raw_dir or (paths.RAW_DIR / "geogrid")
     raw_dir.mkdir(parents=True, exist_ok=True)
     client = _client(config)
     targets = config["serp_bulk"]["targets"]
@@ -259,17 +279,15 @@ def collect_tasks(config: dict) -> tuple[dict, list[dict]]:
             "location_coordinate": task["location_coordinate"],
         })
         rows.append(row)
-    output_dir = paths.EVIDENCE_DIR / (
+    output_dir = (evidence_dir or paths.EVIDENCE_DIR) / (
         "geogrid-" + datetime.now(timezone.utc).strftime("%Y-%m-%d")
     )
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / "results.jsonl"
-    output_path.write_text(
-        "".join(json.dumps(row, sort_keys=True) + "\n" for row in rows),
-        encoding="utf-8",
-    )
+    output_path = _exclusive_results_path(output_dir)
+    with output_path.open("w", encoding="utf-8") as handle:
+        handle.write("".join(json.dumps(row, sort_keys=True) + "\n" for row in rows))
     aliases = config["serp_bulk"]["targets"]["fmd"].get("aliases") or []
-    records = aggregate_map_pack(rows, fmd_aliases=aliases)
+    records = aggregate_map_pack(rows, fmd_aliases=aliases, tasks_posted=len(tasks))
     if not pending:
         manifest["completed_at"] = datetime.now(timezone.utc).isoformat()
         _write_json(manifest_path, manifest)

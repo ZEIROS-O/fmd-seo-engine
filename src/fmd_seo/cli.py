@@ -147,6 +147,11 @@ def main(argv: list[str] | None = None) -> int:
     serp_mode.add_argument("--post", action="store_true", help="post missing tasks to the standard queue")
     serp_mode.add_argument("--collect", action="store_true", help="collect posted tasks and record results")
 
+    p = sub.add_parser("local-finder", help="Places-tab depth across the keyword x location matrix")
+    lf_mode = p.add_mutually_exclusive_group(required=True)
+    lf_mode.add_argument("--dry-run", action="store_true", help="estimate only; call nothing")
+    lf_mode.add_argument("--run", action="store_true", help="run the matrix and record the observation")
+
     p = sub.add_parser("geogrid", help="capped resumable map-pack grid queue")
     grid_mode = p.add_mutually_exclusive_group(required=True)
     grid_mode.add_argument("--dry-run", action="store_true", help="estimate only; post zero tasks")
@@ -306,6 +311,40 @@ def main(argv: list[str] | None = None) -> int:
         except (LockHeld, killswitch.KillSwitchEngaged) as err:
             payload, code = {"command": args.command, "error": str(err)}, EXIT["BLOCK"]
         except Exception as err:  # noqa: BLE001 - receipt distinguishes internal failure
+            payload, code = {
+                "command": args.command,
+                "error": f"{type(err).__name__}: {err}",
+            }, EXIT["ERROR"]
+        finally:
+            if lock is not None and lock_acquired:
+                lock.release()
+        return _emit_loop(rb, payload, code, receipts_dir)
+
+    if args.command == "local-finder":
+        from . import local_finder
+        rb = ReceiptBuilder(args.command)
+        lock = None
+        lock_acquired = False
+        try:
+            if args.dry_run:
+                payload = local_finder.dry_run(config)
+                code = 0 if payload["within_cap"] else EXIT["BLOCK"]
+            else:
+                killswitch.assert_not_engaged()
+                paths.ensure_run_dirs()
+                lock = RunLock(paths.LOCK_FILE)
+                lock.acquire(rb.run_id)
+                lock_acquired = True
+                payload, _rows = local_finder.run(config)
+                if payload.get("status") == "BLOCK":
+                    code = EXIT["BLOCK"]
+                elif payload.get("status") == "PARTIAL":
+                    code = EXIT["PARTIAL"]
+                else:
+                    code = 0
+        except (LockHeld, killswitch.KillSwitchEngaged) as err:
+            payload, code = {"command": args.command, "error": str(err)}, EXIT["BLOCK"]
+        except Exception as err:  # noqa: BLE001
             payload, code = {
                 "command": args.command,
                 "error": f"{type(err).__name__}: {err}",

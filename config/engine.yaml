@@ -1,11 +1,11 @@
 schema_version: 1
 
-# DataForSEO requires a $50 minimum deposit. The ledger still accounts for all
-# earlier spend and reserves each task before posting.
+# DataForSEO may require a larger account deposit; this is the engine's bounded
+# spend ceiling. The ledger accounts for all spend and reserves before posting.
 # Measured per-call costs: serp $0.002 | llm_responses $0.0063 |
 # business_data $0.0131 | llm_mentions $0.10 (50x a SERP — capped to zero).
 budget:
-  total_usd: 50.0
+  total_usd: 10.0
   endpoint_caps_usd:
     probe: 0.05
     keywords: 0.20      # Google Ads search volume: SAME price for 1 or 1000 keywords
@@ -18,6 +18,9 @@ budget:
     labs: 0.10          # competitor ranked_keywords
     llm_mentions: 0.0   # DISABLED: $0.10/call. Baseline already captured in Phase 3;
                         # per-query citation SOV is measured via llm_responses instead.
+    local_finder: 0.25  # Places-tab depth: 6 locations x 8 queries x $0.004 = $0.192.
+                        # The 3-slot local pack cannot show rank 4+, so pack-only
+                        # sampling reads "absent" for a business ranked 6.
 
 paths:
   facts_file: "/mnt/c/Users/lucas/OneDrive/Documents/Cowork Detailing Folder/business-facts.yaml"
@@ -89,8 +92,35 @@ serp_bulk:
       domain: diamondfinishdetailing.com
       aliases: [Diamond Finish Detailing, Diamond Finish]
 
+# Places-tab depth sampling. The local pack has only 3 slots, so pack-only
+# sampling reports "absent" for a business ranked 4-20. Measured 2026-08-03:
+# FMD sits at rank 2-3 in Mayfield Heights, 6 in Beachwood, absent in Solon --
+# a visibility ring, invisible to a 3-slot probe. `{suburb}` renders per location.
+local_finder:
+  depth: 20
+  task_price_usd: 0.004
+  queries:
+    - "mobile detailing {suburb}"
+    - "car detailing {suburb}"
+    - "auto detailing {suburb}"
+    - "interior car detailing {suburb}"
+    - mobile detailing near me
+    - car detailing near me
+    - auto detailing near me
+    - interior car detailing near me
+  locations:
+    - {name: Mayfield Heights, suburb: mayfield heights, latitude: 41.5192, longitude: -81.4390}
+    - {name: Beachwood, suburb: beachwood, latitude: 41.4645, longitude: -81.5087}
+    - {name: Lyndhurst, suburb: lyndhurst, latitude: 41.5209, longitude: -81.4885}
+    - {name: Pepper Pike, suburb: pepper pike, latitude: 41.4581, longitude: -81.4557}
+    - {name: Solon, suburb: solon, latitude: 41.3897, longitude: -81.4412}
+    - {name: Shaker Heights, suburb: shaker heights, latitude: 41.4739, longitude: -81.5371}
+
 geogrid:
   center: [41.4645, -81.5087]
+  radius_miles: 6
+  strongholds:
+    - {name: Mayfield Heights, latitude: 41.5192, longitude: -81.4390}
   size: 5
   queries:
     - car detailing near me

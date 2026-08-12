@@ -55,6 +55,7 @@ def test_map_pack_aggregation_uses_median_present_rank_and_unique_competitors():
     assert aggregate_map_pack(rows, fmd_aliases=["Fresh Mobile Detailing"]) == {
         "queries": 2,
         "points_sampled": 3,
+        "points_missing": 0,
         "points_present": 2,
         "median_rank": 2.0,
         "competitors_above": 2,
@@ -75,6 +76,7 @@ def test_cli_geogrid_dry_run_is_exactly_200_tasks_and_12_cents(tmp_path: Path):
         "paths": {"facts_file": str(facts)},
         "geogrid": {
             "center": [41.4645, -81.5087],
+            "radius_miles": 6,
             "size": 5,
             "queries": [f"query {index}" for index in range(8)],
         },
