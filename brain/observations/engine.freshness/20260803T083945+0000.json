@@ -1,0 +1,13 @@
+{
+  "check_id": "engine.freshness",
+  "fulfillment": "engine",
+  "note": "Credential-free watchdog recorded during integrity enforcement activation.",
+  "observed_at": "2026-08-03T08:39:45+00:00",
+  "records": {
+    "checks_overdue": 9,
+    "stalest_check_age_days": 19
+  },
+  "source": "agent:observation-time-series",
+  "source_kind": "agent",
+  "source_sha256": ""
+}

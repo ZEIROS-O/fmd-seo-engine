@@ -142,5 +142,197 @@
   "reserved_usd": 0.0,
   "actual_usd": 0.0,
   "note": "user_data probe"
+ },
+ {
+  "id": "d08b76ce1b6d",
+  "ts": "2026-08-03T05:25:42+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "64d98e09bd3b",
+  "ts": "2026-08-03T05:26:13+00:00",
+  "endpoint": "probe",
+  "reserved_usd": 0.0,
+  "actual_usd": 0.0,
+  "note": "user_data probe"
+ },
+ {
+  "id": "8fd2a171e6ec",
+  "ts": "2026-08-03T05:26:15+00:00",
+  "endpoint": "geogrid",
+  "reserved_usd": 0.06,
+  "actual_usd": 0.06,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "d50b12e9d264",
+  "ts": "2026-08-03T05:26:18+00:00",
+  "endpoint": "geogrid",
+  "reserved_usd": 0.06,
+  "actual_usd": 0.06,
+  "note": "/v3/serp/google/organic/task_post"
+ },
+ {
+  "id": "a3433d9dcbec",
+  "ts": "2026-08-03T07:45:58+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "/v3/serp/google/local_finder/live/advanced probe"
+ },
+ {
+  "id": "50b39f86eb4c",
+  "ts": "2026-08-03T07:47:05+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing beachwood @Beachwood"
+ },
+ {
+  "id": "b05da2e24e1a",
+  "ts": "2026-08-03T07:47:11+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing beachwood @Beachwood"
+ },
+ {
+  "id": "cc86a7d619e9",
+  "ts": "2026-08-03T07:47:18+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing near me @Beachwood"
+ },
+ {
+  "id": "3fcc0373a04e",
+  "ts": "2026-08-03T07:47:23+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing near me @Beachwood"
+ },
+ {
+  "id": "5b8fd29213a1",
+  "ts": "2026-08-03T07:47:38+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder auto detailing near me @Beachwood"
+ },
+ {
+  "id": "3c3c67bbaef7",
+  "ts": "2026-08-03T07:48:05+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder interior car detailing near me @Beachwood"
+ },
+ {
+  "id": "70cb470241e3",
+  "ts": "2026-08-03T07:48:16+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.0,
+  "note": "local_finder failed: Transport error on /v3/serp/google/local_finder/live/advanced: The read operation timed out"
+ },
+ {
+  "id": "cfa58e656799",
+  "ts": "2026-08-03T07:48:46+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing solon @Solon"
+ },
+ {
+  "id": "9670bc6d122a",
+  "ts": "2026-08-03T07:49:03+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing near me @Solon"
+ },
+ {
+  "id": "ce8931f1eeb7",
+  "ts": "2026-08-03T07:49:23+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing near me @Solon"
+ },
+ {
+  "id": "d996cd47b186",
+  "ts": "2026-08-03T07:49:45+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder auto detailing near me @Solon"
+ },
+ {
+  "id": "14095b799caf",
+  "ts": "2026-08-03T07:49:51+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder interior car detailing near me @Solon"
+ },
+ {
+  "id": "a6236e879fc8",
+  "ts": "2026-08-03T07:49:58+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing mayfield heights @Mayfield Hts"
+ },
+ {
+  "id": "0be69771c225",
+  "ts": "2026-08-03T07:50:16+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing mayfield heights @Mayfield Hts"
+ },
+ {
+  "id": "d658b8adf640",
+  "ts": "2026-08-03T07:50:34+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing near me @Mayfield Hts"
+ },
+ {
+  "id": "55172ac21a79",
+  "ts": "2026-08-03T07:50:43+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder car detailing near me @Mayfield Hts"
+ },
+ {
+  "id": "5bf64ab68607",
+  "ts": "2026-08-03T07:50:58+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder auto detailing near me @Mayfield Hts"
+ },
+ {
+  "id": "4e4b2d9981e0",
+  "ts": "2026-08-03T07:51:17+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder interior car detailing near me @Mayfield Hts"
+ },
+ {
+  "id": "524fe55bdf68",
+  "ts": "2026-08-03T07:52:15+00:00",
+  "endpoint": "local_finder",
+  "reserved_usd": 0.005,
+  "actual_usd": 0.004,
+  "note": "local_finder mobile detailing solon @Solon"
  }
 ]

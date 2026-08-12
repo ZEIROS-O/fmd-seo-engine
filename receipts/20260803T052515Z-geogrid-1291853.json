@@ -1,0 +1,1 @@
+{"attempts":1,"blockers":[],"checks":[{"detail":"exit 0","name":"command_result","verdict":"PASS"}],"command":"geogrid","commit_hashes":{},"ended_at":"2026-08-03T05:25:15+00:00","resume_point":null,"run_id":"20260803T052515Z-geogrid-1291853","schema_version":1,"spend_usd":0.0,"started_at":"2026-08-03T05:25:15+00:00","status":"DONE"}
