@@ -13,7 +13,7 @@ from .brain import load_brain
 from .contracts import load_package
 from .corpus import corpus_checks
 from .export import content_destination, export_package, render_content_json, write_manifest
-from .facts import FactError, load_snapshot
+from .facts import FactError, load_snapshot, verify_binding
 from .live_site import parse_live_posts
 from .receipts import now_iso
 from .report import append_intervention
@@ -36,6 +36,8 @@ def validate_current_fact_binding(package, facts_file: Path) -> tuple[str, str, 
         current = load_snapshot(facts_file, list(facts_used))
     except (FactError, OSError, KeyError, ValueError) as err:
         return "package_fact_binding", "BLOCK", str(err)
+    if not verify_binding(current):
+        return "package_fact_binding", "BLOCK", "canonical facts binding changed during verification"
     if current.source_hash != source_hash or current.facts_used != facts_used:
         return "package_fact_binding", "BLOCK", "package facts differ from current canonical facts"
     return "package_fact_binding", "PASS", f"current source hash {source_hash[:12]}"

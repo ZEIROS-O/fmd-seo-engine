@@ -194,6 +194,12 @@ jobs:
           fi
           exit "$code"
 
+      - name: Audit committed integrity
+        id: audit
+        if: ${{ always() && steps.kill.outputs.killed != 'true' }}
+        continue-on-error: true
+        run: fmd-seo audit
+
       - name: Plan gate-safe actions
         id: act
         if: ${{ always() && steps.kill.outputs.killed != 'true' }}
@@ -227,6 +233,7 @@ jobs:
           test "${{ steps.grid_post.outcome }}" = success
           test "${{ steps.grid_collect.outcome }}" = success
           test "${{ steps.assess.outcome }}" = success
+          test "${{ steps.audit.outcome }}" = success
           test "${{ steps.act.outcome }}" = success
 
       - name: Persist durable loop state

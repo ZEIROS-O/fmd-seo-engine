@@ -3,7 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from fmd_seo.evidence import FMD_OPERATING_COORDINATE, fetch_serp
+from fmd_seo.contracts import ContractError, QueryEvidence
+from fmd_seo.evidence import FMD_OPERATING_COORDINATE, fetch_serp, write_evidence
 
 
 class _Ledger:
@@ -107,3 +108,14 @@ def test_fetch_serp_named_location_remains_compatible(tmp_path: Path):
 def test_fetch_serp_rejects_unsupported_device(tmp_path: Path):
     with pytest.raises(ValueError, match="unsupported SERP device"):
         fetch_serp(_Client([]), "car detailing", tmp_path, device="tablet")
+
+
+def test_write_evidence_never_overwrites_an_existing_id(tmp_path: Path):
+    first = QueryEvidence("ev-fixed", "serp_snapshot", "q", "now", "api", {"rank": 1}, "raw", 0.1)
+    changed = QueryEvidence("ev-fixed", "serp_snapshot", "q", "later", "api", {"rank": 2}, "raw2", 0.2)
+    path = write_evidence(first, tmp_path)
+
+    with pytest.raises(ContractError, match="immutable evidence"):
+        write_evidence(changed, tmp_path)
+
+    assert json.loads(path.read_text(encoding="utf-8"))["normalized"]["rank"] == 1

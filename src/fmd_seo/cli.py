@@ -129,6 +129,7 @@ def main(argv: list[str] | None = None) -> int:
     # ── Autonomous-loop surface: the engine as decision brain ──
     sub.add_parser("beat", help="what checks are due now, ordered, with fulfillment paths")
     sub.add_parser("assess", help="evaluate thresholds against latest observations; report gate drift")
+    sub.add_parser("audit", help="read-only integrity audit of committed artifacts")
     sub.add_parser("brief", help="full operator briefing: gates + due + standing findings + priority")
     sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
     sub.add_parser("tick", help="record credential-free engine freshness checks")
@@ -164,6 +165,18 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     config = paths.load_config(args.config)
     receipts_dir = paths.RECEIPTS_DIR
+
+    if args.command == "audit":
+        from .audit import audit_payload
+        payload, code = audit_payload(paths.ENGINE_ROOT)
+        rb = ReceiptBuilder(args.command)
+        for finding in payload["findings"]:
+            severity = finding["severity"]
+            verdict = "BLOCK" if severity == "critical" else "WARN" if severity == "high" else "PASS"
+            rb.check(finding["code"], verdict, finding["detail"])
+        status = "BLOCK" if code == EXIT["BLOCK"] else "PARTIAL" if code == EXIT["PARTIAL"] else "DONE"
+        print(json.dumps(payload, indent=2))
+        return _emit(rb.finish(status), receipts_dir)
 
     if args.command == "preflight":
         # Preflight reports the kill switch as a blocker instead of refusing to run.

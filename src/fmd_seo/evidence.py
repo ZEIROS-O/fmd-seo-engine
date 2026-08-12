@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .contracts import QueryEvidence, canonical_json, sha256_text
+from .contracts import ContractError, QueryEvidence, canonical_json, sha256_text
 from .dataforseo import DataForSeoClient
 from .receipts import now_iso
 
@@ -253,7 +253,13 @@ def fetch_keyword_volumes(client: DataForSeoClient, keywords: list[str], raw_dir
 def write_evidence(evidence: QueryEvidence, directory: Path) -> Path:
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / f"{evidence.evidence_id}.json"
-    path.write_text(canonical_json(evidence.to_dict()), encoding="utf-8")
+    payload = canonical_json(evidence.to_dict())
+    try:
+        with path.open("x", encoding="utf-8") as handle:
+            handle.write(payload)
+    except FileExistsError:
+        if path.read_text(encoding="utf-8") != payload:
+            raise ContractError(f"immutable evidence id collision: {evidence.evidence_id}")
     return path
 
 

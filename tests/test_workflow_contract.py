@@ -38,6 +38,14 @@ def test_daily_workflow_gates_providers_on_credential_validation():
     assert "steps.providers.outcome == 'success'" in text
 
 
+def test_daily_workflow_runs_integrity_audit_after_assess_as_required_stage():
+    text = WORKFLOW.read_text(encoding="utf-8")
+
+    assert text.index("id: assess") < text.index("id: audit")
+    assert "run: fmd-seo audit" in text
+    assert 'test "${{ steps.audit.outcome }}" = success' in text
+
+
 @pytest.mark.skipif(not SITE_CI.exists(), reason="site worktree not checked out")
 def test_site_ci_uses_wrangler_compatible_preview_flags():
     site_workflow = SITE_CI.read_text(encoding="utf-8")

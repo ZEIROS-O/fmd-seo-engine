@@ -53,7 +53,12 @@ File-backed contract for all work in this repo. Source plan:
   fixtures, receipts, baselines, export manifests.
 - PagePackage IDs are immutable and content-addressed; rewriting an existing
   package with different content is a hard error.
-- Every command ends with a RunReceipt: DONE | NO_OP | PARTIAL | BLOCK.
+- Every command ends with a RunReceipt: DONE | NO_OP | PARTIAL | BLOCK | ERROR.
+- **Any function that writes committed evidence or observations must take the
+  output directory as a parameter, and every test must pass a temp path.** A
+  module that defaults straight to `paths.EVIDENCE_DIR` can be invoked by its
+  own test suite and overwrite a real measurement with fixture output. See
+  `docs/incidents/2026-08-03-fixture-overwrote-evidence.md`.
 
 ## Acceptance (V1)
 

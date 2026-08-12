@@ -14,7 +14,7 @@ from pathlib import Path
 from . import killswitch, paths
 from .contracts import RunReceipt
 from .dataforseo import ApiFailure, CredsMissing, DataForSeoClient, load_creds
-from .facts import FactError, load_snapshot
+from .facts import FactError, load_snapshot, verify_binding
 from .operator_adapter import OperatorAdapter, OperatorUnavailable
 from .receipts import ReceiptBuilder
 from .spend import BudgetExceeded, SpendLedger
@@ -41,8 +41,11 @@ def run_preflight(config: dict, *, online: bool = False) -> RunReceipt:
     else:
         try:
             snap = load_snapshot(facts_file, ["identity.name", "autonomy.posting"])
-            rb.check("facts", "PASS",
-                     f"hash {snap.source_hash[:12]}, reviewed {snap.reviewed_at}")
+            if not verify_binding(snap):
+                rb.check("facts", "BLOCK", "canonical facts binding changed during preflight")
+            else:
+                rb.check("facts", "PASS",
+                         f"hash {snap.source_hash[:12]}, reviewed {snap.reviewed_at}")
             if snap.facts_used["autonomy.posting"] != "human_only":
                 rb.check("facts:autonomy", "WARN",
                          "posting autonomy changed from human_only — review deploy gating")
