@@ -266,6 +266,30 @@ checks:
         action: "Verify the profile and measurement connection before using GBP performance in decisions."
     why: "Discovery searches and profile actions are the closest first-party measures of map-pack visibility and business impact."
 
+  - id: analytics.traffic
+    domain: analytics
+    title: GA4 acquisition and conversion measurement
+    cadence: weekly
+    cost: free
+    method:
+      kind: console
+      run: |
+        Fetch a read-only 28-day GA4 Data API report grouped by session source
+        and default channel group. Record total, engaged, organic-search, known
+        AI-referral sessions, and key events without estimating missing data.
+    records:
+      - {name: sessions, type: int}
+      - {name: engaged_sessions, type: int}
+      - {name: organic_search_sessions, type: int}
+      - {name: ai_referral_sessions, type: int}
+      - {name: key_events, type: int}
+    thresholds:
+      - expr: sessions > 0 and key_events == 0
+        severity: high
+        finding: "GA4 records traffic but no key events, so acquisition cannot be tied to business outcomes."
+        action: "Design and verify booking conversion measurement before optimizing traffic sources."
+    why: "First-party acquisition and conversion measurement prevents rankings or clicks from becoming outcome proxies."
+
   - id: seo.site_health
     domain: seo
     title: Semrush Site Audit health and errors

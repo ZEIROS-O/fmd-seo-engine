@@ -4,7 +4,7 @@
 plan a caller can execute without Lou deciding anything. Each due check is
 labeled with its fulfillment path:
 
-  engine_api  — Semrush REST API can fetch it headlessly (cron path). Needs a key.
+  engine_api  — a configured provider can fetch it headlessly. Needs credentials.
   session     — needs an interactive Claude Code session (MCP or model judgment).
   human       — a console only Lou can open (GSC/GA4/GBP). The true residue.
 
@@ -40,7 +40,7 @@ class PlannedCheck:
     cadence: str
     reason: str            # why it is due
     fulfillment: str       # engine_api | session | human | engine
-    api_reports: list[str]  # Semrush report types when engine_api, else []
+    api_reports: list[str]  # provider operation names when engine_api, else []
     run: str               # the check's run instructions
     why: str
 
@@ -79,6 +79,7 @@ GATE1_OPEN_PRIORITY = [
 
 
 def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
+                     has_ga4: bool,
                      api_backed: dict[str, list[str]]) -> tuple[str, list[str]]:
     reports = api_backed.get(check.id, [])
     if check.method_kind == "mcp" and reports and has_semrush_key:
@@ -86,10 +87,13 @@ def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
     # GSC URL Inspection API turns the one console check headless.
     if check.id == "seo.indexation" and has_gsc:
         return "engine_api", ["gsc:urlInspection"]
+    if check.id == "analytics.traffic" and has_ga4:
+        return "engine_api", ["ga4:runReport"]
     return KIND_FULFILLMENT.get(check.method_kind, "session"), []
 
 
 def build_plan(brain: Brain, *, has_semrush_key: bool, has_gsc: bool = False,
+               has_ga4: bool = False,
                observations_dir: Path | None = None,
                now: datetime | None = None) -> Plan:
     last_seen = last_seen_map(brain, observations_dir)
@@ -98,7 +102,9 @@ def build_plan(brain: Brain, *, has_semrush_key: bool, has_gsc: bool = False,
 
     planned: list[PlannedCheck] = []
     for check, reason in due:
-        fulfillment, reports = _fulfillment_for(check, has_semrush_key, has_gsc, api_backed)
+        fulfillment, reports = _fulfillment_for(
+            check, has_semrush_key, has_gsc, has_ga4, api_backed,
+        )
         planned.append(PlannedCheck(
             check_id=check.id,
             domain=check.domain,

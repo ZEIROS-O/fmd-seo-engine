@@ -117,6 +117,75 @@ def test_sync_command_returns_partial_when_some_due_checks_fail(tmp_path, monkey
     assert code == 3
 
 
+def test_sync_command_includes_successful_ga4_fetch(tmp_path, monkeypatch):
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.sync import SyncResult
+
+    monkeypatch.setattr(
+        sync,
+        "sync_due",
+        lambda *_args, **_kwargs: SyncResult([], [], {}),
+    )
+    monkeypatch.setattr(
+        gbp,
+        "sync_if_due",
+        lambda *_args, **_kwargs: {"status": "skipped_config"},
+    )
+    monkeypatch.setattr(
+        site_facts,
+        "sync_public_facts",
+        lambda *_args, **_kwargs: {"status": "skipped_config"},
+    )
+    monkeypatch.setattr(
+        ga4,
+        "sync_if_due",
+        lambda *_args, **_kwargs: {
+            "status": "fetched",
+            "records": {"sessions": 1},
+        },
+    )
+
+    payload, code = cmd_sync({}, observations_dir=tmp_path / "observations")
+
+    assert payload["ga4"]["status"] == "fetched"
+    assert payload["fetched"] == ["analytics.traffic"]
+    assert code == 0
+
+
+def test_sync_command_surfaces_ga4_failure_in_health(tmp_path, monkeypatch):
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.sync import SyncResult
+
+    monkeypatch.setattr(
+        sync,
+        "sync_due",
+        lambda *_args, **_kwargs: SyncResult([], [], {}),
+    )
+    monkeypatch.setattr(
+        gbp,
+        "sync_if_due",
+        lambda *_args, **_kwargs: {"status": "skipped_config"},
+    )
+    monkeypatch.setattr(
+        site_facts,
+        "sync_public_facts",
+        lambda *_args, **_kwargs: {"status": "skipped_config"},
+    )
+    monkeypatch.setattr(
+        ga4,
+        "sync_if_due",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(RuntimeError("GA4 denied")),
+    )
+
+    payload, code = cmd_sync({}, observations_dir=tmp_path / "observations")
+
+    assert payload["ga4"] == {"status": "failed", "error": "GA4 denied"}
+    assert payload["errors"] == {"analytics.traffic": "GA4 denied"}
+    assert code == 4
+
+
 def test_gate1_machine_counts_weekly_clean_readings_and_resets(tmp_path):
     from fmd_seo.gate_manager import update_gate1_state
 
