@@ -1,0 +1,5 @@
+geogrid:
+  sampling_radius_miles: 6
+  service_radius_source: business-facts.yaml#service_area.radius_miles
+  strongholds:
+    - {name: Mayfield Heights, latitude: 41.5192, longitude: -81.4390}

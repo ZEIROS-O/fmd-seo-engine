@@ -2,7 +2,7 @@
   "check_id": "aeo.share_of_voice",
   "fulfillment": "console",
   "note": "Source PDF supplies a date but no capture time; midnight local preserves the known date without inventing precision.",
-  "observed_at": "2026-07-19T00:00:00-04:00",
+  "observed_at": "2026-07-19T04:00:00+00:00",
   "records": {
     "ai_sov_percent": 1.9,
     "competitor_top_sov": 16.8,

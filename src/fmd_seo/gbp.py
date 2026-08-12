@@ -178,7 +178,7 @@ def sync_if_due(config: dict, brain, *, observations_dir: Path | None = None) ->
         "gbp.performance",
         records,
         fulfillment="engine_api",
-        source="Google Business Profile Performance API",
+        source="google_business_profile:performance",
         note=(f"daily actions cover prior {int(raw.get('days', 28))} days; search impressions "
               "cover API calendar months, exclude branded keywords, and omit threshold-only counts"),
         directory=observations_dir,

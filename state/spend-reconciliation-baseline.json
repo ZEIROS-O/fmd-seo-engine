@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-08-03T08:40:00+00:00",
+  "ledger_total_usd": 0.971823,
+  "receipt_total_usd": 0.1214,
+  "last_reservation_id": "524fe55bdf68",
+  "endpoint_totals_usd": {
+    "business_data": 0.01308,
+    "geogrid": 0.12,
+    "keywords": 0.09,
+    "llm_mentions": 0.1,
+    "llm_responses": 0.006343,
+    "local_finder": 0.076,
+    "probe": 0.0,
+    "serp": 0.006,
+    "serp_bulk": 0.5604
+  },
+  "endpoint_cap_exceptions_usd": {"llm_mentions": 0.1},
+  "reason": "Historical receipts predated ledger-delta binding; their per-run allocation cannot be reconstructed. All entries after this baseline must reconcile to receipt windows."
+}

@@ -1,0 +1,15 @@
+seo.map_pack:
+  - expr: points_present <= points_sampled
+    severity: critical
+  - expr: points_sampled > 0
+    severity: critical
+  - expr: median_rank >= 0.0
+    severity: critical
+seo.local_visibility:
+  - expr: pairs_in_pack <= pairs_ranked
+    severity: critical
+  - expr: pairs_ranked <= pairs_tested
+    severity: critical
+seo.indexation:
+  - expr: indexed + not_indexed <= inspected_ok
+    severity: critical

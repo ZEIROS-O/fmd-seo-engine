@@ -70,6 +70,8 @@ def cmd_assess(config: dict) -> tuple[dict, int]:
     gates = assess_gates(brain)
     has_critical = any(f.severity == "critical" for f in findings)
     has_drift = any(g.drift for g in gates)
+    quarantine_root = paths.ENGINE_ROOT / "brain" / "quarantine"
+    quarantine_depth = len(list(quarantine_root.glob("*/*.json"))) if quarantine_root.exists() else 0
     payload = {
         "command": "assess",
         "gates": [
@@ -88,6 +90,7 @@ def cmd_assess(config: dict) -> tuple[dict, int]:
             "critical": sum(1 for f in findings if f.severity == "critical"),
             "high": sum(1 for f in findings if f.severity == "high"),
             "gate_drift": has_drift,
+            "quarantine_depth": quarantine_depth,
         },
     }
     # Exit 4 (BLOCK-equivalent) when a critical finding or gate drift exists, so a
@@ -173,7 +176,7 @@ def cmd_sync(config: dict, observations_dir: Path | None = None) -> tuple[dict, 
                 "checks_failed": len(errors),
             },
             fulfillment="engine",
-            source="fmd-seo sync (all headless providers)",
+            source="agent:headless-sync",
             note="; ".join(f"{key}: {value}" for key, value in errors.items()),
             directory=observations_dir,
         )
@@ -244,7 +247,7 @@ def cmd_gsc_sync(config: dict) -> tuple[dict, int]:
         return {"command": "gsc-sync", "fetched": False, "error": str(err)}, 4
     path = record_observation(
         brain, "seo.indexation", records, fulfillment="engine_api",
-        source=f"GSC URL Inspection API ({len(urls)} URLs)",
+        source="google_search_console:url_inspection",
         note="headless index-coverage tally")
     observed_at = json.loads(path.read_text(encoding="utf-8"))["observed_at"]
     gate_update = update_gate1_state(

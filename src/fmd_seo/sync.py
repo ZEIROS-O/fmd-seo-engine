@@ -178,7 +178,7 @@ def sync_due(config: dict, *, brain: Brain | None = None,
                 "checks_failed": len(errors),
             },
             fulfillment="engine",
-            source="fmd-seo sync",
+            source="agent:fmd-seo-sync",
             note=note,
             directory=observations_dir,
         )

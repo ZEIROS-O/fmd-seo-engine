@@ -57,7 +57,7 @@ def record_daily_engine_checks(
         "engine.freshness",
         freshness_records(brain, observations_dir),
         fulfillment="engine",
-        source="committed observation time series",
+        source="agent:observation-time-series",
         directory=observations_dir,
     )
     return ["facts.freshness", "engine.freshness"]
