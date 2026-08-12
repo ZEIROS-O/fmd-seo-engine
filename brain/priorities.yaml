@@ -1,0 +1,77 @@
+schema_version: 1
+
+# The machine copy of the work order. `brain/thesis.md` keeps the reasoning;
+# this file is what `fmd-seo beat` and `fmd-seo brief` emit, and it is the only
+# copy. Reorder here, then update the thesis prose to match.
+#
+# Entries are ordered. `gate` names the gate state an entry applies under, so a
+# caller filters by the live state rather than choosing between two lists.
+# Reordered 2026-08-03 on the T5 ring measurement: review velocity moved to #1
+# and the GBP configuration audit was added at #2.
+
+priorities:
+  - id: review_velocity
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T5, T7]
+    label: >-
+      Review velocity (T5/T7) — 16 -> 40+; pack holders in the measured sample
+      carry 37-1600. Widens the ring's radius, the binding constraint, and
+      compounds into the AI answers that already cite FMD
+
+  - id: gbp_configuration_audit
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T5]
+    label: >-
+      GBP configuration audit (T5) — confirm anchor address, service-area
+      settings, primary category, verification state. Free, and it explains the
+      ring's shape
+
+  - id: entity_decontamination
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T8]
+    label: >-
+      Entity decontamination (T8) — collapse 'Drive Fresh' -> 'Fresh Mobile
+      Detailing' across social + directories; consistent NAP. Feeds prominence
+      directly
+
+  - id: copy_language
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T4]
+    label: >-
+      Copy language (T4) — introduce car/auto/'near me' into existing copy, no
+      new URLs. This is what converts the ring's outer band
+
+  - id: internal_linking
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T1]
+    label: >-
+      Internal linking (T1) — the unindexed pages are link-starved; crawl
+      priority follows internal links
+
+  - id: schema_finish_validate
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T2]
+    label: >-
+      Schema finish + validate (T2) — the 4 unschema'd pages + BlogPosting on
+      posts; confirm AggregateRating is fact-bound. Maintenance, not the
+      bottleneck
+
+  - id: reassess_gate1
+    gate: {GATE-1: CLOSED}
+    thesis_refs: []
+    label: Only then reassess GATE-1
+
+  - id: publish_from_topic_queue
+    gate: {GATE-1: OPEN}
+    thesis_refs: []
+    label: Publish from the scored topic queue (topics.related_clusters), one at a time
+
+  - id: cannibalization_check
+    gate: {GATE-1: OPEN}
+    thesis_refs: []
+    label: Cannibalization check per draft before authoring
+
+  - id: maintain_authority
+    gate: {GATE-1: OPEN}
+    thesis_refs: []
+    label: Keep schema/entity/linking maintained — do not let authority regress

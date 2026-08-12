@@ -1,5 +1,8 @@
 """Tests for the planner: due ordering, fulfillment labeling, gate-aware priority."""
 
+from pathlib import Path
+
+from fmd_seo import planner
 from fmd_seo.brain import load_brain
 from fmd_seo.loop_cli import cmd_beat, cmd_brief
 from fmd_seo.planner import build_plan
@@ -129,10 +132,51 @@ def test_plan_priority_reflects_closed_gate1(empty_obs):
     brain = load_brain()
     plan = build_plan(brain, has_semrush_key=False, observations_dir=empty_obs)
     # GATE-1 ships CLOSED -> the priority list is the gate-respecting work order,
-    # none of which adds a URL. Entity decontamination leads (schema now largely done).
+    # none of which adds a URL. Reordered 2026-08-03: review velocity leads,
+    # because the ring's radius is the binding constraint (T5).
     assert plan.priority_order
-    assert "Entity decontamination" in plan.priority_order[0]
+    assert "Review velocity" in plan.priority_order[0]
+    assert "GBP configuration audit" in plan.priority_order[1]
     assert any("reassess GATE-1" in line for line in plan.priority_order)
+
+
+def test_priority_order_is_exactly_the_brain_file_for_the_current_gate_state(empty_obs):
+    """The planner must not hold a second copy of the order that can drift."""
+    brain = load_brain()
+    plan = build_plan(brain, has_semrush_key=False, observations_dir=empty_obs)
+    state = brain.gate_state("GATE-1")
+
+    expected = [entry["label"] for entry in brain.priorities
+                if entry["gate"]["GATE-1"] == state]
+
+    assert expected, f"brain/priorities.yaml has no entries for GATE-1 {state}"
+    assert plan.priority_order == expected
+
+
+def test_planner_module_holds_no_priority_literal():
+    """S0.1: the ordering lives in brain/priorities.yaml, nowhere else."""
+    source = Path(planner.__file__).read_text(encoding="utf-8")
+
+    assert "GATE1_CLOSED_PRIORITY" not in source
+    assert "GATE1_OPEN_PRIORITY" not in source
+    assert "Entity decontamination" not in source
+    assert "Review velocity" not in source
+
+
+def test_open_gate1_priority_comes_from_the_same_file(empty_obs):
+    brain = load_brain()
+    brain.state["gates"]["GATE-1"] = dict(brain.gates["GATE-1"], state="OPEN")
+    plan = build_plan(brain, has_semrush_key=False, observations_dir=empty_obs)
+
+    expected = [entry["label"] for entry in brain.priorities
+                if entry["gate"]["GATE-1"] == "OPEN"]
+
+    assert expected
+    assert plan.priority_order == expected
+    assert plan.priority_order != [
+        entry["label"] for entry in brain.priorities
+        if entry["gate"]["GATE-1"] == "CLOSED"
+    ]
 
 
 def test_plan_human_checks_sort_first(empty_obs):

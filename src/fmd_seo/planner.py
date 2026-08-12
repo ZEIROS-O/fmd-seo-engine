@@ -8,8 +8,11 @@ labeled with its fulfillment path:
   session     — needs an interactive Claude Code session (MCP or model judgment).
   human       — a console only Lou can open (GSC/GA4/GBP). The true residue.
 
-The plan also carries the gate-respecting priority order from the thesis, so a
-caller never has to re-derive that publishing is closed while indexation fails.
+The plan also carries the gate-respecting priority order, read from
+`brain/priorities.yaml` for the live gate state, so a caller never has to
+re-derive that publishing is closed while indexation fails. The planner holds
+no copy of that order: a second copy is what drifted from the thesis for the
+eight days after the 2026-08-03 reorder.
 """
 
 from __future__ import annotations
@@ -18,7 +21,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
-from .brain import Brain, Check, due_checks
+from .brain import Brain, Check, due_checks, priority_order
 from .observations import last_seen_map
 from .semrush import which_checks_are_api_backed
 
@@ -60,24 +63,6 @@ class Plan:
         return out
 
 
-# The gate-respecting work order while GATE-1 is CLOSED (thesis priority list).
-# Kept here as the machine copy so a caller never re-derives it from prose.
-GATE1_CLOSED_PRIORITY = [
-    "Entity decontamination (T8) — collapse 'Drive Fresh' -> 'Fresh Mobile Detailing' (top lever; schema now largely done)",
-    "Copy language (T4) — introduce car/auto/'near me' into existing copy, no new URLs",
-    "Internal linking (T1) — link the unindexed pages; crawl priority follows links",
-    "Review velocity (T7) — local corroboration is what AS 2 lacks",
-    "Schema finish + validate (T2) — 4 unschema'd pages + BlogPosting; confirm AggregateRating is fact-bound",
-    "Only then reassess GATE-1",
-]
-
-GATE1_OPEN_PRIORITY = [
-    "Publish from the scored topic queue (topics.related_clusters), one at a time",
-    "Cannibalization check per draft before authoring",
-    "Keep schema/entity/linking maintained — do not let authority regress",
-]
-
-
 def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
                      has_ga4: bool,
                      api_backed: dict[str, list[str]]) -> tuple[str, list[str]]:
@@ -117,9 +102,7 @@ def build_plan(brain: Brain, *, has_semrush_key: bool, has_gsc: bool = False,
             why=check.why,
         ))
 
-    gate1 = brain.gates.get("GATE-1", {})
-    priority = (GATE1_OPEN_PRIORITY if gate1.get("state") == "OPEN"
-                else GATE1_CLOSED_PRIORITY)
+    priority = priority_order(brain)
 
     gate_summary = [
         {"gate": gid, "state": g.get("state"), "reason": g.get("reason", "")}

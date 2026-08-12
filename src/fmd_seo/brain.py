@@ -186,6 +186,9 @@ class Brain:
     state: dict[str, Any]
     gate_rules: dict[str, dict[str, Any]] = field(default_factory=dict)
     expression_constants: dict[str, Any] = field(default_factory=dict)
+    # Ordered work-order entries from brain/priorities.yaml. The single copy —
+    # a caller filters by live gate state instead of re-deriving from prose.
+    priorities: list[dict[str, Any]] = field(default_factory=list)
     thesis_path: Path = THESIS_FILE
     state_path: Path = STATE_FILE
     _by_id: dict[str, Check] = field(default_factory=dict, repr=False)
@@ -255,12 +258,52 @@ def _parse_check(raw: dict, expression_constants: set[str] | None = None) -> Che
     return check
 
 
+def _parse_priorities(path: Path) -> list[dict[str, Any]]:
+    """Load the ordered work order. Malformed entries fail closed at load time.
+
+    An entry the planner cannot attribute to a gate state would silently vanish
+    from `beat`'s output, which is exactly the drift this file exists to end.
+    """
+    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if raw.get("schema_version") != 1:
+        raise BrainError(f"unsupported priorities schema: {path}")
+
+    entries: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for index, entry in enumerate(raw.get("priorities") or []):
+        missing = {"id", "gate", "label"} - entry.keys()
+        if missing:
+            raise BrainError(f"priority #{index + 1} missing keys: {sorted(missing)}")
+        if not isinstance(entry["gate"], dict) or not entry["gate"]:
+            raise BrainError(f"priority {entry['id']}: gate must be a non-empty mapping")
+        if entry["id"] in seen:
+            raise BrainError(f"duplicate priority id: {entry['id']}")
+        seen.add(entry["id"])
+        entries.append({
+            "id": entry["id"],
+            "gate": dict(entry["gate"]),
+            "thesis_refs": list(entry.get("thesis_refs") or []),
+            "label": " ".join(str(entry["label"]).split()),
+        })
+    if not entries:
+        raise BrainError(f"no priorities defined: {path}")
+    return entries
+
+
+def priority_order(brain: Brain) -> list[str]:
+    """The labels that apply under every gate's current state, in file order."""
+    return [entry["label"] for entry in brain.priorities
+            if all(brain.gate_state(gate_id) == state
+                   for gate_id, state in entry["gate"].items())]
+
+
 def load_brain(brain_dir: Path | None = None) -> Brain:
     directory = brain_dir or BRAIN_DIR
     checks_file = directory / "checks.yaml"
     state_file = directory / "state.yaml"
     gates_file = directory / "gates.yaml"
-    for path in (checks_file, state_file, gates_file):
+    priorities_file = directory / "priorities.yaml"
+    for path in (checks_file, state_file, gates_file, priorities_file):
         if not path.exists():
             raise BrainError(f"brain file missing: {path}")
 
@@ -275,6 +318,8 @@ def load_brain(brain_dir: Path | None = None) -> Brain:
     if raw_gates.get("schema_version") != 1:
         raise BrainError(f"unsupported gates schema: {gates_file}")
     gate_rules = raw_gates.get("gates") or {}
+
+    priorities = _parse_priorities(priorities_file)
     expression_constants: dict[str, Any] = {}
     gate1 = gate_rules.get("GATE-1", {})
     if gate1:
@@ -295,6 +340,7 @@ def load_brain(brain_dir: Path | None = None) -> Brain:
         state=state,
         gate_rules=gate_rules,
         expression_constants=expression_constants,
+        priorities=priorities,
         thesis_path=directory / "thesis.md",
         state_path=state_file,
     )

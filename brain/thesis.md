@@ -332,6 +332,10 @@ labeled as such, with source and retrieval time.
 
 The loop works this list top-down. Each item is free or near-free and none adds a URL.
 
+**The machine copy is `brain/priorities.yaml`** — that is what `fmd-seo beat` and
+`brief` emit, and the planner holds no second copy. This section keeps the
+reasoning; reorder there first, then update the prose here to match.
+
 Reordered 2026-08-03 on the T5 ring measurement. Review velocity moves to the top:
 it is the only lever that widens the ring, and the ring is what gates every query
 at every location.

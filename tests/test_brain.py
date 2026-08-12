@@ -43,7 +43,7 @@ def test_evaluate_unknown_field_raises_not_defaults():
 
 # ─────────────────────────── loader ───────────────────────────
 
-def _write_brain(tmp_path, checks_body, state_body=None):
+def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None):
     (tmp_path / "checks.yaml").write_text(checks_body, encoding="utf-8")
     (tmp_path / "state.yaml").write_text(
         state_body or "schema_version: 1\nsite: {domain: x.com}\ngates: {}\n",
@@ -53,7 +53,79 @@ def _write_brain(tmp_path, checks_body, state_body=None):
         "schema_version: 1\ngates: {}\n",
         encoding="utf-8",
     )
+    (tmp_path / "priorities.yaml").write_text(
+        priorities_body or PRIORITIES_BODY,
+        encoding="utf-8",
+    )
     return load_brain(tmp_path)
+
+
+PRIORITIES_BODY = """\
+schema_version: 1
+priorities:
+  - id: first
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T1]
+    label: do the first thing
+  - id: second
+    gate: {GATE-1: OPEN}
+    thesis_refs: []
+    label: do the second thing
+"""
+
+
+def test_loader_requires_a_priorities_file(tmp_path):
+    """The work order has no in-code fallback; an absent file is an error."""
+    (tmp_path / "checks.yaml").write_text("schema_version: 1\nchecks: []\n", encoding="utf-8")
+    (tmp_path / "state.yaml").write_text(
+        "schema_version: 1\nsite: {domain: x.com}\ngates: {}\n", encoding="utf-8")
+    (tmp_path / "gates.yaml").write_text("schema_version: 1\ngates: {}\n", encoding="utf-8")
+
+    with pytest.raises(BrainError, match="priorities.yaml"):
+        load_brain(tmp_path)
+
+
+def test_loader_rejects_a_priority_without_a_gate_mapping(tmp_path):
+    body = """\
+schema_version: 1
+priorities:
+  - id: ungated
+    label: this would silently vanish from beat
+    gate: {}
+"""
+    with pytest.raises(BrainError, match="non-empty mapping"):
+        _write_brain(tmp_path, "schema_version: 1\nchecks: []\n", priorities_body=body)
+
+
+def test_loader_rejects_duplicate_priority_ids(tmp_path):
+    body = """\
+schema_version: 1
+priorities:
+  - id: same
+    gate: {GATE-1: CLOSED}
+    label: one
+  - id: same
+    gate: {GATE-1: CLOSED}
+    label: two
+"""
+    with pytest.raises(BrainError, match="duplicate priority id"):
+        _write_brain(tmp_path, "schema_version: 1\nchecks: []\n", priorities_body=body)
+
+
+def test_priority_labels_are_folded_to_a_single_line(tmp_path):
+    """YAML folded scalars keep the file readable; consumers get one string."""
+    body = """\
+schema_version: 1
+priorities:
+  - id: wrapped
+    gate: {GATE-1: CLOSED}
+    label: >-
+      a label that wraps
+      across two source lines
+"""
+    brain = _write_brain(tmp_path, "schema_version: 1\nchecks: []\n", priorities_body=body)
+
+    assert brain.priorities[0]["label"] == "a label that wraps across two source lines"
 
 
 def test_loader_rejects_threshold_referencing_unrecorded_field(tmp_path):
