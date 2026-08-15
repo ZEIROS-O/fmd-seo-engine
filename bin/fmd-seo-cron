@@ -273,7 +273,11 @@ fi
 [[ -z "$notify_output" ]] || printf '%s\n' "$notify_output" | tee -a "$log_file"
 if (( notify_code != 0 )); then
   failures+=("notify-script:failed")
-  overall_code=$notify_code
+  # Never let the notifier downgrade the run it is reporting on: a failed
+  # Telegram ping used to overwrite a real provider failure's exit code.
+  if (( overall_code == 0 )); then
+    overall_code=$notify_code
+  fi
 fi
 
 if ((${#failures[@]})); then

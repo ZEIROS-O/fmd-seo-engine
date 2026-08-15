@@ -301,6 +301,22 @@ def test_cron_nonzero_notification_script_exit_is_not_reported_healthy(tmp_path)
     assert "notify-script:failed" in result.stdout
 
 
+def test_cron_notification_failure_cannot_downgrade_a_provider_failure(tmp_path):
+    """The notifier reports on the run; it must never overwrite the run's verdict.
+
+    `overall_code=$notify_code` was unconditional, so a failed Telegram ping
+    replaced a real provider exit code with the notifier's own.
+    """
+    root, _notify_log, _command_log, env = _cron_fixture(tmp_path)
+    env["SYNC_SEMRUSH_CODE"] = "4"
+    env["NOTIFY_SCRIPT_CODE"] = "1"
+
+    result = _run(root, env)
+
+    assert result.returncode == 4, result.stdout
+    assert "notify-script:failed" in result.stdout
+
+
 def test_cron_kill_switch_emits_killed_heartbeat(tmp_path):
     root, notify_log, _command_log, env = _cron_fixture(tmp_path)
     (root / "DISABLED").write_text("halt\n", encoding="utf-8")
