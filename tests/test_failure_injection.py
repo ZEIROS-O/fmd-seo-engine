@@ -186,6 +186,49 @@ def test_sync_command_surfaces_ga4_failure_in_health(tmp_path, monkeypatch):
     assert code == 4
 
 
+def test_semrush_blowup_does_not_abort_the_other_three_sources(tmp_path, monkeypatch):
+    """sync_due raises outside its own per-check guard, so cmd_sync must guard it.
+
+    The SemrushClient constructor and the brain.state["site"]["domain"] lookup
+    both sit above sync_due's per-check try/except. An unguarded call let a
+    Semrush-side error abort cmd_sync before gbp/site/ga4 ran and suppressed
+    the sync.health observation entirely -- the loop's only failure signal.
+    """
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.observations import latest_observation
+
+    ran: list[str] = []
+
+    def _boom(*_args, **_kwargs):
+        raise KeyError("site")
+
+    monkeypatch.setattr(sync, "sync_due", _boom)
+    monkeypatch.setattr(gbp, "sync_if_due", lambda *a, **k: ran.append("gbp") or {
+        "status": "not_due", "observed_at": "2026-08-15T00:00:00+00:00",
+    })
+    monkeypatch.setattr(site_facts, "sync_public_facts", lambda *a, **k: ran.append("site") or {
+        "status": "fetched", "url": "https://example.test", "fact_mismatches": 0,
+        "surfaces": [],
+    })
+    monkeypatch.setattr(ga4, "sync_if_due", lambda *a, **k: ran.append("ga4") or {
+        "status": "fetched", "records": {"sessions": 1},
+    })
+    observations = tmp_path / "observations"
+
+    payload, code = cmd_sync({}, observations_dir=observations)
+
+    assert ran == ["gbp", "site", "ga4"]
+    assert set(payload["errors"]) == {
+        "competitor.authority_gap", "market.demand", "topics.related_clusters",
+    }
+    assert payload["fetched"] == ["site.facts_drift", "analytics.traffic"]
+    health = latest_observation("sync.health", observations)
+    assert health is not None
+    assert health.records["checks_failed"] == 3
+    assert code == 3
+
+
 def test_gate1_machine_counts_weekly_clean_readings_and_resets(tmp_path):
     from fmd_seo.gate_manager import update_gate1_state
 

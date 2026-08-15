@@ -169,11 +169,22 @@ def cmd_sync(
     if unsupported:
         return {"command": "sync", "error": f"unsupported sources: {sorted(unsupported)}"}, 4
     brain = load_brain()
-    result = (
-        sync_due(config, brain=brain, observations_dir=observations_dir)
-        if "semrush" in selected
-        else SyncResult(fetched=[], skipped_no_key=[], errors={})
-    )
+    # Guarded like every other source. sync_due raises from the SemrushClient
+    # constructor and from the brain.state["site"]["domain"] lookup, both of
+    # which sit outside its own per-check try/except -- so an unguarded call let
+    # one provider abort cmd_sync before gbp/site/ga4 were ever attempted, and
+    # suppressed the sync.health observation entirely.
+    result = SyncResult(fetched=[], skipped_no_key=[], errors={})
+    if "semrush" in selected:
+        try:
+            result = sync_due(config, brain=brain, observations_dir=observations_dir)
+        except Exception as err:  # noqa: BLE001 - surfaced through sync.health
+            from .semrush import which_checks_are_api_backed
+            result = SyncResult(
+                fetched=[],
+                skipped_no_key=[],
+                errors={cid: str(err) for cid in which_checks_are_api_backed()},
+            )
     from .gbp import sync_if_due
     fetched = list(result.fetched)
     errors = dict(result.errors)
