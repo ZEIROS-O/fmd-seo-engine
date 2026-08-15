@@ -792,12 +792,18 @@ checks:
       kind: engine
       run: |
         After every headless sync attempt, record how many due checks were
-        attempted, succeeded, and failed. Provider errors are findings, not
-        transient console text.
+        attempted, succeeded, and failed, plus a per-source status line.
+        Provider errors are findings, not transient console text, and a missing
+        credential is a failure rather than a silent skip. Recorded on every run
+        where a source was selected, including the all-not_due day, so the daily
+        cadence cannot go stale and read as healthy.
     records:
       - {name: checks_attempted, type: int}
       - {name: checks_succeeded, type: int}
       - {name: checks_failed, type: int}
+      # semrush=failed;ga4=ok;gbp=not_due;site=no_credential -- the aggregate
+      # counts say a run degraded, this says which provider did.
+      - {name: source_status, type: str}
     thresholds:
       - expr: checks_failed > 0
         severity: critical

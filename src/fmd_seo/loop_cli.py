@@ -6,6 +6,7 @@ drive. Each returns (payload_dict, exit_code); the CLI prints the payload.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from . import paths
@@ -15,6 +16,28 @@ from .gate_manager import update_gate1_state
 from .observations import record_observation
 from .planner import build_plan
 from .semrush import SemrushKeyMissing, load_key
+
+
+# Provider errors routinely echo the failing request. The sync note is written
+# into an observation that bin/fmd-seo-cron commits, so an unredacted message
+# would publish a live key into git history where no rotation can reach it.
+_SECRET_ASSIGNMENT = re.compile(
+    r"((?:api[_-]?key|apikey|access[_-]?token|refresh[_-]?token|id[_-]?token|"
+    r"client[_-]?secret|private[_-]?key|password|passwd|credential|signature|"
+    r"token|secret)[\"']?\s*[:=]\s*[\"']?)([^\s\"'&,;}]+)",
+    re.IGNORECASE,
+)
+_URL_KEY_PARAM = re.compile(r"([?&]key=)([^&\s\"']+)", re.IGNORECASE)
+_BEARER = re.compile(r"(bearer\s+)([A-Za-z0-9\-._~+/]{8,}=*)", re.IGNORECASE)
+_EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+_REDACTED = "[REDACTED]"
+
+
+def redact_secrets(text: str) -> str:
+    """Strip credential material out of text destined for a committed record."""
+    for pattern in (_SECRET_ASSIGNMENT, _URL_KEY_PARAM, _BEARER):
+        text = pattern.sub(rf"\g<1>{_REDACTED}", text)
+    return _EMAIL.sub("[REDACTED-EMAIL]", text)
 
 
 def _has_semrush_key(config: dict) -> bool:
@@ -155,6 +178,34 @@ def cmd_observe(config: dict, check_id: str, records_json: str, *,
     }, 0
 
 
+# Fixed order so `source_status` reads the same on every run and diffs cleanly.
+SYNC_SOURCES = ("semrush", "ga4", "gbp", "site")
+
+
+def _semrush_status(result) -> str:
+    if result.errors:
+        return "failed"
+    if result.skipped_no_key:
+        return "no_credential"
+    return "ok" if result.fetched else "not_due"
+
+
+def _record_source_status(
+    check_id: str, result: dict, errors: dict[str, str], missing_config_detail: str,
+) -> str:
+    """Fold one source's outcome into `errors` and return its status label."""
+    status = result["status"]
+    if status == "fetched":
+        return "ok"
+    if status == "failed":
+        errors[check_id] = str(result.get("error", "provider failed"))
+        return "failed"
+    if status.startswith("skipped"):
+        errors[check_id] = missing_config_detail
+        return "no_credential"
+    return status  # not_due
+
+
 def cmd_sync(
     config: dict,
     observations_dir: Path | None = None,
@@ -164,8 +215,8 @@ def cmd_sync(
     """Run selected sources independently so one credential cannot suppress another."""
     from .sync import SyncResult, sync_due
 
-    selected = sources or {"semrush", "ga4", "gbp", "site"}
-    unsupported = selected - {"semrush", "ga4", "gbp", "site"}
+    selected = sources or set(SYNC_SOURCES)
+    unsupported = selected - set(SYNC_SOURCES)
     if unsupported:
         return {"command": "sync", "error": f"unsupported sources: {sorted(unsupported)}"}, 4
     brain = load_brain()
@@ -174,6 +225,7 @@ def cmd_sync(
     # which sit outside its own per-check try/except -- so an unguarded call let
     # one provider abort cmd_sync before gbp/site/ga4 were ever attempted, and
     # suppressed the sync.health observation entirely.
+    status: dict[str, str] = {name: "not_selected" for name in SYNC_SOURCES}
     result = SyncResult(fetched=[], skipped_no_key=[], errors={})
     if "semrush" in selected:
         try:
@@ -185,9 +237,15 @@ def cmd_sync(
                 skipped_no_key=[],
                 errors={cid: str(err) for cid in which_checks_are_api_backed()},
             )
+        status["semrush"] = _semrush_status(result)
     from .gbp import sync_if_due
     fetched = list(result.fetched)
     errors = dict(result.errors)
+    # A credential the engine does not have is a failure, not a quiet skip: the
+    # whole point of sync.health is that a provider going dark cannot render as
+    # a healthy run. not_due and not_selected stay out of the failure count.
+    for check_id in result.skipped_no_key:
+        errors.setdefault(check_id, "no SEMRUSH_API_KEY present")
     gbp_result = {"status": "not_selected"}
     if "gbp" in selected:
         try:
@@ -196,7 +254,9 @@ def cmd_sync(
                 fetched.append("gbp.performance")
         except Exception as err:  # noqa: BLE001 - provider failure becomes sync health
             gbp_result = {"status": "failed", "error": str(err)}
-            errors["gbp.performance"] = str(err)
+        status["gbp"] = _record_source_status(
+            "gbp.performance", gbp_result, errors, "GBP is not configured",
+        )
     from .site_facts import sync_public_facts
     site_facts_result = {"status": "not_selected"}
     if "site" in selected:
@@ -208,7 +268,10 @@ def cmd_sync(
                 fetched.append("site.facts_drift")
         except Exception as err:  # noqa: BLE001 - surfaced through sync.health
             site_facts_result = {"status": "failed", "error": str(err)}
-            errors["site.facts_drift"] = str(err)
+        status["site"] = _record_source_status(
+            "site.facts_drift", site_facts_result, errors,
+            "site facts sync is not configured",
+        )
     from .ga4 import sync_if_due as sync_ga4_if_due
     ga4_result = {"status": "not_selected"}
     if "ga4" in selected:
@@ -220,9 +283,13 @@ def cmd_sync(
                 fetched.append("analytics.traffic")
         except Exception as err:  # noqa: BLE001 - surfaced through sync.health
             ga4_result = {"status": "failed", "error": str(err)}
-            errors["analytics.traffic"] = str(err)
+        status["ga4"] = _record_source_status(
+            "analytics.traffic", ga4_result, errors, "GA4 is not configured",
+        )
     attempted = len(fetched) + len(errors)
-    if attempted:
+    # Written whenever a source was selected, including the all-not_due day: a
+    # skipped write leaves the daily cadence to go stale and reads as healthy.
+    if selected:
         record_observation(
             brain,
             "sync.health",
@@ -230,10 +297,15 @@ def cmd_sync(
                 "checks_attempted": attempted,
                 "checks_succeeded": len(fetched),
                 "checks_failed": len(errors),
+                "source_status": ";".join(
+                    f"{name}={status[name]}" for name in SYNC_SOURCES
+                ),
             },
             fulfillment="engine",
             source="agent:headless-sync",
-            note="; ".join(f"{key}: {value}" for key, value in errors.items()),
+            note=redact_secrets(
+                "; ".join(f"{key}: {value}" for key, value in errors.items())
+            ),
             directory=observations_dir,
         )
     payload = {

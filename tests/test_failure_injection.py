@@ -61,7 +61,12 @@ def test_engine_freshness_flags_observations_older_than_twice_cadence(tmp_path):
     record_observation(
         brain,
         "sync.health",
-        {"checks_attempted": 1, "checks_succeeded": 1, "checks_failed": 0},
+        {
+            "checks_attempted": 1,
+            "checks_succeeded": 1,
+            "checks_failed": 0,
+            "source_status": "semrush=ok;ga4=not_selected;gbp=not_selected;site=not_selected",
+        },
         fulfillment="engine",
         source="recent",
         observed_at="2026-08-01T12:00:00+00:00",
@@ -150,7 +155,10 @@ def test_sync_command_includes_successful_ga4_fetch(tmp_path, monkeypatch):
 
     assert payload["ga4"]["status"] == "fetched"
     assert payload["fetched"] == ["analytics.traffic"]
-    assert code == 0
+    # A GA4 success does not launder the two unconfigured providers: an absent
+    # credential is a recorded failure, so the run is partial, not healthy.
+    assert set(payload["errors"]) == {"gbp.performance", "site.facts_drift"}
+    assert code == 3
 
 
 def test_sync_command_surfaces_ga4_failure_in_health(tmp_path, monkeypatch):
@@ -182,8 +190,116 @@ def test_sync_command_surfaces_ga4_failure_in_health(tmp_path, monkeypatch):
     payload, code = cmd_sync({}, observations_dir=tmp_path / "observations")
 
     assert payload["ga4"] == {"status": "failed", "error": "GA4 denied"}
-    assert payload["errors"] == {"analytics.traffic": "GA4 denied"}
+    assert payload["errors"]["analytics.traffic"] == "GA4 denied"
     assert code == 4
+
+
+def test_missing_credential_is_a_recorded_failure_not_a_silent_skip(tmp_path, monkeypatch):
+    """Semrush has no key, GA4 and site succeed, GBP is not due.
+
+    The old accounting counted only fetched + errors, so an absent credential
+    landed in neither and a fully unconfigured run exited 0 with no sync.health
+    observation written at all -- the exact "zero attempts reads as healthy"
+    state this check exists to eliminate.
+    """
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.assess import assess_check
+    from fmd_seo.brain import load_brain
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.observations import latest_observation, load_observations
+    from fmd_seo.sync import SyncResult
+
+    monkeypatch.setattr(sync, "sync_due", lambda *a, **k: SyncResult(
+        fetched=[], skipped_no_key=["market.demand"], errors={},
+    ))
+    monkeypatch.setattr(gbp, "sync_if_due", lambda *a, **k: {
+        "status": "not_due", "observed_at": "2026-08-15T00:00:00+00:00",
+    })
+    monkeypatch.setattr(site_facts, "sync_public_facts", lambda *a, **k: {
+        "status": "fetched", "url": "https://example.test", "fact_mismatches": 0,
+        "surfaces": [],
+    })
+    monkeypatch.setattr(ga4, "sync_if_due", lambda *a, **k: {
+        "status": "fetched", "records": {"sessions": 1},
+    })
+    observations = tmp_path / "observations"
+
+    payload, code = cmd_sync({}, observations_dir=observations)
+
+    assert payload["errors"] == {"market.demand": "no SEMRUSH_API_KEY present"}
+    assert code == 3
+
+    assert len(load_observations("sync.health", observations)) == 1
+    health = latest_observation("sync.health", observations)
+    assert health.records == {
+        "checks_attempted": 3,
+        "checks_succeeded": 2,
+        "checks_failed": 1,
+        "source_status": "semrush=no_credential;ga4=ok;gbp=not_due;site=ok",
+    }
+
+    _, findings = assess_check(load_brain(), "sync.health", observations)
+    assert any(f.severity == "critical" for f in findings)
+
+
+def test_sync_health_is_written_even_when_every_source_is_not_due(tmp_path, monkeypatch):
+    """An all-not_due day still has to satisfy sync.health's daily cadence."""
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.observations import latest_observation
+    from fmd_seo.sync import SyncResult
+
+    monkeypatch.setattr(sync, "sync_due", lambda *a, **k: SyncResult([], [], {}))
+    for module in (gbp, ga4):
+        monkeypatch.setattr(module, "sync_if_due", lambda *a, **k: {
+            "status": "not_due", "observed_at": "2026-08-15T00:00:00+00:00",
+        })
+    monkeypatch.setattr(site_facts, "sync_public_facts", lambda *a, **k: {
+        "status": "not_due", "observed_at": "2026-08-15T00:00:00+00:00",
+    })
+    observations = tmp_path / "observations"
+
+    payload, code = cmd_sync({}, observations_dir=observations)
+
+    assert code == 0
+    assert payload["errors"] == {}
+    health = latest_observation("sync.health", observations)
+    assert health is not None
+    assert health.records["checks_attempted"] == 0
+    assert health.records["source_status"] == (
+        "semrush=not_due;ga4=not_due;gbp=not_due;site=not_due"
+    )
+
+
+def test_sync_note_never_records_a_credential(tmp_path, monkeypatch):
+    """bin/fmd-seo-cron commits the observation, so an echoed key is permanent."""
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.loop_cli import cmd_sync, redact_secrets
+    from fmd_seo.observations import latest_observation
+    from fmd_seo.sync import SyncResult
+
+    leak = (
+        "HTTP 403 for https://api.test/v3?key=sk-live-abcdef123456&type=phrase_this "
+        "(Authorization: Bearer ya29.a0AfB_secretvalue) for svc@fmd-seo.iam.test"
+    )
+    monkeypatch.setattr(sync, "sync_due", lambda *a, **k: SyncResult(
+        fetched=[], skipped_no_key=[], errors={"market.demand": leak},
+    ))
+    for module in (gbp, ga4):
+        monkeypatch.setattr(module, "sync_if_due", lambda *a, **k: {"status": "not_due"})
+    monkeypatch.setattr(site_facts, "sync_public_facts", lambda *a, **k: {"status": "not_due"})
+    observations = tmp_path / "observations"
+
+    cmd_sync({}, observations_dir=observations)
+
+    note = latest_observation("sync.health", observations).note
+    for secret in ("sk-live-abcdef123456", "ya29.a0AfB_secretvalue", "svc@fmd-seo.iam.test"):
+        assert secret not in note
+    # Redaction must not eat the diagnosis along with the credential.
+    assert "HTTP 403" in note and "phrase_this" in note
+
+    assert redact_secrets("no secrets here") == "no secrets here"
+    assert redact_secrets('{"api_key": "abc123"}') == '{"api_key": "[REDACTED]"}'
 
 
 def test_semrush_blowup_does_not_abort_the_other_three_sources(tmp_path, monkeypatch):
