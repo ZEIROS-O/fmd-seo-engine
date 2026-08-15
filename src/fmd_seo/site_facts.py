@@ -189,30 +189,22 @@ def verify_generated_fact_hash(
     expected_payload = public_fact_payload(facts_file)
     expected = expected_payload["sourceHash"]
     generated = generated_ts.read_text(encoding="utf-8")
-    match = re.search(
-        r"BUSINESS_FACTS_PAYLOAD\s*=\s*(\{.*\})\s+as const;",
-        generated,
-        re.DOTALL,
-    )
-    if match is None:
-        raise ValueError(f"no generated BUSINESS_FACTS_PAYLOAD found in {generated_ts}")
-    try:
-        observed_payload = json.loads(match.group(1))
-    except json.JSONDecodeError as err:
-        raise ValueError(f"generated facts payload is not JSON: {err}") from err
-    observed_facts = observed_payload.get("facts") if isinstance(observed_payload, dict) else None
-    observed = (
-        observed_payload.get("sourceHash") if isinstance(observed_payload, dict) else None
-    )
-    if observed_facts != expected_payload["facts"]:
-        raise ValueError("generated facts payload mismatch with canonical projection")
-    recomputed = hashlib.sha256(
-        canonical_json(observed_facts).encode("utf-8")
-    ).hexdigest()
-    if observed != expected or recomputed != expected:
+    # Byte comparison against the renderer, mirroring the llms.txt check below.
+    # Parsing BUSINESS_FACTS_PAYLOAD out with a regex left everything around
+    # that literal unchecked -- including
+    # `export const BUSINESS_FACTS = BUSINESS_FACTS_PAYLOAD.facts;`, which is
+    # what CityPage.tsx, chat.ts and the MCP tools actually import. Rewriting
+    # that export to a literal carrying a wrong phone number and a $999 price
+    # still returned DONE.
+    if generated != _render_typescript(expected_payload):
+        observed_match = re.search(r'"sourceHash":\s*"([0-9a-f]{64})"', generated)
+        observed = observed_match.group(1) if observed_match else None
+        # Second, narrower assertion purely for the error message: it separates
+        # "the facts moved" from "someone edited the file around the payload".
         raise ValueError(
-            "business facts payload hash mismatch: "
-            f"canonical={expected} site={observed} recomputed={recomputed}"
+            "generated facts payload mismatch with canonical projection: "
+            f"{generated_ts} is not byte-identical to the renderer "
+            f"(canonical hash={expected} site hash={observed})"
         )
     llms_path = generated_llms or generated_ts.parents[2] / "public" / "llms.txt"
     observed_llms = llms_path.read_text(encoding="utf-8")

@@ -262,29 +262,70 @@ equipment: {steamer: {owned: false}, ozone_machine: {owned: false}}
     assert observation.records == {"fact_mismatches": 1}
 
 
-def test_rendered_fact_surfaces_match_the_tracked_site_files():
+def test_verification_blocks_a_rewritten_derived_facts_export(tmp_path):
+    """The payload literal is not the fact surface; the derived export is.
+
+    `CityPage.tsx`, `chat.ts` and all four MCP tools import `BUSINESS_FACTS`,
+    not `BUSINESS_FACTS_PAYLOAD`. Rewriting that one line to a literal carrying
+    a wrong phone number and a $999 price used to return DONE, because
+    verification only ever regex-parsed the payload object.
+    """
+    facts = tmp_path / "business-facts.yaml"
+    facts.write_text(REMEDY_FACTS_TEMPLATE % 24, encoding="utf-8")
+    site = tmp_path / "site"
+    generate_site_fact_files(facts, site)
+    generated_ts = site / "src/lib/business-facts.ts"
+
+    original = generated_ts.read_text(encoding="utf-8")
+    tampered = original.replace(
+        "export const BUSINESS_FACTS = BUSINESS_FACTS_PAYLOAD.facts;",
+        'export const BUSINESS_FACTS = { ...BUSINESS_FACTS_PAYLOAD.facts, '
+        '"phoneDisplay": "(216) 555-0000", '
+        '"pricing": { ...BUSINESS_FACTS_PAYLOAD.facts.pricing, "fullInterior": 999 } };',
+    )
+    assert tampered != original, "tamper fixture no longer matches the renderer"
+    generated_ts.write_text(tampered, encoding="utf-8")
+
+    # The payload literal is untouched, so the old regex/parse check passed.
+    assert '"phoneDisplay": "(216) 359-1034"' in tampered
+
+    with pytest.raises(ValueError, match="not byte-identical"):
+        verify_generated_fact_hash(facts, generated_ts)
+
+
+def test_rendered_fact_surfaces_match_the_pinned_site_files():
     """The templates are the site's copy, so template drift is copy drift.
 
     The generators are only trustworthy if rendering the reconciled facts
     reproduces the live files byte for byte. Without this, a narrower template
     silently emits a patch that reverts published copy -- which is exactly what
     `packages/patch-4391be8a9e3b0a20.json` did.
+
+    The pinned rendered bytes live in-repo so this always asserts, including in
+    CI where no site worktree is checked out. When the worktree *is* present,
+    the second half proves the pins are still the site's live copy.
     """
     from pathlib import Path
 
     from fmd_seo.paths import load_config
-    from fmd_seo.site_facts import _render_llms, _render_typescript
+    from fmd_seo.site_facts import _render_typescript
+
+    fixtures = Path(__file__).resolve().parents[1] / "fixtures/facts"
+    payload = public_fact_payload(fixtures / "business-facts-site-current.yaml")
+    rendered_llms = _render_llms(payload)
+    rendered_ts = _render_typescript(payload)
+
+    assert rendered_llms == (fixtures / "llms-site-current.txt").read_text(encoding="utf-8")
+    assert rendered_ts == (
+        fixtures / "business-facts-site-current.ts"
+    ).read_text(encoding="utf-8")
 
     site = Path((load_config().get("paths") or {}).get("site_worktree", ""))
     if not (site / "public/llms.txt").is_file():
-        pytest.skip("site worktree not checked out (local-only contract)")
+        return
 
-    pinned = Path(__file__).resolve().parents[1] / "fixtures/facts/business-facts-site-current.yaml"
-    payload = public_fact_payload(pinned)
-
-    assert _render_llms(payload) == (site / "public/llms.txt").read_text(encoding="utf-8")
-
-    assert _render_typescript(payload) == (
+    assert rendered_llms == (site / "public/llms.txt").read_text(encoding="utf-8")
+    assert rendered_ts == (
         site / "src/lib/business-facts.ts"
     ).read_text(encoding="utf-8")
 
