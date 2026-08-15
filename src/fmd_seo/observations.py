@@ -21,6 +21,7 @@ from .brain import evaluate
 from .provenance import file_sha256, resolve_source
 
 OBSERVATIONS_DIR = paths.ENGINE_ROOT / "brain" / "observations"
+OBSERVATION_SCHEMA_VERSION = 2
 
 # How a check's data was obtained — provenance that survives into the receipt.
 FULFILLMENT = {"engine_api", "mcp", "agent", "console", "engine"}
@@ -38,6 +39,7 @@ class Observation:
     # sources are hash-bound by the independent audit before they are trusted.
     source_sha256: str = ""
     source_kind: str = ""
+    schema_version: int = OBSERVATION_SCHEMA_VERSION
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -63,6 +65,8 @@ def _validate(check: Check, records: dict[str, Any], fulfillment: str) -> None:
     for record in check.records:
         name, kind = record["name"], record["type"]
         value = records[name]
+        if value is None and record.get("nullable") is True:
+            continue
         if kind == "bool" and not isinstance(value, bool):
             raise ValueError(f"{check.id}.{name} must be bool, got {value!r}")
         if kind == "int" and (isinstance(value, bool) or not isinstance(value, int)):
@@ -178,6 +182,7 @@ def load_observations(check_id: str, directory: Path | None = None) -> list[Obse
     obs = []
     for path in sorted(out_dir.glob("*.json")):
         data = json.loads(path.read_text(encoding="utf-8"))
+        data.setdefault("schema_version", 1)
         obs.append(Observation(**data))
     return sorted(obs, key=lambda o: o.observed_at)
 

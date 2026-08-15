@@ -69,9 +69,12 @@ def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
     reports = api_backed.get(check.id, [])
     if check.method_kind == "mcp" and reports and has_semrush_key:
         return "engine_api", reports
-    # GSC URL Inspection API turns the one console check headless.
+    # GSC provides two independent headless instruments: per-URL inspection
+    # and finalized query/page Search Analytics rows.
     if check.id == "seo.indexation" and has_gsc:
         return "engine_api", ["gsc:urlInspection"]
+    if check.id == "seo.query_footprint" and has_gsc:
+        return "engine_api", ["gsc:searchAnalytics.query"]
     if check.id == "analytics.traffic" and has_ga4:
         return "engine_api", ["ga4:runReport"]
     return KIND_FULFILLMENT.get(check.method_kind, "session"), []

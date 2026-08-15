@@ -1,5 +1,9 @@
 schema_version: 1
 
+scheduler:
+  worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fmd-seo-scheduler-state"
+  branch: "automation/fmd-seo-state"
+
 # DataForSEO may require a larger account deposit; this is the engine's bounded
 # spend ceiling. The ledger accounts for all spend and reserves before posting.
 # Measured per-call costs: serp $0.002 | llm_responses $0.0063 |
@@ -58,6 +62,8 @@ ga4:
   days: 28
 
 site:
+  repository: "https://github.com/ZEIROS-O/fresh-mobile-detailing.git"
+  base_ref: "origin/main"
   facts_url: "https://freshmobiledetail.com/api/business-facts"
   fact_surfaces:
     - url: "https://freshmobiledetail.com/"

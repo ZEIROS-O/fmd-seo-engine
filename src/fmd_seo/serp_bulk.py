@@ -290,6 +290,24 @@ def normalize_result(keyword: str, result: dict, targets: dict[str, dict]) -> di
         "provider_datetime": result.get("datetime"),
         "check_url": result.get("check_url"),
         "se_results_count": result.get("se_results_count"),
+        "serp_features": sorted(set(result.get("item_types") or [
+            item.get("type") for item in items if item.get("type")
+        ])),
+        "organic_top10": [
+            {
+                "rank": item.get("rank_group"),
+                "rank_absolute": item.get("rank_absolute"),
+                "result_type": item.get("type"),
+                "url": item.get("url"),
+                "title": item.get("title"),
+                "snippet": item.get("description") or item.get("snippet"),
+            }
+            for item in sorted(
+                organic,
+                key=lambda value: value.get("rank_group") or value.get("rank_absolute") or 999,
+            )
+            if int(item.get("rank_group") or item.get("rank_absolute") or 999) <= 10
+        ][:10],
         "local_pack_present": bool(local_pack),
         "page1_domains": sorted({
             _normalize_domain(item.get("domain"))

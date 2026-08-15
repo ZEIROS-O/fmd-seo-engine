@@ -226,15 +226,21 @@ def draft_gbp_assets(facts_file: Path, output_dir: Path) -> dict:
         "mentioned_places": [],
         "internal_links": [{"href": "/", "label": "Book online"}],
     }
+    evidence_ref = f"fact-snapshot:{snapshot.source_hash}"
     package = PagePackage.create(
         intent_key="gbp:weekly-post",
         tier="supporting-post",
         created_at=now_iso(),
         fact_snapshot=snapshot.to_dict(),
-        evidence_refs=[],
+        evidence_refs=[evidence_ref],
         content=content,
         internal_links=content["internal_links"],
         assets=[],
+        information_gain={
+            "kind": "first_hand",
+            "evidence_ref": evidence_ref,
+            "description": "Current first-party service pricing and guarantee details.",
+        },
     )
     checks = deterministic_checks(package, known_routes={"/"})
     if not checks_pass(checks):

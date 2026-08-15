@@ -1,0 +1,6 @@
+schema_version: 1
+status: BLOCKED_AWAITING_AEO_CITATION_EVIDENCE
+action_mode: research_and_draft
+outreach_allowed: false
+submission_allowed: false
+sources: []

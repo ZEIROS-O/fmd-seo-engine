@@ -9,6 +9,6 @@ args = ""
 For Each a In Wscript.Arguments
     args = args & " " & a
 Next
-cmd = "wsl.exe -d Ubuntu-22.04 -u lucascoh -- /home/lucascoh/fmd-seo-engine/bin/fmd-seo-cron" & args
+cmd = "wsl.exe -d Ubuntu-22.04 -u lucascoh -- /home/lucascoh/fmd-seo-engine/.worktrees/fmd-seo-scheduler-state/bin/fmd-seo-cron" & args
 rc = sh.Run(cmd, 0, True)
 Wscript.Quit rc

@@ -19,7 +19,7 @@ from fmd_seo.gsc import GscConfig, GscUnavailable, classify_coverage, fetch_inde
     ("Discovered – currently not indexed", "discovered_not_indexed"),  # en-dash
     ("Crawled - currently not indexed", "crawled_not_indexed"),
     ("Page with redirect", "not_indexed"),
-    ("URL is unknown to Google", "not_indexed"),
+    ("URL is unknown to Google", "unknown_to_google"),
     ("Excluded by 'noindex' tag", "not_indexed"),
     ("", "not_indexed"),
 ])
@@ -36,14 +36,15 @@ def test_tally_matches_indexation_record_shape():
         "Discovered - currently not indexed",
         "Crawled - currently not indexed",
         "Page with redirect",
-        "",  # unknown -> not_indexed bucket
+        "URL is unknown to Google",
     ]
     rec = tally(states)
     assert rec == {
         "indexed": 3,
-        "not_indexed": 5,               # 2 discovered + 1 crawled + 1 redirect + 1 unknown
+        "not_indexed": 4,               # 2 discovered + 1 crawled + 1 redirect
         "discovered_not_indexed": 2,
         "crawled_not_indexed": 1,
+        "unknown_to_google": 1,
         "inspected_ok": 8,
     }
     # not_indexed must equal the sum of its named + unnamed buckets
@@ -54,6 +55,7 @@ def test_tally_all_indexed():
     rec = tally(["Submitted and indexed"] * 20)
     assert rec["indexed"] == 20
     assert rec["not_indexed"] == 0
+    assert rec["unknown_to_google"] == 0
     assert rec["inspected_ok"] == 20
 
 

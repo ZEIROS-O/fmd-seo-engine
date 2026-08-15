@@ -1,0 +1,19 @@
+schema_version: 1
+score_version: 1
+status: BLOCKED_AWAITING_S1_EVIDENCE
+generated_at: "2026-08-12T19:00:00+00:00"
+formula: "0.35 commercial + 0.25 traction + 0.20 beatability + 0.10 authority_gap + 0.10 freshness - 0.05 cost - 0.05 risk"
+blockers:
+  - seo.query_footprint has no current finalized GSC observation
+  - serp.consensus has no complete six-winner artifact
+  - aeo.citation_sources has no approved-panel observation
+opportunities: []
+priority_paths:
+  - {priority: review_velocity, path: local.review_velocity, type: blocker, owner: Lou}
+  - {priority: gbp_configuration_audit, path: GBP console, type: console, owner: Lou}
+  - {priority: near_winner_optimization, path: "patch copy", type: generator, owner: engine}
+  - {priority: entity_decontamination, path: drafts/entity-corrections, type: draft_queue, owner: Lou}
+  - {priority: copy_language, path: "patch copy", type: generator, owner: engine}
+  - {priority: internal_linking, path: "patch internal-links", type: generator, owner: engine}
+  - {priority: schema_finish_validate, path: "patch schema", type: generator, owner: engine}
+  - {priority: reassess_gate1, path: GATE-1 two-reading rule, type: blocker, owner: Lou}

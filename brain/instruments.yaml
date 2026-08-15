@@ -1,0 +1,25 @@
+schema_version: 1
+
+instruments:
+  - {id: live-html-v1, status: active, purpose: raw HTML and fact surfaces, source: live_site}
+  - {id: gsc-url-inspection-v1, status: active, purpose: URL discovery and indexation, source: google_search_console}
+  - {id: gsc-search-analytics-v1, status: active, purpose: finalized query and page footprint, source: google_search_console}
+  - id: semrush-organic-domain-v1
+    status: retired
+    purpose: third-party organic keyword footprint
+    source: semrush
+    retired_at: 2026-08-12
+    rationale: T7 replaced this non-authoritative database estimate with first-party GSC Search Analytics.
+  - {id: dataforseo-serp-v1, status: active, purpose: coordinate-anchored SERP and consensus inputs, source: dataforseo}
+  - {id: dataforseo-local-finder-v1, status: active, purpose: local rank and weekly review counts, source: dataforseo}
+  - {id: dataforseo-google-reviews-v1, status: active, purpose: capped public review-language sample, source: dataforseo}
+  - {id: dataforseo-llm-responses-v1, status: active, purpose: frozen multi-engine AEO panel, source: dataforseo}
+  - {id: gbp-performance-v1, status: active, purpose: GBP discovery and action metrics, source: google_business_profile}
+  - {id: ga4-data-v1, status: active, purpose: aggregate acquisition and key events, source: google_analytics}
+  - {id: semrush-site-audit-v1, status: active, purpose: site audit health, source: semrush}
+  - {id: semrush-backlinks-v1, status: active, purpose: local authority comparison, source: semrush}
+  - {id: semrush-keywords-v1, status: active, purpose: demand and seasonality, source: semrush}
+  - {id: live-crawl-v1, status: active, purpose: sitemap and internal-link inventory, source: live_site}
+  - {id: agent-search-v1, status: active, purpose: session-owned public surface review, source: agent}
+  - {id: facts-yaml-v1, status: active, purpose: canonical fact freshness, source: business_facts_yaml}
+  - {id: observation-series-v1, status: active, purpose: evidence freshness and liveness, source: engine_state}

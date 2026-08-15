@@ -1,0 +1,7 @@
+schema_version: 1
+status: BLOCKED_AWAITING_ALLOWLIST_REVIEW
+allowed_classes: [chamber, association, supplier, directory, community]
+action_mode: research_and_draft
+outreach_allowed: false
+submission_allowed: false
+sources: []

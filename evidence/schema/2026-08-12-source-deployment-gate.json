@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKED_STALE_FACT_AUTHORITY",
+  "recorded_at": "2026-08-12",
+  "site_base_sha": "709feb09c270bb8aae4a19e9a47bf11292368ce3",
+  "canonical_facts_sha256": "69025194f05894290a038bb1caf82c8097bd5d83746f3a75e10104b5b84dfcd2",
+  "finding": "The canonical business-facts.yaml is stale relative to the live site, not the other way round. Its source_last_updated is 2026-07-04; public/llms.txt and src/lib/business-facts.ts were both last changed 2026-08-07. The four divergences below are values the site already carries and the facts file has not caught up to, so a patch generated from the facts file would revert published copy.",
+  "authority_direction": {
+    "facts_source_last_updated": "2026-07-04",
+    "site_llms_txt_last_commit": "2026-08-07",
+    "site_business_facts_ts_last_commit": "2026-08-07",
+    "authoritative": "site"
+  },
+  "facts_file_behind_site": [
+    {"key": "guarantee.name", "facts_file": "Door-Open Guarantee", "live_site": "Fresh Finish Guarantee"},
+    {"key": "guarantee.summary", "facts_file": "Wow when you open the door, or you do not pay", "live_site": "If we miss something we promised, we make it right"},
+    {"key": "pricing.one_time.ultimate_interior.price", "facts_file": 279, "live_site": 289},
+    {"key": "services.offered[0..1]", "facts_file": ["Full Interior Detail", "Ultimate Interior Detail"], "live_site": ["The Interior Reset", "The Deep Interior Reset"]}
+  ],
+  "engine_template_gaps_closed": [
+    "site_facts._render_llms hardcoded \"Cleveland's east side\"; the live site says \"eastern suburbs\" (site commit 81ac031 dropped it deliberately)",
+    "service price-line labels were hardcoded \"Full Interior\"/\"Ultimate Interior\"; they now render from services.offered and carry the site's \"From $\" prefix",
+    "the guarantee line rendered only guarantee.summary; it now renders \"<name> — <public_statement>\", with the longer customer-facing phrasing read from the facts file"
+  ],
+  "site_defect_found": {
+    "file": "src/lib/business-facts.ts",
+    "stated_source_hash": "9111d9b6d659e63882a72653ca7e6059eb58526b47c04da6323fc71f7ce9b381",
+    "recomputed_from_its_own_facts": "125ab0d4e6a2eca5c2d1b033945ccfac1e2cec479bc1bab57025f6711f9c0bb1",
+    "detail": "The site's generated fact payload carries a sourceHash that does not match the facts block in the same file, so its fact binding currently proves nothing. The values were hand-edited on the site without regenerating the hash. Repairing this is a site-side change and is out of scope here."
+  },
+  "review_count_source_scan": {
+    "reviewCount_occurrences": 0,
+    "publicReviewCountAllowed": false
+  },
+  "superseded": {
+    "patch_package": "packages/patch-4391be8a9e3b0a20.json",
+    "reason": "generated from the stale facts file; applying it would have reverted live copy. The direction guard in patch_generators._facts_are_behind_the_site now blocks this class of patch at generation time."
+  },
+  "next_gate": "Lou updates business-facts.yaml to the live values (including guarantee.public_statement), which lets `fmd-seo patch schema --dry-run` stop blocking. No deployment is claimed."
+}

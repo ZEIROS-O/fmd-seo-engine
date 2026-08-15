@@ -34,9 +34,11 @@ class GscUnavailable(RuntimeError):
 
 def classify_coverage(coverage_state: str) -> str:
     """Return one of: indexed | discovered_not_indexed | crawled_not_indexed |
-    not_indexed. Unknown/redirect/excluded all fall to not_indexed — they are not
-    indexed, which is what the gate cares about."""
+    not_indexed | unknown_to_google. A reported Google discovery gap stays
+    separate from an indexing decision."""
     s = (coverage_state or "").strip().lower()
+    if "unknown to google" in s:
+        return "unknown_to_google"
     if s.startswith("discovered"):
         return "discovered_not_indexed"
     if s.startswith("crawled"):
@@ -50,7 +52,8 @@ def classify_coverage(coverage_state: str) -> str:
 def tally(coverage_states: list[str], *, inspected_ok: int | None = None) -> dict:
     """Aggregate coverageState strings into the seo.indexation record shape."""
     buckets = {"indexed": 0, "discovered_not_indexed": 0,
-               "crawled_not_indexed": 0, "not_indexed_other": 0}
+               "crawled_not_indexed": 0, "not_indexed_other": 0,
+               "unknown_to_google": 0}
     for state in coverage_states:
         b = classify_coverage(state)
         if b == "indexed":
@@ -59,6 +62,8 @@ def tally(coverage_states: list[str], *, inspected_ok: int | None = None) -> dic
             buckets["discovered_not_indexed"] += 1
         elif b == "crawled_not_indexed":
             buckets["crawled_not_indexed"] += 1
+        elif b == "unknown_to_google":
+            buckets["unknown_to_google"] += 1
         else:
             buckets["not_indexed_other"] += 1
     not_indexed = (buckets["discovered_not_indexed"] + buckets["crawled_not_indexed"]
@@ -68,6 +73,7 @@ def tally(coverage_states: list[str], *, inspected_ok: int | None = None) -> dic
         "not_indexed": not_indexed,
         "discovered_not_indexed": buckets["discovered_not_indexed"],
         "crawled_not_indexed": buckets["crawled_not_indexed"],
+        "unknown_to_google": buckets["unknown_to_google"],
         "inspected_ok": len(coverage_states) if inspected_ok is None else inspected_ok,
     }
 
@@ -132,3 +138,19 @@ def fetch_indexation(cfg: GscConfig, urls: list[str]) -> dict:
             f"GSC URL Inspection succeeded for only {succeeded}/{len(urls)} URLs"
         )
     return tally(states, inspected_ok=succeeded)
+
+
+def fetch_query_footprint(
+    cfg: GscConfig,
+    *,
+    pages_in_sitemap: int,
+) -> tuple[dict, dict]:
+    """Return normalized top rows plus the standing near-winner record."""
+    from .query_footprint import aggregate_rows, fetch_top_rows
+
+    service = _build_service(cfg.key_path)
+    artifact = fetch_top_rows(service, site_url=cfg.site_url)
+    records = aggregate_rows(
+        artifact["rows"], pages_in_sitemap=pages_in_sitemap,
+    )
+    return artifact, records

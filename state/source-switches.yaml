@@ -1,0 +1,8 @@
+schema_version: 1
+sources:
+  dataforseo: true
+  semrush: true
+  gsc: true
+  ga4: true
+  gbp: true
+  site: true

@@ -185,4 +185,12 @@ def build_slice_package(
             "alt": "Fresh Mobile Detailing logo",
             "provenance": "pre-existing site asset in fresh-mobile-detailing public/",
         }],
+        information_gain={
+            "kind": "comparison",
+            "evidence_ref": evidence_refs[0],
+            "description": (
+                "A fact-bound Cleveland price and duration comparison using the "
+                "captured local-market evidence."
+            ),
+        },
     )

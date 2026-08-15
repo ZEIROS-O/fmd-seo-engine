@@ -39,9 +39,14 @@ export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
 if ! command -v hermes >/dev/null 2>&1; then
   echo "notify-run: hermes not on PATH — skipping notification" >&2
+  echo "notification_status=SKIPPED_HERMES_UNAVAILABLE"
   exit 0
 fi
 
-hermes send -q --to "${NOTIFY_TARGET:-telegram}" "$msg" 2>/dev/null \
-  || echo "notify-run: send failed (non-fatal)" >&2
+if hermes send -q --to "${NOTIFY_TARGET:-telegram}" "$msg" 2>/dev/null; then
+  echo "notification_status=DELIVERED"
+else
+  echo "notify-run: send failed (non-fatal)" >&2
+  echo "notification_status=FAILED"
+fi
 exit 0

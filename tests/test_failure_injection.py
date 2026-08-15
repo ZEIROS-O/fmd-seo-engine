@@ -103,7 +103,7 @@ def test_sync_command_returns_partial_when_some_due_checks_fail(tmp_path, monkey
         sync,
         "sync_due",
         lambda *_args, **_kwargs: SyncResult(
-            fetched=["seo.organic_footprint"],
+            fetched=["competitor.authority_gap"],
             skipped_no_key=[],
             errors={"competitor.authority_gap": "provider failed"},
         ),
@@ -113,7 +113,7 @@ def test_sync_command_returns_partial_when_some_due_checks_fail(tmp_path, monkey
         {"creds_env": str(tmp_path / "unused")},
         observations_dir=tmp_path / "observations",
     )
-    assert payload["fetched"] == ["seo.organic_footprint"]
+    assert payload["fetched"] == ["competitor.authority_gap"]
     assert code == 3
 
 

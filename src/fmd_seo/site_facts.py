@@ -32,6 +32,9 @@ def public_fact_payload(facts_file: Path) -> dict:
     service = data["service_area"]
     pricing = data["pricing"]
     guarantee = data["guarantee"]
+    public_statement = str(
+        guarantee.get("public_statement") or guarantee["summary"]
+    ).strip()
     claims = data["claim_gates"]
     hours = data["hours"]
     services = data["services"]
@@ -56,6 +59,7 @@ def public_fact_payload(facts_file: Path) -> dict:
         "guarantee": {
             "name": guarantee["name"],
             "summary": guarantee["summary"],
+            "publicStatement": public_statement,
             "remedyWindowHours": guarantee["remedy_window_hours"],
         },
         "publicReviewCountAllowed": bool(
@@ -107,17 +111,28 @@ def _render_llms(payload: dict) -> str:
     facts = payload["facts"]
     pricing = facts["pricing"]
     places = ", ".join(facts["serviceAreaPlaces"])
+    offered = facts["services"]["offered"]
+    # Service labels are the names in services.offered, not fixed strings:
+    # renaming a service in the facts file has to move the price lines with it.
+    # Two tiers are priced, so two must be named -- guessing a label here would
+    # publish a service name that no fact authorizes.
+    if len(offered) < 2:
+        raise ValueError(
+            "services.offered must name both priced tiers "
+            f"(full_interior, ultimate_interior); got {offered!r}"
+        )
+    primary, secondary = offered[0], offered[1]
     return f"""# {facts['businessName']}
 
-> Interior-first mobile car detailing serving Cleveland's east side from {facts['serviceAreaBase']}.
+> Interior-first mobile car detailing serving Cleveland's eastern suburbs from {facts['serviceAreaBase']}.
 
 ## Verified facts
 
 - Phone/text: {facts['phoneDisplay']}
-- Full Interior: ${pricing['fullInterior']} (about {pricing['fullInteriorHours']} hours)
-- Ultimate Interior: ${pricing['ultimateInterior']} (about {pricing['ultimateInteriorHours']} hours)
+- {primary}: From ${pricing['fullInterior']} (about {pricing['fullInteriorHours']} hours)
+- {secondary}: From ${pricing['ultimateInterior']} (about {pricing['ultimateInteriorHours']} hours)
 - Fresh Club: ${pricing['monthly']} monthly, ${pricing['biMonthly']} bi-monthly, ${pricing['quarterly']} quarterly per visit
-- Guarantee: {facts['guarantee']['summary']}
+- Guarantee: {facts['guarantee']['name']} — {facts['guarantee']['publicStatement']}; report missed included work within {facts['guarantee']['remedyWindowHours']} hours
 - Service area: {places}
 - Hours: {', '.join(facts['hours']['days'])}, {facts['hours']['opens']}–{facts['hours']['closes']}
 - Services: {', '.join(facts['services']['offered'])}; exterior add-on: {facts['services']['exteriorAddOn']}
@@ -163,8 +178,10 @@ def compare_public_facts(expected: dict, observed: dict) -> int:
     return mismatches
 
 
-def verify_generated_fact_hash(facts_file: Path, generated_ts: Path) -> dict:
-    """Fail if a materialized canonical file and site-generated payload diverge."""
+def verify_generated_fact_hash(
+    facts_file: Path, generated_ts: Path, generated_llms: Path | None = None,
+) -> dict:
+    """Fail if either generated public fact surface diverges from authority."""
     expected_payload = public_fact_payload(facts_file)
     expected = expected_payload["sourceHash"]
     generated = generated_ts.read_text(encoding="utf-8")
@@ -193,11 +210,17 @@ def verify_generated_fact_hash(facts_file: Path, generated_ts: Path) -> dict:
             "business facts payload hash mismatch: "
             f"canonical={expected} site={observed} recomputed={recomputed}"
         )
+    llms_path = generated_llms or generated_ts.parents[2] / "public" / "llms.txt"
+    observed_llms = llms_path.read_text(encoding="utf-8")
+    expected_llms = _render_llms(expected_payload)
+    if observed_llms != expected_llms:
+        raise ValueError("generated public/llms.txt mismatch with canonical projection")
     return {
         "command": "facts-check",
         "status": "DONE",
         "source_hash": expected,
         "generated_file": str(generated_ts),
+        "generated_files": [str(generated_ts), str(llms_path)],
     }
 
 

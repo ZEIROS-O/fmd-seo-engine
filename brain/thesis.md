@@ -360,3 +360,22 @@ at every location.
    posts, and confirm `AggregateRating` is fact-bound (not reused across suburbs).
    Maintenance now, not the bottleneck.
 7. **Only then** reassess GATE-1.
+
+## 2026-08-12 operating amendments
+
+1. **Instrument retirement is explicit.** A superseded measurement is marked
+   retired in `brain/instruments.yaml` with date and rationale. Its evidence is
+   preserved, while active checks and assessment cannot reference it.
+2. **First-party footprint wins.** Finalized GSC query/page `top_rows`, labeled
+   non-exhaustive, replace the Semrush domain estimate for near-winner work.
+3. **Citation authority is not generic link authority.** Sources that repeatedly
+   cite competitors but not FMD form a measured citation gap; link volume alone
+   is not a proxy for answer-engine inclusion.
+4. **Review floor is verified.** Answer-engine counts remain untrusted until
+   checked against listing evidence. Missing prior velocity is null, never zero.
+5. **PatchPackage is GATE-1-compatible, not gate-free.** It can modify an existing
+   tracked path only. Fact binding, provenance, human merge, deployment, and live
+   re-verification remain mandatory.
+6. **No fake corroboration.** Authority queues may produce research and drafts
+   only—never purchased links, invented endorsements, automated submissions, or
+   fabricated third-party support.

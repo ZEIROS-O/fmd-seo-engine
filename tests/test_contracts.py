@@ -17,6 +17,11 @@ def _package(**overrides):
         content={"title": "T", "slug": "t", "meta": {}, "body_blocks": [], "schema_jsonld": {}},
         internal_links=[],
         assets=[],
+        information_gain={
+            "kind": "first_hand",
+            "evidence_ref": "ev-1",
+            "description": "A documented service workflow.",
+        },
     )
     kwargs.update(overrides)
     return PagePackage.create(**kwargs)

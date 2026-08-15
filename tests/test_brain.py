@@ -185,6 +185,15 @@ def test_real_brain_includes_gbp_performance_check():
     ]
 
 
+def test_real_closed_gate_priorities_all_have_an_action_path():
+    brain = load_brain()
+    closed = [item for item in brain.priorities if item["gate"].get("GATE-1") == "CLOSED"]
+
+    assert len(closed) == 8
+    assert all(item["action"]["type"] in {"generator", "console", "draft_queue", "blocker"}
+               for item in closed)
+
+
 # ─────────────────────── due scheduling ───────────────────────
 
 def test_never_observed_check_is_always_due():

@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 
 # The check registry — the engine's standing answer to "what should I be checking?"
 #
@@ -25,6 +25,9 @@ checks:
     title: Structured data present in live initial HTML
     cadence: daily
     cost: free
+    execution_mode: session
+    thesis_refs: [T2]
+    instrument_ref: live-html-v1
     method:
       kind: http
       run: |
@@ -62,6 +65,9 @@ checks:
     title: Emitted schema is valid and fact-bound
     cadence: weekly
     cost: free
+    execution_mode: session
+    thesis_refs: [T2, T6]
+    instrument_ref: live-html-v1
     method:
       kind: http
       run: |
@@ -90,6 +96,9 @@ checks:
     title: GSC index coverage — the GATE-1 input
     cadence: weekly
     cost: console
+    execution_mode: scheduled
+    thesis_refs: [T1]
+    instrument_ref: gsc-url-inspection-v1
     method:
       kind: console
       run: |
@@ -105,6 +114,7 @@ checks:
       - {name: not_indexed, type: int}
       - {name: discovered_not_indexed, type: int}
       - {name: crawled_not_indexed, type: int}
+      - {name: unknown_to_google, type: int}
       - {name: inspected_ok, type: int}
     thresholds:
       - expr: not_indexed >= gate1_not_indexed_max_exclusive
@@ -119,42 +129,57 @@ checks:
         severity: high
         finding: "Google is discovering pages and declining to crawl them — a low-authority signal, not a content signal."
         action: "Do not rewrite the pages. Raise corroboration: schema, citations, internal links, reviews."
+      - expr: unknown_to_google > 0
+        severity: high
+        finding: "One or more sitemap URLs are unknown to Google — an authority/discovery gap, not an indexing rejection."
+        action: "Verify crawl paths, sitemap delivery, canonicals, and internal links; do not fold these URLs into content-quality remediation."
     why: |
       T1. This is the single measurement that opens or closes GATE-1. Baseline
       2026-07-14: indexed 4, not indexed 18, discovered-not-indexed 14.
 
-  - id: seo.organic_footprint
+  - id: seo.query_footprint
     domain: seo
-    title: Ranked keywords and non-branded visibility
+    title: GSC query footprint and near-winner inventory
     cadence: weekly
-    cost: mcp
+    cost: free
+    execution_mode: scheduled
+    thesis_refs: [T4, T7]
+    instrument_ref: gsc-search-analytics-v1
     method:
-      kind: mcp
+      kind: engine
       run: |
-        mcp__semrush__organic_research for domain freshmobiledetail.com,
-        database "us". Record total ranked keywords, how many are non-branded
-        (exclude anything containing "fresh"), and how many sit in positions 1-10.
-        Then get_report_schema → execute_report if a fuller pull is needed.
+        Query finalized GSC Search Analytics data over the 28-day period ending
+        three days ago with query and page dimensions. Page through at most the
+        top 25,000 rows; persist immutable row evidence labelled top_rows.
     records:
-      - {name: total_keywords, type: int}
-      - {name: nonbranded_keywords, type: int}
-      - {name: page1_keywords, type: int}
+      - {name: total_queries, type: int}
+      - {name: nonbranded_queries, type: int}
+      - {name: queries_pos_1_3, type: int}
+      - {name: queries_pos_4_10, type: int}
+      - {name: queries_pos_11_20, type: int}
+      - {name: impressions_pos_4_20, type: int}
+      - {name: ctr_leak_queries, type: int}
+      - {name: pages_with_impressions, type: int}
+      - {name: pages_in_sitemap, type: int}
     thresholds:
-      - expr: nonbranded_keywords == 0
-        severity: high
-        finding: "Every ranked keyword is branded — zero organic discovery by strangers."
-        action: "Confirms T4/T7. Fix page copy language before expecting non-branded rankings."
-      - expr: page1_keywords == 0
-        severity: high
-        finding: "No page-1 keywords at all."
-        action: "Authority work, not content work. See thesis priority order."
-    why: "T7 baseline 2026-07-14: 4 keywords, all branded, none on page 1, 9 clicks/28d."
+      - expr: queries_pos_4_10 + queries_pos_11_20 > 0
+        severity: info
+        finding: "A near-winner inventory exists and is the fastest GATE-1-compatible query queue."
+        action: "Work mapped positions 4-20 before proposing a new URL."
+      - expr: ctr_leak_queries > 0
+        severity: medium
+        finding: "Queries earn impressions below the CTR floor for their position band."
+        action: "Patch the mapped existing page title, opening answer, or snippet alignment."
+    why: "T7 retired the Semrush domain estimate; first-party GSC rows are the authoritative footprint."
 
   - id: seo.positions
     domain: seo
     title: Position tracking against the 467-keyword master list
     cadence: weekly
     cost: paid
+    execution_mode: scheduled
+    thesis_refs: [T5, T7]
+    instrument_ref: dataforseo-serp-v1
     method:
       kind: engine
       run: |
@@ -181,6 +206,9 @@ checks:
     title: Map-pack visibility across the service-area geogrid
     cadence: weekly
     cost: paid
+    execution_mode: scheduled
+    thesis_refs: [T5]
+    instrument_ref: dataforseo-serp-v1
     method:
       kind: engine
       run: |
@@ -206,6 +234,9 @@ checks:
     title: Places-tab rank across the keyword x suburb matrix
     cadence: weekly
     cost: paid
+    execution_mode: session
+    thesis_refs: [T5]
+    instrument_ref: dataforseo-local-finder-v1
     method:
       kind: engine
       run: |
@@ -244,6 +275,9 @@ checks:
     title: Google Business Profile discovery and conversion actions
     cadence: weekly
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T5]
+    instrument_ref: gbp-performance-v1
     method:
       kind: engine
       run: |
@@ -271,6 +305,9 @@ checks:
     title: GA4 acquisition and conversion measurement
     cadence: weekly
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T6]
+    instrument_ref: ga4-data-v1
     method:
       kind: console
       run: |
@@ -295,6 +332,9 @@ checks:
     title: Semrush Site Audit health and errors
     cadence: weekly
     cost: mcp
+    execution_mode: session
+    thesis_refs: [T2]
+    instrument_ref: semrush-site-audit-v1
     method:
       kind: mcp
       run: |
@@ -322,6 +362,9 @@ checks:
     title: Internal link paths to the unindexed pages
     cadence: weekly
     cost: free
+    execution_mode: session
+    thesis_refs: [T1]
+    instrument_ref: live-crawl-v1
     method:
       kind: http
       run: |
@@ -340,12 +383,81 @@ checks:
         action: "Link them from a crawlable nav or hub page, or remove them from the sitemap. Thesis priority 4."
     why: "T1. Internal links are a free crawl-priority lever on the 14 unindexed pages."
 
+  - id: local.review_velocity
+    domain: local
+    title: FMD and competitor review floor and velocity
+    cadence: weekly
+    cost: paid
+    execution_mode: session
+    thesis_refs: [T5, T6, T7]
+    instrument_ref: dataforseo-local-finder-v1
+    method:
+      kind: engine
+      run: |
+        Record FMD and the current top-three local competitors' rating and review
+        count. Compare with the nearest prior observation 25-35 days old; missing
+        prior data is null, never zero.
+    records:
+      - {name: prior_measured, type: bool}
+      - {name: net_velocity_positive, type: bool}
+      - {name: fmd_reviews, type: int}
+      - {name: fmd_rating, type: float}
+      - {name: fmd_new_reviews_28d, type: int, nullable: true}
+      - {name: competitor_median_reviews, type: int}
+      - {name: competitor_median_new_reviews_28d, type: int, nullable: true}
+      - {name: pack_floor_reviews, type: int}
+      - {name: reviews_to_floor, type: int}
+      - {name: static_months_to_floor, type: float, nullable: true}
+      - {name: net_months_to_floor, type: float, nullable: true}
+    thresholds:
+      - expr: fmd_reviews < pack_floor_reviews
+        severity: high
+        finding: "FMD remains below the observed review floor among ranked local competitors."
+        action: "Keep review velocity as an accountable Lou-owned priority; do not invent a shortcut."
+      - expr: prior_measured == true and fmd_new_reviews_28d == 0
+        severity: critical
+        finding: "Measured review velocity is zero."
+        action: "Escalate the existing review process; do not treat a missing prior reading as zero."
+      - expr: prior_measured == true and net_velocity_positive == false
+        severity: high
+        finding: "FMD is not closing the review floor at the competitors' measured velocity."
+        action: "net_months_to_floor remains unmeasurable until FMD outpaces the competitor median."
+    why: "T5 and T6 show the same review corroboration gate on the map pack and answer-engine surfaces."
+
+  - id: local.review_language
+    domain: local
+    title: Capped customer and competitor review-language sample
+    cadence: monthly
+    cost: paid
+    execution_mode: session
+    thesis_refs: [T4, T5]
+    instrument_ref: dataforseo-google-reviews-v1
+    method:
+      kind: engine
+      run: |
+        Plan and reserve spend before retrieving at most the newest 20 FMD
+        reviews and 20 for each top-three competitor. Persist source text and
+        derive only repeated phrases present in the captured reviews.
+    records:
+      - {name: businesses_sampled, type: int}
+      - {name: reviews_captured, type: int}
+      - {name: repeated_problem_phrases, type: int}
+    thresholds:
+      - expr: businesses_sampled < 4
+        severity: high
+        finding: "The review-language panel is incomplete."
+        action: "Do not generalize customer language from a partial competitor set."
+    why: "Observed customer language feeds existing-page copy without model-invented phrasing."
+
   # ─────────────────────────── AEO ───────────────────────────
   - id: aeo.answer_accuracy
     domain: aeo
     title: Do AI answers cite FMD, and are the cited facts correct?
     cadence: weekly
     cost: free
+    execution_mode: session
+    thesis_refs: [T6]
+    instrument_ref: dataforseo-llm-responses-v1
     method:
       kind: agent
       run: |
@@ -373,34 +485,97 @@ checks:
       47-point reset, text-3-photos flow). The job is defend-and-extend; the live
       risk is drift, not absence.
 
-  - id: aeo.share_of_voice
+  - id: aeo.recommendation_share
     domain: aeo
-    title: AI answer share of voice against the local peer set
-    cadence: monthly
-    cost: free
+    title: Frozen multi-engine recommendation share
+    cadence: weekly
+    cost: paid
+    execution_mode: session
+    thesis_refs: [T6]
+    instrument_ref: dataforseo-llm-responses-v1
     method:
-      kind: agent
+      kind: engine
       run: |
-        Measure the standing Cleveland query universe across the selected answer
-        engine and record FMD share of voice, the leading competitor's share,
-        and the number of answers citing FMD. Keep query universe and platform
-        fixed so readings remain comparable.
+        Run the frozen 25-query v1 panel through ChatGPT and Perplexity twice
+        per query only after the measured 20-response canary and recurring-cost
+        gate are approved. Preserve provider/model labels and raw response refs.
     records:
-      - {name: ai_sov_percent, type: float}
-      - {name: competitor_top_sov, type: float}
-      - {name: fmd_cited_count, type: int}
+      - {name: responses_expected, type: int}
+      - {name: responses_captured, type: int}
+      - {name: fmd_mentions, type: int}
+      - {name: fmd_ranked_mentions, type: int}
+      - {name: fmd_mean_position, type: float, nullable: true}
     thresholds:
-      - expr: ai_sov_percent < 2.0
-        severity: medium
-        finding: "FMD AI share of voice remains at the 1.9% baseline."
-        action: "Improve entity corroboration and answer-source reach; preserve accurate facts."
-    why: "Measures AEO reach separately from answer accuracy. Baseline: FMD 1.9% versus CLE Detailing 16.8%."
+      - expr: responses_captured < responses_expected
+        severity: critical
+        finding: "The standing AEO panel is incomplete."
+        action: "Do not calculate share from a partial denominator."
+      - expr: responses_captured == responses_expected and fmd_ranked_mentions == 0
+        severity: high
+        finding: "FMD is never a ranked recommendation in the complete panel."
+        action: "Inspect verified review-floor and citation-source evidence before proposing content."
+    why: "Recommendation order is a different outcome from factual accuracy or citation share."
+
+  - id: aeo.review_floor
+    domain: aeo
+    title: Verified review floor among ranked AEO businesses
+    cadence: weekly
+    cost: free
+    execution_mode: session
+    thesis_refs: [T6]
+    instrument_ref: dataforseo-llm-responses-v1
+    method:
+      kind: engine
+      run: |
+        Verify every review count asserted for ranked businesses against the
+        listing source. Never treat an answer-engine assertion as a verified fact.
+    records:
+      - {name: ranked_businesses_verified, type: int}
+      - {name: fmd_reviews, type: int}
+      - {name: ranked_competitor_min_reviews, type: int}
+      - {name: ranked_competitor_median_reviews, type: int}
+      - {name: ranked_competitor_max_reviews, type: int}
+      - {name: reviews_to_floor, type: int}
+    thresholds:
+      - expr: ranked_businesses_verified > 0 and reviews_to_floor > 0
+        severity: high
+        finding: "FMD remains below the verified answer-engine review floor."
+        action: "Route to the review-velocity owner; do not patch an unverified count into site copy."
+    why: "Makes the 16-versus-ranked-competitor review gap a standing measurable fact."
+
+  - id: aeo.citation_sources
+    domain: aeo
+    title: Answer-engine citation source map
+    cadence: weekly
+    cost: free
+    execution_mode: session
+    thesis_refs: [T6, T7]
+    instrument_ref: dataforseo-llm-responses-v1
+    method:
+      kind: engine
+      run: |
+        Record each cited URL/domain, citation frequency, and whether it supports
+        FMD, competitors, or both. Keep citations separate from recommendations.
+    records:
+      - {name: sources_captured, type: int}
+      - {name: distinct_domains, type: int}
+      - {name: sources_citing_fmd, type: int}
+      - {name: sources_citing_competitors_only, type: int}
+    thresholds:
+      - expr: sources_citing_competitors_only > 0
+        severity: info
+        finding: "Repeated cited sources support competitors but not FMD."
+        action: "Add qualified, evidence-linked sources to the draft citation-entry queue; no automated outreach."
+    why: "Citation frequency and recommendation share are separate AEO mechanisms."
 
   - id: aeo.entity_consistency
     domain: aeo
     title: NAP consistency and 'Drive Fresh' contamination sweep
     cadence: monthly
     cost: free
+    execution_mode: session
+    thesis_refs: [T8]
+    instrument_ref: agent-search-v1
     method:
       kind: agent
       run: |
@@ -429,6 +604,9 @@ checks:
     title: Authority Score gap vs the local set
     cadence: weekly
     cost: mcp
+    execution_mode: session
+    thesis_refs: [T7]
+    instrument_ref: semrush-backlinks-v1
     method:
       kind: mcp
       run: |
@@ -455,6 +633,9 @@ checks:
     title: Who holds the city-level SERP
     cadence: weekly
     cost: paid
+    execution_mode: scheduled
+    thesis_refs: [T5]
+    instrument_ref: dataforseo-serp-v1
     method:
       kind: engine
       run: |
@@ -472,12 +653,88 @@ checks:
         action: "Identify which term and why; that is the replicable pattern."
     why: "T5. City-level page one is currently ATF, It's A Wash, Zayas, Detail Dash, Panda Hub, Yelp, aggregators — FMD absent."
 
+  - id: serp.consensus
+    domain: competitor
+    title: Top-ten SERP consensus and beatability
+    cadence: monthly
+    cost: paid
+    execution_mode: session
+    thesis_refs: [T4, T7]
+    instrument_ref: dataforseo-serp-v1
+    method:
+      kind: agent
+      run: |
+        Recollect existing task IDs before posting. Persist top-ten URL, title,
+        snippet, rank, result type, and features; fetch winners and require six
+        accessible pages before declaring consensus.
+    records:
+      - {name: head_terms_checked, type: int}
+      - {name: complete_consensus_artifacts, type: int}
+      - {name: inaccessible_winners, type: int}
+    thresholds:
+      - expr: complete_consensus_artifacts == 0
+        severity: high
+        finding: "No query has a complete six-winner SERP consensus artifact."
+        action: "Do not pass PagePackage GATE-3 without consensus and information gain."
+    why: "The SERP is the answer key; purchased result payloads must not be discarded."
+
+  - id: authority.cited_sources
+    domain: authority
+    title: Qualified answer-engine citation-entry queue
+    cadence: monthly
+    cost: free
+    execution_mode: session
+    thesis_refs: [T7]
+    instrument_ref: agent-search-v1
+    method:
+      kind: agent
+      run: |
+        Rank captured citation sources by frequency, buyer relevance, and
+        inclusion feasibility. Produce research and draft next actions only.
+    records:
+      - {name: sources_ranked, type: int}
+      - {name: sources_with_competitor_no_fmd, type: int}
+      - {name: enterable_sources, type: int}
+    thresholds:
+      - expr: enterable_sources > 0
+        severity: info
+        finding: "Qualified citation-source entries are available for human review."
+        action: "Prepare accurate drafts; no cold outreach, purchase, or automated submission."
+    why: "Citation-source authority is distinct from generic link volume."
+
+  - id: authority.local_corroboration
+    domain: authority
+    title: Allowlisted local corroboration gaps
+    cadence: monthly
+    cost: free
+    execution_mode: session
+    thesis_refs: [T5, T7, T8]
+    instrument_ref: agent-search-v1
+    method:
+      kind: agent
+      run: |
+        Audit allowlisted chambers, associations, suppliers, directories, and
+        community sources. Record true competitor presence and NAP facts only.
+    records:
+      - {name: surfaces_audited, type: int}
+      - {name: competitor_present_fmd_absent, type: int}
+      - {name: nap_consistent, type: bool}
+    thresholds:
+      - expr: competitor_present_fmd_absent > 0
+        severity: info
+        finding: "Allowlisted local corroboration sources include competitors but not FMD."
+        action: "Queue a human-reviewed correction or entry draft; never invent corroboration."
+    why: "Local prominence can improve through true corroboration without reviving generic backlink campaigns."
+
   # ──────────────────────── MARKET ────────────────────────
   - id: market.demand
     domain: market
     title: Demand cluster volumes and seasonality
     cadence: monthly
     cost: mcp
+    execution_mode: session
+    thesis_refs: [T3]
+    instrument_ref: semrush-keywords-v1
     method:
       kind: mcp
       run: |
@@ -501,6 +758,9 @@ checks:
     title: Business-facts review window
     cadence: daily
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T6]
+    instrument_ref: facts-yaml-v1
     method:
       kind: engine
       run: |
@@ -525,6 +785,9 @@ checks:
     title: Headless data-sync health
     cadence: daily
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T1]
+    instrument_ref: observation-series-v1
     method:
       kind: engine
       run: |
@@ -547,6 +810,9 @@ checks:
     title: Deployed site facts match canonical business facts
     cadence: daily
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T6]
+    instrument_ref: live-html-v1
     method:
       kind: engine
       run: |
@@ -567,19 +833,22 @@ checks:
     title: Observation freshness watchdog
     cadence: daily
     cost: free
+    execution_mode: scheduled
+    thesis_refs: [T1]
+    instrument_ref: observation-series-v1
     method:
       kind: engine
       run: |
         Compare every time-scheduled check's newest committed observation to
-        twice its cadence. Record the stalest observed age and how many checks
-        exceed that limit. Never-observed checks remain explicit in `beat`.
+        one complete cadence. Record the stalest observed age, how many checks
+        exceed that limit, and every never-observed check.
     records:
       - {name: stalest_check_age_days, type: int}
       - {name: checks_overdue, type: int}
     thresholds:
       - expr: checks_overdue > 0
         severity: critical
-        finding: "One or more observation streams are older than twice their cadence."
+        finding: "One or more observation streams reached a complete cadence without fresh evidence."
         action: "Treat the measurement loop as unhealthy until every overdue stream is restored or explicitly retired."
     why: "This watchdog turns a multi-day data blackout into a standing critical finding."
 
@@ -589,6 +858,9 @@ checks:
     title: Related-topic and question discovery
     cadence: monthly
     cost: mcp
+    execution_mode: session
+    thesis_refs: [T3]
+    instrument_ref: semrush-keywords-v1
     method:
       kind: mcp
       run: |
@@ -612,6 +884,9 @@ checks:
     title: Corpus duplication and cannibalization
     cadence: per_draft
     cost: free
+    execution_mode: session
+    thesis_refs: [T1]
+    instrument_ref: observation-series-v1
     method:
       kind: engine
       run: |

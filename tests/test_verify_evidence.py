@@ -31,6 +31,11 @@ def _package(evidence_id: str, *, jsonld: dict | None = None) -> PagePackage:
         },
         internal_links=[],
         assets=[{"src": "/image.png", "alt": "Plain image"}],
+        information_gain={
+            "kind": "benchmark",
+            "evidence_ref": "ev-good",
+            "description": "A measured market-floor comparison.",
+        },
     )
 
 
@@ -38,7 +43,7 @@ def test_evidence_figure_requires_referenced_existing_evidence(tmp_path):
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     (evidence / "ev-good.json").write_text(
-        json.dumps({"answer": "Express details start at $40"}), encoding="utf-8",
+        json.dumps({"evidence_id": "ev-good", "answer": "Express details start at $40"}), encoding="utf-8",
     )
 
     valid = deterministic_checks(_package("ev-good"), evidence_dir=evidence)
@@ -55,7 +60,7 @@ def test_evidence_id_cannot_be_a_glob_pattern(tmp_path):
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     (evidence / "ev-good.json").write_text(
-        json.dumps({"answer": "Express details start at $40"}), encoding="utf-8",
+        json.dumps({"evidence_id": "ev-good", "answer": "Express details start at $40"}), encoding="utf-8",
     )
     package = _package("*")
     package.evidence_refs.append("*")  # declared, so the refs gate alone passes
@@ -73,7 +78,7 @@ def test_bare_numeric_price_in_jsonld_needs_provenance(tmp_path):
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     (evidence / "ev-good.json").write_text(
-        json.dumps({"answer": "Express details start at $40"}), encoding="utf-8",
+        json.dumps({"evidence_id": "ev-good", "answer": "Express details start at $40"}), encoding="utf-8",
     )
     offer = {"@type": "Offer", "priceCurrency": "USD", "price": 399}
 
@@ -92,7 +97,7 @@ def test_evidence_figure_requires_an_exact_numeric_token(tmp_path):
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     (evidence / "ev-good.json").write_text(
-        json.dumps({"answer": "A larger package costs $140"}), encoding="utf-8",
+        json.dumps({"evidence_id": "ev-good", "answer": "A larger package costs $140"}), encoding="utf-8",
     )
 
     checks = deterministic_checks(_package("ev-good"), evidence_dir=evidence)
@@ -100,4 +105,41 @@ def test_evidence_figure_requires_an_exact_numeric_token(tmp_path):
     assert any(
         name == "price_provenance" and verdict == "BLOCK"
         for name, verdict, _detail in checks
+    )
+
+
+def test_information_gain_requires_one_matching_evidence_record(tmp_path):
+    evidence = tmp_path / "evidence"
+    first = evidence / "one"
+    second = evidence / "two"
+    first.mkdir(parents=True)
+    second.mkdir(parents=True)
+    payload = json.dumps({"evidence_id": "ev-good", "answer": "Measured benchmark $40"})
+    (first / "ev-good.json").write_text(payload, encoding="utf-8")
+
+    valid = deterministic_checks(_package("ev-good"), evidence_dir=evidence)
+    assert (
+        "information_gain_evidence", "PASS", "bound to ev-good"
+    ) in valid
+
+    (second / "ev-good.json").write_text(payload, encoding="utf-8")
+    duplicate = deterministic_checks(_package("ev-good"), evidence_dir=evidence)
+    assert any(
+        name == "information_gain_evidence"
+        and verdict == "BLOCK"
+        and "multiple" in detail
+        for name, verdict, detail in duplicate
+    )
+
+    (second / "ev-good.json").unlink()
+    (first / "ev-good.json").write_text(
+        json.dumps({"evidence_id": "ev-other", "answer": "Measured benchmark $40"}),
+        encoding="utf-8",
+    )
+    mismatched = deterministic_checks(_package("ev-good"), evidence_dir=evidence)
+    assert any(
+        name == "information_gain_evidence"
+        and verdict == "BLOCK"
+        and "does not match" in detail
+        for name, verdict, detail in mismatched
     )
