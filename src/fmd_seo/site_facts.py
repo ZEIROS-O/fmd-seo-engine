@@ -60,6 +60,10 @@ def public_fact_payload(facts_file: Path) -> dict:
             "name": guarantee["name"],
             "summary": guarantee["summary"],
             "publicStatement": public_statement,
+            # Internal policy only. The published guarantee carries no time
+            # limit -- terms-of-service and cancellation-refund-policy commit to
+            # "before we leave, or as soon as reasonably possible after the
+            # appointment", so no public surface may narrow that to a window.
             "remedyWindowHours": guarantee["remedy_window_hours"],
         },
         "publicReviewCountAllowed": bool(
@@ -132,7 +136,7 @@ def _render_llms(payload: dict) -> str:
 - {primary}: From ${pricing['fullInterior']} (about {pricing['fullInteriorHours']} hours)
 - {secondary}: From ${pricing['ultimateInterior']} (about {pricing['ultimateInteriorHours']} hours)
 - Fresh Club: ${pricing['monthly']} monthly, ${pricing['biMonthly']} bi-monthly, ${pricing['quarterly']} quarterly per visit
-- Guarantee: {facts['guarantee']['name']} — {facts['guarantee']['publicStatement']}; report missed included work within {facts['guarantee']['remedyWindowHours']} hours
+- Guarantee: {facts['guarantee']['name']} — {facts['guarantee']['publicStatement']}
 - Service area: {places}
 - Hours: {', '.join(facts['hours']['days'])}, {facts['hours']['opens']}–{facts['hours']['closes']}
 - Services: {', '.join(facts['services']['offered'])}; exterior add-on: {facts['services']['exteriorAddOn']}

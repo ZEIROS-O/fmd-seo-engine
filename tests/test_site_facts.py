@@ -3,6 +3,7 @@ import pytest
 from fmd_seo.brain import load_brain
 from fmd_seo.observations import latest_observation
 from fmd_seo.site_facts import (
+    _render_llms,
     compare_fact_surface,
     compare_public_facts,
     generate_site_fact_files,
@@ -58,9 +59,7 @@ equipment: {steamer: {owned: false}, ozone_machine: {owned: false}}
         verify_generated_fact_hash(facts, generated_path)
 
 
-def test_fact_verification_covers_llms_and_the_remedy_window(tmp_path):
-    facts = tmp_path / "business-facts.yaml"
-    facts.write_text("""\
+REMEDY_FACTS_TEMPLATE = """\
 schema_version: 1
 identity: {name: Fresh Mobile Detailing, phone: "(216) 359-1034"}
 service_area: {base: Beachwood, radius_miles: 30, places: [Beachwood]}
@@ -71,25 +70,64 @@ pricing:
   one_time: {full_interior: {price: 209, duration_hours: 2}, ultimate_interior: {price: 289, duration_hours: 3}}
   membership_per_visit: {monthly: 149, bi_monthly: 169, quarterly: 189}
   neighbor_discount: 25
-guarantee: {name: Fresh Finish Guarantee, summary: "We make missed work right", public_statement: "We return and correct it", remedy_window_hours: 24}
+guarantee: {name: Fresh Finish Guarantee, summary: "We make missed work right", public_statement: "We return and correct it", remedy_window_hours: %d}
 claim_gates: {review_count_public_claim: {allowed: false}}
 equipment: {steamer: {owned: false}, ozone_machine: {owned: false}}
-""", encoding="utf-8")
+"""
+
+
+def test_fact_verification_blocks_llms_text_drift(tmp_path):
+    """Editing published llms.txt copy away from the renderer must BLOCK."""
+    facts = tmp_path / "business-facts.yaml"
+    facts.write_text(REMEDY_FACTS_TEMPLATE % 24, encoding="utf-8")
     site = tmp_path / "site"
     generate_site_fact_files(facts, site)
     llms = site / "public/llms.txt"
 
-    assert "within 24 hours" in llms.read_text(encoding="utf-8")
     verified = verify_generated_fact_hash(facts, site / "src/lib/business-facts.ts")
     assert verified["generated_files"] == [
         str(site / "src/lib/business-facts.ts"), str(llms),
     ]
 
     llms.write_text(
-        llms.read_text(encoding="utf-8").replace("within 24 hours", "within 72 hours"),
+        llms.read_text(encoding="utf-8").replace(
+            "We return and correct it", "We return within 72 hours",
+        ),
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="llms.txt mismatch"):
+        verify_generated_fact_hash(facts, site / "src/lib/business-facts.ts")
+
+
+def test_remedy_window_is_internal_and_never_reaches_a_public_surface(tmp_path):
+    """The guarantee publishes no time limit, but the field stays hash-bound.
+
+    terms-of-service and cancellation-refund-policy commit to correcting missed
+    work "before we leave, or as soon as reasonably possible after the
+    appointment". Publishing a 24-hour window narrowed that, so no rendered
+    surface may carry ``remedy_window_hours`` -- while the TypeScript payload
+    still binds it so an unreviewed policy change cannot slip through.
+    """
+    facts = tmp_path / "business-facts.yaml"
+    facts.write_text(REMEDY_FACTS_TEMPLATE % 24, encoding="utf-8")
+    site = tmp_path / "site"
+    generate_site_fact_files(facts, site)
+    llms_before = (site / "public/llms.txt").read_text(encoding="utf-8")
+    hash_before = public_fact_payload(facts)["sourceHash"]
+
+    guarantee_line = next(
+        line for line in llms_before.splitlines() if line.startswith("- Guarantee:")
+    )
+    assert "24" not in guarantee_line
+    assert "hours" not in guarantee_line
+
+    facts.write_text(REMEDY_FACTS_TEMPLATE % 72, encoding="utf-8")
+
+    assert _render_llms(public_fact_payload(facts)) == llms_before
+    # Unpublished is not unbound: the TypeScript payload still moves, so the
+    # generated site file goes stale and verification blocks until regenerated.
+    assert public_fact_payload(facts)["sourceHash"] != hash_before
+    with pytest.raises(ValueError, match="generated facts payload mismatch"):
         verify_generated_fact_hash(facts, site / "src/lib/business-facts.ts")
 
 
