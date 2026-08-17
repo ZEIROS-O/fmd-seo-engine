@@ -285,18 +285,27 @@ checks:
     title: Google Business Profile discovery and conversion actions
     cadence: weekly
     cost: free
-    execution_mode: scheduled
+    # session, not scheduled: the API path has no possible producer. The
+    # Business Profile Performance / Business Information / Account Management
+    # APIs are all disabled in Cloud project local-lead-machine-498016, and the
+    # unobfuscated location id the Performance API needs is only obtainable from
+    # accounts.locations.list on one of them. Measured 2026-08-17; see
+    # brain/blockers/gbp-performance.md. Lou reads the dashboard until access
+    # lands, then this returns to scheduled with a producers.yaml entry.
+    execution_mode: session
     thesis_refs: [T5]
     instrument_ref: gbp-performance-v1
     method:
       kind: engine
       run: |
-        Fetch the prior 28 days of daily actions from the Google Business Profile
-        Performance API. Sum call clicks, direction requests, and website clicks.
-        Separately classify calendar-month search-keyword impressions as discovery
-        when non-branded; count threshold-only keyword rows without converting
-        their unknown values to zero-measured impressions.
-        Requires gbp.location_id and the business.manage OAuth scope.
+        Read the prior 28 days from the Google Business Profile dashboard
+        (Performance -> Calls, Directions, Website clicks) and record them with
+        `fmd-seo observe`. Sum call clicks, direction requests, and website
+        clicks. Separately classify calendar-month search-keyword impressions as
+        discovery when non-branded; count threshold-only keyword rows without
+        converting their unknown values to zero-measured impressions.
+        The headless path (gbp.sync_if_due) stays in place and needs only
+        gbp.location_id plus API access; until then it is not the producer.
     records:
       - {name: calls, type: int}
       - {name: direction_requests, type: int}
@@ -614,7 +623,11 @@ checks:
     title: Authority Score gap vs the local set
     cadence: weekly
     cost: mcp
-    execution_mode: session
+    # scheduled: `fmd-seo sync --source semrush` (sync.sync_due) has
+    # fetched and recorded this autonomously since the Semrush adapters
+    # landed. It was marked `session` while the cron was already producing
+    # it, which kept it off the freshness watchdog. See brain/producers.yaml.
+    execution_mode: scheduled
     thesis_refs: [T7]
     instrument_ref: semrush-backlinks-v1
     method:
@@ -742,7 +755,11 @@ checks:
     title: Demand cluster volumes and seasonality
     cadence: monthly
     cost: mcp
-    execution_mode: session
+    # scheduled: `fmd-seo sync --source semrush` (sync.sync_due) has
+    # fetched and recorded this autonomously since the Semrush adapters
+    # landed. It was marked `session` while the cron was already producing
+    # it, which kept it off the freshness watchdog. See brain/producers.yaml.
+    execution_mode: scheduled
     thesis_refs: [T3]
     instrument_ref: semrush-keywords-v1
     method:
@@ -874,7 +891,11 @@ checks:
     title: Related-topic and question discovery
     cadence: monthly
     cost: mcp
-    execution_mode: session
+    # scheduled: `fmd-seo sync --source semrush` (sync.sync_due) has
+    # fetched and recorded this autonomously since the Semrush adapters
+    # landed. It was marked `session` while the cron was already producing
+    # it, which kept it off the freshness watchdog. See brain/producers.yaml.
+    execution_mode: scheduled
     thesis_refs: [T3]
     instrument_ref: semrush-keywords-v1
     method:

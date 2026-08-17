@@ -82,7 +82,11 @@ Without the key it degrades to the manual console reading — never a guess (GAT
 - **GSC URL Inspection** (service-account key) → `gsc-sync`, headless.
 - **GA4 Data API** (same service-account key + GA4 property access) → `sync`,
   weekly headless `analytics.traffic` observations.
-- **GBP Performance** (same Google project + `gbp.location_id`) → `sync`, headless.
+- **GBP Performance** → **blocked, session-fulfilled.** The Business Profile
+  APIs are disabled in the Cloud project and the location id the Performance API
+  needs is only obtainable from one of them, so `gbp.performance` is
+  `execution_mode: session` with no producer. Measurements and unblock path:
+  `brain/blockers/gbp-performance.md`.
 - **DataForSEO standard queue** → `serp-bulk` positions and `geogrid` map-pack panels.
 - **Semrush MCP** / **live HTTP** / **model judgment** → session, via the
   `fmd-seo-loop` skill.

@@ -14,6 +14,7 @@ from __future__ import annotations
 import ast
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
@@ -221,6 +222,8 @@ class Brain:
     # a caller filters by live gate state instead of re-deriving from prose.
     priorities: list[dict[str, Any]] = field(default_factory=list)
     instruments: dict[str, dict[str, Any]] = field(default_factory=dict)
+    # check_id -> {command, entrypoint} for every scheduled check.
+    producers: dict[str, dict[str, str]] = field(default_factory=dict)
     thesis_path: Path = THESIS_FILE
     state_path: Path = STATE_FILE
     _by_id: dict[str, Check] = field(default_factory=dict, repr=False)
@@ -360,6 +363,98 @@ def _load_instruments(path: Path) -> dict[str, dict[str, Any]]:
     return instruments
 
 
+def _load_producers(path: Path) -> dict[str, dict[str, str]]:
+    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if raw.get("schema_version") != 1:
+        raise BrainError(f"unsupported producers schema: {path}")
+    producers: dict[str, dict[str, str]] = {}
+    for entry in raw.get("producers") or []:
+        missing = {"id", "command", "entrypoint"} - entry.keys()
+        if missing:
+            raise BrainError(
+                f"producer {entry.get('id', '?')} missing keys: {sorted(missing)}"
+            )
+        check_id = str(entry["id"])
+        if check_id in producers:
+            raise BrainError(f"duplicate producer id: {check_id}")
+        entrypoint = str(entry["entrypoint"])
+        if entrypoint.count(":") != 1 or not all(entrypoint.split(":")):
+            raise BrainError(
+                f"producer {check_id}: entrypoint must be module:callable, "
+                f"got {entrypoint!r}"
+            )
+        producers[check_id] = {
+            "command": " ".join(str(entry["command"]).split()),
+            "entrypoint": entrypoint,
+        }
+    return producers
+
+
+def _assert_producers_match_schedule(
+    checks: list[Check], producers: dict[str, dict[str, str]],
+) -> None:
+    """A scheduled check must have a producer, and vice versa.
+
+    `execution_mode: scheduled` is a claim that the engine produces the check
+    with no session. Unenforced, it let a check sit scheduled with no code path
+    able to write it, and let a check with a real autonomous producer sit marked
+    `session`. Both directions are load-time errors so the misclassification
+    surfaces where it is cheap to fix, not months later in a freshness report.
+    """
+    by_id = {check.id: check for check in checks}
+    scheduled = {
+        check.id for check in checks if check.execution_mode == "scheduled"
+    }
+    orphaned = sorted(scheduled - producers.keys())
+    if orphaned:
+        raise BrainError(
+            "scheduled check(s) with no registered producer: "
+            f"{orphaned}; declare one in brain/producers.yaml or reclassify "
+            "execution_mode"
+        )
+    phantom = sorted(producers.keys() - by_id.keys())
+    if phantom:
+        raise BrainError(
+            f"producer(s) for undeclared check id(s): {phantom}"
+        )
+    misclassified = sorted(
+        check_id for check_id in producers
+        if by_id[check_id].execution_mode != "scheduled"
+    )
+    if misclassified:
+        raise BrainError(
+            "check(s) with a registered autonomous producer but "
+            f"execution_mode != scheduled: {misclassified}"
+        )
+
+
+def resolve_producer(brain: Brain, check_id: str):
+    """Import and return the callable a producer entry names.
+
+    Deliberately not done at load time: every producer module imports `brain`,
+    so resolving during `load_brain` would be circular. The suite resolves all of
+    them instead, which catches a rename without coupling the loader to the
+    whole engine.
+    """
+    entry = brain.producers.get(check_id)
+    if entry is None:
+        raise BrainError(f"no registered producer for check {check_id}")
+    module_name, _, attribute = entry["entrypoint"].partition(":")
+    try:
+        module = import_module(module_name)
+    except ImportError as err:
+        raise BrainError(
+            f"producer for {check_id} names unimportable module {module_name}: {err}"
+        ) from err
+    try:
+        return getattr(module, attribute)
+    except AttributeError as err:
+        raise BrainError(
+            f"producer for {check_id} names missing callable "
+            f"{module_name}:{attribute}"
+        ) from err
+
+
 def _parse_priorities(path: Path) -> list[dict[str, Any]]:
     """Load the ordered work order. Malformed entries fail closed at load time.
 
@@ -413,7 +508,9 @@ def load_brain(brain_dir: Path | None = None) -> Brain:
     state_file = directory / "state.yaml"
     gates_file = directory / "gates.yaml"
     priorities_file = directory / "priorities.yaml"
-    for path in (checks_file, state_file, gates_file, priorities_file):
+    producers_file = directory / "producers.yaml"
+    for path in (checks_file, state_file, gates_file, priorities_file,
+                 producers_file):
         if not path.exists():
             raise BrainError(f"brain file missing: {path}")
 
@@ -469,12 +566,15 @@ def load_brain(brain_dir: Path | None = None) -> Brain:
     duplicates = {i for i in ids if ids.count(i) > 1}
     if duplicates:
         raise BrainError(f"duplicate check ids: {sorted(duplicates)}")
+    producers = _load_producers(producers_file)
+    _assert_producers_match_schedule(checks, producers)
     return Brain(
         checks=checks,
         state=state,
         gate_rules=gate_rules,
         expression_constants=expression_constants,
         priorities=priorities,
+        producers=producers,
         instruments=instruments,
         thesis_path=directory / "thesis.md",
         state_path=state_file,

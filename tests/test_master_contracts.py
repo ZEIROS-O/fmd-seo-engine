@@ -35,7 +35,8 @@ def _page_package(**overrides):
     return contracts.PagePackage.create(**values)
 
 
-def _write_brain(tmp_path, checks: str, instruments: str) -> None:
+def _write_brain(tmp_path, checks: str, instruments: str,
+                 producers: str = "schema_version: 1\nproducers: []\n") -> None:
     (tmp_path / "checks.yaml").write_text(checks, encoding="utf-8")
     (tmp_path / "instruments.yaml").write_text(instruments, encoding="utf-8")
     (tmp_path / "state.yaml").write_text(
@@ -48,6 +49,7 @@ def _write_brain(tmp_path, checks: str, instruments: str) -> None:
         "  - {id: p1, gate: {GATE-1: CLOSED}, label: blocked work}\n",
         encoding="utf-8",
     )
+    (tmp_path / "producers.yaml").write_text(producers, encoding="utf-8")
     (tmp_path / "thesis.md").write_text("# thesis\n", encoding="utf-8")
 
 
@@ -183,7 +185,12 @@ schema_version: 1
 instruments:
   - {id: local-finder-v1, status: active, purpose: reviews, source: dataforseo}
 """
-    _write_brain(tmp_path, checks, active)
+    producers = """\
+schema_version: 1
+producers:
+  - {id: local.review_velocity, command: fmd-seo local-finder --run, entrypoint: fmd_seo.local_finder:run}
+"""
+    _write_brain(tmp_path, checks, active, producers)
     brain = load_brain(tmp_path)
     assert brain.check("local.review_velocity").execution_mode == "scheduled"
 
@@ -197,7 +204,7 @@ instruments:
     retired_at: 2026-08-12
     rationale: superseded
 """
-    _write_brain(tmp_path, checks, retired)
+    _write_brain(tmp_path, checks, retired, producers)
     with pytest.raises(BrainError, match="retired instrument"):
         load_brain(tmp_path)
 

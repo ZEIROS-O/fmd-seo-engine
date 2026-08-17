@@ -148,6 +148,12 @@ geogrid:
 
 # The unobfuscated GBP listing id must be supplied by Lou after API access is
 # enabled. Empty means explicit no-op, never a guessed listing.
+# It cannot be read off the dashboard URL — that is the *obfuscated* listing id,
+# which the Performance API rejects. The unobfuscated id comes only from
+# accounts.locations.list on the Business Information API, which is disabled in
+# this Cloud project. Measured 2026-08-17; see brain/blockers/gbp-performance.md
+# for the 403s and the ordered unblock path. gbp.performance is session-
+# fulfilled until then.
 gbp:
   key_path: "/home/lucascoh/.gsc-service-account.json"
   location_id: ""

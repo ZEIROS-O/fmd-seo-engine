@@ -43,7 +43,8 @@ def test_evaluate_unknown_field_raises_not_defaults():
 
 # ─────────────────────────── loader ───────────────────────────
 
-def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None):
+def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None,
+                 producers_body=None):
     (tmp_path / "checks.yaml").write_text(checks_body, encoding="utf-8")
     (tmp_path / "state.yaml").write_text(
         state_body or "schema_version: 1\nsite: {domain: x.com}\ngates: {}\n",
@@ -55,6 +56,10 @@ def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None):
     )
     (tmp_path / "priorities.yaml").write_text(
         priorities_body or PRIORITIES_BODY,
+        encoding="utf-8",
+    )
+    (tmp_path / "producers.yaml").write_text(
+        producers_body or "schema_version: 1\nproducers: []\n",
         encoding="utf-8",
     )
     return load_brain(tmp_path)
