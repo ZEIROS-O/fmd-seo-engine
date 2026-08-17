@@ -432,7 +432,8 @@ def cmd_gsc_sync(
         path = record_observation(
             brain, "seo.query_footprint", footprint, fulfillment="engine_api",
             source=artifact_source,
-            note="GSC Search Analytics finalized 28-day query/page top_rows; not exhaustive",
+            note=("GSC Search Analytics finalized 28-day top_rows, query and "
+                  "query/page datasets; not exhaustive"),
             directory=observations_dir,
         )
         fetched.append("seo.query_footprint")

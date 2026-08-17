@@ -70,11 +70,16 @@ def _fulfillment_for(check: Check, has_semrush_key: bool, has_gsc: bool,
     if check.method_kind == "mcp" and reports and has_semrush_key:
         return "engine_api", reports
     # GSC provides two independent headless instruments: per-URL inspection
-    # and finalized query/page Search Analytics rows.
+    # and finalized Search Analytics rows. The footprint reads two dimension
+    # sets, and both are declared — a query-only pull alone cannot report page
+    # coverage, and a query/page pull alone cannot report a query total.
     if check.id == "seo.indexation" and has_gsc:
         return "engine_api", ["gsc:urlInspection"]
     if check.id == "seo.query_footprint" and has_gsc:
-        return "engine_api", ["gsc:searchAnalytics.query"]
+        return "engine_api", [
+            "gsc:searchAnalytics.query",
+            "gsc:searchAnalytics.queryPage",
+        ]
     if check.id == "analytics.traffic" and has_ga4:
         return "engine_api", ["ga4:runReport"]
     return KIND_FULFILLMENT.get(check.method_kind, "session"), []

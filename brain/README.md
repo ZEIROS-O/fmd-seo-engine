@@ -50,7 +50,9 @@ fakes data to paper over a missing key (GATE-4).
 
 `seo.organic_footprint` is retired: historical Semrush artifacts remain
 auditable, but no active adapter or assessment routes to them. `gsc-sync` now
-records `seo.query_footprint` from finalized query/page Search Analytics rows.
+records `seo.query_footprint` from two finalized Search Analytics datasets — a
+query-only pull for query totals, CTR and position, and a query/page pull for
+page coverage — persisted as one artifact.
 
 ## Human residue — what still needs Lou
 

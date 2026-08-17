@@ -72,7 +72,10 @@ def test_plan_query_footprint_uses_gsc_search_analytics(empty_obs):
     )
     footprint = next(pc for pc in plan.due if pc.check_id == "seo.query_footprint")
     assert footprint.fulfillment == "engine_api"
-    assert footprint.api_reports == ["gsc:searchAnalytics.query"]
+    assert footprint.api_reports == [
+        "gsc:searchAnalytics.query",
+        "gsc:searchAnalytics.queryPage",
+    ]
 
 
 def test_beat_derives_ga4_availability_from_property_and_key(tmp_path):

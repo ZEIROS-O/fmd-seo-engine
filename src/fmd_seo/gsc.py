@@ -146,11 +146,20 @@ def fetch_query_footprint(
     pages_in_sitemap: int,
 ) -> tuple[dict, dict]:
     """Return normalized top rows plus the standing near-winner record."""
-    from .query_footprint import aggregate_rows, fetch_top_rows
+    from .query_footprint import (
+        QUERY_DIMENSIONS,
+        QUERY_PAGE_DIMENSIONS,
+        aggregate_rows,
+        dataset_rows,
+        fetch_top_rows,
+    )
 
+    # Both dimension sets share one service object; _build_service is called once.
     service = _build_service(cfg.key_path)
     artifact = fetch_top_rows(service, site_url=cfg.site_url)
     records = aggregate_rows(
-        artifact["rows"], pages_in_sitemap=pages_in_sitemap,
+        dataset_rows(artifact, QUERY_DIMENSIONS),
+        dataset_rows(artifact, QUERY_PAGE_DIMENSIONS),
+        pages_in_sitemap=pages_in_sitemap,
     )
     return artifact, records

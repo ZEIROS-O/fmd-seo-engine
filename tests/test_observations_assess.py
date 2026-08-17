@@ -178,7 +178,9 @@ def test_assess_all_ranks_critical_first(brain, obs_dir):
     record_observation(brain, "seo.query_footprint",
                        {"total_queries": 4, "nonbranded_queries": 3,
                         "queries_pos_1_3": 0, "queries_pos_4_10": 1,
-                        "queries_pos_11_20": 1, "impressions_pos_4_20": 20,
+                        "queries_pos_11_20": 1, "impressions_pos_1_3": 0,
+                        "impressions_pos_4_10": 12, "impressions_pos_11_20": 8,
+                        "impressions_pos_4_20": 20,
                         "ctr_leak_queries": 1, "pages_with_impressions": 2,
                         "pages_in_sitemap": 24},
                        fulfillment="console", source="b", directory=obs_dir)

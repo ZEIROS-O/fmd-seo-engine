@@ -149,14 +149,24 @@ checks:
       kind: engine
       run: |
         Query finalized GSC Search Analytics data over the 28-day period ending
-        three days ago with query and page dimensions. Page through at most the
-        top 25,000 rows; persist immutable row evidence labelled top_rows.
+        three days ago twice: once with the query dimension alone, once with
+        query and page. Query totals, CTR and position come from the query-only
+        dataset because aggregationType auto aggregates by page and would
+        double-count a query ranking on two pages; the query/page dataset is used
+        only for page coverage and evidence mapping. Reject any row whose
+        position is not finite and positive before accumulating its impressions.
+        Page through at most the top 25,000 rows per dataset; persist one
+        immutable artifact labelled top_rows carrying both, each with its own
+        dimensions.
     records:
       - {name: total_queries, type: int}
       - {name: nonbranded_queries, type: int}
       - {name: queries_pos_1_3, type: int}
       - {name: queries_pos_4_10, type: int}
       - {name: queries_pos_11_20, type: int}
+      - {name: impressions_pos_1_3, type: int}
+      - {name: impressions_pos_4_10, type: int}
+      - {name: impressions_pos_11_20, type: int}
       - {name: impressions_pos_4_20, type: int}
       - {name: ctr_leak_queries, type: int}
       - {name: pages_with_impressions, type: int}
