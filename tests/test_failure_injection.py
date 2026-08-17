@@ -42,9 +42,9 @@ def test_dataforseo_systemic_failure_counter_survives_client_rebuild(tmp_path, m
     assert "x2" in engaged_reasons[0]
 
 
-def test_engine_freshness_flags_observations_older_than_twice_cadence(tmp_path):
+def test_engine_freshness_counts_stale_and_never_observed_scheduled_checks(tmp_path):
     from fmd_seo.brain import load_brain
-    from fmd_seo.freshness import freshness_records
+    from fmd_seo.freshness import freshness_records, freshness_report
     from fmd_seo.observations import record_observation
 
     brain = load_brain()
@@ -73,12 +73,28 @@ def test_engine_freshness_flags_observations_older_than_twice_cadence(tmp_path):
         directory=observations,
     )
 
-    records = freshness_records(
-        brain,
-        observations,
-        now=datetime(2026, 8, 1, 12, 0, tzinfo=timezone.utc),
+    now = datetime(2026, 8, 1, 12, 0, tzinfo=timezone.utc)
+    records = freshness_records(brain, observations, now=now)
+    report = freshness_report(brain, observations, now=now)
+
+    # facts.freshness is daily and 3 days old — stale past the one-day grace.
+    # Every other scheduled check in the live registry has produced nothing at
+    # all here, and a never-observed check is overdue: the engine does not
+    # assume an unmeasured check is passing. freshness_records used to skip
+    # those entirely and report 1.
+    observed = {"facts.freshness", "sync.health"}
+    never_observed = sorted(
+        check.id for check in brain.checks
+        if check.execution_mode == "scheduled"
+        and check.cadence_days is not None
+        and check.id not in observed | {"engine.freshness"}
     )
-    assert records == {"stalest_check_age_days": 3, "checks_overdue": 1}
+    assert never_observed  # the registry must still contain some, or this proves nothing
+    assert records["stalest_check_age_days"] == 3
+    assert records["checks_overdue"] == 1 + len(never_observed)
+    # The two surfaces are one selector now; they cannot drift apart again.
+    assert report["checks_overdue"] == records["checks_overdue"]
+    assert report["never_observed"] == never_observed
 
 
 def test_tick_records_daily_engine_health_without_provider_key(tmp_path, facts_file):

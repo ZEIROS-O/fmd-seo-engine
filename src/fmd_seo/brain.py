@@ -36,10 +36,31 @@ CADENCE_DAYS: dict[str, int | None] = {
     "per_draft": None,
 }
 
-# A time-scheduled check becomes overdue at one complete cadence.  Both the
-# operator work order and the independent Actions watchdog use this value so the
-# same evidence cannot be "due" in one surface and "current" in another.
+# A time-scheduled check becomes DUE at one complete cadence. That is what the
+# operator work order and the planner act on.
+DUE_CADENCE_MULTIPLIER = 1
+
+# It becomes OVERDUE one complete cadence plus one day of grace. The two are
+# deliberately not the same instant: the producer runs on a daily cron, so a
+# daily check is always ~24h old at the moment the watchdog asks. With zero
+# slack every on-schedule daily check reads as neglected, permanently, and
+# engine.freshness fires a standing critical finding that means nothing. One day
+# is the smallest grace that absorbs the cron's own period, and it can never
+# hide a fully missed cycle — at two cadences a check is overdue for any cadence
+# in the registry.
 OVERDUE_CADENCE_MULTIPLIER = 1
+OVERDUE_GRACE_DAYS = 1
+
+
+def overdue_after(cadence_days: int) -> timedelta:
+    """The age at which a time-scheduled check counts as neglected.
+
+    The single definition. Both freshness surfaces call it, so the same evidence
+    cannot be overdue in one and current in the other.
+    """
+    return timedelta(
+        days=OVERDUE_CADENCE_MULTIPLIER * cadence_days + OVERDUE_GRACE_DAYS
+    )
 
 SEVERITY_ORDER = ["info", "low", "medium", "high", "critical"]
 
@@ -481,7 +502,7 @@ def due_checks(brain: Brain, last_seen: dict[str, str], now: datetime | None = N
         if observed.tzinfo is None:
             observed = observed.replace(tzinfo=timezone.utc)
         age = current - observed
-        if age >= timedelta(days=OVERDUE_CADENCE_MULTIPLIER * days):
+        if age >= timedelta(days=DUE_CADENCE_MULTIPLIER * days):
             due.append((check, f"last observed {age.days}d ago (cadence {check.cadence})"))
     due.sort(key=lambda pair: (CADENCE_DAYS[pair[0].cadence] or 999, pair[0].id))
     return due
