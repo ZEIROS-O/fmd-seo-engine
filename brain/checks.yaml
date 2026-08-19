@@ -155,6 +155,11 @@ checks:
         double-count a query ranking on two pages; the query/page dataset is used
         only for page coverage and evidence mapping. Reject any row whose
         position is not finite and positive before accumulating its impressions.
+        A query whose only row fails that test is dropped from total_queries
+        and nonbranded_queries entirely, not only from the position bands.
+        A query is branded when it contains the current stem 'fresh mobile',
+        the domain stem 'freshmobiledetail', the shorthand 'fresh detail', or
+        the retired brand 'drive fresh'; nonbranded_queries counts the rest.
         Page through at most the top 25,000 rows per dataset; persist one
         immutable artifact labelled top_rows carrying both, each with its own
         dimensions.

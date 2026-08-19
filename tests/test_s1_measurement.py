@@ -100,6 +100,64 @@ def test_gsc_query_footprint_rejects_invalid_position_from_every_bucket(
     assert summary["total_queries"] == 1
 
 
+def test_gsc_query_footprint_drops_a_query_whose_only_row_is_invalid():
+    """A query that never produces a valid position is not a query we measured.
+
+    Invalid-position rejection used to apply only to the impression buckets;
+    total_queries / nonbranded_queries still counted the polluted query. A
+    query whose only row is unusable must disappear from every count.
+    """
+    from fmd_seo.query_footprint import aggregate_rows
+
+    query_rows = [
+        {"keys": ["near winner"], "clicks": 1, "impressions": 10, "position": 5.0},
+        {"keys": ["polluted only"], "clicks": 0, "impressions": 1_000, "position": 0.0},
+    ]
+
+    summary = aggregate_rows(query_rows, [], pages_in_sitemap=24)
+
+    assert summary["total_queries"] == 1
+    assert summary["nonbranded_queries"] == 1
+    assert summary["impressions_pos_4_20"] == 10
+
+
+def test_gsc_query_footprint_treats_domain_and_brand_stems_as_branded():
+    """nonbranded_queries used two tokens that missed the domain, the brand
+    stem without 'detailing', the 'fresh detail' shorthand, and the retired
+    Drive Fresh name. Those are branded navigational queries, not discovery.
+    Generic 'fresh' phrasing (showroom fresh, fresh finish) is not the brand.
+    """
+    from fmd_seo.query_footprint import aggregate_rows
+
+    branded = [
+        "fresh mobile detailing",
+        "fresh mobile",
+        "fresh mobile car valeting",
+        "freshmobiledetail.com",
+        "fresh detail",
+        "fresh detailing",
+        "drive fresh detailing",
+        "auto fresh mobile detailing",
+    ]
+    discovery = [
+        "mobile detailing cleveland",
+        "showroom fresh professional detailing",
+        "fresh finish detailing",
+        "car detailing near me",
+        "fresh car",
+        "fresh styling",
+    ]
+    query_rows = [
+        {"keys": [query], "clicks": 0, "impressions": 1, "position": 30.0}
+        for query in branded + discovery
+    ]
+
+    summary = aggregate_rows(query_rows, [], pages_in_sitemap=24)
+
+    assert summary["total_queries"] == len(branded) + len(discovery)
+    assert summary["nonbranded_queries"] == len(discovery)
+
+
 def test_gsc_query_footprint_infinite_position_cannot_erase_a_near_winner():
     """+inf passed the old `position > 0` guard and poisoned the weighted mean
     to inf, silently deleting a real positions-4-20 query."""

@@ -169,13 +169,23 @@ def _band(position: float) -> str | None:
 
 _CTR_FLOOR = {"one_three": 0.10, "four_ten": 0.03, "eleven_twenty": 0.01}
 
+# Substring tokens, lowercased at use. These are navigational / brand-name
+# queries, not discovery. "fresh" alone is not the brand — All Things Fresh
+# is a competitor and "showroom fresh" / "fresh finish" are generic.
+BRAND_TOKENS = (
+    "fresh mobile",       # current name stem
+    "freshmobiledetail",  # domain / handle
+    "fresh detail",       # shorthand; also covers drive fresh detail(ing)
+    "drive fresh",        # retired brand
+)
+
 
 def aggregate_rows(
     query_rows: list[dict[str, Any]],
     page_rows: list[dict[str, Any]],
     *,
     pages_in_sitemap: int,
-    brand_tokens: tuple[str, ...] = ("fresh mobile detailing", "fresh mobile detail"),
+    brand_tokens: tuple[str, ...] = BRAND_TOKENS,
 ) -> dict[str, int]:
     """Near-winner inventory from the query dataset; page coverage from the pair."""
     grouped: dict[str, dict[str, float]] = {}
