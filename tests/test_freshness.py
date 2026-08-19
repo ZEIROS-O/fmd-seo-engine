@@ -140,6 +140,47 @@ def test_freshness_report_blocks_once_the_grace_is_spent(tmp_path):
     assert report["checks_overdue"] == 1
 
 
+def test_freshness_surfaces_agree_when_offset_reverses_string_order(tmp_path):
+    """String sort of observed_at disagrees with a parsed-datetime max as soon
+    as a non-UTC offset is in the store. freshness_report already takes the
+    parsed max; freshness_records used to go through latest_observation, which
+    sorts the ISO string. Both surfaces must pick the same newest stamp or
+    they reintroduce the disagreement §2.3 closed.
+    """
+    from fmd_seo.freshness import freshness_records, freshness_report
+    from fmd_seo.observations import latest_observation, load_observations
+
+    observations = tmp_path / "observations"
+    # String-greater, actually older: 15:00 UTC.
+    _write_observation(
+        observations, "check.one", "2026-08-14T15:00:00+00:00", name="older.json",
+    )
+    # String-lesser, actually newer: 12:00-05:00 == 17:00 UTC.
+    _write_observation(
+        observations, "check.one", "2026-08-14T12:00:00-05:00", name="newer.json",
+    )
+    brain = Brain(checks=[_check("check.one")], state={})
+    # Daily check, overdue after 2 days. At 16:00 on Aug 16:
+    #   15:00 UTC Aug 14 is 2d1h old → overdue
+    #   17:00 UTC Aug 14 is 1d23h old → current
+    now = datetime(2026, 8, 16, 16, 0, tzinfo=timezone.utc)
+
+    report = freshness_report(brain, observations, now=now)
+    records = freshness_records(brain, observations, now=now)
+
+    assert report["checks_overdue"] == records["checks_overdue"] == 0
+    assert (
+        report["stalest_check_age_days"]
+        == records["stalest_check_age_days"]
+        == 1
+    )
+    loaded = load_observations("check.one", observations)
+    assert loaded[-1].observed_at == "2026-08-14T12:00:00-05:00"
+    assert latest_observation("check.one", observations).observed_at == (
+        "2026-08-14T12:00:00-05:00"
+    )
+
+
 def test_freshness_surfaces_agree_on_the_same_store(tmp_path):
     """The §2.3 invariant. The two used to disagree 9 vs 3 on live data."""
     from fmd_seo.freshness import freshness_records, freshness_report

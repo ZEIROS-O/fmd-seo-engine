@@ -9,7 +9,11 @@ from typing import Any
 
 from .brain import Brain, Check, overdue_after
 from .facts import days_until_stale
-from .observations import latest_observation, record_observation
+from .observations import (
+    OBSERVATIONS_DIR,
+    parse_observed_at,
+    record_observation,
+)
 
 
 class FreshnessDataError(ValueError):
@@ -80,14 +84,11 @@ def _parse_observed_at(value: Any, path: Path) -> datetime:
     if not isinstance(value, str) or not value.strip():
         raise FreshnessDataError(f"observation missing observed_at: {path}")
     try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return parse_observed_at(value)
     except ValueError as err:
         raise FreshnessDataError(
             f"observation has invalid observed_at: {path}: {value!r}"
         ) from err
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
-    return parsed.astimezone(timezone.utc)
 
 
 def _raw_latest_observations(
@@ -138,13 +139,13 @@ def _raw_latest_observations(
     return latest, relevant_count, sorted(unregistered)
 
 
-def freshness_report(
+def _watchdog(
     brain: Brain,
     observations_dir: Path,
     *,
     now: datetime | None = None,
-) -> dict[str, Any]:
-    """Return a read-only liveness verdict from raw committed observations."""
+) -> tuple[int, list[str], dict[str, Any]]:
+    """One newest-stamp scan, one liveness verdict. Both surfaces call this."""
     current = _as_utc(now)
     scheduled = _scheduled_checks(brain)
     latest, observations_found, unregistered = _raw_latest_observations(
@@ -154,6 +155,19 @@ def freshness_report(
         scheduled,
         {k: v for k, v in latest.items() if k in scheduled},
         current,
+    )
+    return observations_found, unregistered, liveness
+
+
+def freshness_report(
+    brain: Brain,
+    observations_dir: Path,
+    *,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    """Return a read-only liveness verdict from raw committed observations."""
+    observations_found, unregistered, liveness = _watchdog(
+        brain, observations_dir, now=now,
     )
     if observations_found == 0:
         state = "no_observations_found"
@@ -180,20 +194,12 @@ def freshness_records(
     """The same verdict as `freshness_report`, reduced to the recorded fields.
 
     This is the surface `engine.freshness` writes, so it must not be the more
-    forgiving of the two. It used to `continue` past a check with no observation,
-    which silently excused every never-observed scheduled check from the count.
+    forgiving of the two. Newest-observation selection used to go through
+    `latest_observation` (string sort) while the report scanned parsed
+    timestamps; a single non-UTC offset made them disagree again.
     """
-    current = _as_utc(now)
-    scheduled = _scheduled_checks(brain)
-    latest: dict[str, datetime] = {}
-    for check_id in scheduled:
-        observation = latest_observation(check_id, observations_dir)
-        if observation is None:
-            continue
-        latest[check_id] = _parse_observed_at(
-            observation.observed_at, observations_dir or Path(check_id),
-        )
-    liveness = _liveness(scheduled, latest, current)
+    store = observations_dir if observations_dir is not None else OBSERVATIONS_DIR
+    _, _, liveness = _watchdog(brain, store, now=now)
     return {
         "stalest_check_age_days": liveness["stalest_check_age_days"],
         "checks_overdue": len(liveness["overdue"]),

@@ -23,6 +23,19 @@ from .provenance import file_sha256, resolve_source
 OBSERVATIONS_DIR = paths.ENGINE_ROOT / "brain" / "observations"
 OBSERVATION_SCHEMA_VERSION = 2
 
+
+def parse_observed_at(value: str) -> datetime:
+    """Parse an observation timestamp. Naive values are UTC, never local.
+
+    `latest_observation` used to sort the ISO string, so a non-UTC offset
+    could make an older row look newest. Both the observation store and the
+    freshness watchdog have to use this, or they pick different rows.
+    """
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
 # How a check's data was obtained — provenance that survives into the receipt.
 FULFILLMENT = {"engine_api", "mcp", "agent", "console", "engine"}
 
@@ -184,7 +197,7 @@ def load_observations(check_id: str, directory: Path | None = None) -> list[Obse
         data = json.loads(path.read_text(encoding="utf-8"))
         data.setdefault("schema_version", 1)
         obs.append(Observation(**data))
-    return sorted(obs, key=lambda o: o.observed_at)
+    return sorted(obs, key=lambda o: parse_observed_at(o.observed_at))
 
 
 def latest_observation(check_id: str, directory: Path | None = None) -> Observation | None:
