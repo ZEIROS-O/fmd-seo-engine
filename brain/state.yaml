@@ -268,10 +268,10 @@ gates:
   GATE-1:
     name: publish-gate
     state: CLOSED
-    reason: "indexation dirty: indexed=11, not_indexed=13"
+    reason: "indexation dirty: indexed=11, not_indexed=9"
     opens_when: "machine-evaluated from brain/gates.yaml#GATE-1"
     consecutive_clean_readings: 0
-    last_counted_at: "2026-08-11T21:27:17.553835+00:00"
+    last_counted_at: "2026-08-19T11:06:21.294916+00:00"
   GATE-2:
     name: suburb-page-gate
     state: CLOSED
