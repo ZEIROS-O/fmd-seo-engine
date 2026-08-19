@@ -156,7 +156,12 @@ def validate_patch_package(
     evidence_blockers: list[str] = []
     for evidence_ref in package.evidence_refs:
         if evidence_ref == "agent:sitemap-route-inventory":
-            if package.generator != "sitemap":
+            if package.schema_version >= 2:
+                evidence_blockers.append(
+                    "v2 sitemap packages require a hash-bound route-inventory "
+                    "evidence record, not agent:sitemap-route-inventory"
+                )
+            elif package.generator != "sitemap":
                 evidence_blockers.append(
                     "route-inventory evidence is valid only for the sitemap generator"
                 )

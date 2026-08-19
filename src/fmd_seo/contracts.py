@@ -16,7 +16,7 @@ from typing import Any
 
 SCHEMA_VERSION = 1
 PAGE_PACKAGE_SCHEMA_VERSION = 2
-PATCH_PACKAGE_SCHEMA_VERSION = 1
+PATCH_PACKAGE_SCHEMA_VERSION = 2
 
 QUERY_EVIDENCE_KINDS = frozenset(
     {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline",
@@ -218,10 +218,9 @@ class PatchPackage:
     schema_version: int = PATCH_PACKAGE_SCHEMA_VERSION
 
     def __post_init__(self) -> None:
-        if self.schema_version != PATCH_PACKAGE_SCHEMA_VERSION:
+        if self.schema_version not in {1, PATCH_PACKAGE_SCHEMA_VERSION}:
             raise ContractError(
-                f"PatchPackage schema_version {self.schema_version} != "
-                f"{PATCH_PACKAGE_SCHEMA_VERSION}"
+                f"Unsupported PatchPackage schema_version: {self.schema_version}"
             )
         if self.generator not in PATCH_GENERATORS:
             raise ContractError(f"Unknown PatchPackage generator: {self.generator}")
@@ -259,15 +258,19 @@ class PatchPackage:
     @staticmethod
     def derive_id(*, generator: str, created_at: str, site_base_commit: str,
                   fact_snapshot_hash: str, evidence_refs: list[str],
-                  modifications: list[dict[str, str]]) -> str:
-        core = canonical_json({
+                  modifications: list[dict[str, str]],
+                  schema_version: int = PATCH_PACKAGE_SCHEMA_VERSION) -> str:
+        values: dict[str, Any] = {
             "generator": generator,
             "created_at": created_at,
             "site_base_commit": site_base_commit,
             "fact_snapshot_hash": fact_snapshot_hash,
             "evidence_refs": evidence_refs,
             "modifications": modifications,
-        })
+        }
+        if schema_version >= 2:
+            values["schema_version"] = schema_version
+        core = canonical_json(values)
         return "patch-" + sha256_text(core)[:16]
 
     @classmethod
@@ -282,6 +285,7 @@ class PatchPackage:
                 fact_snapshot_hash=fact_snapshot_hash,
                 evidence_refs=evidence_refs,
                 modifications=modifications,
+                schema_version=PATCH_PACKAGE_SCHEMA_VERSION,
             ),
             generator=generator,
             created_at=created_at,
@@ -313,7 +317,7 @@ def from_dict(contract: str, data: dict):
     allowed_versions = (
         {1, PAGE_PACKAGE_SCHEMA_VERSION}
         if contract == "PagePackage"
-        else {PATCH_PACKAGE_SCHEMA_VERSION}
+        else {1, PATCH_PACKAGE_SCHEMA_VERSION}
         if contract == "PatchPackage"
         else {SCHEMA_VERSION}
     )
@@ -382,6 +386,7 @@ def load_patch_package(path: Path) -> PatchPackage:
         fact_snapshot_hash=package.fact_snapshot_hash,
         evidence_refs=package.evidence_refs,
         modifications=package.modifications,
+        schema_version=package.schema_version,
     )
     if package.package_id != expected:
         raise ContractError(

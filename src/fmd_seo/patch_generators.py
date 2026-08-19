@@ -315,11 +315,45 @@ def _build_package(
     return {"status": "DONE", "package": package.to_dict()}
 
 
+def write_route_inventory_evidence(worktree: Path, directory: Path) -> str:
+    """Persist the current route inventory as a hash-bound evidence record.
+
+    v1 sitemap packages cited the nominal string agent:sitemap-route-inventory,
+    which validate_patch_package accepted on generator name alone. v2 binds the
+    inventory itself so a package cannot claim a route set it did not measure.
+    """
+    from .contracts import canonical_json, sha256_text
+    from .patch_action import route_inventory
+
+    body = {
+        "routes": sorted(route_inventory(worktree)),
+        "site_base_commit": _head(worktree),
+    }
+    digest = sha256_text(canonical_json(body))
+    evidence_id = f"ev-route-inventory-{digest[:12]}"
+    payload = {
+        "evidence_id": evidence_id,
+        "kind": "route_inventory",
+        "source_sha256": digest,
+        **body,
+    }
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"{evidence_id}.json"
+    rendered = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    if path.exists():
+        if json.loads(path.read_text(encoding="utf-8")) != payload:
+            raise ValueError(f"immutable evidence id collision: {evidence_id}")
+        return evidence_id
+    path.write_text(rendered, encoding="utf-8")
+    return evidence_id
+
+
 def generate_patch_preview(
     generator: str,
     *,
     worktree: Path,
     facts_file: Path,
+    evidence_dir: Path | None = None,
 ) -> dict:
     if not (worktree / ".git").exists():
         return {"status": "BLOCK", "blockers": ["site worktree is unavailable"]}
@@ -373,10 +407,12 @@ def generate_patch_preview(
                 "the site's route-exclusion authority has moved"
             ],
         }
+    store = evidence_dir if evidence_dir is not None else facts_file.parent / "evidence"
+    evidence_id = write_route_inventory_evidence(worktree, store)
     return _build_package(
         "sitemap",
         worktree=worktree,
         facts_file=facts_file,
         replacements={SITEMAP_SCRIPT: after},
-        evidence_refs=["agent:sitemap-route-inventory"],
+        evidence_refs=[evidence_id],
     )

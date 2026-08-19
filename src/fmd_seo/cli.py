@@ -295,6 +295,7 @@ def main(argv: list[str] | None = None) -> int:
             args.generator,
             worktree=Path(config["paths"]["site_worktree"]),
             facts_file=Path(config["paths"]["facts_file"]),
+            evidence_dir=paths.EVIDENCE_DIR,
         )
         payload = {
             "command": args.command,

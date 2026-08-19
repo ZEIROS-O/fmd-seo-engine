@@ -106,7 +106,7 @@ def test_patch_package_is_content_addressed_modify_only_and_immutable(tmp_path):
         }],
     )
 
-    assert package.schema_version == contracts.PATCH_PACKAGE_SCHEMA_VERSION == 1
+    assert package.schema_version == contracts.PATCH_PACKAGE_SCHEMA_VERSION == 2
     assert package.package_id.startswith("patch-")
     path = contracts.write_patch_package(package, tmp_path)
     assert contracts.load_patch_package(path) == package

@@ -2,8 +2,8 @@ import pytest
 
 from fmd_seo import contracts
 from fmd_seo.contracts import (
-    ContractError, ExportManifest, FactSnapshot, PagePackage, QueryEvidence,
-    RunReceipt, from_dict, load_package, write_package,
+    ContractError, ExportManifest, FactSnapshot, PagePackage, PatchPackage,
+    QueryEvidence, RunReceipt, from_dict, load_package, sha256_text, write_package,
 )
 
 
@@ -59,6 +59,39 @@ def test_invalid_enums_rejected():
     with pytest.raises(ContractError):
         _package(tier="landing-page")
     assert RunReceipt("r", "ERROR", "t0", "t1", "c", 1, [], 0.0, [], None, {}).status == "ERROR"
+
+
+def test_patch_package_v1_loads_and_v2_is_the_default(tmp_path):
+    before = "old\n"
+    after = "new\n"
+    v2 = PatchPackage.create(
+        generator="sitemap",
+        created_at="2026-08-12T12:00:00+00:00",
+        site_base_commit="a" * 40,
+        fact_snapshot_hash="facts",
+        evidence_refs=["ev-route-inventory-fixture"],
+        modifications=[{
+            "operation": "modify",
+            "path": "scripts/generate-sitemap.mjs",
+            "before_sha256": sha256_text(before),
+            "after_sha256": sha256_text(after),
+            "replacement_content": after,
+        }],
+    )
+    assert v2.schema_version == 2
+
+    v1_data = {**v2.to_dict(), "schema_version": 1}
+    v1_data["package_id"] = PatchPackage.derive_id(
+        generator=v2.generator,
+        created_at=v2.created_at,
+        site_base_commit=v2.site_base_commit,
+        fact_snapshot_hash=v2.fact_snapshot_hash,
+        evidence_refs=v2.evidence_refs,
+        modifications=v2.modifications,
+        schema_version=1,
+    )
+    loaded = from_dict("PatchPackage", v1_data)
+    assert loaded.schema_version == 1
 
 
 def test_schema_version_enforced():

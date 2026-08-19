@@ -11,7 +11,7 @@ from pathlib import Path
 
 from . import paths
 from .brain import load_brain
-from .contracts import load_package, load_patch_package
+from .contracts import PATCH_PACKAGE_SCHEMA_VERSION, load_package, load_patch_package
 from .corpus import corpus_checks
 from .export import content_destination, export_package, render_content_json, write_manifest
 from .facts import FactError, load_snapshot, verify_binding
@@ -167,6 +167,15 @@ def dry_run_plan(worktree: Path, package_path: Path | None = None,
         if "modifications" in raw:
             from .patch_action import validate_patch_package
             package = load_patch_package(package_path)
+            if package.schema_version < PATCH_PACKAGE_SCHEMA_VERSION:
+                payload["patch"] = {
+                    "package_id": package.package_id,
+                    "status": "BLOCK",
+                    "blockers": [
+                        f"PatchPackage v{package.schema_version} is legacy and not publishable"
+                    ],
+                }
+                return payload
             if facts_file is None or not facts_file.is_file():
                 payload["patch"] = {
                     "package_id": package.package_id,
@@ -208,6 +217,14 @@ def dry_run_plan(worktree: Path, package_path: Path | None = None,
 def publish_patch_package(config: dict, package_path: Path) -> dict:
     """Apply a PatchPackage, verify the site build, and open a draft PR only."""
     package = load_patch_package(package_path)
+    if package.schema_version < PATCH_PACKAGE_SCHEMA_VERSION:
+        return {
+            "command": "act",
+            "status": "BLOCK",
+            "blockers": [
+                f"PatchPackage v{package.schema_version} is legacy and not publishable"
+            ],
+        }
     worktree = Path(config["paths"]["site_worktree"])
     facts_file = Path(config["paths"]["facts_file"])
     from .patch_action import validate_patch_package
