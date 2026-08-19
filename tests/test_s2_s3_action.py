@@ -55,7 +55,51 @@ def _commit_site_facts(repo, facts_file, *, committed_at: str, mutate_payload=No
     )
 
 
+SITEMAP_SCRIPT_STUB = (
+    'const excludedRoutes = new Set(["/booking-confirmed"]);\n'
+    "export function generate() {}\n"
+)
+
+
+def _commit_sitemap_script(repo, text=SITEMAP_SCRIPT_STUB):
+    path = repo / "scripts/generate-sitemap.mjs"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+    subprocess.run(
+        ["git", "-C", str(repo), "add", "scripts/generate-sitemap.mjs"], check=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-m", "sitemap generator"],
+        check=True, capture_output=True,
+    )
+    return path
+
+
+def _script_patch(repo, *, before, after, base=None, fact_hash="facts-current"):
+    head = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    return PatchPackage.create(
+        generator="sitemap",
+        created_at="2026-08-12T12:00:00+00:00",
+        site_base_commit=base or head,
+        fact_snapshot_hash=fact_hash,
+        evidence_refs=["agent:sitemap-route-inventory"],
+        modifications=[{
+            "operation": "modify",
+            "path": "scripts/generate-sitemap.mjs",
+            "before_sha256": _sha(before),
+            "after_sha256": _sha(after),
+            "replacement_content": after,
+        }],
+    )
+
+
 def _patch(repo, *, before, after, base=None, fact_hash="facts-current"):
+    """A sitemap package aimed at the XML artifact — forbidden after 3.1."""
     head = subprocess.run(
         ["git", "-C", str(repo), "rev-parse", "HEAD"],
         check=True,
@@ -78,73 +122,68 @@ def _patch(repo, *, before, after, base=None, fact_hash="facts-current"):
     )
 
 
-def test_patch_validation_fails_closed_on_stale_base_file_fact_and_url_addition(git_repo):
+def test_patch_validation_fails_closed_on_stale_base_file_and_fact(git_repo):
     from fmd_seo.patch_action import validate_patch_package
+    from fmd_seo.patch_generators import _exclude_legal_routes
 
-    sitemap = git_repo / "public/sitemap.xml"
-    sitemap.parent.mkdir()
-    before = "<urlset><url><loc>https://example.com/</loc></url></urlset>\n"
-    sitemap.write_text(before, encoding="utf-8")
-    subprocess.run(["git", "-C", str(git_repo), "add", "public/sitemap.xml"], check=True)
-    subprocess.run(["git", "-C", str(git_repo), "commit", "-m", "sitemap"], check=True)
+    before = SITEMAP_SCRIPT_STUB
+    after = _exclude_legal_routes(before)
+    assert after is not None and after != before
+    script = _commit_sitemap_script(git_repo, before)
 
-    safe_after = "<urlset></urlset>\n"
     assert validate_patch_package(
-        git_repo, _patch(git_repo, before=before, after=safe_after),
+        git_repo, _script_patch(git_repo, before=before, after=after),
         current_fact_hash="facts-current",
     )["status"] == "DONE"
 
-    stale_base = _patch(git_repo, before=before, after=safe_after, base="a" * 40)
+    stale_base = _script_patch(
+        git_repo, before=before, after=after, base="a" * 40,
+    )
     assert "base" in validate_patch_package(
         git_repo, stale_base, current_fact_hash="facts-current"
     )["blockers"][0]
 
-    stale_fact = _patch(git_repo, before=before, after=safe_after, fact_hash="old-facts")
+    stale_fact = _script_patch(
+        git_repo, before=before, after=after, fact_hash="old-facts",
+    )
     assert "fact" in validate_patch_package(
         git_repo, stale_fact, current_fact_hash="facts-current"
     )["blockers"][0]
 
-    sitemap.write_text("changed outside package\n", encoding="utf-8")
+    # Already-applied: expected bytes match, so the before-hash is what fires.
+    script.write_text(after, encoding="utf-8")
     assert "changed" in validate_patch_package(
-        git_repo, _patch(git_repo, before=before, after=safe_after),
+        git_repo, _script_patch(git_repo, before=before, after=after),
         current_fact_hash="facts-current",
     )["blockers"][0]
-    sitemap.write_text(before, encoding="utf-8")
-
-    added = before.replace("</urlset>", "<url><loc>https://example.com/new</loc></url></urlset>")
-    result = validate_patch_package(
-        git_repo, _patch(git_repo, before=before, after=added),
-        current_fact_hash="facts-current",
-    )
-    assert result["status"] == "BLOCK"
-    assert "URL addition" in result["blockers"][0]
 
 
 def test_patch_apply_modifies_only_declared_tracked_paths(git_repo):
     from fmd_seo.patch_action import apply_patch_package
+    from fmd_seo.patch_generators import _exclude_legal_routes
 
-    sitemap = git_repo / "public/sitemap.xml"
-    sitemap.parent.mkdir()
-    before = "<urlset><url><loc>https://example.com/privacy</loc></url></urlset>\n"
-    after = "<urlset></urlset>\n"
-    sitemap.write_text(before, encoding="utf-8")
-    subprocess.run(["git", "-C", str(git_repo), "add", "public/sitemap.xml"], check=True)
-    subprocess.run(["git", "-C", str(git_repo), "commit", "-m", "sitemap"], check=True)
+    before = SITEMAP_SCRIPT_STUB
+    after = _exclude_legal_routes(before)
+    assert after is not None
+    script = _commit_sitemap_script(git_repo, before)
 
     result = apply_patch_package(
         git_repo,
-        _patch(git_repo, before=before, after=after),
+        _script_patch(git_repo, before=before, after=after),
         current_fact_hash="facts-current",
     )
 
-    assert result == {"status": "DONE", "modified_paths": ["public/sitemap.xml"]}
-    assert sitemap.read_text(encoding="utf-8") == after
+    assert result == {
+        "status": "DONE",
+        "modified_paths": ["scripts/generate-sitemap.mjs"],
+    }
+    assert script.read_text(encoding="utf-8") == after
     assert subprocess.run(
         ["git", "-C", str(git_repo), "status", "--porcelain"],
         check=True,
         capture_output=True,
         text=True,
-    ).stdout == " M public/sitemap.xml\n"
+    ).stdout == " M scripts/generate-sitemap.mjs\n"
 
 
 def _site_patch(repo, *, path, before, after, generator="sitemap"):
@@ -430,6 +469,70 @@ def test_patch_validation_permits_route_removal_via_the_sitemap_generator(site_r
     assert result["status"] == "DONE"
     assert result["checks"]["route_additions"] == 0
     assert result["checks"]["route_removals"] == 3
+
+
+def test_sitemap_package_tampered_replacement_blocks(site_repo, tmp_path):
+    """Appending arbitrary JS to the sitemap generator replacement used to
+    validate DONE. The replacement must match `_exclude_legal_routes` of the
+    tracked script, exactly as a schema replacement must match the renderer.
+    """
+    from fmd_seo import patch_generators
+    from fmd_seo.contracts import from_dict
+    from fmd_seo.patch_action import validate_patch_package
+
+    facts = tmp_path / "business-facts.yaml"
+    facts.write_text("canonical facts\n", encoding="utf-8")
+    generated = patch_generators.generate_patch_preview(
+        "sitemap", worktree=site_repo, facts_file=facts,
+    )
+    assert generated["status"] == "DONE"
+    honest = from_dict("PatchPackage", generated["package"])
+    tampered_body = honest.modifications[0]["replacement_content"] + "\nconsole.log('tamper');\n"
+    tampered = PatchPackage.create(
+        generator=honest.generator,
+        created_at=honest.created_at,
+        site_base_commit=honest.site_base_commit,
+        fact_snapshot_hash=honest.fact_snapshot_hash,
+        evidence_refs=list(honest.evidence_refs),
+        modifications=[{
+            **honest.modifications[0],
+            "replacement_content": tampered_body,
+            "after_sha256": _sha(tampered_body),
+        }],
+    )
+
+    result = validate_patch_package(
+        site_repo,
+        tampered,
+        current_fact_hash=_sha("canonical facts\n"),
+        facts_file=facts,
+    )
+
+    assert result["status"] == "BLOCK"
+    assert "canonical generator output" in result["blockers"][0]
+
+
+def test_sitemap_generator_cannot_modify_the_xml_artifact(git_repo):
+    """public/sitemap.xml is a build artifact. No sitemap generator produces
+    it, so permitting it was a widening beyond the stated policy.
+    """
+    from fmd_seo.patch_action import validate_patch_package
+
+    sitemap = git_repo / "public/sitemap.xml"
+    sitemap.parent.mkdir()
+    before = "<urlset><url><loc>https://example.com/</loc></url></urlset>\n"
+    sitemap.write_text(before, encoding="utf-8")
+    subprocess.run(["git", "-C", str(git_repo), "add", "public/sitemap.xml"], check=True)
+    subprocess.run(["git", "-C", str(git_repo), "commit", "-m", "sitemap"], check=True)
+
+    result = validate_patch_package(
+        git_repo,
+        _patch(git_repo, before=before, after="<urlset></urlset>\n"),
+        current_fact_hash="facts-current",
+    )
+
+    assert result["status"] == "BLOCK"
+    assert "cannot modify public/sitemap.xml" in result["blockers"][0]
 
 
 def test_sitemap_generator_patches_the_script_that_survives_the_build(

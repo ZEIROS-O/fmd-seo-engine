@@ -12,7 +12,9 @@ from .contracts import PatchPackage
 
 GENERATOR_PATHS = {
     "canonical": frozenset(),
-    "sitemap": frozenset({"scripts/generate-sitemap.mjs", "public/sitemap.xml"}),
+    # public/sitemap.xml is a build artifact. No generator produces it; the
+    # deterministic sitemap patch rewrites the generator script only.
+    "sitemap": frozenset({"scripts/generate-sitemap.mjs"}),
     "schema": frozenset({"src/lib/business-facts.ts", "public/llms.txt"}),
     "internal-links": frozenset(),
     "copy": frozenset(),
@@ -185,7 +187,7 @@ def validate_patch_package(
     if rejected:
         return {"status": "BLOCK", "blockers": rejected}
 
-    expected_schema: dict[str, str] | None = None
+    expected_replacements: dict[str, str] | None = None
     if package.generator == "schema":
         if facts_file is None or not facts_file.is_file():
             return {
@@ -193,15 +195,34 @@ def validate_patch_package(
                 "blockers": ["canonical facts file is required for schema validation"],
             }
         from .patch_generators import _canonical_fact_replacements
-        expected_schema = _canonical_fact_replacements(facts_file)
+        expected_replacements = _canonical_fact_replacements(facts_file)
+    elif package.generator == "sitemap":
+        script_path = worktree / SITEMAP_SCRIPT
+        if not script_path.is_file():
+            return {
+                "status": "BLOCK",
+                "blockers": [f"tracked {SITEMAP_SCRIPT} is missing"],
+            }
+        from .patch_generators import _exclude_legal_routes
+        expected_script = _exclude_legal_routes(
+            script_path.read_text(encoding="utf-8")
+        )
+        if expected_script is None:
+            return {
+                "status": "BLOCK",
+                "blockers": [
+                    f"cannot locate the excludedRoutes declaration in {SITEMAP_SCRIPT}"
+                ],
+            }
+        expected_replacements = {SITEMAP_SCRIPT: expected_script}
 
     before_urls: set[str] = set()
     after_urls: set[str] = set()
     overrides: dict[str, str] = {}
     for modification in package.modifications:
         relative = modification["path"]
-        if expected_schema is not None and (
-            expected_schema.get(relative) != modification["replacement_content"]
+        if expected_replacements is not None and (
+            expected_replacements.get(relative) != modification["replacement_content"]
         ):
             return {
                 "status": "BLOCK",
