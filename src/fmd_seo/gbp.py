@@ -7,8 +7,9 @@ from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+from . import paths
 from .contracts import PagePackage
-from .facts import load_snapshot
+from .facts import load_snapshot, write_fact_snapshot_evidence
 from .receipts import now_iso
 from .verify import checks_pass, deterministic_checks
 
@@ -186,7 +187,12 @@ def sync_if_due(config: dict, brain, *, observations_dir: Path | None = None) ->
     return {"status": "fetched", "records": records}
 
 
-def draft_gbp_assets(facts_file: Path, output_dir: Path) -> dict:
+def draft_gbp_assets(
+    facts_file: Path,
+    output_dir: Path,
+    *,
+    evidence_dir: Path | None = None,
+) -> dict:
     """Write fact-bound GBP/review drafts; never publish or contact a customer."""
     keys = [
         "identity.name",
@@ -200,6 +206,8 @@ def draft_gbp_assets(facts_file: Path, output_dir: Path) -> dict:
         "autonomy.posting",
     ]
     snapshot = load_snapshot(facts_file, keys)
+    store = evidence_dir if evidence_dir is not None else paths.EVIDENCE_DIR
+    evidence_id = write_fact_snapshot_evidence(snapshot, store)
     facts = snapshot.facts_used
     full = facts["pricing.one_time.full_interior.price"]
     ultimate = facts["pricing.one_time.ultimate_interior.price"]
@@ -226,23 +234,24 @@ def draft_gbp_assets(facts_file: Path, output_dir: Path) -> dict:
         "mentioned_places": [],
         "internal_links": [{"href": "/", "label": "Book online"}],
     }
-    evidence_ref = f"fact-snapshot:{snapshot.source_hash}"
     package = PagePackage.create(
         intent_key="gbp:weekly-post",
         tier="supporting-post",
         created_at=now_iso(),
         fact_snapshot=snapshot.to_dict(),
-        evidence_refs=[evidence_ref],
+        evidence_refs=[evidence_id],
         content=content,
         internal_links=content["internal_links"],
         assets=[],
         information_gain={
             "kind": "first_hand",
-            "evidence_ref": evidence_ref,
+            "evidence_ref": evidence_id,
             "description": "Current first-party service pricing and guarantee details.",
         },
     )
-    checks = deterministic_checks(package, known_routes={"/"})
+    checks = deterministic_checks(
+        package, known_routes={"/"}, evidence_dir=store,
+    )
     if not checks_pass(checks):
         return {"status": "BLOCK", "posting": facts["autonomy.posting"], "checks": checks}
 

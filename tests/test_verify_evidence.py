@@ -108,6 +108,114 @@ def test_evidence_figure_requires_an_exact_numeric_token(tmp_path):
     )
 
 
+def test_information_gain_fact_snapshot_alias_cannot_pass_without_an_artifact(tmp_path):
+    """gbp.py emitted fact-snapshot:<hash> and verify compared it to the
+    package's own snapshot, skipping the evidence store. Against an empty
+    evidence directory with a matching hash it returned PASS. GATE-1 rests
+    on this check.
+    """
+    snapshot_hash = "a" * 64
+    evidence_ref = f"fact-snapshot:{snapshot_hash}"
+    package = PagePackage.create(
+        intent_key="self-ref",
+        tier="supporting-post",
+        created_at="2026-08-02T00:00:00+00:00",
+        fact_snapshot={
+            "source_hash": snapshot_hash,
+            "facts_used": {
+                "identity.phone": "(216) 359-1034",
+                "identity.positioning": "Cleveland",
+                "service_area.places": [],
+            },
+        },
+        evidence_refs=[evidence_ref],
+        content={
+            "title": "Self-ref",
+            "description": "Call (216) 359-1034",
+            "blocks": [],
+            "claims": [{"fact_key": "identity.phone", "value": "(216) 359-1034"}],
+            "evidence_figures": [],
+            "cta": {"label": "Book", "href": "/"},
+            "jsonld": {},
+            "mentioned_places": [],
+            "internal_links": [],
+        },
+        internal_links=[],
+        assets=[{"src": "/image.png", "alt": "Plain image"}],
+        information_gain={
+            "kind": "first_hand",
+            "evidence_ref": evidence_ref,
+            "description": "Current first-party pricing.",
+        },
+    )
+    empty = tmp_path / "empty"
+    empty.mkdir()
+
+    checks = deterministic_checks(package, evidence_dir=empty)
+
+    assert any(
+        name == "information_gain_evidence"
+        and verdict == "BLOCK"
+        for name, verdict, _detail in checks
+    )
+
+
+def test_information_gain_resolves_a_committed_fact_snapshot_record(tmp_path):
+    """The branch production actually uses after retiring fact-snapshot:<hash>."""
+    from fmd_seo.facts import write_fact_snapshot_evidence
+    from fmd_seo.contracts import FactSnapshot
+
+    snapshot = FactSnapshot(
+        canonical_path="facts.yaml",
+        source_hash="b" * 64,
+        source_last_updated="2026-08-01",
+        reviewed_at="2026-08-01",
+        review_after_days=30,
+        captured_at="2026-08-02T00:00:00+00:00",
+        facts_used={"identity.phone": "(216) 359-1034"},
+    )
+    evidence = tmp_path / "evidence"
+    evidence_id = write_fact_snapshot_evidence(snapshot, evidence)
+    package = PagePackage.create(
+        intent_key="fact-bound",
+        tier="supporting-post",
+        created_at="2026-08-02T00:00:00+00:00",
+        fact_snapshot={
+            "source_hash": snapshot.source_hash,
+            "facts_used": {
+                "identity.phone": "(216) 359-1034",
+                "identity.positioning": "Cleveland",
+                "service_area.places": [],
+            },
+        },
+        evidence_refs=[evidence_id],
+        content={
+            "title": "Fact-bound",
+            "description": "Call (216) 359-1034",
+            "blocks": [],
+            "claims": [{"fact_key": "identity.phone", "value": "(216) 359-1034"}],
+            "evidence_figures": [],
+            "cta": {"label": "Book", "href": "/"},
+            "jsonld": {},
+            "mentioned_places": [],
+            "internal_links": [],
+        },
+        internal_links=[],
+        assets=[{"src": "/image.png", "alt": "Plain image"}],
+        information_gain={
+            "kind": "first_hand",
+            "evidence_ref": evidence_id,
+            "description": "Current first-party pricing.",
+        },
+    )
+
+    checks = deterministic_checks(package, evidence_dir=evidence)
+
+    assert (
+        "information_gain_evidence", "PASS", f"bound to {evidence_id}"
+    ) in checks
+
+
 def test_information_gain_requires_one_matching_evidence_record(tmp_path):
     evidence = tmp_path / "evidence"
     first = evidence / "one"

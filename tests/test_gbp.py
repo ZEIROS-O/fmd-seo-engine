@@ -78,8 +78,12 @@ def test_gbp_drafts_are_fact_bound_verified_and_human_only(tmp_path, facts_file)
         '  positioning: "Interior-first mobile detailing for Cleveland\'s east side"\n',
     ), encoding="utf-8")
 
-    result = draft_gbp_assets(facts_file, tmp_path / "drafts")
+    result = draft_gbp_assets(
+        facts_file, tmp_path / "drafts", evidence_dir=tmp_path / "evidence",
+    )
 
+    evidence_files = list((tmp_path / "evidence").glob("ev-fact-snapshot-*.json"))
+    assert len(evidence_files) == 1
     assert result["status"] == "DONE"
     assert result["posting"] == "human_only"
     assert all(check[1] != "BLOCK" for check in result["checks"])

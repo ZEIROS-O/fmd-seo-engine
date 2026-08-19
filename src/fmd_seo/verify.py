@@ -146,19 +146,9 @@ def deterministic_checks(package: PagePackage, *, site_public_dir: Path | None =
     # named committed artifact resolves uniquely and identifies itself.
     if package.schema_version >= 2:
         gain_ref = str((package.information_gain or {}).get("evidence_ref", ""))
-        snapshot_hash = str(package.fact_snapshot.get("source_hash", ""))
-        if gain_ref.startswith("fact-snapshot:"):
-            bound_hash = gain_ref.partition(":")[2]
-            _record = package.fact_snapshot if bound_hash == snapshot_hash and snapshot_hash else None
-            detail = (
-                f"bound to {gain_ref}"
-                if _record is not None
-                else "information gain fact-snapshot reference does not match its package snapshot"
-            )
-        else:
-            _record, detail = _resolve_verified_evidence(
-                gain_ref, evidence_dir or paths.EVIDENCE_DIR,
-            )
+        _record, detail = _resolve_verified_evidence(
+            gain_ref, evidence_dir or paths.EVIDENCE_DIR,
+        )
         results.append((
             "information_gain_evidence",
             "PASS" if _record is not None else "BLOCK",
