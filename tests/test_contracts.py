@@ -38,6 +38,19 @@ def test_round_trips():
     assert from_dict("PagePackage", pkg.to_dict()) == pkg
 
 
+def test_gsc_query_footprint_is_not_a_query_evidence_kind():
+    """Retired in the Phase 2 review. QueryEvidence is per-query; the GSC
+    footprint is a bulk artifact cited by Observation.source. Nothing in src/
+    ever constructed this kind — keeping it declared was the leftover the
+    plan said to wire or retire. The optional gsc_query_footprint *panel*
+    on other kinds is unchanged.
+    """
+    with pytest.raises(ContractError, match="Unknown QueryEvidence kind"):
+        QueryEvidence(
+            "e", "gsc_query_footprint", "q", "t", "ep", {}, "r", 0.0,
+        )
+
+
 def test_invalid_enums_rejected():
     with pytest.raises(ContractError):
         QueryEvidence("e", "bogus_kind", "q", "t", "ep", {}, "r", 0.0)

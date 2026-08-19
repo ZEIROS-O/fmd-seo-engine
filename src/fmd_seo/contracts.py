@@ -21,7 +21,7 @@ PATCH_PACKAGE_SCHEMA_VERSION = 1
 QUERY_EVIDENCE_KINDS = frozenset(
     {"serp_snapshot", "ai_response_snapshot", "llm_mentions_baseline",
      "stable_core_candidate", "gbp_snapshot", "keyword_volume",
-     "gsc_query_footprint", "serp_consensus", "aeo_response_panel",
+     "serp_consensus", "aeo_response_panel",
      "review_language", "citation_source"}
 )
 RECEIPT_STATUSES = frozenset({"DONE", "NO_OP", "PARTIAL", "BLOCK", "ERROR"})
@@ -72,6 +72,9 @@ class QueryEvidence:
     raw_ref: str  # hash of raw payload kept under .run/raw/
     cost_usd: float
     schema_version: int = SCHEMA_VERSION
+    # Optional per-query panel, not a QueryEvidence kind. The GSC footprint
+    # itself is the bulk artifact at Observation.source; this kind was
+    # declared and never constructed, so it was retired rather than wired.
     gsc_query_footprint: dict[str, Any] | None = None
     serp_consensus: dict[str, Any] | None = None
     aeo_response_panel: dict[str, Any] | None = None
