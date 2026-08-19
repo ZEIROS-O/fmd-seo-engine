@@ -172,10 +172,24 @@ done
 # Credential-free and always attempted, even if a provider capability failed.
 run_stage tick python3 -m fmd_seo tick
 
+# Each --source X runs only when the credential that can produce it succeeded.
+# ga4 and gbp share the Google service-account check; there is no cred_ga4.
+declare -A sync_credential=(
+  [semrush]=cred_semrush
+  [ga4]=cred_gsc
+  [gbp]=cred_gsc
+  [site]=cred_site
+)
 sync_args=()
 for source in semrush ga4 gbp site; do
-  if [[ "${source_enabled[$source]:-false}" == true ]]; then
+  if [[ "${source_enabled[$source]:-false}" != true ]]; then
+    continue
+  fi
+  cred="${sync_credential[$source]}"
+  if [[ "${stage_state[$cred]}" == success ]]; then
     sync_args+=(--source "$source")
+  else
+    log "sync source $source skipped: $cred is ${stage_state[$cred]:-missing}"
   fi
 done
 if ((${#sync_args[@]})); then

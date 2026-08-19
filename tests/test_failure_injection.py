@@ -361,6 +361,51 @@ def test_semrush_blowup_does_not_abort_the_other_three_sources(tmp_path, monkeyp
     assert code == 3
 
 
+def test_scoped_sync_does_not_erase_another_providers_failure(tmp_path, monkeypatch):
+    """`fmd-seo sync --source ga4` used to rewrite source_status with not_selected
+    for everyone else and drop the Semrush failure's critical finding."""
+    from fmd_seo import ga4, gbp, site_facts, sync
+    from fmd_seo.assess import assess_check
+    from fmd_seo.brain import load_brain
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.observations import latest_observation
+    from fmd_seo.sync import SyncResult
+
+    monkeypatch.setattr(sync, "sync_due", lambda *a, **k: SyncResult(
+        fetched=[], skipped_no_key=["market.demand"], errors={},
+    ))
+    monkeypatch.setattr(gbp, "sync_if_due", lambda *a, **k: {
+        "status": "not_due", "observed_at": "2026-08-15T00:00:00+00:00",
+    })
+    monkeypatch.setattr(site_facts, "sync_public_facts", lambda *a, **k: {
+        "status": "fetched", "url": "https://example.test", "fact_mismatches": 0,
+        "surfaces": [],
+    })
+    monkeypatch.setattr(ga4, "sync_if_due", lambda *a, **k: {
+        "status": "fetched", "records": {"sessions": 1},
+    })
+    observations = tmp_path / "observations"
+
+    first, first_code = cmd_sync({}, observations_dir=observations)
+    assert first_code == 3
+    assert first["errors"] == {"market.demand": "no SEMRUSH_API_KEY present"}
+    first_health = latest_observation("sync.health", observations)
+    assert "semrush=no_credential" in first_health.records["source_status"]
+    assert first_health.records["checks_failed"] > 0
+
+    second, second_code = cmd_sync(
+        {}, observations_dir=observations, sources={"ga4"},
+    )
+    assert second_code == 0
+    health = latest_observation("sync.health", observations)
+    assert health.records["source_status"] == (
+        "semrush=no_credential;ga4=ok;gbp=not_due;site=ok"
+    )
+    assert health.records["checks_failed"] > 0
+    _, findings = assess_check(load_brain(), "sync.health", observations)
+    assert any(f.severity == "critical" for f in findings)
+
+
 def test_gate1_machine_counts_weekly_clean_readings_and_resets(tmp_path):
     from fmd_seo.gate_manager import update_gate1_state
 

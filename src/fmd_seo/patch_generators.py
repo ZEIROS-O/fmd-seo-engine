@@ -360,7 +360,6 @@ def generate_patch_preview(
     if not facts_file.is_file():
         return {"status": "BLOCK", "blockers": ["canonical facts file is unavailable"]}
     if generator == "schema":
-        fact_hash = hashlib.sha256(facts_file.read_bytes()).hexdigest()
         try:
             replacements = _canonical_fact_replacements(facts_file)
         except (OSError, UnicodeError, yaml.YAMLError, KeyError, TypeError, ValueError):
@@ -380,12 +379,33 @@ def generate_patch_preview(
         stale = _facts_are_behind_the_site(worktree, facts_file, replacements)
         if stale:
             return {"status": "BLOCK", "blockers": stale}
+        for relative, after in replacements.items():
+            path = worktree / relative
+            if not path.is_file():
+                return {
+                    "status": "BLOCK",
+                    "blockers": [f"tracked source is missing: {relative}"],
+                }
+        if all(
+            (worktree / relative).read_text(encoding="utf-8") == after
+            for relative, after in replacements.items()
+        ):
+            return {
+                "status": "NO_OP",
+                "note": "schema source already matches its authority",
+            }
+        from .facts import FactError, write_canonical_facts_evidence
+        store = evidence_dir if evidence_dir is not None else facts_file.parent / "evidence"
+        try:
+            evidence_id = write_canonical_facts_evidence(facts_file, store)
+        except FactError as err:
+            return {"status": "BLOCK", "blockers": [str(err)]}
         return _build_package(
             "schema",
             worktree=worktree,
             facts_file=facts_file,
             replacements=replacements,
-            evidence_refs=[f"canonical-facts:{fact_hash}"],
+            evidence_refs=[evidence_id],
         )
     if generator != "sitemap":
         messages = {

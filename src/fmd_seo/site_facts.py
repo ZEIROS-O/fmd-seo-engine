@@ -111,21 +111,39 @@ def _render_typescript(payload: dict) -> str:
     )
 
 
+# Display names for the two priced one-time tiers. Binding is by the priced-tier
+# key (fullInterior / ultimateInterior), never by services.offered[i]: reordering
+# that list used to publish the $209 line under whoever happened to be first.
+# A rename still moves the price line when the new name is listed here.
+PRICED_TIER_NAMES = {
+    "fullInterior": ("The Interior Reset", "Full Interior Detail"),
+    "ultimateInterior": ("The Deep Interior Reset", "Ultimate Interior Detail"),
+}
+
+
+def _priced_tier_name(facts: dict, tier_key: str) -> str:
+    """Return the display name bound to a priced tier, not a list position."""
+    pricing = facts["pricing"]
+    explicit = pricing.get(f"{tier_key}Name")
+    if explicit:
+        return str(explicit)
+    offered = list(facts["services"]["offered"])
+    for name in PRICED_TIER_NAMES[tier_key]:
+        if name in offered:
+            return name
+    raise ValueError(
+        f"services.offered must name the {tier_key} priced tier "
+        f"({', '.join(PRICED_TIER_NAMES[tier_key])}); got {offered!r}"
+    )
+
+
 def _render_llms(payload: dict) -> str:
     facts = payload["facts"]
     pricing = facts["pricing"]
     places = ", ".join(facts["serviceAreaPlaces"])
     offered = facts["services"]["offered"]
-    # Service labels are the names in services.offered, not fixed strings:
-    # renaming a service in the facts file has to move the price lines with it.
-    # Two tiers are priced, so two must be named -- guessing a label here would
-    # publish a service name that no fact authorizes.
-    if len(offered) < 2:
-        raise ValueError(
-            "services.offered must name both priced tiers "
-            f"(full_interior, ultimate_interior); got {offered!r}"
-        )
-    primary, secondary = offered[0], offered[1]
+    primary = _priced_tier_name(facts, "fullInterior")
+    secondary = _priced_tier_name(facts, "ultimateInterior")
     return f"""# {facts['businessName']}
 
 > Interior-first mobile car detailing serving Cleveland's eastern suburbs from {facts['serviceAreaBase']}.

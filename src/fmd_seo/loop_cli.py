@@ -180,6 +180,33 @@ def cmd_observe(config: dict, check_id: str, records_json: str, *,
 
 # Fixed order so `source_status` reads the same on every run and diffs cleanly.
 SYNC_SOURCES = ("semrush", "ga4", "gbp", "site")
+FAILED_SOURCE_STATUSES = frozenset({"failed", "no_credential"})
+
+
+def _parse_source_status(text: str) -> dict[str, str]:
+    parsed = {name: "not_selected" for name in SYNC_SOURCES}
+    if not text:
+        return parsed
+    for part in text.split(";"):
+        name, sep, value = part.partition("=")
+        if sep and name in parsed and value:
+            parsed[name] = value
+    return parsed
+
+
+def _merge_source_status(
+    prior: dict[str, str] | None,
+    current: dict[str, str],
+    selected: set[str],
+) -> dict[str, str]:
+    """Keep unselected providers' last real status. `not_selected` must not erase a failure."""
+    merged = {name: "not_selected" for name in SYNC_SOURCES}
+    if prior:
+        for name in SYNC_SOURCES:
+            merged[name] = prior.get(name, "not_selected")
+    for name in selected:
+        merged[name] = current[name]
+    return merged
 
 
 def _semrush_status(result) -> str:
@@ -287,6 +314,26 @@ def cmd_sync(
             "analytics.traffic", ga4_result, errors, "GA4 is not configured",
         )
     attempted = len(fetched) + len(errors)
+    # A scoped `sync --source ga4` used to write not_selected for everyone else
+    # and replace the aggregate, which erased a Semrush failure's critical
+    # finding. Merge unselected providers from the latest observation.
+    from .observations import latest_observation
+    prior_obs = latest_observation("sync.health", observations_dir)
+    prior_status = (
+        _parse_source_status(str(prior_obs.records.get("source_status") or ""))
+        if prior_obs is not None
+        else None
+    )
+    merged_status = _merge_source_status(prior_status, status, selected)
+    prior_unselected_failures = sum(
+        1
+        for name in SYNC_SOURCES
+        if name not in selected
+        and prior_status is not None
+        and prior_status.get(name) in FAILED_SOURCE_STATUSES
+    )
+    attempted += prior_unselected_failures
+    failed = len(errors) + prior_unselected_failures
     # Written whenever a source was selected, including the all-not_due day: a
     # skipped write leaves the daily cadence to go stale and reads as healthy.
     if selected:
@@ -296,9 +343,9 @@ def cmd_sync(
             {
                 "checks_attempted": attempted,
                 "checks_succeeded": len(fetched),
-                "checks_failed": len(errors),
+                "checks_failed": failed,
                 "source_status": ";".join(
-                    f"{name}={status[name]}" for name in SYNC_SOURCES
+                    f"{name}={merged_status[name]}" for name in SYNC_SOURCES
                 ),
             },
             fulfillment="engine",

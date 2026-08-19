@@ -7,7 +7,7 @@ import re
 import subprocess
 from pathlib import Path
 
-from .contracts import PatchPackage
+from .contracts import PatchPackage, canonical_json, sha256_text
 
 
 GENERATOR_PATHS = {
@@ -127,6 +127,48 @@ def route_inventory(worktree: Path, overrides: dict[str, str] | None = None) -> 
     return routes
 
 
+def _route_inventory_body(worktree: Path, head: str) -> dict:
+    return {
+        "routes": sorted(route_inventory(worktree)),
+        "site_base_commit": head,
+    }
+
+
+def _validate_v2_route_inventory(
+    record: dict, evidence_id: str, worktree: Path, head: str,
+) -> str | None:
+    """Bind a v2 sitemap evidence_ref to the live inventory, not to file existence."""
+    if record.get("kind") != "route_inventory":
+        return f"{evidence_id} is not route_inventory evidence"
+    expected = _route_inventory_body(worktree, head)
+    digest = sha256_text(canonical_json(expected))
+    if record.get("source_sha256") != digest:
+        return (
+            f"{evidence_id} source_sha256 does not match the live route inventory"
+        )
+    if not evidence_id.endswith(digest[:12]):
+        return f"{evidence_id} does not bind digest {digest[:12]}"
+    if record.get("site_base_commit") != head:
+        return f"{evidence_id} site_base_commit does not match {head}"
+    if record.get("routes") != expected["routes"]:
+        return f"{evidence_id} routes do not match the live inventory"
+    return None
+
+
+def _validate_v2_fact_snapshot(
+    record: dict, evidence_id: str, current_fact_hash: str,
+) -> str | None:
+    """Bind a v2 schema evidence_ref to the live facts file hash."""
+    if record.get("kind") != "fact_snapshot":
+        return f"{evidence_id} is not fact_snapshot evidence"
+    digest = record.get("source_sha256") or record.get("source_hash")
+    if digest != current_fact_hash:
+        return f"{evidence_id} does not bind current facts"
+    if not evidence_id.endswith(current_fact_hash[:12]):
+        return f"{evidence_id} does not bind digest {current_fact_hash[:12]}"
+    return None
+
+
 def validate_patch_package(
     worktree: Path,
     package: PatchPackage,
@@ -154,6 +196,15 @@ def validate_patch_package(
         }
 
     evidence_blockers: list[str] = []
+    if package.schema_version >= 2 and not package.evidence_refs:
+        if package.generator == "sitemap":
+            evidence_blockers.append(
+                "v2 sitemap packages require a hash-bound route-inventory evidence record"
+            )
+        elif package.generator == "schema":
+            evidence_blockers.append(
+                "v2 schema packages require a hash-bound fact-snapshot evidence record"
+            )
     for evidence_ref in package.evidence_refs:
         if evidence_ref == "agent:sitemap-route-inventory":
             if package.schema_version >= 2:
@@ -167,6 +218,12 @@ def validate_patch_package(
                 )
             continue
         if evidence_ref.startswith("canonical-facts:"):
+            if package.schema_version >= 2:
+                evidence_blockers.append(
+                    "v2 schema packages require a hash-bound fact-snapshot "
+                    "evidence record, not canonical-facts:<hash>"
+                )
+                continue
             bound_hash = evidence_ref.partition(":")[2]
             if package.generator != "schema" or bound_hash != current_fact_hash:
                 evidence_blockers.append(
@@ -177,9 +234,22 @@ def validate_patch_package(
             evidence_blockers.append(f"evidence directory required to resolve {evidence_ref}")
             continue
         from .verify import _resolve_verified_evidence
-        _record, detail = _resolve_verified_evidence(evidence_ref, evidence_dir)
-        if _record is None:
+        record, detail = _resolve_verified_evidence(evidence_ref, evidence_dir)
+        if record is None:
             evidence_blockers.append(detail)
+            continue
+        if package.schema_version >= 2 and package.generator == "sitemap":
+            mismatch = _validate_v2_route_inventory(
+                record, evidence_ref, worktree, head,
+            )
+            if mismatch:
+                evidence_blockers.append(mismatch)
+        if package.schema_version >= 2 and package.generator == "schema":
+            mismatch = _validate_v2_fact_snapshot(
+                record, evidence_ref, current_fact_hash,
+            )
+            if mismatch:
+                evidence_blockers.append(mismatch)
     if evidence_blockers:
         return {"status": "BLOCK", "blockers": evidence_blockers}
 

@@ -157,6 +157,32 @@ def test_cron_monday_collects_weekly_queues(tmp_path):
     assert "geogrid --collect" in commands
 
 
+def test_cron_skips_sync_source_when_matching_credential_fails(tmp_path):
+    """cred_semrush failing used to still run `sync --source semrush`."""
+    root, _notify_log, command_log, env = _cron_fixture(tmp_path)
+    env["CRED_SEMRUSH_CODE"] = "4"
+
+    result = _run(root, env)
+
+    assert result.returncode == 4
+    commands = _commands(command_log)
+    assert "credential-check --capability semrush" in commands
+    sync_commands = [command for command in commands if command.startswith("sync ")]
+    assert sync_commands == ["sync --source ga4 --source gbp --source site"]
+
+
+def test_cron_google_credential_failure_skips_ga4_and_gbp_sync(tmp_path):
+    root, _notify_log, command_log, env = _cron_fixture(tmp_path)
+    env["CRED_GSC_CODE"] = "4"
+
+    result = _run(root, env)
+
+    assert result.returncode == 4
+    commands = _commands(command_log)
+    sync_commands = [command for command in commands if command.startswith("sync ")]
+    assert sync_commands == ["sync --source semrush --source site"]
+
+
 def test_cron_source_switch_skips_only_disabled_source(tmp_path):
     root, _notify_log, command_log, env = _cron_fixture(tmp_path)
     env["SOURCE_SWITCHES"] = (

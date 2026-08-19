@@ -99,6 +99,22 @@ def test_fact_verification_blocks_llms_text_drift(tmp_path):
         verify_generated_fact_hash(facts, site / "src/lib/business-facts.ts")
 
 
+def test_llms_price_lines_bind_to_named_tiers_not_offered_order(tmp_path):
+    """Reordering services.offered used to put the $209 line on whoever was first."""
+    facts = tmp_path / "business-facts.yaml"
+    swapped = (REMEDY_FACTS_TEMPLATE % 24).replace(
+        "offered: [The Interior Reset, The Deep Interior Reset]",
+        "offered: [The Deep Interior Reset, The Interior Reset, pet hair removal]",
+    )
+    facts.write_text(swapped, encoding="utf-8")
+    llms = _render_llms(public_fact_payload(facts))
+
+    assert "- The Interior Reset: From $209 (about 2 hours)" in llms
+    assert "- The Deep Interior Reset: From $289 (about 3 hours)" in llms
+    assert "- The Deep Interior Reset: From $209" not in llms
+    assert "- The Interior Reset: From $289" not in llms
+
+
 def test_remedy_window_is_internal_and_never_reaches_a_public_surface(tmp_path):
     """The guarantee publishes no time limit, but the field stays hash-bound.
 

@@ -57,11 +57,17 @@ def _commit_site_facts(repo, facts_file, *, committed_at: str, mutate_payload=No
     )
 
 
-def _route_evidence(directory: Path) -> Path:
+def _bound_route_evidence(directory: Path, worktree: Path) -> str:
+    from fmd_seo.patch_generators import write_route_inventory_evidence
+    return write_route_inventory_evidence(worktree, directory)
+
+
+def _existence_only_route_evidence(directory: Path, evidence_id: str = "ev-route-inventory-fixture") -> Path:
+    """A resolvable JSON file that would pass an existence-only gate."""
     directory.mkdir(parents=True, exist_ok=True)
-    (directory / "ev-route-inventory-fixture.json").write_text(
+    (directory / f"{evidence_id}.json").write_text(
         json.dumps({
-            "evidence_id": "ev-route-inventory-fixture",
+            "evidence_id": evidence_id,
             "kind": "route_inventory",
             "routes": [],
         })
@@ -91,7 +97,7 @@ def _commit_sitemap_script(repo, text=SITEMAP_SCRIPT_STUB):
     return path
 
 
-def _script_patch(repo, *, before, after, base=None, fact_hash="facts-current"):
+def _script_patch(repo, *, before, after, evidence_ref, base=None, fact_hash="facts-current"):
     head = subprocess.run(
         ["git", "-C", str(repo), "rev-parse", "HEAD"],
         check=True,
@@ -103,7 +109,7 @@ def _script_patch(repo, *, before, after, base=None, fact_hash="facts-current"):
         created_at="2026-08-12T12:00:00+00:00",
         site_base_commit=base or head,
         fact_snapshot_hash=fact_hash,
-        evidence_refs=["ev-route-inventory-fixture"],
+        evidence_refs=[evidence_ref],
         modifications=[{
             "operation": "modify",
             "path": "scripts/generate-sitemap.mjs",
@@ -114,7 +120,7 @@ def _script_patch(repo, *, before, after, base=None, fact_hash="facts-current"):
     )
 
 
-def _patch(repo, *, before, after, base=None, fact_hash="facts-current"):
+def _patch(repo, *, before, after, evidence_ref, base=None, fact_hash="facts-current"):
     """A sitemap package aimed at the XML artifact — forbidden after 3.1."""
     head = subprocess.run(
         ["git", "-C", str(repo), "rev-parse", "HEAD"],
@@ -127,7 +133,7 @@ def _patch(repo, *, before, after, base=None, fact_hash="facts-current"):
         created_at="2026-08-12T12:00:00+00:00",
         site_base_commit=base or head,
         fact_snapshot_hash=fact_hash,
-        evidence_refs=["ev-route-inventory-fixture"],
+        evidence_refs=[evidence_ref],
         modifications=[{
             "operation": "modify",
             "path": "public/sitemap.xml",
@@ -142,56 +148,68 @@ def test_patch_validation_fails_closed_on_stale_base_file_and_fact(git_repo, tmp
     from fmd_seo.patch_action import validate_patch_package
     from fmd_seo.patch_generators import _exclude_legal_routes
 
-    evidence = _route_evidence(tmp_path / "evidence")
     before = SITEMAP_SCRIPT_STUB
     after = _exclude_legal_routes(before)
     assert after is not None and after != before
     script = _commit_sitemap_script(git_repo, before)
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, git_repo)
 
     assert validate_patch_package(
-        git_repo, _script_patch(git_repo, before=before, after=after),
-        current_fact_hash="facts-current", evidence_dir=evidence,
+        git_repo,
+        _script_patch(git_repo, before=before, after=after, evidence_ref=evidence_ref),
+        current_fact_hash="facts-current", evidence_dir=evidence_dir,
     )["status"] == "DONE"
 
     stale_base = _script_patch(
-        git_repo, before=before, after=after, base="a" * 40,
+        git_repo, before=before, after=after, evidence_ref=evidence_ref, base="a" * 40,
     )
     assert "base" in validate_patch_package(
         git_repo, stale_base, current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )["blockers"][0]
 
     stale_fact = _script_patch(
-        git_repo, before=before, after=after, fact_hash="old-facts",
+        git_repo, before=before, after=after, evidence_ref=evidence_ref,
+        fact_hash="old-facts",
     )
     assert "fact" in validate_patch_package(
         git_repo, stale_fact, current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )["blockers"][0]
 
-    # Already-applied: expected bytes match, so the before-hash is what fires.
+    # Already-applied: the dirty script moves the live inventory, so the
+    # hash-bound evidence no longer matches. A before-hash mismatch would
+    # also fire later.
     script.write_text(after, encoding="utf-8")
-    assert "changed" in validate_patch_package(
-        git_repo, _script_patch(git_repo, before=before, after=after),
-        current_fact_hash="facts-current", evidence_dir=evidence,
-    )["blockers"][0]
+    result = validate_patch_package(
+        git_repo,
+        _script_patch(git_repo, before=before, after=after, evidence_ref=evidence_ref),
+        current_fact_hash="facts-current", evidence_dir=evidence_dir,
+    )
+    assert result["status"] == "BLOCK"
+    assert any(
+        "source_sha256" in blocker or "changed" in blocker
+        for blocker in result["blockers"]
+    )
 
 
 def test_patch_apply_modifies_only_declared_tracked_paths(git_repo, tmp_path):
     from fmd_seo.patch_action import apply_patch_package
     from fmd_seo.patch_generators import _exclude_legal_routes
 
-    evidence = _route_evidence(tmp_path / "evidence")
     before = SITEMAP_SCRIPT_STUB
     after = _exclude_legal_routes(before)
     assert after is not None
     script = _commit_sitemap_script(git_repo, before)
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, git_repo)
 
     result = apply_patch_package(
         git_repo,
-        _script_patch(git_repo, before=before, after=after),
+        _script_patch(git_repo, before=before, after=after, evidence_ref=evidence_ref),
         current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )
 
     assert result == {
@@ -207,7 +225,7 @@ def test_patch_apply_modifies_only_declared_tracked_paths(git_repo, tmp_path):
     ).stdout == " M scripts/generate-sitemap.mjs\n"
 
 
-def _site_patch(repo, *, path, before, after, generator="sitemap"):
+def _site_patch(repo, *, path, before, after, evidence_ref, generator="sitemap"):
     head = subprocess.run(
         ["git", "-C", str(repo), "rev-parse", "HEAD"],
         check=True, capture_output=True, text=True,
@@ -217,7 +235,7 @@ def _site_patch(repo, *, path, before, after, generator="sitemap"):
         created_at="2026-08-12T12:00:00+00:00",
         site_base_commit=head,
         fact_snapshot_hash="facts-current",
-        evidence_refs=["ev-route-inventory-fixture"],
+        evidence_refs=[evidence_ref],
         modifications=[{
             "operation": "modify",
             "path": path,
@@ -231,7 +249,6 @@ def _site_patch(repo, *, path, before, after, generator="sitemap"):
 def test_patch_validation_rejects_path_outside_generator_policy(git_repo, tmp_path):
     from fmd_seo.patch_action import validate_patch_package
 
-    evidence = _route_evidence(tmp_path / "evidence")
     target = git_repo / "README.md"
     target.write_text("site readme\n", encoding="utf-8")
     subprocess.run(["git", "-C", str(git_repo), "add", "README.md"], check=True)
@@ -239,14 +256,19 @@ def test_patch_validation_rejects_path_outside_generator_policy(git_repo, tmp_pa
         ["git", "-C", str(git_repo), "commit", "-m", "readme"], check=True,
         capture_output=True,
     )
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, git_repo)
     before = target.read_text(encoding="utf-8")
     after = before + "scheduler-owned now\n"
 
     result = validate_patch_package(
         git_repo,
-        _site_patch(git_repo, path="README.md", before=before, after=after),
+        _site_patch(
+            git_repo, path="README.md", before=before, after=after,
+            evidence_ref=evidence_ref,
+        ),
         current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )
 
     assert result["status"] == "BLOCK"
@@ -267,6 +289,9 @@ def test_schema_patch_replacement_must_match_current_canonical_facts(
     before = target.read_text(encoding="utf-8")
     after = before.replace('"fullInterior": 209', '"fullInterior": 999')
     fact_hash = hashlib.sha256(facts.read_bytes()).hexdigest()
+    from fmd_seo.facts import write_canonical_facts_evidence
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = write_canonical_facts_evidence(facts, evidence_dir)
     package = PatchPackage.create(
         generator="schema",
         created_at="2026-08-14T12:00:00+00:00",
@@ -275,7 +300,7 @@ def test_schema_patch_replacement_must_match_current_canonical_facts(
             check=True, capture_output=True, text=True,
         ).stdout.strip(),
         fact_snapshot_hash=fact_hash,
-        evidence_refs=[f"canonical-facts:{fact_hash}"],
+        evidence_refs=[evidence_ref],
         modifications=[{
             "operation": "modify",
             "path": "src/lib/business-facts.ts",
@@ -287,6 +312,7 @@ def test_schema_patch_replacement_must_match_current_canonical_facts(
 
     result = validate_patch_package(
         git_repo, package, current_fact_hash=fact_hash, facts_file=facts,
+        evidence_dir=evidence_dir,
     )
 
     assert result["status"] == "BLOCK"
@@ -361,7 +387,10 @@ def test_v2_sitemap_package_rejects_the_nominal_route_inventory_alias(git_repo, 
     before = SITEMAP_SCRIPT_STUB
     after = _exclude_legal_routes(before)
     _commit_sitemap_script(git_repo, before)
-    package = _script_patch(git_repo, before=before, after=after)
+    package = _script_patch(
+        git_repo, before=before, after=after,
+        evidence_ref="ev-route-inventory-fixture",
+    )
     # Force the v1 alias onto a v2 package.
     package = PatchPackage.create(
         generator="sitemap",
@@ -502,7 +531,8 @@ def test_patch_validation_blocks_a_route_added_outside_the_sitemap_file(site_rep
     """
     from fmd_seo.patch_action import validate_patch_package
 
-    evidence = _route_evidence(tmp_path / "evidence")
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, site_repo)
     city = site_repo / "src/components/CityPage.tsx"
     before = city.read_text(encoding="utf-8")
     after = before.replace(
@@ -513,9 +543,12 @@ def test_patch_validation_blocks_a_route_added_outside_the_sitemap_file(site_rep
 
     result = validate_patch_package(
         site_repo,
-        _site_patch(site_repo, path="src/components/CityPage.tsx", before=before, after=after),
+        _site_patch(
+            site_repo, path="src/components/CityPage.tsx",
+            before=before, after=after, evidence_ref=evidence_ref,
+        ),
         current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )
 
     assert result["status"] == "BLOCK"
@@ -597,19 +630,23 @@ def test_sitemap_generator_cannot_modify_the_xml_artifact(git_repo, tmp_path):
     """
     from fmd_seo.patch_action import validate_patch_package
 
-    evidence = _route_evidence(tmp_path / "evidence")
     sitemap = git_repo / "public/sitemap.xml"
     sitemap.parent.mkdir()
     before = "<urlset><url><loc>https://example.com/</loc></url></urlset>\n"
     sitemap.write_text(before, encoding="utf-8")
     subprocess.run(["git", "-C", str(git_repo), "add", "public/sitemap.xml"], check=True)
     subprocess.run(["git", "-C", str(git_repo), "commit", "-m", "sitemap"], check=True)
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, git_repo)
 
     result = validate_patch_package(
         git_repo,
-        _patch(git_repo, before=before, after="<urlset></urlset>\n"),
+        _patch(
+            git_repo, before=before, after="<urlset></urlset>\n",
+            evidence_ref=evidence_ref,
+        ),
         current_fact_hash="facts-current",
-        evidence_dir=evidence,
+        evidence_dir=evidence_dir,
     )
 
     assert result["status"] == "BLOCK"
@@ -682,6 +719,119 @@ def test_sitemap_generator_blocks_when_the_exclusion_set_cannot_be_located(site_
     assert any("excludedRoutes" in blocker for blocker in result["blockers"])
 
 
+def test_v2_sitemap_existence_only_route_evidence_blocks(git_repo, tmp_path):
+    """A resolvable JSON file with empty routes used to validate DONE."""
+    from fmd_seo.patch_action import validate_patch_package
+    from fmd_seo.patch_generators import _exclude_legal_routes
+
+    before = SITEMAP_SCRIPT_STUB
+    after = _exclude_legal_routes(before)
+    _commit_sitemap_script(git_repo, before)
+    evidence_dir = _existence_only_route_evidence(tmp_path / "evidence")
+
+    result = validate_patch_package(
+        git_repo,
+        _script_patch(
+            git_repo, before=before, after=after,
+            evidence_ref="ev-route-inventory-fixture",
+        ),
+        current_fact_hash="facts-current",
+        evidence_dir=evidence_dir,
+    )
+
+    assert result["status"] == "BLOCK"
+    assert any("source_sha256" in blocker for blocker in result["blockers"])
+
+
+def test_v2_sitemap_validates_route_hash_base_commit_and_routes(git_repo, tmp_path):
+    from fmd_seo.patch_action import validate_patch_package
+    from fmd_seo.patch_generators import _exclude_legal_routes
+
+    before = SITEMAP_SCRIPT_STUB
+    after = _exclude_legal_routes(before)
+    _commit_sitemap_script(git_repo, before)
+    evidence_dir = tmp_path / "evidence"
+    evidence_ref = _bound_route_evidence(evidence_dir, git_repo)
+    path = evidence_dir / f"{evidence_ref}.json"
+    honest = json.loads(path.read_text(encoding="utf-8"))
+
+    def _validate_with(payload):
+        path.write_text(json.dumps(payload) + "\n", encoding="utf-8")
+        return validate_patch_package(
+            git_repo,
+            _script_patch(
+                git_repo, before=before, after=after, evidence_ref=evidence_ref,
+            ),
+            current_fact_hash="facts-current",
+            evidence_dir=evidence_dir,
+        )
+
+    assert _validate_with(honest)["status"] == "DONE"
+
+    tampered_hash = {**honest, "source_sha256": "0" * 64}
+    blocked = _validate_with(tampered_hash)
+    assert blocked["status"] == "BLOCK"
+    assert any("source_sha256" in blocker for blocker in blocked["blockers"])
+
+    wrong_kind = {**honest, "kind": "fact_snapshot"}
+    blocked = _validate_with(wrong_kind)
+    assert blocked["status"] == "BLOCK"
+    assert any("route_inventory" in blocker for blocker in blocked["blockers"])
+
+    wrong_commit = {**honest, "site_base_commit": "a" * 40}
+    blocked = _validate_with(wrong_commit)
+    assert blocked["status"] == "BLOCK"
+    assert any(
+        "site_base_commit" in blocker or "source_sha256" in blocker
+        for blocker in blocked["blockers"]
+    )
+
+    wrong_routes = {**honest, "routes": ["/invented"]}
+    blocked = _validate_with(wrong_routes)
+    assert blocked["status"] == "BLOCK"
+    assert any(
+        "routes" in blocker or "source_sha256" in blocker
+        for blocker in blocked["blockers"]
+    )
+
+
+def test_v2_schema_rejects_canonical_facts_alias(git_repo, tmp_path):
+    from fmd_seo.patch_action import validate_patch_package
+
+    facts = tmp_path / "business-facts.yaml"
+    facts.write_text(_direction_facts("2026-08-14"), encoding="utf-8")
+    _commit_site_facts(git_repo, facts, committed_at="2026-08-14T12:00:00+00:00")
+    target = git_repo / "src/lib/business-facts.ts"
+    before = target.read_text(encoding="utf-8")
+    after = before.replace('"fullInterior": 209', '"fullInterior": 999')
+    fact_hash = hashlib.sha256(facts.read_bytes()).hexdigest()
+    package = PatchPackage.create(
+        generator="schema",
+        created_at="2026-08-14T12:00:00+00:00",
+        site_base_commit=subprocess.run(
+            ["git", "-C", str(git_repo), "rev-parse", "HEAD"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip(),
+        fact_snapshot_hash=fact_hash,
+        evidence_refs=[f"canonical-facts:{fact_hash}"],
+        modifications=[{
+            "operation": "modify",
+            "path": "src/lib/business-facts.ts",
+            "before_sha256": _sha(before),
+            "after_sha256": _sha(after),
+            "replacement_content": after,
+        }],
+    )
+
+    result = validate_patch_package(
+        git_repo, package, current_fact_hash=fact_hash, facts_file=facts,
+        evidence_dir=tmp_path / "empty-evidence",
+    )
+
+    assert result["status"] == "BLOCK"
+    assert any("canonical-facts" in blocker for blocker in result["blockers"])
+
+
 def test_schema_generator_emits_fact_bound_replacements_for_drift(git_repo, tmp_path):
     from fmd_seo import patch_generators
 
@@ -709,7 +859,10 @@ def test_schema_generator_emits_fact_bound_replacements_for_drift(git_repo, tmp_
     assert {item["path"] for item in result["package"]["modifications"]} == {
         "src/lib/business-facts.ts", "public/llms.txt",
     }
-    assert result["package"]["evidence_refs"][0].startswith("canonical-facts:")
+    assert result["package"]["evidence_refs"][0].startswith("ev-fact-snapshot-")
+    assert not any(
+        ref.startswith("canonical-facts:") for ref in result["package"]["evidence_refs"]
+    )
 
 
 def test_warroom_score_is_deterministic_and_blockers_force_execution_to_zero():
