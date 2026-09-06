@@ -1,5 +1,9 @@
 schema_version: 1
 
+scheduler:
+  worktree: "/home/lucascoh/fmd-seo-engine/.worktrees/fmd-seo-scheduler-state"
+  branch: "automation/fmd-seo-state"
+
 # DataForSEO may require a larger account deposit; this is the engine's bounded
 # spend ceiling. The ledger accounts for all spend and reserves before posting.
 # Measured per-call costs: serp $0.002 | llm_responses $0.0063 |
@@ -58,6 +62,8 @@ ga4:
   days: 28
 
 site:
+  repository: "https://github.com/ZEIROS-O/fresh-mobile-detailing.git"
+  base_ref: "origin/main"
   facts_url: "https://freshmobiledetail.com/api/business-facts"
   fact_surfaces:
     - url: "https://freshmobiledetail.com/"
@@ -142,6 +148,12 @@ geogrid:
 
 # The unobfuscated GBP listing id must be supplied by Lou after API access is
 # enabled. Empty means explicit no-op, never a guessed listing.
+# It cannot be read off the dashboard URL — that is the *obfuscated* listing id,
+# which the Performance API rejects. The unobfuscated id comes only from
+# accounts.locations.list on the Business Information API, which is disabled in
+# this Cloud project. Measured 2026-08-17; see brain/blockers/gbp-performance.md
+# for the 403s and the ordered unblock path. gbp.performance is session-
+# fulfilled until then.
 gbp:
   key_path: "/home/lucascoh/.gsc-service-account.json"
   location_id: ""

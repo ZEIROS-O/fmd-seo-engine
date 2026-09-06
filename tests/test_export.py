@@ -20,6 +20,11 @@ def _package() -> PagePackage:
         },
         internal_links=[],
         assets=[],
+        information_gain={
+            "kind": "first_hand",
+            "evidence_ref": "evidence/test.json",
+            "description": "Test-backed first-hand detail.",
+        },
     )
 
 

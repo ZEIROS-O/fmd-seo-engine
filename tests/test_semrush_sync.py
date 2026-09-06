@@ -8,8 +8,7 @@ from fmd_seo.semrush import (
     UnitsLedger, SemrushApiFailure, parse_csv, which_checks_are_api_backed,
 )
 from fmd_seo.sync import (
-    adapt_authority_gap, adapt_market_demand, adapt_organic_footprint,
-    adapt_related_topics,
+    adapt_authority_gap, adapt_market_demand, adapt_related_topics,
 )
 
 
@@ -48,22 +47,6 @@ def test_units_ledger_caps():
 
 # ─────────────────────── adapters ───────────────────────
 
-def test_adapt_organic_footprint_counts_branded_and_page1():
-    rows = [
-        {"Ph": "fresh detail", "Po": "82"},      # branded
-        {"Ph": "fresh detailing", "Po": "90"},   # branded
-        {"Ph": "car detailing near me", "Po": "7"},   # non-branded, page 1
-        {"Ph": "auto detailing cleveland", "Po": "15"},  # non-branded, not page 1
-    ]
-    rec = adapt_organic_footprint(rows)
-    assert rec == {"total_keywords": 4, "nonbranded_keywords": 2, "page1_keywords": 1}
-
-
-def test_adapt_organic_footprint_empty():
-    assert adapt_organic_footprint([]) == {
-        "total_keywords": 0, "nonbranded_keywords": 0, "page1_keywords": 0}
-
-
 def test_adapt_authority_gap_median_odd():
     ours = [{"ascore": "2", "total": "211", "domains_num": "106"}]
     rec = adapt_authority_gap(ours, [7, 7, 8, 9, 16])
@@ -101,7 +84,9 @@ def test_adapt_related_topics_volume_filter():
 
 def test_api_backed_map_covers_exactly_sync_implemented():
     m = which_checks_are_api_backed()
-    assert "seo.organic_footprint" in m
+    # The invalid Semrush footprint instrument is retired under T7. Historical
+    # evidence remains on disk, but no active adapter may route provider calls to it.
+    assert "seo.organic_footprint" not in m
     assert "competitor.authority_gap" in m
     assert "market.demand" in m
     assert "topics.related_clusters" in m
@@ -128,7 +113,8 @@ def test_sync_failure_persists_critical_health_observation(tmp_path, monkeypatch
     from fmd_seo import sync
     from fmd_seo.assess import assess_check
     from fmd_seo.brain import load_brain
-    from fmd_seo.observations import latest_observation
+    from fmd_seo.loop_cli import cmd_sync
+    from fmd_seo.observations import latest_observation, load_observations
 
     creds = tmp_path / "semrush.env"
     creds.write_text("SEMRUSH_API_KEY=test-key\n", encoding="utf-8")
@@ -147,14 +133,18 @@ def test_sync_failure_persists_critical_health_observation(tmp_path, monkeypatch
         "semrush": {"units_cap": 500, "database": "us"},
     }
 
-    result = sync.sync_due(config, observations_dir=observations)
+    payload, code = cmd_sync(
+        config, observations_dir=observations, sources={"semrush"},
+    )
 
     health = latest_observation("sync.health", observations)
     assert health is not None
     assert health.records["checks_attempted"] == (
         health.records["checks_succeeded"] + health.records["checks_failed"]
     )
-    assert health.records["checks_failed"] == len(result.errors)
+    assert health.records["checks_failed"] == len(payload["errors"])
     assert health.records["checks_failed"] > 0
+    assert code == 4
+    assert len(load_observations("sync.health", observations)) == 1
     _, findings = assess_check(load_brain(), "sync.health", observations)
     assert any(f.severity == "critical" for f in findings)

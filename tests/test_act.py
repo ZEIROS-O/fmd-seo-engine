@@ -35,14 +35,19 @@ def test_act_dry_run_reports_diff_without_touching_git(git_repo):
 
 def _bound_package(facts_file):
     snapshot = load_snapshot(facts_file, ["identity.phone"])
+    evidence_ref = f"fact-snapshot:{snapshot.source_hash}"
     return PagePackage.create(
         intent_key="test", tier="supporting-post", created_at="2026-08-01T00:00:00+00:00",
-        fact_snapshot=snapshot.to_dict(), evidence_refs=[],
+        fact_snapshot=snapshot.to_dict(), evidence_refs=[evidence_ref],
         content={
             "slug": "test-post", "title": "Test post",
             "canonical": "https://freshmobiledetail.com/blog/test-post/", "blocks": [],
         },
-        internal_links=[], assets=[],
+        internal_links=[], assets=[], information_gain={
+            "kind": "first_hand",
+            "evidence_ref": evidence_ref,
+            "description": "A fact-bound test workflow.",
+        },
     )
 
 

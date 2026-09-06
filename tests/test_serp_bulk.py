@@ -7,6 +7,7 @@ from fmd_seo.serp_bulk import (
     estimate_cost_usd,
     load_keywords,
     matches_target,
+    normalize_result,
     position_records,
 )
 from fmd_seo.keyword_seeds import classify
@@ -78,6 +79,41 @@ def test_position_records_count_top3_top10_and_top20():
         "top3_count": 1,
         "top20_count": 3,
     }
+
+
+def test_normalized_serp_preserves_top_ten_consensus_inputs():
+    result = {
+        "datetime": "2026-08-12T12:00:00Z",
+        "item_types": ["organic", "people_also_ask"],
+        "items": [
+            {
+                "type": "organic",
+                "rank_group": rank,
+                "rank_absolute": rank,
+                "domain": f"example{rank}.test",
+                "url": f"https://example{rank}.test/page",
+                "title": f"Winner {rank}",
+                "description": f"Snippet {rank}",
+            }
+            for rank in range(1, 12)
+        ],
+    }
+    row = normalize_result(
+        "mobile detailing cleveland",
+        result,
+        {"fmd": {"domain": "freshmobiledetail.com", "aliases": []}},
+    )
+
+    assert len(row["organic_top10"]) == 10
+    assert row["organic_top10"][0] == {
+        "rank": 1,
+        "rank_absolute": 1,
+        "result_type": "organic",
+        "url": "https://example1.test/page",
+        "title": "Winner 1",
+        "snippet": "Snippet 1",
+    }
+    assert row["serp_features"] == ["organic", "people_also_ask"]
 
 
 def test_competitor_records_reuses_same_dataset_and_detects_new_domains():

@@ -10,7 +10,11 @@ every time. The brain removes him from that seat.
 | File | Role | Who edits |
 |---|---|---|
 | `thesis.md` | Standing beliefs (T1–T8) + the hard gates. The judgment layer. | Human, or agent with measured evidence |
-| `checks.yaml` | The check registry: what to check, how, how often, and what each result means (thresholds → findings → actions). | Human / agent |
+| `checks.yaml` | Check ownership, instrument, cadence, records, thresholds, and actions. | Human / agent |
+| `instruments.yaml` | Active/retired measurement authority and retirement rationale. | Human / agent |
+| `priorities.yaml` | Human-authored strategic order and action path. | Human / agent |
+| `warroom.yaml` | Evidence-derived query/page scores; blockers zero executable score. | `score --refresh` |
+| `seasonal_calendar.yaml` | Evidence-linked existing-page/GBP seasonal queue. | engine |
 | `gates.yaml` | Single rule registry for machine-managed gate thresholds and transition requirements. | Human / agent |
 | `state.yaml` | Measured world-state + machine-owned gate state. Every value traces to an evidence file + date. | Indexation observations machine-manage GATE-1 |
 | `observations/` | Time-series of every recorded check result. Committed evidence. | `observe` only |
@@ -20,7 +24,7 @@ every time. The brain removes him from that seat.
 ```
 beat     → what's due now, ordered, labeled by who can fulfill it
   ↓
-(fetch)  → engine sync (Semrush API) | session (MCP/HTTP) | Lou (console)
+(fetch)  → scheduled provider | session/web judgment | Lou-owned console
   ↓
 observe  → record the measurement; strict field validation
   ↓
@@ -31,7 +35,8 @@ act      → work findings in the thesis priority order (schema first while GATE
 
 ## Two fulfillment paths for the same data
 
-Semrush is reachable two ways, and the engine uses whichever is available:
+Semrush is reachable two ways for active Semrush instruments, and the engine
+uses whichever is available:
 
 - **MCP** (`mcp__semrush__*`) — works **only inside a Claude Code session**. This
   is the interactive path. A headless script can never call it.
@@ -43,14 +48,20 @@ A check labeled `mcp` in `checks.yaml` becomes `engine_api`-fulfillable the
 moment a key is present. No key → it stays on the session path. The engine never
 fakes data to paper over a missing key (GATE-4).
 
+`seo.organic_footprint` is retired: historical Semrush artifacts remain
+auditable, but no active adapter or assessment routes to them. `gsc-sync` now
+records `seo.query_footprint` from two finalized Search Analytics datasets — a
+query-only pull for query totals, CTR and position, and a query/page pull for
+page coverage — persisted as one artifact.
+
 ## Human residue — what still needs Lou
 
-Down to two, and only one is a real capability gap:
+The intentional human/console residue is:
 
-1. **`aeo.*`** — model judgment over live AI answers. A session does this well; a
-   cron can't judge answer *correctness* without a model in the loop.
-2. **Any publish / deploy / external send** — deliberately human, per CONTRACT.md.
-   A safety boundary, not a missing feature.
+1. **GA4/GBP administration** — access grants, key-event designation, selected
+   GBP resource, and controlled booking/DebugView proof.
+2. **AEO recurring spend approval and faithfulness review** after the canary.
+3. **Any merge / deploy / external send** — deliberately human, per CONTRACT.md.
 
 **`seo.indexation` is now headless** (`fmd-seo gsc-sync`) via the GSC URL Inspection
 API — the former "one true human dependency" and GATE-1 input. Index coverage has
@@ -71,7 +82,11 @@ Without the key it degrades to the manual console reading — never a guess (GAT
 - **GSC URL Inspection** (service-account key) → `gsc-sync`, headless.
 - **GA4 Data API** (same service-account key + GA4 property access) → `sync`,
   weekly headless `analytics.traffic` observations.
-- **GBP Performance** (same Google project + `gbp.location_id`) → `sync`, headless.
+- **GBP Performance** → **blocked, session-fulfilled.** The Business Profile
+  APIs are disabled in the Cloud project and the location id the Performance API
+  needs is only obtainable from one of them, so `gbp.performance` is
+  `execution_mode: session` with no producer. Measurements and unblock path:
+  `brain/blockers/gbp-performance.md`.
 - **DataForSEO standard queue** → `serp-bulk` positions and `geogrid` map-pack panels.
 - **Semrush MCP** / **live HTTP** / **model judgment** → session, via the
   `fmd-seo-loop` skill.
@@ -80,6 +95,11 @@ Paid SERP commands require an explicit mode. `--dry-run` computes the full
 bounded cost and posts nothing; `--post` creates/resumes the durable task
 manifest; `--collect` retrieves ready tasks and records normalized observations.
 The position and geogrid caps are independent in `config/engine.yaml`.
+
+Checks declare `execution_mode: scheduled|session|console`, `thesis_refs`, and
+`instrument_ref`. Missing credentials do not fabricate a pass: scheduled checks
+stay due, console checks name Lou and a next action, and paid work remains blocked
+until a displayed cap and spend reservation pass.
 
 ## Gates (enforced, not advisory)
 

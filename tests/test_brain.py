@@ -43,7 +43,8 @@ def test_evaluate_unknown_field_raises_not_defaults():
 
 # ─────────────────────────── loader ───────────────────────────
 
-def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None):
+def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None,
+                 producers_body=None):
     (tmp_path / "checks.yaml").write_text(checks_body, encoding="utf-8")
     (tmp_path / "state.yaml").write_text(
         state_body or "schema_version: 1\nsite: {domain: x.com}\ngates: {}\n",
@@ -55,6 +56,10 @@ def _write_brain(tmp_path, checks_body, state_body=None, priorities_body=None):
     )
     (tmp_path / "priorities.yaml").write_text(
         priorities_body or PRIORITIES_BODY,
+        encoding="utf-8",
+    )
+    (tmp_path / "producers.yaml").write_text(
+        producers_body or "schema_version: 1\nproducers: []\n",
         encoding="utf-8",
     )
     return load_brain(tmp_path)
@@ -183,6 +188,15 @@ def test_real_brain_includes_gbp_performance_check():
         "calls", "direction_requests", "website_clicks", "searches_discovery",
         "search_keywords_thresholded",
     ]
+
+
+def test_real_closed_gate_priorities_all_have_an_action_path():
+    brain = load_brain()
+    closed = [item for item in brain.priorities if item["gate"].get("GATE-1") == "CLOSED"]
+
+    assert len(closed) == 8
+    assert all(item["action"]["type"] in {"generator", "console", "draft_queue", "blocker"}
+               for item in closed)
 
 
 # ─────────────────────── due scheduling ───────────────────────

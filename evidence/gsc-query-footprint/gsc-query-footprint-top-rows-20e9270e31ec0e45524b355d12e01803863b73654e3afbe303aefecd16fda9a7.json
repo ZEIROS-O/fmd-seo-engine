@@ -1,0 +1,1289 @@
+{
+  "coverage": "top_rows",
+  "datasets": [
+    {
+      "dimensions": [
+        "query"
+      ],
+      "rows": [
+        {
+          "clicks": 2,
+          "ctr": 0.03076923076923077,
+          "impressions": 65,
+          "keys": [
+            "fresh mobile detailing"
+          ],
+          "position": 7.153846153846154
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto detailing bedford"
+          ],
+          "position": 43
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto detailing cleveland heights"
+          ],
+          "position": 75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto fresh mobile detailing"
+          ],
+          "position": 8
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailers that come to your house"
+          ],
+          "position": 29
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "car detailing cleveland heights"
+          ],
+          "position": 72.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing east side cleveland"
+          ],
+          "position": 75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing mayfield heights"
+          ],
+          "position": 3
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing near me"
+          ],
+          "position": 30
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing service cleveland heights"
+          ],
+          "position": 79
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing shaker heights"
+          ],
+          "position": 73
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car interior cleaning shaker heights"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash beachwood"
+          ],
+          "position": 89
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash beachwood oh"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash mayfield heights ohio"
+          ],
+          "position": 89
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "drive fresh detail"
+          ],
+          "position": 67
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "drive fresh detailing"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 6,
+          "keys": [
+            "fresh car"
+          ],
+          "position": 95.66666666666667
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "fresh car detailing"
+          ],
+          "position": 73.75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh car valeting contact number"
+          ],
+          "position": 95
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 5,
+          "keys": [
+            "fresh detail"
+          ],
+          "position": 58.6
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "fresh detailing"
+          ],
+          "position": 43.666666666666664
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh details"
+          ],
+          "position": 73
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh finish detailing"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "fresh mobile"
+          ],
+          "position": 90.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh mobile car valeting"
+          ],
+          "position": 96
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "fresh mobile detail"
+          ],
+          "position": 28.25
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh styling"
+          ],
+          "position": 91
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "freshcar"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 12,
+          "keys": [
+            "freshmobiledetail.com"
+          ],
+          "position": 20.833333333333332
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior car detailing cleveland heights"
+          ],
+          "position": 79
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior detailing cleveland heights"
+          ],
+          "position": 71
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior detailing shaker heights"
+          ],
+          "position": 87
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "interior mobile detailing cleveland"
+          ],
+          "position": 88.33333333333333
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mayfield car wash"
+          ],
+          "position": 51
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mayfield heights car wash"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 8,
+          "keys": [
+            "mobile auto detailing cleveland"
+          ],
+          "position": 93.75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile auto detailing cleveland heights"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing cleveland ohio"
+          ],
+          "position": 96
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing gates mills"
+          ],
+          "position": 13
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing mayfield heights"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile auto detailing shaker heights"
+          ],
+          "position": 94.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 8,
+          "keys": [
+            "mobile car detailing cleveland"
+          ],
+          "position": 92.25
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile car detailing cleveland heights"
+          ],
+          "position": 57.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car detailing cleveland ohio"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile car detailing lyndhurst"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car detailing mayfield heights"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile car detailing shaker heights"
+          ],
+          "position": 98
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car wash and detailing near me"
+          ],
+          "position": 18
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detail near me"
+          ],
+          "position": 32
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailer cleveland"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile detailing beachwood"
+          ],
+          "position": 5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "mobile detailing cleveland"
+          ],
+          "position": 72
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailing cleveland oh"
+          ],
+          "position": 90.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 9,
+          "keys": [
+            "mobile detailing cleveland ohio"
+          ],
+          "position": 92.66666666666667
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detailing eastern suburbs cleveland"
+          ],
+          "position": 97
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile detailing lyndhurst"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 6,
+          "keys": [
+            "mobile detailing mayfield heights"
+          ],
+          "position": 18.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 5,
+          "keys": [
+            "mobile detailing near me"
+          ],
+          "position": 3.6
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailing pepper pike"
+          ],
+          "position": 10
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "mobile detailing shaker heights"
+          ],
+          "position": 61.666666666666664
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detailing south euclid"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile service"
+          ],
+          "position": 3
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "showroom fresh professional detailing"
+          ],
+          "position": 83
+        }
+      ]
+    },
+    {
+      "dimensions": [
+        "query",
+        "page"
+      ],
+      "rows": [
+        {
+          "clicks": 2,
+          "ctr": 0.03076923076923077,
+          "impressions": 65,
+          "keys": [
+            "fresh mobile detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 7.153846153846154
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto detailing bedford",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 43
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "auto fresh mobile detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 8
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailers that come to your house",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 29
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "car detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 72.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing east side cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing mayfield heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 3
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing near me",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 30
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing service cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 79
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car detailing shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 73
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car interior cleaning shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash beachwood",
+            "https://freshmobiledetail.com/areas/beachwood"
+          ],
+          "position": 89
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash beachwood oh",
+            "https://freshmobiledetail.com/areas/beachwood"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "car wash mayfield heights ohio",
+            "https://freshmobiledetail.com/areas/mayfield-heights"
+          ],
+          "position": 89
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "drive fresh detail",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 67
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "drive fresh detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 6,
+          "keys": [
+            "fresh car",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 95.66666666666667
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "fresh car detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 73.75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh car valeting contact number",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 95
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 5,
+          "keys": [
+            "fresh detail",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 58.6
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "fresh detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 43.666666666666664
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh details",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 73
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh finish detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "fresh mobile",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 90.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh mobile car valeting",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 96
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "fresh mobile detail",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 28.25
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "fresh styling",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 91
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "freshcar",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 6,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/areas/mayfield-heights"
+          ],
+          "position": 66
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/blog/car-detailing-prices-cleveland"
+          ],
+          "position": 62
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/boat"
+          ],
+          "position": 42.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/chat"
+          ],
+          "position": 34.333333333333336
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "freshmobiledetail.com",
+            "https://freshmobiledetail.com/fresh-pro"
+          ],
+          "position": 14.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior car detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 79
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 71
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "interior detailing shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 87
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "interior mobile detailing cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 88.33333333333333
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mayfield car wash",
+            "https://freshmobiledetail.com/areas/mayfield-heights"
+          ],
+          "position": 51
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mayfield heights car wash",
+            "https://freshmobiledetail.com/areas/mayfield-heights"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 8,
+          "keys": [
+            "mobile auto detailing cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 93.75
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile auto detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing cleveland ohio",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 96
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing gates mills",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 13
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile auto detailing mayfield heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile auto detailing shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 94.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 8,
+          "keys": [
+            "mobile car detailing cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92.25
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile car detailing cleveland heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 57.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car detailing cleveland ohio",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 90
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile car detailing lyndhurst",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car detailing mayfield heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile car detailing shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 98
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile car wash and detailing near me",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 18
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detail near me",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 32
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailer cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile detailing beachwood",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "mobile detailing cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 72
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailing cleveland oh",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 90.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 9,
+          "keys": [
+            "mobile detailing cleveland ohio",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 92.66666666666667
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detailing eastern suburbs cleveland",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 97
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 4,
+          "keys": [
+            "mobile detailing lyndhurst",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 1
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 6,
+          "keys": [
+            "mobile detailing mayfield heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 18.5
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 5,
+          "keys": [
+            "mobile detailing near me",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 3.6
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "mobile detailing pepper pike",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 10
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 3,
+          "keys": [
+            "mobile detailing shaker heights",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 61.666666666666664
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile detailing south euclid",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 84
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 1,
+          "keys": [
+            "mobile service",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 3
+        },
+        {
+          "clicks": 0,
+          "ctr": 0,
+          "impressions": 2,
+          "keys": [
+            "showroom fresh professional detailing",
+            "https://freshmobiledetail.com/"
+          ],
+          "position": 83
+        }
+      ]
+    }
+  ],
+  "end_date": "2026-08-16",
+  "row_limit": 25000,
+  "start_date": "2026-07-20"
+}

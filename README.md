@@ -41,7 +41,9 @@ The core engine only requires PyYAML. Google provider support is opt-in with
 | `fmd-seo brief` | Combine gates, due checks, findings, and the next priority. |
 | `fmd-seo tick` | Record credential-free facts and observation-freshness watchdogs. |
 | `fmd-seo sync` | Fetch due headless provider checks with honest partial/block outcomes. |
+| `fmd-seo sync --source semrush|ga4|gbp|site` | Run one provider independently; a missing credential cannot suppress another source. |
 | `fmd-seo gsc-sync` | Fetch URL Inspection coverage and machine-update GATE-1. |
+| `fmd-seo credential-check --capability NAME` | Validate one CI capability without exposing credential values. |
 | `fmd-seo observe CHECK --records JSON --fulfillment KIND --source SOURCE` | Record one validated manual or engine observation. |
 
 ### Data spine
@@ -60,6 +62,9 @@ Spend, provider failure counters, and post/collect manifests live under committe
 |---|---|
 | `fmd-seo act --dry-run [--package packages/pp-*.json]` | Inspect the site action queue and optional package diff without writing. |
 | `fmd-seo act --package packages/pp-*.json` | Verify, export, build, check raw HTML, push a branch, and open a draft PR when GATE-1 is open. |
+| `fmd-seo site-init` | Create the configured detached site worktree and record its exact base SHA. |
+| `fmd-seo patch canonical|sitemap|schema|internal-links|copy --dry-run|--write` | Preview or persist a modify-only PatchPackage. |
+| `fmd-seo act --package packages/patch-*.json` | Apply a fail-closed existing-page patch and open a draft PR; never merge or deploy. |
 | `fmd-seo reverify` | Reconcile active export manifests against `origin/main` and live HTML; archived manifests are skipped. |
 | `fmd-seo site-reset` | Report the isolated worktree branch, dirtiness, and divergence. |
 | `fmd-seo site-reset --force` | Preserve the divergent branch ref while detaching the worktree at `origin/main`. |
@@ -110,3 +115,16 @@ Runtime credentials are explicitly restricted to
 GA4 sync records only aggregate sessions, engaged sessions, organic sessions,
 allowlisted AI-referral sessions, and key events; it does not retain raw API
 responses or perform Analytics Admin mutations.
+
+## Measurement and approval boundaries
+
+- `gsc-sync` records URL Inspection plus finalized 28-day query/page Search
+  Analytics `top_rows`; the latter is explicitly non-exhaustive.
+- `aeo-panel --plan`, `reviews-sync`, and paid SERP commands show exact calls,
+  cap, and projected cost before provider work. The full weekly AEO panel stays
+  disabled until the measured canary and recurring spend are approved.
+- PagePackage v2 requires evidence-backed information gain. PatchPackage v1 can
+  modify tracked files only and hard-blocks stale site/fact/file hashes and URL
+  additions.
+- GA4/GBP account changes, key-event designation, merges, deployments,
+  third-party corrections, outreach, and public posting are Lou gates.

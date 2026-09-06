@@ -1,0 +1,24 @@
+{
+  "check_id": "seo.query_footprint",
+  "fulfillment": "engine_api",
+  "note": "GSC Search Analytics finalized 28-day top_rows, query and query/page datasets; not exhaustive",
+  "observed_at": "2026-08-19T11:06:22.128590+00:00",
+  "records": {
+    "ctr_leak_queries": 0,
+    "impressions_pos_11_20": 8,
+    "impressions_pos_1_3": 11,
+    "impressions_pos_4_10": 77,
+    "impressions_pos_4_20": 85,
+    "nonbranded_queries": 61,
+    "pages_in_sitemap": 24,
+    "pages_with_impressions": 7,
+    "queries_pos_11_20": 3,
+    "queries_pos_1_3": 5,
+    "queries_pos_4_10": 5,
+    "total_queries": 64
+  },
+  "schema_version": 2,
+  "source": "evidence/gsc-query-footprint/gsc-query-footprint-top-rows-20e9270e31ec0e45524b355d12e01803863b73654e3afbe303aefecd16fda9a7.json",
+  "source_kind": "file",
+  "source_sha256": "80ec9f89cf6459b49433f741868d187ae63f20d8940e29dd3316bfeffe07712b"
+}

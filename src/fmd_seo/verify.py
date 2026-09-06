@@ -57,6 +57,30 @@ def _resolve_evidence(evidence_id: str, evidence_dir: Path) -> Path | None:
     return next(iter(sorted(evidence_dir.rglob(f"{evidence_id}.json"))), None)
 
 
+def _resolve_verified_evidence(
+    evidence_id: str, evidence_dir: Path,
+) -> tuple[dict | None, str]:
+    """Resolve exactly one JSON record whose declared ID matches its filename."""
+    if not EVIDENCE_ID_PATTERN.match(evidence_id):
+        return None, f"unsafe evidence id: {evidence_id or '<missing>'}"
+    matches = sorted(evidence_dir.rglob(f"{evidence_id}.json"))
+    if not matches:
+        return None, f"{evidence_id} evidence file is missing"
+    if len(matches) != 1:
+        return None, f"multiple evidence files resolve {evidence_id}"
+    try:
+        payload = json.loads(matches[0].read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as err:
+        return None, f"{evidence_id} evidence file is unreadable: {err}"
+    if not isinstance(payload, dict):
+        return None, f"{evidence_id} evidence record must be an object"
+    if payload.get("evidence_id") != evidence_id:
+        return None, (
+            f"evidence record id {payload.get('evidence_id')!r} does not match {evidence_id}"
+        )
+    return payload, f"bound to {evidence_id}"
+
+
 def _jsonld_price_values(node: object) -> list[str]:
     """Every numeric value sitting under a price-bearing schema.org key."""
     found: list[str] = []
@@ -117,6 +141,19 @@ def deterministic_checks(package: PagePackage, *, site_public_dir: Path | None =
     results: list[tuple[str, str, str]] = []
     facts = package.fact_snapshot.get("facts_used", {})
     text = _all_text(package)
+
+    # PagePackage v2's information-gain declaration is meaningful only if the
+    # named committed artifact resolves uniquely and identifies itself.
+    if package.schema_version >= 2:
+        gain_ref = str((package.information_gain or {}).get("evidence_ref", ""))
+        _record, detail = _resolve_verified_evidence(
+            gain_ref, evidence_dir or paths.EVIDENCE_DIR,
+        )
+        results.append((
+            "information_gain_evidence",
+            "PASS" if _record is not None else "BLOCK",
+            detail,
+        ))
 
     # 1. Declared claims must match the snapshot exactly.
     claims = package.content.get("claims", [])

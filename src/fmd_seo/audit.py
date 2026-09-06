@@ -150,11 +150,21 @@ def _audit_observations(root: Path, now: datetime) -> list[AuditFinding]:
         records = data.get("records", {})
         expected_fields = declared_fields.get(check_id)
         if expected_fields is not None and set(records) != expected_fields:
-            findings.append(AuditFinding(
-                "info" if rel in grandfathered else "critical", "record_schema_mismatch",
-                f"stored {sorted(records)} != declared {sorted(expected_fields)}",
-                check_id, rel,
-            ))
+            stored_fields = set(records)
+            schema_version = int(data.get("schema_version", 1))
+            if schema_version == 1 and stored_fields < expected_fields:
+                findings.append(AuditFinding(
+                    "info", "legacy_record_schema",
+                    f"historical v1 stored {sorted(records)}; current declaration adds "
+                    f"{sorted(expected_fields - stored_fields)}",
+                    check_id, rel,
+                ))
+            else:
+                findings.append(AuditFinding(
+                    "info" if rel in grandfathered else "critical", "record_schema_mismatch",
+                    f"stored {sorted(records)} != declared {sorted(expected_fields)}",
+                    check_id, rel,
+                ))
         for rule in invariants.get(check_id, []):
             try:
                 passed = evaluate(str(rule["expr"]), records)

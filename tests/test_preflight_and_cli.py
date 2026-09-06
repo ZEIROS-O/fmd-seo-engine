@@ -192,6 +192,7 @@ def test_cli_observe_machine_updates_gate1_state(tmp_path, facts_file, git_repo)
         "not_indexed": 2,
         "discovered_not_indexed": 0,
         "crawled_not_indexed": 0,
+        "unknown_to_google": 0,
         "inspected_ok": 22,
     }
 

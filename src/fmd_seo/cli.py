@@ -16,7 +16,7 @@ from pathlib import Path
 
 from . import killswitch, paths
 from .preflight import run_preflight
-from .receipts import ReceiptBuilder, write_receipt
+from .receipts import ReceiptBuilder, now_iso, write_receipt
 from .runstate import LockHeld, RunLock
 
 EXIT = {"DONE": 0, "NO_OP": 0, "PARTIAL": 3, "BLOCK": 4, "ERROR": 5}
@@ -131,9 +131,42 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("assess", help="evaluate thresholds against latest observations; report gate drift")
     sub.add_parser("audit", help="read-only integrity audit of committed artifacts")
     sub.add_parser("brief", help="full operator briefing: gates + due + standing findings + priority")
-    sub.add_parser("sync", help="headless Semrush fetch of API-backed due checks (cron path)")
+    p = sub.add_parser("sync", help="headless provider fetches (cron path)")
+    p.add_argument(
+        "--source",
+        action="append",
+        choices=["semrush", "ga4", "gbp", "site"],
+        help="run only this source (repeatable); default runs all sources",
+    )
     sub.add_parser("tick", help="record credential-free engine freshness checks")
+    sub.add_parser(
+        "freshness",
+        help="read-only watchdog over raw committed observation timestamps",
+    )
     sub.add_parser("gsc-sync", help="headless index-coverage fetch via the GSC URL Inspection API")
+
+    p = sub.add_parser("credential-check", help="validate one independent CI/provider capability")
+    p.add_argument("--capability", required=True,
+                   choices=["dataforseo", "semrush", "gsc", "facts", "site", "all"])
+
+    sub.add_parser("site-init", help="create the configured detached site checkout")
+
+    p = sub.add_parser("aeo-panel", help="plan or run the frozen multi-engine AEO panel")
+    aeo_mode = p.add_mutually_exclusive_group(required=True)
+    aeo_mode.add_argument("--plan", action="store_true")
+    aeo_mode.add_argument("--run", action="store_true")
+
+    sub.add_parser("reviews-sync", help="plan the capped review-count/language collection")
+    sub.add_parser("serp-consensus", help="build consensus from collected top-ten evidence")
+
+    p = sub.add_parser("patch", help="generate a modify-only PatchPackage preview")
+    p.add_argument("generator", choices=["canonical", "sitemap", "schema", "internal-links", "copy"])
+    patch_mode = p.add_mutually_exclusive_group(required=True)
+    patch_mode.add_argument("--dry-run", action="store_true")
+    patch_mode.add_argument("--write", action="store_true", help="persist the immutable package")
+
+    p = sub.add_parser("score", help="refresh the evidence-derived war room")
+    p.add_argument("--refresh", action="store_true", required=True)
 
     p = sub.add_parser("site-reset", help="report or repair the isolated site worktree")
     p.add_argument("--force", action="store_true", help="hard-sync the worktree to origin/main")
@@ -171,6 +204,142 @@ def main(argv: list[str] | None = None) -> int:
     config = paths.load_config(args.config)
     receipts_dir = paths.RECEIPTS_DIR
 
+    if args.command == "freshness":
+        from .brain import load_brain
+        from .freshness import FreshnessDataError, freshness_report
+
+        try:
+            report = freshness_report(
+                load_brain(), paths.ENGINE_ROOT / "brain" / "observations"
+            )
+        except FreshnessDataError as err:
+            payload = {
+                "command": args.command,
+                "status": "BLOCK",
+                "state": "observations_unavailable",
+                "error": str(err),
+            }
+            print(json.dumps(payload, indent=2))
+            return EXIT["BLOCK"]
+        blocked = report["checks_overdue"] > 0
+        payload = {
+            "command": args.command,
+            "status": "BLOCK" if blocked else "DONE",
+            **report,
+        }
+        print(json.dumps(payload, indent=2))
+        return EXIT["BLOCK"] if blocked else 0
+
+    if args.command == "credential-check":
+        from .credentials import CAPABILITY_INPUTS, check_capabilities
+        selected = list(CAPABILITY_INPUTS) if args.capability == "all" else [args.capability]
+        results = check_capabilities(selected, config=config)
+        missing = sorted({name for result in results for name in result["missing"]})
+        payload = {
+            "command": args.command,
+            "capabilities": results,
+            "status": "BLOCK" if missing else "DONE",
+            "missing": missing,
+        }
+        return _emit_loop(
+            ReceiptBuilder(args.command), payload,
+            EXIT["BLOCK"] if missing else 0, receipts_dir,
+        )
+
+    if args.command == "site-init":
+        from .site import initialize_site_worktree
+        site = config.get("site") or {}
+        payload = initialize_site_worktree(
+            Path(config["paths"]["site_worktree"]),
+            repository=str(site.get("repository", "")),
+            base_ref=str(site.get("base_ref", "origin/main")),
+            state_path=paths.STATE_DIR / "site-worktree.json",
+        )
+        code = 0 if payload["status"] in {"DONE", "NO_OP"} else EXIT["BLOCK"]
+        return _emit_loop(ReceiptBuilder(args.command), payload, code, receipts_dir)
+
+    if args.command == "aeo-panel":
+        from .aeo_panel import build_plan
+        cap = float(config["budget"]["endpoint_caps_usd"].get("llm_responses", 0))
+        payload = {"command": args.command, **build_plan(
+            canary=True, unit_cost_usd=0.0063, endpoint_cap_usd=cap,
+        )}
+        if args.run:
+            payload.update({
+                "status": "BLOCK",
+                "blockers": ["Lou approval of measured canary and recurring endpoint cap is required"],
+            })
+            return _emit_loop(ReceiptBuilder(args.command), payload, EXIT["BLOCK"], receipts_dir)
+        payload["status"] = "DONE"
+        return _emit_loop(ReceiptBuilder(args.command), payload, 0, receipts_dir)
+
+    if args.command == "reviews-sync":
+        cap = float(config["budget"]["endpoint_caps_usd"].get("business_data", 0))
+        payload = {
+            "command": args.command, "status": "BLOCK", "businesses": 4,
+            "reviews_requested_max": 80, "endpoint_cap_usd": cap,
+            "blockers": ["review collector requires a displayed provider quote and spend reservation"],
+        }
+        return _emit_loop(ReceiptBuilder(args.command), payload, EXIT["BLOCK"], receipts_dir)
+
+    if args.command == "serp-consensus":
+        payload = {
+            "command": args.command, "status": "BLOCK",
+            "blockers": ["collected top-ten page evidence is required; recollect existing task IDs before reposting"],
+        }
+        return _emit_loop(ReceiptBuilder(args.command), payload, EXIT["BLOCK"], receipts_dir)
+
+    if args.command == "patch":
+        from .patch_generators import generate_patch_preview
+        generated = generate_patch_preview(
+            args.generator,
+            worktree=Path(config["paths"]["site_worktree"]),
+            facts_file=Path(config["paths"]["facts_file"]),
+            evidence_dir=paths.EVIDENCE_DIR,
+        )
+        payload = {
+            "command": args.command,
+            "generator": args.generator,
+            **generated,
+        }
+        if args.write and generated["status"] == "DONE":
+            from .contracts import PatchPackage, write_patch_package
+            package = PatchPackage(**generated["package"])
+            path = write_patch_package(package, paths.PACKAGES_DIR)
+            payload = {
+                "command": args.command,
+                "generator": args.generator,
+                "status": "DONE",
+                "package_id": package.package_id,
+                "package_path": str(path.relative_to(paths.ENGINE_ROOT)),
+                "modified_paths": [item["path"] for item in package.modifications],
+            }
+        code = 0 if payload["status"] in {"DONE", "NO_OP"} else EXIT["BLOCK"]
+        return _emit_loop(ReceiptBuilder(args.command), payload, code, receipts_dir)
+
+    if args.command == "score":
+        source = paths.ENGINE_ROOT / "brain" / "warroom-input.json"
+        if not source.is_file():
+            payload = {
+                "command": args.command, "status": "BLOCK",
+                "blockers": ["brain/warroom-input.json is absent; no query-level evidence may be invented"],
+            }
+            return _emit_loop(ReceiptBuilder(args.command), payload, EXIT["BLOCK"], receipts_dir)
+        from .warroom import score_opportunity, write_warroom
+        opportunities = json.loads(source.read_text(encoding="utf-8"))
+        scored = [score_opportunity(item) for item in opportunities]
+        output = write_warroom(
+            scored,
+            output_path=paths.ENGINE_ROOT / "brain" / "warroom.yaml",
+            generated_at=now_iso(),
+        )
+        payload = {
+            "command": args.command, "status": "DONE",
+            "opportunities": scored,
+            "warroom": str(output.relative_to(paths.ENGINE_ROOT)),
+        }
+        return _emit_loop(ReceiptBuilder(args.command), payload, 0, receipts_dir)
+
     if args.command == "audit":
         from .audit import audit_payload
         payload, code = audit_payload(paths.ENGINE_ROOT)
@@ -193,6 +362,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             payload = dry_run_plan(
                 Path(config["paths"]["site_worktree"]), args.package,
+                Path(config["paths"]["facts_file"]),
             )
             code = 0
         except Exception as err:  # noqa: BLE001 - malformed package/repo is a hard error
@@ -425,7 +595,9 @@ def main(argv: list[str] | None = None) -> int:
             elif args.command == "brief":
                 payload, code = loop_cli.cmd_brief(config)
             elif args.command == "sync":
-                payload, code = loop_cli.cmd_sync(config)
+                payload, code = loop_cli.cmd_sync(
+                    config, sources=set(args.source) if args.source else None,
+                )
             elif args.command == "tick":
                 payload, code = loop_cli.cmd_tick(config)
             elif args.command == "gsc-sync":
@@ -493,7 +665,7 @@ def main(argv: list[str] | None = None) -> int:
                 code = EXIT["ERROR"]
             return _emit_loop(rb, payload, code, receipts_dir)
         if args.command == "act":
-            from .act import publish_package
+            from .act import publish_package, publish_patch_package
             rb = ReceiptBuilder(args.command)
             if args.package is None:
                 payload = {
@@ -503,7 +675,11 @@ def main(argv: list[str] | None = None) -> int:
                 }
                 return _emit_loop(rb, payload, EXIT["BLOCK"], receipts_dir)
             try:
-                payload = publish_package(config, args.package)
+                package_data = json.loads(args.package.read_text(encoding="utf-8"))
+                payload = (
+                    publish_patch_package(config, args.package)
+                    if "modifications" in package_data else publish_package(config, args.package)
+                )
                 code = 0 if payload["status"] == "DONE" else EXIT["BLOCK"]
             except Exception as err:  # noqa: BLE001
                 payload = {"command": "act", "error": f"{type(err).__name__}: {err}"}

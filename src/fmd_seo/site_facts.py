@@ -32,6 +32,9 @@ def public_fact_payload(facts_file: Path) -> dict:
     service = data["service_area"]
     pricing = data["pricing"]
     guarantee = data["guarantee"]
+    public_statement = str(
+        guarantee.get("public_statement") or guarantee["summary"]
+    ).strip()
     claims = data["claim_gates"]
     hours = data["hours"]
     services = data["services"]
@@ -56,6 +59,11 @@ def public_fact_payload(facts_file: Path) -> dict:
         "guarantee": {
             "name": guarantee["name"],
             "summary": guarantee["summary"],
+            "publicStatement": public_statement,
+            # Internal policy only. The published guarantee carries no time
+            # limit -- terms-of-service and cancellation-refund-policy commit to
+            # "before we leave, or as soon as reasonably possible after the
+            # appointment", so no public surface may narrow that to a window.
             "remedyWindowHours": guarantee["remedy_window_hours"],
         },
         "publicReviewCountAllowed": bool(
@@ -103,21 +111,50 @@ def _render_typescript(payload: dict) -> str:
     )
 
 
+# Display names for the two priced one-time tiers. Binding is by the priced-tier
+# key (fullInterior / ultimateInterior), never by services.offered[i]: reordering
+# that list used to publish the $209 line under whoever happened to be first.
+# A rename still moves the price line when the new name is listed here.
+PRICED_TIER_NAMES = {
+    "fullInterior": ("The Interior Reset", "Full Interior Detail"),
+    "ultimateInterior": ("The Deep Interior Reset", "Ultimate Interior Detail"),
+}
+
+
+def _priced_tier_name(facts: dict, tier_key: str) -> str:
+    """Return the display name bound to a priced tier, not a list position."""
+    pricing = facts["pricing"]
+    explicit = pricing.get(f"{tier_key}Name")
+    if explicit:
+        return str(explicit)
+    offered = list(facts["services"]["offered"])
+    for name in PRICED_TIER_NAMES[tier_key]:
+        if name in offered:
+            return name
+    raise ValueError(
+        f"services.offered must name the {tier_key} priced tier "
+        f"({', '.join(PRICED_TIER_NAMES[tier_key])}); got {offered!r}"
+    )
+
+
 def _render_llms(payload: dict) -> str:
     facts = payload["facts"]
     pricing = facts["pricing"]
     places = ", ".join(facts["serviceAreaPlaces"])
+    offered = facts["services"]["offered"]
+    primary = _priced_tier_name(facts, "fullInterior")
+    secondary = _priced_tier_name(facts, "ultimateInterior")
     return f"""# {facts['businessName']}
 
-> Interior-first mobile car detailing serving Cleveland's east side from {facts['serviceAreaBase']}.
+> Interior-first mobile car detailing serving Cleveland's eastern suburbs from {facts['serviceAreaBase']}.
 
 ## Verified facts
 
 - Phone/text: {facts['phoneDisplay']}
-- Full Interior: ${pricing['fullInterior']} (about {pricing['fullInteriorHours']} hours)
-- Ultimate Interior: ${pricing['ultimateInterior']} (about {pricing['ultimateInteriorHours']} hours)
+- {primary}: From ${pricing['fullInterior']} (about {pricing['fullInteriorHours']} hours)
+- {secondary}: From ${pricing['ultimateInterior']} (about {pricing['ultimateInteriorHours']} hours)
 - Fresh Club: ${pricing['monthly']} monthly, ${pricing['biMonthly']} bi-monthly, ${pricing['quarterly']} quarterly per visit
-- Guarantee: {facts['guarantee']['summary']}
+- Guarantee: {facts['guarantee']['name']} — {facts['guarantee']['publicStatement']}
 - Service area: {places}
 - Hours: {', '.join(facts['hours']['days'])}, {facts['hours']['opens']}–{facts['hours']['closes']}
 - Services: {', '.join(facts['services']['offered'])}; exterior add-on: {facts['services']['exteriorAddOn']}
@@ -163,41 +200,41 @@ def compare_public_facts(expected: dict, observed: dict) -> int:
     return mismatches
 
 
-def verify_generated_fact_hash(facts_file: Path, generated_ts: Path) -> dict:
-    """Fail if a materialized canonical file and site-generated payload diverge."""
+def verify_generated_fact_hash(
+    facts_file: Path, generated_ts: Path, generated_llms: Path | None = None,
+) -> dict:
+    """Fail if either generated public fact surface diverges from authority."""
     expected_payload = public_fact_payload(facts_file)
     expected = expected_payload["sourceHash"]
     generated = generated_ts.read_text(encoding="utf-8")
-    match = re.search(
-        r"BUSINESS_FACTS_PAYLOAD\s*=\s*(\{.*\})\s+as const;",
-        generated,
-        re.DOTALL,
-    )
-    if match is None:
-        raise ValueError(f"no generated BUSINESS_FACTS_PAYLOAD found in {generated_ts}")
-    try:
-        observed_payload = json.loads(match.group(1))
-    except json.JSONDecodeError as err:
-        raise ValueError(f"generated facts payload is not JSON: {err}") from err
-    observed_facts = observed_payload.get("facts") if isinstance(observed_payload, dict) else None
-    observed = (
-        observed_payload.get("sourceHash") if isinstance(observed_payload, dict) else None
-    )
-    if observed_facts != expected_payload["facts"]:
-        raise ValueError("generated facts payload mismatch with canonical projection")
-    recomputed = hashlib.sha256(
-        canonical_json(observed_facts).encode("utf-8")
-    ).hexdigest()
-    if observed != expected or recomputed != expected:
+    # Byte comparison against the renderer, mirroring the llms.txt check below.
+    # Parsing BUSINESS_FACTS_PAYLOAD out with a regex left everything around
+    # that literal unchecked -- including
+    # `export const BUSINESS_FACTS = BUSINESS_FACTS_PAYLOAD.facts;`, which is
+    # what CityPage.tsx, chat.ts and the MCP tools actually import. Rewriting
+    # that export to a literal carrying a wrong phone number and a $999 price
+    # still returned DONE.
+    if generated != _render_typescript(expected_payload):
+        observed_match = re.search(r'"sourceHash":\s*"([0-9a-f]{64})"', generated)
+        observed = observed_match.group(1) if observed_match else None
+        # Second, narrower assertion purely for the error message: it separates
+        # "the facts moved" from "someone edited the file around the payload".
         raise ValueError(
-            "business facts payload hash mismatch: "
-            f"canonical={expected} site={observed} recomputed={recomputed}"
+            "generated facts payload mismatch with canonical projection: "
+            f"{generated_ts} is not byte-identical to the renderer "
+            f"(canonical hash={expected} site hash={observed})"
         )
+    llms_path = generated_llms or generated_ts.parents[2] / "public" / "llms.txt"
+    observed_llms = llms_path.read_text(encoding="utf-8")
+    expected_llms = _render_llms(expected_payload)
+    if observed_llms != expected_llms:
+        raise ValueError("generated public/llms.txt mismatch with canonical projection")
     return {
         "command": "facts-check",
         "status": "DONE",
         "source_hash": expected,
         "generated_file": str(generated_ts),
+        "generated_files": [str(generated_ts), str(llms_path)],
     }
 
 

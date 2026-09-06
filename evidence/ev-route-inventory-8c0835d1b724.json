@@ -1,0 +1,32 @@
+{
+  "evidence_id": "ev-route-inventory-8c0835d1b724",
+  "kind": "route_inventory",
+  "routes": [
+    "/",
+    "/areas",
+    "/areas/beachwood",
+    "/areas/chagrin-falls",
+    "/areas/highland-heights",
+    "/areas/mayfield-heights",
+    "/areas/moreland-hills",
+    "/areas/pepper-pike",
+    "/areas/shaker-heights",
+    "/areas/solon",
+    "/areas/university-heights",
+    "/blog",
+    "/blog/car-detailing-prices-cleveland",
+    "/blog/how-to-prepare-for-mobile-car-detailing-cleveland",
+    "/blog/what-to-know-before-car-detailing-cleveland",
+    "/boat",
+    "/cancellation-refund-policy",
+    "/chat",
+    "/fleet",
+    "/fresh-pro",
+    "/interior-detailing",
+    "/mobile-detailing",
+    "/privacy-policy",
+    "/terms-of-service"
+  ],
+  "site_base_commit": "0c695ca28cf533ff7cff0b8fc45329d3d7977f22",
+  "source_sha256": "8c0835d1b724bfbf0f2a3a557bb6e5503a1f163e30c7d5346501ec861b4a8025"
+}

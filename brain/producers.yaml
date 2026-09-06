@@ -1,0 +1,93 @@
+schema_version: 1
+
+# Which command actually writes each scheduled check's observation.
+#
+# `execution_mode: scheduled` is a claim that the engine produces a check
+# without a session. Nothing ever verified that claim, so a check could be
+# scheduled with no code path capable of writing it — it read as "the engine is
+# on it" while the observation directory stayed empty forever, and only the
+# freshness watchdog ever complained, months later, in aggregate.
+#
+# `load_brain` enforces the correspondence in both directions:
+#   - every scheduled check must have an entry here;
+#   - every entry here must name a scheduled check.
+# The second half is the one that catches a check with a real autonomous
+# producer that is nonetheless marked `session`, which is how three Semrush
+# checks sat on the human path while `sync.py` was already fetching them.
+#
+# `command` is what a human runs. `entrypoint` is `module:callable` — the
+# callable that produces this check's records. `tests/test_producers.py` imports
+# and resolves every one of them, so a rename cannot silently orphan a check.
+
+producers:
+  - id: seo.indexation
+    command: fmd-seo gsc-sync
+    entrypoint: fmd_seo.loop_cli:cmd_gsc_sync
+
+  - id: seo.query_footprint
+    command: fmd-seo gsc-sync
+    entrypoint: fmd_seo.loop_cli:cmd_gsc_sync
+
+  - id: seo.positions
+    command: fmd-seo serp-bulk --collect
+    entrypoint: fmd_seo.serp_bulk:collect_tasks
+
+  - id: competitor.serp_movement
+    command: fmd-seo serp-bulk --collect
+    entrypoint: fmd_seo.serp_bulk:collect_tasks
+
+  - id: seo.map_pack
+    command: fmd-seo geogrid --collect
+    entrypoint: fmd_seo.geogrid:collect_tasks
+
+  - id: analytics.traffic
+    command: fmd-seo sync --source ga4
+    entrypoint: fmd_seo.ga4:sync_if_due
+
+  - id: site.facts_drift
+    command: fmd-seo sync --source site
+    entrypoint: fmd_seo.site_facts:sync_public_facts
+
+  - id: sync.health
+    command: fmd-seo sync
+    entrypoint: fmd_seo.loop_cli:cmd_sync
+
+  - id: facts.freshness
+    command: fmd-seo tick
+    entrypoint: fmd_seo.freshness:record_daily_engine_checks
+
+  - id: engine.freshness
+    command: fmd-seo tick
+    entrypoint: fmd_seo.freshness:record_daily_engine_checks
+
+  # Reclassified session -> scheduled 2026-08-17. `sync_due` has fetched and
+  # recorded all three autonomously since the Semrush adapters landed; marking
+  # them `session` kept them off the watchdog and off the work order's headless
+  # path while the cron was already producing them.
+  - id: competitor.authority_gap
+    command: fmd-seo sync --source semrush
+    entrypoint: fmd_seo.sync:sync_due
+
+  - id: market.demand
+    command: fmd-seo sync --source semrush
+    entrypoint: fmd_seo.sync:sync_due
+
+  - id: topics.related_clusters
+    command: fmd-seo sync --source semrush
+    entrypoint: fmd_seo.sync:sync_due
+
+# Deliberately absent: gbp.performance.
+#
+# Reclassified scheduled -> session 2026-08-17 because it has no possible
+# producer. `gbp.sync_if_due` requires `config/engine.yaml -> gbp.location_id`,
+# and the id cannot be obtained: the Business Profile Performance, Business
+# Information and Account Management APIs are all disabled in Cloud project
+# local-lead-machine-498016, and the unobfuscated location id the Performance
+# API needs is only available from `accounts.locations.list` on the Business
+# Information API — the dashboard URL carries the obfuscated listing id, which
+# that API does not accept. See brain/blockers/gbp-performance.md for the
+# measured 403s and the ordered unblock path.
+#
+# It stays a live weekly check with live thresholds; the producer is Lou reading
+# the GBP dashboard and running `fmd-seo observe`. Move it back to `scheduled`
+# and add an entry here the day API access lands.

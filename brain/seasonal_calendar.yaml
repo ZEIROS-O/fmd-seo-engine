@@ -1,0 +1,8 @@
+schema_version: 1
+status: BLOCKED_AWAITING_NORMALIZED_TRENDS
+generated_at: "2026-08-12T19:00:00+00:00"
+gate_status: GATE-1 CLOSED
+rules:
+  new_urls_allowed: false
+  allowed_actions: [existing_page_patch, gbp_draft]
+entries: []

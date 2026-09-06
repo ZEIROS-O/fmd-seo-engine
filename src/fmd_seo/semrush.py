@@ -41,18 +41,6 @@ class SemrushApiFailure(RuntimeError):
 # (site_audit, position_tracking) are NOT here — they need a project-scoped flow
 # and stay on the MCP/agent path until wired. Honest gap, not a fake mapping.
 ANALYTICS_REPORTS = {
-    # organic footprint: ranked keywords for a domain
-    "domain_organic": {
-        "feeds": "seo.organic_footprint",
-        "base": ANALYTICS_BASE,
-        "columns": "Ph,Po,Nq,Ur,Kd",
-    },
-    # domain overview: authority + summary
-    "domain_ranks": {
-        "feeds": "seo.organic_footprint",
-        "base": ANALYTICS_BASE,
-        "columns": "Db,Dn,Rk,Or,Ot,Oc,Ad",
-    },
     # competitors in organic
     "domain_organic_organic": {
         "feeds": "competitor.serp_movement",
@@ -228,7 +216,6 @@ class SemrushClient:
 # (who holds page 1, new entrants) and stays on the session path. Keeping this
 # explicit prevents the planner from promising a headless fetch sync won't do.
 SYNC_IMPLEMENTED_CHECKS: dict[str, list[str]] = {
-    "seo.organic_footprint": ["domain_organic"],
     "competitor.authority_gap": ["backlinks_overview"],
     "market.demand": ["phrase_this"],
     "topics.related_clusters": ["phrase_related"],

@@ -62,6 +62,22 @@ def test_plan_ga4_check_is_human_when_unavailable(empty_obs):
     assert traffic.fulfillment == "human"
 
 
+def test_plan_query_footprint_uses_gsc_search_analytics(empty_obs):
+    brain = load_brain()
+    plan = build_plan(
+        brain,
+        has_semrush_key=True,
+        has_gsc=True,
+        observations_dir=empty_obs,
+    )
+    footprint = next(pc for pc in plan.due if pc.check_id == "seo.query_footprint")
+    assert footprint.fulfillment == "engine_api"
+    assert footprint.api_reports == [
+        "gsc:searchAnalytics.query",
+        "gsc:searchAnalytics.queryPage",
+    ]
+
+
 def test_beat_derives_ga4_availability_from_property_and_key(tmp_path):
     key_path = tmp_path / "google.json"
     key_path.write_text("{}", encoding="utf-8")

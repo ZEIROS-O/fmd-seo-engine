@@ -1,0 +1,119 @@
+schema_version: 1
+business_id: fresh-mobile-detailing
+owner: fresh-docs
+source_last_updated: 2026-08-05
+reviewed_at: 2026-08-02
+review_after_days: 30
+source_documents:
+  facts: Fresh-Mobile-Detailing-Business-Model.md
+  voice: Brand-Voice.md
+  operating_state: CLAUDE.md
+
+identity:
+  name: Fresh Mobile Detailing
+  founder: Lucas
+  phone: "(216) 359-1034"
+  positioning: Interior-first mobile detailing for Cleveland's east side
+
+service_area:
+  base: Beachwood / Mayfield Heights
+  radius_miles: 30
+  primary_cluster: [Solon, Beachwood, Orange, Pepper Pike]
+  places:
+    - Beachwood
+    - Mayfield Heights
+    - Lyndhurst
+    - Pepper Pike
+    - Orange
+    - Solon
+    - Shaker Heights
+    - University Heights
+    - Cleveland Heights
+    - Chagrin Falls
+    - Moreland Hills
+    - Gates Mills
+    - Highland Heights
+    - South Euclid
+    - Mentor
+    - Willoughby
+    - Euclid
+    - Wickliffe
+    - Bedford
+    - Twinsburg
+    - Hudson
+
+hours:
+  days: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+  opens: "08:00"
+  closes: "18:00"
+
+services:
+  duration_hours:
+    min: 1.5
+    max: 4
+  offered:
+    - The Interior Reset
+    - The Deep Interior Reset
+    - Fresh Club maintenance visits
+    - pet hair removal
+    - salt and stain removal
+    - odor treatment
+    - seat and carpet shampoo
+    - leather conditioning
+  exterior_add_on: à-la-carte exterior hand wash
+  not_offered: [ceramic coating, PPF, paint correction]
+
+fleet_discount:
+  available: true
+  applies_to: [fleet, multi_car]
+
+pricing:
+  currency: USD
+  one_time:
+    full_interior:
+      price: 209
+      duration_hours: 2
+    ultimate_interior:
+      price: 289
+      duration_hours: 3
+  membership_per_visit:
+    monthly: 149
+    bi_monthly: 169
+    quarterly: 189
+  neighbor_discount: 25
+
+equipment:
+  extractor:
+    owned: true
+    verified_at: 2026-07-04
+  steamer:
+    owned: false
+    verified_at: 2026-07-04
+  ozone_machine:
+    owned: false
+    verified_at: 2026-07-04
+
+claim_gates:
+  blocked_until_equipment_owned:
+    - steam cleaning
+    - steam sanitizing
+    - ozone odor treatment
+  review_count_public_claim:
+    allowed: false
+    unlock_at_reviews: 30
+  scarcity:
+    allowed: false
+    condition: verified per-suburb capacity caps
+
+guarantee:
+  name: Fresh Finish Guarantee
+  summary: If we miss something we promised, we make it right
+  # The longer customer-facing phrasing rendered on public/llms.txt.
+  public_statement: >-
+    every job is checked before handoff; if something included was missed, we correct it, and if we can't make it right, you don't pay for that service
+  remedy_window_hours: 24
+
+autonomy:
+  customer_contact: human_only
+  posting: human_only
+  final_asset_taste: human_only

@@ -33,19 +33,6 @@ def _int(cell: str) -> int:
 
 # ─────────────────────── pure adapters: rows -> records ───────────────────────
 
-def adapt_organic_footprint(rows: list[dict], *, brand_token: str = "fresh") -> dict:
-    """domain_organic rows -> seo.organic_footprint records.
-    Ph=phrase, Po=position. Non-branded = phrase without the brand token."""
-    total = len(rows)
-    nonbranded = sum(1 for r in rows if brand_token not in r.get("Ph", "").lower())
-    page1 = sum(1 for r in rows if 0 < _int(r.get("Po", "0")) <= 10)
-    return {
-        "total_keywords": total,
-        "nonbranded_keywords": nonbranded,
-        "page1_keywords": page1,
-    }
-
-
 def adapt_authority_gap(our_rows: list[dict], competitor_ascores: list[int]) -> dict:
     """backlinks_overview rows (ours) + competitor ascores -> authority_gap.
     ascore=Authority Score, domains_num=referring domains."""
@@ -134,12 +121,7 @@ def sync_due(config: dict, *, brain: Brain | None = None,
 
     for pc in due_api:
         try:
-            if pc.check_id == "seo.organic_footprint":
-                rows = client.fetch("domain_organic", domain=domain, database=database,
-                                    display_limit=100)
-                _observe(pc.check_id, adapt_organic_footprint(rows),
-                         "semrush:domain_organic")
-            elif pc.check_id == "competitor.authority_gap":
+            if pc.check_id == "competitor.authority_gap":
                 ours = client.fetch("backlinks_overview", target=domain,
                                     target_type="root_domain")
                 comp_scores = []
@@ -166,21 +148,5 @@ def sync_due(config: dict, *, brain: Brain | None = None,
             # they stay on the session path and are not attempted here.
         except Exception as err:  # noqa: BLE001 - one bad check must not abort the rest
             errors[pc.check_id] = str(err)
-
-    if due_api:
-        note = "; ".join(f"{check_id}: {message}" for check_id, message in errors.items())
-        record_observation(
-            brain,
-            "sync.health",
-            {
-                "checks_attempted": len(due_api),
-                "checks_succeeded": len(fetched),
-                "checks_failed": len(errors),
-            },
-            fulfillment="engine",
-            source="agent:fmd-seo-sync",
-            note=note,
-            directory=observations_dir,
-        )
 
     return SyncResult(fetched=fetched, skipped_no_key=[], errors=errors)

@@ -413,12 +413,35 @@ def test_new_observation_must_match_declared_record_schema(tmp_path: Path):
         source="console:fixture",
         records={"pairs_tested": 4, "pairs_ranked": 2},
         source_kind="console",
+        schema_version=2,
     )
 
     findings = audit_repository(root)
 
     assert any(f.code == "record_schema_mismatch" and f.severity == "critical"
                for f in findings)
+
+
+def test_legacy_v1_observation_survives_additive_record_schema(tmp_path: Path):
+    from fmd_seo.audit import audit_repository
+
+    root = _engine_root(tmp_path)
+    _observation(
+        root,
+        "seo.local_visibility",
+        source="console:historical",
+        records={"pairs_tested": 4, "pairs_ranked": 2},
+        source_kind="console",
+        schema_version=1,
+    )
+
+    findings = audit_repository(root)
+
+    assert not any(
+        finding.code == "record_schema_mismatch" and finding.severity == "critical"
+        for finding in findings
+    )
+    assert any(finding.code == "legacy_record_schema" for finding in findings)
 
 
 def test_spend_baseline_boundary_cannot_hide_later_ledger_entries(tmp_path: Path):

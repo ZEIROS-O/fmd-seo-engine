@@ -1,115 +1,301 @@
 #!/usr/bin/env bash
-# Daily headless SEO-brain tick. Schedule this; it needs no session and no Lou.
-#
-# It runs the two things a cron CAN do safely:
-#   sync   — fetch API-backed due checks via the Semrush REST API (needs SEMRUSH_API_KEY)
-#   assess — evaluate thresholds; exit 4 if any critical finding or gate drift
-#
-# It NEVER publishes, deploys, or touches the live site. The one thing it does
-# send is a one-line run ping to Lou's Telegram (CONTRACT clause 5) — operator
-# telemetry, not outreach. The session-only
-# checks (aeo.*, live-HTML schema) are left for the fmd-seo-loop skill. GSC runs
-# headlessly when its service-account key is configured and otherwise reports an
-# explicit no-op. A non-zero assess exit is the signal that a session run is due.
+# Full local SEO measurement loop. Provider credentials and the one canonical
+# facts authority stay on this machine; GitHub Actions only watches the
+# committed observation timestamps produced here.
 set -euo pipefail
 
-# A Task-Scheduler-launched shell is non-interactive and inherits a bare PATH;
-# set it up so python3 (and any user-local bins) resolve. Matches the ingest
-# wrapper's PATH setup.
 export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 
-# CDPATH= neutralizes a caller's CDPATH, which otherwise makes `cd` echo the
-# target dir and doubles the command substitution.
 ENGINE_ROOT="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ENGINE_ROOT"
 export PYTHONPATH="$ENGINE_ROOT/src"
 
-if [[ -f "$ENGINE_ROOT/DISABLED" ]]; then
-  echo "fmd-seo-cron: kill switch engaged (DISABLED present) — skipping." >&2
-  NOTIFY_OK_CODES="0" bash "$ENGINE_ROOT/bin/notify-run" \
-    "FMD-SEO 🛑 KILLED" "4" "DISABLED present; no checks ran" || true
-  exit 0
-fi
+assert_scheduler_checkout() {
+  local git_dir common_dir branch expected_branch superproject
+  git_dir="$(git rev-parse --git-dir 2>/dev/null)" || {
+    echo "fmd-seo-cron: scheduler root is not a Git checkout" >&2
+    return 4
+  }
+  common_dir="$(git rev-parse --git-common-dir 2>/dev/null)" || return 4
+  superproject="$(git rev-parse --show-superproject-working-tree 2>/dev/null || true)"
+  branch="$(git branch --show-current)"
+  expected_branch="${FMD_SEO_SCHEDULER_BRANCH:-automation/fmd-seo-state}"
+  if [[ -n "$superproject" || "$git_dir" == "$common_dir" ]]; then
+    echo "fmd-seo-cron: dedicated linked scheduler worktree required" >&2
+    return 4
+  fi
+  if [[ "$branch" != "$expected_branch" ]]; then
+    echo "fmd-seo-cron: dedicated scheduler branch required: expected $expected_branch, got ${branch:-detached}" >&2
+    return 4
+  fi
+  local -a initial_changes=()
+  mapfile -d '' -t initial_changes < <(
+    git status --porcelain=v1 -z --untracked-files=all
+  )
+  if ((${#initial_changes[@]})); then
+    echo "fmd-seo-cron: scheduler worktree must be clean before a run" >&2
+    return 4
+  fi
+}
 
 log_dir="$ENGINE_ROOT/.run/cron"
 mkdir -p "$log_dir"
 stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+log_file="$log_dir/$stamp.log"
 
-# An abort before the normal notify path (bad PATH, missing python, dead venv)
-# is exactly the silent failure the ping exists to catch, so trap it too. The
-# normal path ends in `exit`, which does not fire ERR — no double-send.
-notify_abort() {
-  local code=$?
-  bash "$ENGINE_ROOT/bin/notify-run" "FMD-SEO" "$code" "aborted early — see $stamp.log" || true
+if [[ -f "$ENGINE_ROOT/DISABLED" ]]; then
+  echo "fmd-seo-cron: kill switch engaged (DISABLED present) — skipping." >&2
+  if NOTIFY_OK_CODES="0" bash "$ENGINE_ROOT/bin/notify-run" \
+    "FMD-SEO 🛑 KILLED" "4" "DISABLED present; no checks ran"; then
+    :
+  else
+    echo "fmd-seo-cron: killed notification script failed (non-fatal)" >&2
+  fi
+  exit 0
+fi
+
+assert_scheduler_checkout || exit $?
+
+declare -A stage_code=()
+declare -A stage_state=()
+declare -A stage_output=()
+declare -A source_enabled=()
+
+log() {
+  printf '%s\n' "$*" | tee -a "$log_file"
 }
-trap notify_abort ERR
 
-echo "== sync ($stamp) ==" | tee "$log_dir/$stamp.log"
-if sync_out="$(python3 -m fmd_seo sync 2>&1)"; then
-  sync_code=0
-else
-  sync_code=$?
+run_stage() {
+  local name=$1
+  shift
+  local output code
+  log "== $name ($stamp) =="
+  if output="$("$@" 2>&1)"; then
+    code=0
+  else
+    code=$?
+  fi
+  stage_output["$name"]=$output
+  stage_code["$name"]=$code
+  if (( code == 0 )); then
+    stage_state["$name"]="success"
+  else
+    stage_state["$name"]="failed"
+  fi
+  [[ -z "$output" ]] || printf '%s\n' "$output" | tee -a "$log_file"
+  return 0
+}
+
+skip_stage() {
+  local name=$1 reason=$2
+  stage_code["$name"]=0
+  stage_state["$name"]="skipped"
+  stage_output["$name"]=$reason
+  log "== $name ($stamp) =="
+  log "skipped: $reason"
+}
+
+success_stage() {
+  local name=$1 detail=$2
+  stage_code["$name"]=0
+  stage_state["$name"]="success"
+  stage_output["$name"]=$detail
+  log "== $name ($stamp) =="
+  log "$detail"
+}
+
+persist_state() {
+  local code entry path
+  local -a changes=() owned=()
+  mapfile -d '' -t changes < <(
+    git status --porcelain=v1 -z --untracked-files=all
+  )
+  for entry in "${changes[@]}"; do
+    path="${entry:3}"
+    case "$path" in
+      brain/observations/*/*.json|brain/quarantine/*/*.json|brain/state.yaml|receipts/*.json|state/spend.json|state/health.json|state/*-task-manifest.json|evidence/geogrid-*/*|evidence/serp-bulk-*/*|evidence/gsc-query-footprint/*|DISABLED)
+        owned+=("$path")
+        ;;
+      *)
+        echo "persist: not machine-owned: $path"
+        return 4
+        ;;
+    esac
+  done
+  if ((${#owned[@]} == 0)); then
+    echo "no durable state changes"
+    return 0
+  fi
+  if git add -- "${owned[@]}"; then :; else code=$?; return "$code"; fi
+  if git diff --cached --quiet; then
+    echo "no durable state changes"
+    return 0
+  fi
+  git config user.name "fmd-seo-local-runner"
+  git config user.email "fmd-seo-local-runner@localhost"
+  git commit -m "state: persist daily optimizer observations"
+  return 0
+}
+
+sources_code='import sys, yaml
+data = yaml.safe_load(open(sys.argv[1], encoding="utf-8"))
+if not isinstance(data, dict) or not isinstance(data.get("sources"), dict):
+    raise SystemExit("source switches must contain a sources mapping")
+expected = {"dataforseo", "semrush", "gsc", "ga4", "gbp", "site"}
+if set(data["sources"]) != expected:
+    raise SystemExit(
+        f"source switches must contain exactly {sorted(expected)}"
+    )
+for name, enabled in sorted(data["sources"].items()):
+    if not isinstance(enabled, bool):
+        raise SystemExit(f"source switch {name} must be boolean")
+    print(f"{name}={str(enabled).lower()}")'
+run_stage sources python3 -c "$sources_code" "$ENGINE_ROOT/state/source-switches.yaml"
+if [[ "${stage_state[sources]}" == success ]]; then
+  for item in ${stage_output[sources]}; do
+    source_enabled["${item%%=*}"]="${item#*=}"
+  done
+  for expected in dataforseo semrush gsc ga4 gbp site; do
+    if [[ -z "${source_enabled[$expected]+present}" ]]; then
+      stage_state[sources]="failed"
+      stage_code[sources]=4
+      log "source switches missing required key: $expected"
+    fi
+  done
 fi
-printf '%s\n' "$sync_out" | tee -a "$log_dir/$stamp.log"
 
-echo "== gsc-sync ($stamp) ==" | tee -a "$log_dir/$stamp.log"
-if gsc_out="$(python3 -m fmd_seo gsc-sync 2>&1)"; then
-  gsc_code=0
+for capability in dataforseo semrush gsc facts site; do
+  run_stage "cred_$capability" python3 -m fmd_seo credential-check \
+    --capability "$capability"
+done
+
+# Credential-free and always attempted, even if a provider capability failed.
+run_stage tick python3 -m fmd_seo tick
+
+# Each --source X runs only when the credential that can produce it succeeded.
+# ga4 and gbp share the Google service-account check; there is no cred_ga4.
+declare -A sync_credential=(
+  [semrush]=cred_semrush
+  [ga4]=cred_gsc
+  [gbp]=cred_gsc
+  [site]=cred_site
+)
+sync_args=()
+for source in semrush ga4 gbp site; do
+  if [[ "${source_enabled[$source]:-false}" != true ]]; then
+    continue
+  fi
+  cred="${sync_credential[$source]}"
+  if [[ "${stage_state[$cred]}" == success ]]; then
+    sync_args+=(--source "$source")
+  else
+    log "sync source $source skipped: $cred is ${stage_state[$cred]:-missing}"
+  fi
+done
+if ((${#sync_args[@]})); then
+  # One invocation owns the one sync.health observation for this run. Each
+  # provider still fails independently inside cmd_sync.
+  run_stage sync python3 -m fmd_seo sync "${sync_args[@]}"
 else
-  gsc_code=$?
+  success_stage sync "no headless sync sources enabled"
 fi
-printf '%s\n' "$gsc_out" | tee -a "$log_dir/$stamp.log"
 
-echo "== assess ($stamp) ==" | tee -a "$log_dir/$stamp.log"
-# assess exit 4 = critical finding or gate drift; surface it as this script's exit
-# without aborting the log write. Captured rather than streamed so the notify
-# line can read the summary back without re-parsing the log.
-if assess_out="$(python3 -m fmd_seo assess 2>&1)"; then
-  assess_code=0
-else
-  assess_code=$?
+if [[ "${source_enabled[gsc]:-false}" == true ]]; then
+  if [[ "${stage_state[cred_gsc]}" == success ]]; then
+    run_stage gsc python3 -m fmd_seo gsc-sync
+  else
+    skip_stage gsc "Google credential failed"
+  fi
 fi
-printf '%s\n' "$assess_out" | tee -a "$log_dir/$stamp.log"
 
+if [[ "${source_enabled[dataforseo]:-false}" == true ]]; then
+  if [[ "${stage_state[cred_dataforseo]}" == success ]]; then
+    weekday="$(date -u +%u)"
+    if [[ "$weekday" == 7 ]]; then
+      run_stage serp python3 -m fmd_seo serp-bulk --post
+      run_stage grid python3 -m fmd_seo geogrid --post
+    elif [[ "$weekday" == 1 ]]; then
+      run_stage serp python3 -m fmd_seo serp-bulk --collect
+      run_stage grid python3 -m fmd_seo geogrid --collect
+    else
+      success_stage serp "weekly SERP operation not due"
+      success_stage grid "weekly map-grid operation not due"
+    fi
+  else
+    skip_stage serp "DataForSEO credential failed"
+    skip_stage grid "DataForSEO credential failed"
+  fi
+fi
+
+if [[ "${source_enabled[site]:-false}" == true ]]; then
+  if [[ "${stage_state[cred_site]}" == success \
+    && "${stage_state[cred_facts]}" == success ]]; then
+    run_stage facts python3 -m fmd_seo facts-check
+  else
+    skip_stage facts "site worktree or canonical facts capability failed"
+  fi
+fi
+
+run_stage act python3 -m fmd_seo act --dry-run
+run_stage assess python3 -m fmd_seo assess
+run_stage audit python3 -m fmd_seo audit
+run_stage persist persist_state
+
+required=(sources cred_facts tick act assess audit persist)
+required+=(sync)
+if [[ "${source_enabled[dataforseo]:-false}" == true ]]; then
+  required+=(cred_dataforseo serp grid)
+fi
+[[ "${source_enabled[semrush]:-false}" == true ]] && required+=(cred_semrush)
+if [[ "${source_enabled[gsc]:-false}" == true \
+  || "${source_enabled[ga4]:-false}" == true \
+  || "${source_enabled[gbp]:-false}" == true ]]; then
+  required+=(cred_gsc)
+fi
+[[ "${source_enabled[gsc]:-false}" == true ]] && required+=(gsc)
+if [[ "${source_enabled[site]:-false}" == true ]]; then
+  required+=(cred_site facts)
+fi
+
+failures=()
 overall_code=0
-if (( sync_code == 5 || gsc_code == 5 || assess_code == 5 )); then
-  overall_code=5
-elif (( sync_code >= 4 || gsc_code >= 4 )); then
-  overall_code=4
-elif (( sync_code == 3 || gsc_code == 3 )); then
-  overall_code=3
-elif (( assess_code != 0 )); then
-  overall_code=$assess_code
+for name in "${required[@]}"; do
+  state="${stage_state[$name]:-skipped}"
+  if [[ "$state" != success ]]; then
+    failures+=("$name:$state")
+    code="${stage_code[$name]:-4}"
+    (( code == 0 )) && code=4
+    if (( code == 5 || overall_code == 0 || (code == 4 && overall_code == 3) )); then
+      overall_code=$code
+    fi
+  fi
+done
+
+if ((${#failures[@]})); then
+  detail="required failures: ${failures[*]}"
+else
+  detail="all required stages succeeded"
 fi
 
-echo "fmd-seo-cron: done (sync=$sync_code gsc=$gsc_code assess=$assess_code overall=$overall_code)" | tee -a "$log_dir/$stamp.log"
-
-# One-line Telegram heartbeat. Assess exit 4 is healthy only when sync and GSC
-# completed; a provider exit 4 must stay an error even if assess later surfaces
-# the resulting critical finding with the same numeric code.
-detail="$(printf '%s' "$assess_out" | python3 -c '
-import json, sys
-try:
-    s = json.load(sys.stdin).get("summary", {})
-except Exception:
-    print("assess output unreadable")
-    sys.exit(0)
-bits = []
-if s.get("critical"): bits.append(str(s["critical"]) + " crit")
-if s.get("high"): bits.append(str(s["high"]) + " high")
-if s.get("gate_drift"): bits.append("gate drift")
-print(", ".join(bits) + " -> session due" if bits else "all clear")
-' 2>/dev/null)" || detail=""
-
-detail="sync=$sync_code gsc=$gsc_code assess=$assess_code; $detail"
-ok_codes="0"
-if (( sync_code == 0 && gsc_code == 0 && (assess_code == 0 || assess_code == 4) )); then
-  ok_codes="0 4"
+notify_output=""
+if notify_output="$(NOTIFY_OK_CODES="0" bash "$ENGINE_ROOT/bin/notify-run" \
+  "FMD-SEO" "$overall_code" "$detail" 2>&1)"; then
+  notify_code=0
+else
+  notify_code=$?
+fi
+[[ -z "$notify_output" ]] || printf '%s\n' "$notify_output" | tee -a "$log_file"
+if (( notify_code != 0 )); then
+  failures+=("notify-script:failed")
+  # Never let the notifier downgrade the run it is reporting on: a failed
+  # Telegram ping used to overwrite a real provider failure's exit code.
+  if (( overall_code == 0 )); then
+    overall_code=$notify_code
+  fi
 fi
 
-# Invoked via `bash` rather than directly: the ping must not depend on an exec
-# bit surviving a clone/checkout.
-NOTIFY_OK_CODES="$ok_codes" bash "$ENGINE_ROOT/bin/notify-run" \
-  "FMD-SEO" "$overall_code" "$detail" || true
-
+if ((${#failures[@]})); then
+  log "Required failures: ${failures[*]}"
+fi
+log "fmd-seo-cron: done (overall=$overall_code)"
 exit "$overall_code"

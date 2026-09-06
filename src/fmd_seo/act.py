@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import subprocess
 import difflib
+import hashlib
 import json
 from datetime import date
 from pathlib import Path
 
 from . import paths
 from .brain import load_brain
-from .contracts import load_package
+from .contracts import PATCH_PACKAGE_SCHEMA_VERSION, load_package, load_patch_package
 from .corpus import corpus_checks
 from .export import content_destination, export_package, render_content_json, write_manifest
 from .facts import FactError, load_snapshot, verify_binding
@@ -123,8 +124,23 @@ def _bypass_actions(worktree: Path) -> list[dict[str, str]]:
     ]
 
 
-def dry_run_plan(worktree: Path, package_path: Path | None = None) -> dict:
+def dry_run_plan(worktree: Path, package_path: Path | None = None,
+                 facts_file: Path | None = None) -> dict:
     """Return the exact current diff and action queue using read-only git calls."""
+    if not worktree.exists():
+        return {
+            "command": "act",
+            "dry_run": True,
+            "status": "BLOCK",
+            "blockers": ["site worktree missing; run `fmd-seo site-init`"],
+        }
+    if not (worktree / ".git").exists():
+        return {
+            "command": "act",
+            "dry_run": True,
+            "status": "BLOCK",
+            "blockers": [f"configured site path is not a git checkout: {worktree}"],
+        }
     head = _run(worktree, "git", "rev-parse", "HEAD")
     status = _status(worktree)
     changed = [line[3:] for line in status.splitlines() if len(line) > 3]
@@ -147,6 +163,39 @@ def dry_run_plan(worktree: Path, package_path: Path | None = None) -> dict:
         ],
     }
     if package_path is not None:
+        raw = json.loads(package_path.read_text(encoding="utf-8"))
+        if "modifications" in raw:
+            from .patch_action import validate_patch_package
+            package = load_patch_package(package_path)
+            if package.schema_version < PATCH_PACKAGE_SCHEMA_VERSION:
+                payload["patch"] = {
+                    "package_id": package.package_id,
+                    "status": "BLOCK",
+                    "blockers": [
+                        f"PatchPackage v{package.schema_version} is legacy and not publishable"
+                    ],
+                }
+                return payload
+            if facts_file is None or not facts_file.is_file():
+                payload["patch"] = {
+                    "package_id": package.package_id,
+                    "status": "BLOCK",
+                    "blockers": ["canonical facts file is required for PatchPackage validation"],
+                }
+                return payload
+            validation = validate_patch_package(
+                worktree,
+                package,
+                current_fact_hash=hashlib.sha256(facts_file.read_bytes()).hexdigest(),
+                facts_file=facts_file,
+                evidence_dir=paths.EVIDENCE_DIR,
+            )
+            payload["patch"] = {
+                "package_id": package.package_id,
+                **validation,
+                "modified_paths": [item["path"] for item in package.modifications],
+            }
+            return payload
         package = load_package(package_path)
         target = content_destination(worktree, package.content["slug"])
         rendered = json.dumps(render_content_json(package), indent=2, ensure_ascii=False) + "\n"
@@ -163,6 +212,104 @@ def dry_run_plan(worktree: Path, package_path: Path | None = None) -> dict:
             )),
         }
     return payload
+
+
+def publish_patch_package(config: dict, package_path: Path) -> dict:
+    """Apply a PatchPackage, verify the site build, and open a draft PR only."""
+    package = load_patch_package(package_path)
+    if package.schema_version < PATCH_PACKAGE_SCHEMA_VERSION:
+        return {
+            "command": "act",
+            "status": "BLOCK",
+            "blockers": [
+                f"PatchPackage v{package.schema_version} is legacy and not publishable"
+            ],
+        }
+    worktree = Path(config["paths"]["site_worktree"])
+    facts_file = Path(config["paths"]["facts_file"])
+    from .patch_action import validate_patch_package
+    preflight = validate_patch_package(
+        worktree,
+        package,
+        current_fact_hash=hashlib.sha256(facts_file.read_bytes()).hexdigest(),
+        facts_file=facts_file,
+        evidence_dir=paths.EVIDENCE_DIR,
+    )
+    if preflight["status"] != "DONE":
+        return {"command": "act", **preflight}
+    base_sha = sync_worktree(worktree)
+    if base_sha != package.site_base_commit:
+        return {
+            "command": "act", "status": "BLOCK",
+            "blockers": ["site base changed; regenerate the PatchPackage"],
+        }
+    branch = f"seo-engine/{date.today().isoformat()}-patch-{package.generator}"
+    _run(worktree, "git", "switch", "-C", branch, base_sha)
+    try:
+        from .patch_action import apply_patch_package
+        applied = apply_patch_package(
+            worktree,
+            package,
+            current_fact_hash=hashlib.sha256(facts_file.read_bytes()).hexdigest(),
+            facts_file=facts_file,
+            evidence_dir=paths.EVIDENCE_DIR,
+        )
+        if applied["status"] != "DONE":
+            return {"command": "act", "branch": branch, **applied}
+        # Build then test, both before anything is staged. A build that
+        # succeeds while the site's own checks fail is exactly the state a
+        # draft PR must never reach -- and nothing is committed either way.
+        for step, command in (
+            ("patch_build", "build"),
+            ("patch_tests", "test:seo-scripts"),
+        ):
+            try:
+                _run(worktree, "bun", "run", command)
+            except ActError as err:
+                return {
+                    "command": "act", "status": "BLOCK", "branch": branch,
+                    "checks": [{"name": step, "verdict": "BLOCK", "detail": str(err)}],
+                    "blockers": [str(err)],
+                }
+        paths_to_commit = [item["path"] for item in package.modifications]
+        _run(worktree, "git", "add", "--", *paths_to_commit)
+        _run(
+            worktree, "git", "commit", "-m",
+            f"SEO: apply {package.generator} patch ({package.package_id})",
+        )
+        branch_sha = _run(worktree, "git", "rev-parse", "HEAD")
+        try:
+            _run(worktree, "git", "push", "-u", "origin", branch)
+            pr_url = _run(
+                worktree, "gh", "pr", "create", "--draft", "--base", "main",
+                "--head", branch, "--title", f"SEO: {package.generator} patch",
+                "--body", (
+                    f"Generated from immutable PatchPackage `{package.package_id}`.\n\n"
+                    "Modify-only, base/fact/hash guarded. Human merge and deployment required."
+                ),
+            )
+        except ActError as err:
+            return {
+                "command": "act", "status": "BLOCK", "branch": branch,
+                "commit_hashes": {"site": branch_sha}, "blockers": [str(err)],
+            }
+        return {
+            "command": "act", "status": "DONE", "branch": branch,
+            "pr_url": pr_url, "commit_hashes": {"site": branch_sha},
+            "checks": [
+                {"name": "patch_build", "verdict": "PASS", "detail": "bun run build"},
+                {"name": "patch_tests", "verdict": "PASS",
+                 "detail": "bun run test:seo-scripts"},
+            ],
+        }
+    finally:
+        # `git switch` carries uncommitted changes across, so a rejected patch
+        # would survive as a dirty worktree -- and `sync_worktree` refuses to
+        # run against one, wedging every later action behind a manual reset.
+        # The tree was verified clean before the patch was applied, so the only
+        # thing this discards is what this call itself wrote.
+        _run(worktree, "git", "reset", "--hard", "HEAD")
+        _run(worktree, "git", "switch", "--detach", base_sha)
 
 
 def publish_package(config: dict, package_path: Path) -> dict:

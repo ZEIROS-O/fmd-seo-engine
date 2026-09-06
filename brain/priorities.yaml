@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 
 # The machine copy of the work order. `brain/thesis.md` keeps the reasoning;
 # this file is what `fmd-seo beat` and `fmd-seo brief` emit, and it is the only
@@ -13,6 +13,7 @@ priorities:
   - id: review_velocity
     gate: {GATE-1: CLOSED}
     thesis_refs: [T5, T7]
+    action: {type: blocker, target: local.review_velocity, owner: Lou}
     label: >-
       Review velocity (T5/T7) — 16 -> 40+; pack holders in the measured sample
       carry 37-1600. Widens the ring's radius, the binding constraint, and
@@ -21,14 +22,25 @@ priorities:
   - id: gbp_configuration_audit
     gate: {GATE-1: CLOSED}
     thesis_refs: [T5]
+    action: {type: console, target: GBP configuration and location resource, owner: Lou}
     label: >-
       GBP configuration audit (T5) — confirm anchor address, service-area
       settings, primary category, verification state. Free, and it explains the
       ring's shape
 
+  - id: near_winner_optimization
+    gate: {GATE-1: CLOSED}
+    thesis_refs: [T4, T7]
+    action: {type: generator, target: patch copy, owner: engine}
+    label: >-
+      Near-winner and CTR work (T4/T7) — target the measured GSC query/page
+      positions 4-20 before manufacturing a URL; require SERP consensus and
+      review-language evidence before a copy patch
+
   - id: entity_decontamination
     gate: {GATE-1: CLOSED}
     thesis_refs: [T8]
+    action: {type: draft_queue, target: drafts/entity-corrections, owner: Lou}
     label: >-
       Entity decontamination (T8) — collapse 'Drive Fresh' -> 'Fresh Mobile
       Detailing' across social + directories; consistent NAP. Feeds prominence
@@ -37,6 +49,7 @@ priorities:
   - id: copy_language
     gate: {GATE-1: CLOSED}
     thesis_refs: [T4]
+    action: {type: generator, target: patch copy, owner: engine}
     label: >-
       Copy language (T4) — introduce car/auto/'near me' into existing copy, no
       new URLs. This is what converts the ring's outer band
@@ -44,6 +57,7 @@ priorities:
   - id: internal_linking
     gate: {GATE-1: CLOSED}
     thesis_refs: [T1]
+    action: {type: generator, target: patch internal-links, owner: engine}
     label: >-
       Internal linking (T1) — the unindexed pages are link-starved; crawl
       priority follows internal links
@@ -51,6 +65,7 @@ priorities:
   - id: schema_finish_validate
     gate: {GATE-1: CLOSED}
     thesis_refs: [T2]
+    action: {type: generator, target: patch schema, owner: engine}
     label: >-
       Schema finish + validate (T2) — the 4 unschema'd pages + BlogPosting on
       posts; confirm AggregateRating is fact-bound. Maintenance, not the
@@ -59,19 +74,23 @@ priorities:
   - id: reassess_gate1
     gate: {GATE-1: CLOSED}
     thesis_refs: []
+    action: {type: blocker, target: GATE-1 two-reading rule, owner: Lou}
     label: Only then reassess GATE-1
 
   - id: publish_from_topic_queue
     gate: {GATE-1: OPEN}
     thesis_refs: []
+    action: {type: generator, target: PagePackage, owner: engine}
     label: Publish from the scored topic queue (topics.related_clusters), one at a time
 
   - id: cannibalization_check
     gate: {GATE-1: OPEN}
     thesis_refs: []
+    action: {type: blocker, target: blog.cannibalization, owner: engine}
     label: Cannibalization check per draft before authoring
 
   - id: maintain_authority
     gate: {GATE-1: OPEN}
     thesis_refs: []
+    action: {type: draft_queue, target: authority queues, owner: Lou}
     label: Keep schema/entity/linking maintained — do not let authority regress

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-19T13:13:12+00:00",
+  "check": "phase-3.5-production-deployment",
+  "deployment_id": "95322e560efefe83635f5cc39e0840cfe6447ee109b3c6f3afa3eba46a727664",
+  "source": "live response header x-deployment-id on https://freshmobiledetail.com/",
+  "origin_main": "709feb09c270bb8aae4a19e9a47bf11292368ce3",
+  "origin_main_subject": "Merge pull request #7 from ZEIROS-O/fix/lovable-html-routing",
+  "origin_main_committed_at": "2026-08-09T17:52:50-04:00",
+  "cloudflare_worker_metadata": "UNAVAILABLE — wrangler deployments list requires CLOUDFLARE_API_TOKEN; none is set. Cannot distinguish 'built before 709feb0' from 'built from 709feb0 and Lovable dropped html_handling at publish'.",
+  "live_probe": {
+    "/": {"status": 200, "bytes": 123060, "nuls": 5, "fmd_render_marker": false, "x_fmd_render": null},
+    "/fleet": {"status": 200, "bytes": 42532, "nuls": 5, "fmd_render_marker": false, "x_fmd_render": null},
+    "/fleet.html": {"status": 200, "bytes": 42246, "nuls": 0, "fmd_render_marker": true, "x_fmd_render": null},
+    "/areas": {"status": 200, "bytes": 31454, "nuls": 11, "fmd_render_marker": false, "x_fmd_render": null}
+  },
+  "finding": "Production is deployment 95322e. /fleet.html returns 200 with the prerendered file (marker present) instead of 307 Location /fleet. Clean URLs (/ , /fleet, /areas) are Worker SSR: NUL bytes, no fmd-render marker, no X-FMD-Render header. That is the pre-709feb0 / html_handling-absent behaviour. bun run seo:verify-live-routing against production exits 1 on '/: response body contains a raw NUL'. Production is not fixed.",
+  "decision": "Do not mark production fixed. Lou republishes origin/main (709feb0 or later). If after republish /fleet.html is still 200, html_handling was dropped at the Lovable publish layer — escalate to Lovable. Do not infer a fix from a local build.",
+  "not_done": [
+    "no publish",
+    "no Cloudflare metadata comparison",
+    "live probe did not pass"
+  ]
+}

@@ -7,6 +7,7 @@ only reads, hashes, and extracts. Missing or stale facts fail closed.
 from __future__ import annotations
 
 import hashlib
+import json
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
@@ -78,6 +79,66 @@ def load_snapshot(facts_file: Path, keys: list[str], *, today: date | None = Non
         captured_at=now_iso(),
         facts_used=facts_used,
     )
+
+
+def write_canonical_facts_evidence(facts_file: Path, directory: Path) -> str:
+    """Persist the canonical facts file as a hash-bound evidence record.
+
+    Schema PatchPackages used to cite ``canonical-facts:<hash>``, which
+    ``validate_patch_package`` accepted without a store file whenever the
+    suffix matched the live facts hash. v2 requires a committed record whose
+    digest is the raw file bytes — the same hash PatchPackage.fact_snapshot_hash
+    already binds.
+    """
+    digest = hashlib.sha256(facts_file.read_bytes()).hexdigest()
+    evidence_id = f"ev-fact-snapshot-{digest[:12]}"
+    payload = {
+        "evidence_id": evidence_id,
+        "kind": "fact_snapshot",
+        "source_sha256": digest,
+        "canonical_path": str(facts_file),
+    }
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"{evidence_id}.json"
+    if path.exists():
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        existing_digest = existing.get("source_sha256") or existing.get("source_hash")
+        if existing_digest != digest:
+            raise FactError(f"immutable evidence id collision: {evidence_id}")
+        return evidence_id
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8",
+    )
+    return evidence_id
+
+
+def write_fact_snapshot_evidence(snapshot: FactSnapshot, directory: Path) -> str:
+    """Persist a FactSnapshot as a committed evidence record.
+
+    information_gain.evidence_ref must resolve through the evidence store, not
+    by comparing a fact-snapshot:<hash> alias to the package's own snapshot.
+    The id is derived from source_hash so a given facts file rewrites the same
+    record rather than minting a new one each draft.
+    """
+    evidence_id = f"ev-fact-snapshot-{snapshot.source_hash[:12]}"
+    payload = {
+        "evidence_id": evidence_id,
+        "kind": "fact_snapshot",
+        "source_hash": snapshot.source_hash,
+        "canonical_path": snapshot.canonical_path,
+        "captured_at": snapshot.captured_at,
+        "facts_used": snapshot.facts_used,
+    }
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"{evidence_id}.json"
+    rendered = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    if path.exists():
+        existing = json.loads(path.read_text(encoding="utf-8"))
+        if existing.get("source_hash") != snapshot.source_hash:
+            raise FactError(f"immutable evidence id collision: {evidence_id}")
+        return evidence_id
+    path.write_text(rendered, encoding="utf-8")
+    return evidence_id
 
 
 def verify_binding(snapshot: FactSnapshot) -> bool:
