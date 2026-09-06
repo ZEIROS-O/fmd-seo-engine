@@ -113,7 +113,7 @@ persist_state() {
   for entry in "${changes[@]}"; do
     path="${entry:3}"
     case "$path" in
-      brain/observations/*/*.json|receipts/*.json|state/spend.json|state/health.json|state/*-task-manifest.json|evidence/geogrid-*/*|evidence/serp-bulk-*/*|DISABLED)
+      brain/observations/*/*.json|brain/quarantine/*/*.json|brain/state.yaml|receipts/*.json|state/spend.json|state/health.json|state/*-task-manifest.json|evidence/geogrid-*/*|evidence/serp-bulk-*/*|evidence/gsc-query-footprint/*|DISABLED)
         owned+=("$path")
         ;;
       *)

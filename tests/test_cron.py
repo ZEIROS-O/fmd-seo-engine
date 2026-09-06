@@ -271,6 +271,9 @@ def test_cron_stages_only_exact_machine_owned_paths_from_this_run(tmp_path):
     env["GIT_STATUS_FINAL"] = (
         "?? brain/observations/sync.health/20260814.json\\0"
         "?? receipts/20260814-sync.json\\0"
+        " M brain/state.yaml\\0"
+        "?? evidence/gsc-query-footprint/20260814.json\\0"
+        "?? brain/quarantine/seo.indexation/20260814.json\\0"
     )
 
     result = _run(root, env)
@@ -279,7 +282,10 @@ def test_cron_stages_only_exact_machine_owned_paths_from_this_run(tmp_path):
     git_commands = Path(env["GIT_LOG"]).read_text(encoding="utf-8").splitlines()
     add = [command for command in git_commands if command.startswith("add ")]
     assert add == [
-        "add -- brain/observations/sync.health/20260814.json receipts/20260814-sync.json"
+        "add -- brain/observations/sync.health/20260814.json "
+        "receipts/20260814-sync.json brain/state.yaml "
+        "evidence/gsc-query-footprint/20260814.json "
+        "brain/quarantine/seo.indexation/20260814.json"
     ]
 
 
